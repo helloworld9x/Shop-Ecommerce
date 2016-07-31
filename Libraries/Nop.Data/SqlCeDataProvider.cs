@@ -34,7 +34,7 @@ namespace Nop.Data
         /// </summary>
         public virtual void SetDatabaseInitializer()
         {
-            var initializer = new CreateCeDatabaseIfNotExists<NopObjectContext>();
+            var initializer = new CreateCeDatabaseIfNotExists<GoqObjectContext>();
             Database.SetInitializer(initializer);
         }
 

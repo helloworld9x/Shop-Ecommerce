@@ -8,3 +8,4 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Disc
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\DiscountRules.HasAllProducts\Nop.Plugin.DiscountRules.HasAllProducts.pdb
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.DiscountRules.HasAllProducts\obj\Debug\Nop.Plugin.DiscountRules.HasAllProducts.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.DiscountRules.HasAllProducts\obj\Debug\Nop.Plugin.DiscountRules.HasAllProducts.pdb
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.DiscountRules.HasAllProducts\obj\Debug\Nop.Plugin.DiscountRules.HasAllProducts.csprojResolveAssemblyReference.cache

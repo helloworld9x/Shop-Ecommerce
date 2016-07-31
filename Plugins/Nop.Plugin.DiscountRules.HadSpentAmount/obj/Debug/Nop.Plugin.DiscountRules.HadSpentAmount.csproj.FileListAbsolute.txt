@@ -5,6 +5,6 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Disc
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\DiscountRules.HadSpentAmount\Nop.Plugin.DiscountRules.HadSpentAmount.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\DiscountRules.HadSpentAmount\Nop.Plugin.DiscountRules.HadSpentAmount.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\DiscountRules.HadSpentAmount\Nop.Plugin.DiscountRules.HadSpentAmount.pdb
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.DiscountRules.HadSpentAmount\obj\Debug\Nop.Plugin.DiscountRules.HadSpentAmount.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.DiscountRules.HadSpentAmount\obj\Debug\Nop.Plugin.DiscountRules.HadSpentAmount.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.DiscountRules.HadSpentAmount\obj\Debug\Nop.Plugin.DiscountRules.HadSpentAmount.pdb
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.DiscountRules.HadSpentAmount\obj\Debug\Nop.Plugin.DiscountRules.HadSpentAmount.csprojResolveAssemblyReference.cache

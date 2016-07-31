@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Caching;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -66,7 +65,6 @@ namespace Nop.Web.Controllers
         private readonly MediaSettings _mediaSettings;
         private readonly CatalogSettings _catalogSettings;
         private readonly VendorSettings _vendorSettings;
-        private readonly BlogSettings _blogSettings;
         private readonly ForumSettings _forumSettings;
         private readonly ICacheManager _cacheManager;
         
@@ -102,7 +100,6 @@ namespace Nop.Web.Controllers
             MediaSettings mediaSettings,
             CatalogSettings catalogSettings,
             VendorSettings vendorSettings,
-            BlogSettings blogSettings,
             ForumSettings  forumSettings,
             ICacheManager cacheManager)
         {
@@ -134,7 +131,6 @@ namespace Nop.Web.Controllers
             this._mediaSettings = mediaSettings;
             this._catalogSettings = catalogSettings;
             this._vendorSettings = vendorSettings;
-            this._blogSettings = blogSettings;
             this._forumSettings = forumSettings;
             this._cacheManager = cacheManager;
         }
@@ -678,7 +674,6 @@ namespace Nop.Web.Controllers
                 Categories = cachedCategoriesModel,
                 Topics = cachedTopicModel,
                 NewProductsEnabled = _catalogSettings.NewProductsEnabled,
-                BlogEnabled = _blogSettings.Enabled,
                 ForumEnabled = _forumSettings.ForumsEnabled
             };
             return PartialView(model);

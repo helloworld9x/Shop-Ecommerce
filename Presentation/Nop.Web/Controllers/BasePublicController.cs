@@ -8,13 +8,12 @@ using Nop.Web.Framework.Seo;
 
 namespace Nop.Web.Controllers
 {
-    [CheckAffiliate]
     [StoreClosed]
     [PublicStoreAllowNavigation]
     [LanguageSeoCode]
     [NopHttpsRequirement(SslRequirement.NoMatter)]
     [WwwRequirement]
-    public abstract partial class BasePublicController : BaseController
+    public abstract class BasePublicController : BaseController
     {
         protected virtual ActionResult InvokeHttp404()
         {

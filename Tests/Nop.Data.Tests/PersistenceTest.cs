@@ -8,7 +8,7 @@ namespace Nop.Data.Tests
     [TestFixture]
     public abstract class PersistenceTest
     {
-        protected NopObjectContext context;
+        protected GoqObjectContext context;
 
         [SetUp]
         public void SetUp()
@@ -16,7 +16,7 @@ namespace Nop.Data.Tests
             //TODO fix compilation warning (below)
             #pragma warning disable 0618
             Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-            context = new NopObjectContext(GetTestDbName());
+            context = new GoqObjectContext(GetTestDbName());
             context.Database.Delete();
             context.Database.Create();
         }
@@ -44,7 +44,7 @@ namespace Nop.Data.Tests
             if (disposeContext)
             {
                 context.Dispose();
-                context = new NopObjectContext(GetTestDbName());
+                context = new GoqObjectContext(GetTestDbName());
             }
 
             var fromDb = context.Set<T>().Find(id);

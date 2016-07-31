@@ -5,7 +5,6 @@ using System.Text;
 using System.Web.Mvc;
 using System.Xml;
 using Nop.Core;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Forums;
@@ -29,7 +28,6 @@ namespace Nop.Services.Seo
         private readonly IManufacturerService _manufacturerService;
         private readonly ITopicService _topicService;
         private readonly CommonSettings _commonSettings;
-        private readonly BlogSettings _blogSettings;
         private readonly NewsSettings _newsSettings;
         private readonly ForumSettings _forumSettings;
         private readonly SecuritySettings _securitySettings;
@@ -47,7 +45,6 @@ namespace Nop.Services.Seo
             IManufacturerService manufacturerService,
             ITopicService topicService,
             CommonSettings commonSettings,
-            BlogSettings blogSettings,
             NewsSettings newsSettings,
             ForumSettings forumSettings,
             SecuritySettings securitySettings)
@@ -58,7 +55,6 @@ namespace Nop.Services.Seo
             this._manufacturerService = manufacturerService;
             this._topicService = topicService;
             this._commonSettings = commonSettings;
-            this._blogSettings = blogSettings;
             this._newsSettings = newsSettings;
             this._forumSettings = forumSettings;
             this._securitySettings = securitySettings;
@@ -109,12 +105,6 @@ namespace Nop.Services.Seo
             if (_newsSettings.Enabled)
             {
                 var url = urlHelper.RouteUrl("NewsArchive", null, GetHttpProtocol());
-                WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
-            }
-            //blog
-            if (_blogSettings.Enabled)
-            {
-                var url = urlHelper.RouteUrl("Blog", null, GetHttpProtocol());
                 WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
             }
             //blog

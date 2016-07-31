@@ -8,7 +8,6 @@ using Nop.Admin.Models.Settings;
 using Nop.Admin.Models.Stores;
 using Nop.Core;
 using Nop.Core.Domain;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -196,85 +195,6 @@ namespace Nop.Admin.Controllers
                 return RedirectToAction("Index", "Home", new { area = "Admin" });
             return Redirect(returnUrl);
         }
-
-        public ActionResult Blog()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
-                return AccessDeniedView();
-
-            //load settings for a chosen store scope
-            var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
-            var blogSettings = _settingService.LoadSetting<BlogSettings>(storeScope);
-            var model = blogSettings.ToModel();
-            model.ActiveStoreScopeConfiguration = storeScope;
-            if (storeScope > 0)
-            {
-                model.Enabled_OverrideForStore = _settingService.SettingExists(blogSettings, x => x.Enabled, storeScope);
-                model.PostsPageSize_OverrideForStore = _settingService.SettingExists(blogSettings, x => x.PostsPageSize, storeScope);
-                model.AllowNotRegisteredUsersToLeaveComments_OverrideForStore = _settingService.SettingExists(blogSettings, x => x.AllowNotRegisteredUsersToLeaveComments, storeScope);
-                model.NotifyAboutNewBlogComments_OverrideForStore = _settingService.SettingExists(blogSettings, x => x.NotifyAboutNewBlogComments, storeScope);
-                model.NumberOfTags_OverrideForStore = _settingService.SettingExists(blogSettings, x => x.NumberOfTags, storeScope);
-                model.ShowHeaderRssUrl_OverrideForStore = _settingService.SettingExists(blogSettings, x => x.ShowHeaderRssUrl, storeScope);
-            }
-
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult Blog(BlogSettingsModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
-                return AccessDeniedView();
-
-            //load settings for a chosen store scope
-            var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
-            var blogSettings = _settingService.LoadSetting<BlogSettings>(storeScope);
-            blogSettings = model.ToEntity(blogSettings);
-
-            /* We do not clear cache after each setting update.
-             * This behavior can increase performance because cached settings will not be cleared 
-             * and loaded from database after each update */
-            if (model.Enabled_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(blogSettings, x => x.Enabled, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(blogSettings, x => x.Enabled, storeScope);
-            
-            if (model.PostsPageSize_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(blogSettings, x => x.PostsPageSize, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(blogSettings, x => x.PostsPageSize, storeScope);
-            
-            if (model.AllowNotRegisteredUsersToLeaveComments_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(blogSettings, x => x.AllowNotRegisteredUsersToLeaveComments, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(blogSettings, x => x.AllowNotRegisteredUsersToLeaveComments, storeScope);
-            
-            if (model.NotifyAboutNewBlogComments_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(blogSettings, x => x.NotifyAboutNewBlogComments, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(blogSettings, x => x.NotifyAboutNewBlogComments, storeScope);
-            
-            if (model.NumberOfTags_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(blogSettings, x => x.NumberOfTags, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(blogSettings, x => x.NumberOfTags, storeScope);
-            
-            if (model.ShowHeaderRssUrl_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(blogSettings, x => x.ShowHeaderRssUrl, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(blogSettings, x => x.ShowHeaderRssUrl, storeScope);
-            
-            //now clear settings cache
-            _settingService.ClearCache();
-
-            //activity log
-            _customerActivityService.InsertActivity("EditSettings", _localizationService.GetResource("ActivityLog.EditSettings"));
-
-            SuccessNotification(_localizationService.GetResource("Admin.Configuration.Updated"));
-            return RedirectToAction("Blog");
-        }
-
-
-
 
         public ActionResult Vendor()
         {

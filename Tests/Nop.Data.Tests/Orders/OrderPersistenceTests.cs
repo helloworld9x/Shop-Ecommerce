@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Nop.Core.Domain.Affiliates;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -327,34 +326,6 @@ namespace Nop.Data.Tests.Orders
             };
         }
         
-        protected Affiliate GetTestAffiliate()
-        {
-            return new Affiliate
-            {
-                Deleted = true,
-                Active = true,
-                Address = new Address
-                {
-                    FirstName = "FirstName 1",
-                    LastName = "LastName 1",
-                    Email = "Email 1",
-                    Company = "Company 1",
-                    City = "City 1",
-                    Address1 = "Address1a",
-                    Address2 = "Address1a",
-                    ZipPostalCode = "ZipPostalCode 1",
-                    PhoneNumber = "PhoneNumber 1",
-                    FaxNumber = "FaxNumber 1",
-                    CreatedOnUtc = new DateTime(2010, 01, 01),
-                    Country = new Country
-                    {
-                        Name = "United States",
-                        TwoLetterIsoCode = "US",
-                        ThreeLetterIsoCode = "USA",
-                    }
-                },
-            };
-        }
 
         protected Address GetTestBillingAddress()
         {

@@ -20,7 +20,6 @@ using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Tax;
-using Nop.Services.Affiliates;
 using Nop.Services.Authentication.External;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
@@ -87,7 +86,6 @@ namespace Nop.Admin.Controllers
         private readonly IAddressAttributeParser _addressAttributeParser;
         private readonly IAddressAttributeService _addressAttributeService;
         private readonly IAddressAttributeFormatter _addressAttributeFormatter;
-        private readonly IAffiliateService _affiliateService;
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IRewardPointService _rewardPointService;
 
@@ -134,7 +132,6 @@ namespace Nop.Admin.Controllers
             IAddressAttributeParser addressAttributeParser,
             IAddressAttributeService addressAttributeService,
             IAddressAttributeFormatter addressAttributeFormatter,
-            IAffiliateService affiliateService,
             IWorkflowMessageService workflowMessageService,
             IRewardPointService rewardPointService)
         {
@@ -177,7 +174,6 @@ namespace Nop.Admin.Controllers
             this._addressAttributeParser = addressAttributeParser;
             this._addressAttributeService = addressAttributeService;
             this._addressAttributeFormatter = addressAttributeFormatter;
-            this._affiliateService = affiliateService;
             this._workflowMessageService = workflowMessageService;
             this._rewardPointService = rewardPointService;
         }
@@ -499,13 +495,6 @@ namespace Nop.Admin.Controllers
                     model.AdminComment = customer.AdminComment;
                     model.IsTaxExempt = customer.IsTaxExempt;
                     model.Active = customer.Active;
-
-                    var affiliate = _affiliateService.GetAffiliateById(customer.AffiliateId);
-                    if (affiliate != null)
-                    {
-                        model.AffiliateId = affiliate.Id;
-                        model.AffiliateName = affiliate.GetFullName();
-                    }
 
                     model.TimeZoneId = customer.GetAttribute<string>(SystemCustomerAttributeNames.TimeZoneId);
                     model.VatNumber = customer.GetAttribute<string>(SystemCustomerAttributeNames.VatNumber);

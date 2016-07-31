@@ -14,11 +14,11 @@ namespace Nop.Data
     /// <summary>
     /// Object context
     /// </summary>
-    public class NopObjectContext : DbContext, IDbContext
+    public class GoqObjectContext : DbContext, IDbContext
     {
         #region Ctor
 
-        public NopObjectContext(string nameOrConnectionString)
+        public GoqObjectContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
             //((IObjectContextAdapter) this).ObjectContext.ContextOptions.LazyLoadingEnabled = true;

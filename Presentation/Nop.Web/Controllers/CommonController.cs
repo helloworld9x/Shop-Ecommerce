@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Domain;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -76,7 +75,6 @@ namespace Nop.Web.Controllers
         private readonly StoreInformationSettings _storeInformationSettings;
         private readonly EmailAccountSettings _emailAccountSettings;
         private readonly CommonSettings _commonSettings;
-        private readonly BlogSettings _blogSettings;
         private readonly NewsSettings _newsSettings;
         private readonly ForumSettings _forumSettings;
         private readonly LocalizationSettings _localizationSettings;
@@ -114,47 +112,45 @@ namespace Nop.Web.Controllers
             StoreInformationSettings storeInformationSettings,
             EmailAccountSettings emailAccountSettings,
             CommonSettings commonSettings, 
-            BlogSettings blogSettings, 
             NewsSettings newsSettings,
             ForumSettings forumSettings,
             LocalizationSettings localizationSettings, 
             CaptchaSettings captchaSettings,
             VendorSettings vendorSettings)
         {
-            this._categoryService = categoryService;
-            this._productService = productService;
-            this._manufacturerService = manufacturerService;
-            this._topicService = topicService;
-            this._languageService = languageService;
-            this._currencyService = currencyService;
-            this._localizationService = localizationService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._queuedEmailService = queuedEmailService;
-            this._emailAccountService = emailAccountService;
-            this._sitemapGenerator = sitemapGenerator;
-            this._themeContext = themeContext;
-            this._themeProvider = themeProvider;
-            this._forumservice = forumService;
-            this._genericAttributeService = genericAttributeService;
-            this._webHelper = webHelper;
-            this._permissionService = permissionService;
-            this._cacheManager = cacheManager;
-            this._customerActivityService = customerActivityService;
-            this._vendorService = vendorService;
+            _categoryService = categoryService;
+            _productService = productService;
+            _manufacturerService = manufacturerService;
+            _topicService = topicService;
+            _languageService = languageService;
+            _currencyService = currencyService;
+            _localizationService = localizationService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _queuedEmailService = queuedEmailService;
+            _emailAccountService = emailAccountService;
+            _sitemapGenerator = sitemapGenerator;
+            _themeContext = themeContext;
+            _themeProvider = themeProvider;
+            _forumservice = forumService;
+            _genericAttributeService = genericAttributeService;
+            _webHelper = webHelper;
+            _permissionService = permissionService;
+            _cacheManager = cacheManager;
+            _customerActivityService = customerActivityService;
+            _vendorService = vendorService;
 
-            this._customerSettings = customerSettings;
-            this._taxSettings = taxSettings;
-            this._catalogSettings = catalogSettings;
-            this._storeInformationSettings = storeInformationSettings;
-            this._emailAccountSettings = emailAccountSettings;
-            this._commonSettings = commonSettings;
-            this._blogSettings = blogSettings;
-            this._newsSettings = newsSettings;
-            this._forumSettings = forumSettings;
-            this._localizationSettings = localizationSettings;
-            this._captchaSettings = captchaSettings;
-            this._vendorSettings = vendorSettings;
+            _customerSettings = customerSettings;
+            _taxSettings = taxSettings;
+            _catalogSettings = catalogSettings;
+            _storeInformationSettings = storeInformationSettings;
+            _emailAccountSettings = emailAccountSettings;
+            _commonSettings = commonSettings;
+            _newsSettings = newsSettings;
+            _forumSettings = forumSettings;
+            _localizationSettings = localizationSettings;
+            _captchaSettings = captchaSettings;
+            _vendorSettings = vendorSettings;
         }
 
         #endregion
@@ -187,8 +183,8 @@ namespace Nop.Web.Controllers
         //page not found
         public ActionResult PageNotFound()
         {
-            this.Response.StatusCode = 404;
-            this.Response.TrySkipIisCustomErrors = true;
+            Response.StatusCode = 404;
+            Response.TrySkipIisCustomErrors = true;
 
             return View();
         }
@@ -458,7 +454,6 @@ namespace Nop.Web.Controllers
                 TwitterLink = _storeInformationSettings.TwitterLink,
                 YoutubeLink = _storeInformationSettings.YoutubeLink,
                 GooglePlusLink = _storeInformationSettings.GooglePlusLink,
-                BlogEnabled = _blogSettings.Enabled,
                 CompareProductsEnabled = _catalogSettings.CompareProductsEnabled,
                 ForumEnabled = _forumSettings.ForumsEnabled,
                 NewsEnabled = _newsSettings.Enabled,
@@ -675,7 +670,6 @@ namespace Nop.Web.Controllers
             {
                 var model = new SitemapModel
                 {
-                    BlogEnabled = _blogSettings.Enabled,
                     ForumEnabled = _forumSettings.ForumsEnabled,
                     NewsEnabled = _newsSettings.Enabled,
                 };
@@ -740,7 +734,7 @@ namespace Nop.Web.Controllers
                 _workContext.WorkingLanguage.Id,
                 string.Join(",", _workContext.CurrentCustomer.GetCustomerRoleIds()),
                 _storeContext.CurrentStore.Id);
-            var siteMap = _cacheManager.Get(cacheKey, () => _sitemapGenerator.Generate(this.Url));
+            var siteMap = _cacheManager.Get(cacheKey, () => _sitemapGenerator.Generate(Url));
             return Content(siteMap, "text/xml");
         }
 

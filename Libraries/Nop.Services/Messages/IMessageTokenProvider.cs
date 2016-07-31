@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Forums;
@@ -37,8 +36,6 @@ namespace Nop.Services.Messages
         void AddNewsLetterSubscriptionTokens(IList<Token> tokens, NewsLetterSubscription subscription);
 
         void AddProductReviewTokens(IList<Token> tokens, ProductReview productReview);
-
-        void AddBlogCommentTokens(IList<Token> tokens, BlogComment blogComment);
 
         void AddNewsCommentTokens(IList<Token> tokens, NewsComment newsComment);
 

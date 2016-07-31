@@ -24,7 +24,6 @@ using Nop.Admin.Models.Tax;
 using Nop.Admin.Models.Templates;
 using Nop.Admin.Models.Topics;
 using Nop.Admin.Models.Vendors;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -738,26 +737,6 @@ namespace Nop.Admin.Extensions
         }
         #endregion
 
-        #region Blog
-
-        //blog posts
-        public static BlogPostModel ToModel(this BlogPost entity)
-        {
-            return entity.MapTo<BlogPost, BlogPostModel>();
-        }
-
-        public static BlogPost ToEntity(this BlogPostModel model)
-        {
-            return model.MapTo<BlogPostModel, BlogPost>();
-        }
-
-        public static BlogPost ToEntity(this BlogPostModel model, BlogPost destination)
-        {
-            return model.MapTo(destination);
-        }
-
-        #endregion
-
         #region News
 
         //news items
@@ -902,17 +881,6 @@ namespace Nop.Admin.Extensions
         {
             return model.MapTo(destination);
         }
-
-
-        public static BlogSettingsModel ToModel(this BlogSettings entity)
-        {
-            return entity.MapTo<BlogSettings, BlogSettingsModel>();
-        }
-        public static BlogSettings ToEntity(this BlogSettingsModel model, BlogSettings destination)
-        {
-            return model.MapTo(destination);
-        }
-
 
         public static VendorSettingsModel ToModel(this VendorSettings entity)
         {

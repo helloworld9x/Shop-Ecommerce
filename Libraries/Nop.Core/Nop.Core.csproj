@@ -147,7 +147,6 @@
     <Compile Include="Data\DataSettings.cs" />
     <Compile Include="Data\DataSettingsHelper.cs" />
     <Compile Include="Data\DataSettingsManager.cs" />
-    <Compile Include="Domain\Blogs\BlogExtensions.cs" />
     <Compile Include="Domain\Catalog\ProductExtensions.cs" />
     <Compile Include="Domain\Catalog\ManufacturerTemplate.cs" />
     <Compile Include="Domain\Catalog\CategoryTemplate.cs" />
@@ -181,10 +180,6 @@
     <Compile Include="Configuration\ISettings.cs" />
     <Compile Include="Configuration\NopConfig.cs" />
     <Compile Include="Domain\Affiliates\Affiliate.cs" />
-    <Compile Include="Domain\Blogs\BlogSettings.cs" />
-    <Compile Include="Domain\Blogs\BlogPost.cs" />
-    <Compile Include="Domain\Blogs\BlogComment.cs" />
-    <Compile Include="Domain\Blogs\BlogPostTag.cs" />
     <Compile Include="Domain\Catalog\CatalogSettings.cs" />
     <Compile Include="Domain\Catalog\ProductTag.cs" />
     <Compile Include="Domain\Catalog\ProductReviewHelpfulness.cs" />

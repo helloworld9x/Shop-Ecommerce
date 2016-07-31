@@ -11,8 +11,8 @@ namespace Nop.Data.Tests
         [Test]
         public void Can_generate_schema()
         {
-            Database.SetInitializer<NopObjectContext>(null);
-            var ctx = new NopObjectContext("Test");
+            Database.SetInitializer<GoqObjectContext>(null);
+            var ctx = new GoqObjectContext("Test");
             string result = ctx.CreateDatabaseScript();
             result.ShouldNotBeNull();
             Console.Write(result);

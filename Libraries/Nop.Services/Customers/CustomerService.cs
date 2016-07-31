@@ -7,7 +7,6 @@ using System.Linq;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Data;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -58,7 +57,6 @@ namespace Nop.Services.Customers
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<ForumPost> _forumPostRepository;
         private readonly IRepository<ForumTopic> _forumTopicRepository;
-        private readonly IRepository<BlogComment> _blogCommentRepository;
         private readonly IRepository<NewsComment> _newsCommentRepository;
         private readonly IRepository<PollVotingRecord> _pollVotingRecordRepository;
         private readonly IRepository<ProductReview> _productReviewRepository;
@@ -82,7 +80,6 @@ namespace Nop.Services.Customers
             IRepository<Order> orderRepository,
             IRepository<ForumPost> forumPostRepository,
             IRepository<ForumTopic> forumTopicRepository,
-            IRepository<BlogComment> blogCommentRepository,
             IRepository<NewsComment> newsCommentRepository,
             IRepository<PollVotingRecord> pollVotingRecordRepository,
             IRepository<ProductReview> productReviewRepository,
@@ -101,7 +98,6 @@ namespace Nop.Services.Customers
             this._orderRepository = orderRepository;
             this._forumPostRepository = forumPostRepository;
             this._forumTopicRepository = forumTopicRepository;
-            this._blogCommentRepository = blogCommentRepository;
             this._newsCommentRepository = newsCommentRepository;
             this._pollVotingRecordRepository = pollVotingRecordRepository;
             this._productReviewRepository = productReviewRepository;
@@ -638,12 +634,7 @@ namespace Nop.Services.Customers
                         from o in c_o.DefaultIfEmpty()
                         where !c_o.Any()
                         select c;
-                //no blog comments
-                query = from c in query
-                        join bc in _blogCommentRepository.Table on c.Id equals bc.CustomerId into c_bc
-                        from bc in c_bc.DefaultIfEmpty()
-                        where !c_bc.Any()
-                        select c;
+
                 //no news comments
                 query = from c in query
                         join nc in _newsCommentRepository.Table on c.Id equals nc.CustomerId into c_nc

@@ -16,7 +16,6 @@ using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Tax;
 using Nop.Core.Domain.Vendors;
-using Nop.Services.Affiliates;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Customers;
@@ -67,7 +66,6 @@ namespace Nop.Services.Orders
         private readonly IVendorService _vendorService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly ICurrencyService _currencyService;
-        private readonly IAffiliateService _affiliateService;
         private readonly IEventPublisher _eventPublisher;
         private readonly IPdfService _pdfService;
         private readonly IRewardPointService _rewardPointService;
@@ -152,7 +150,6 @@ namespace Nop.Services.Orders
             IVendorService vendorService,
             ICustomerActivityService customerActivityService,
             ICurrencyService currencyService,
-            IAffiliateService affiliateService,
             IEventPublisher eventPublisher,
             IPdfService pdfService,
             IRewardPointService rewardPointService,
@@ -191,7 +188,6 @@ namespace Nop.Services.Orders
             this._encryptionService = encryptionService;
             this._customerActivityService = customerActivityService;
             this._currencyService = currencyService;
-            this._affiliateService = affiliateService;
             this._eventPublisher = eventPublisher;
             this._pdfService = pdfService;
             this._rewardPointService = rewardPointService;
@@ -288,11 +284,6 @@ namespace Nop.Services.Orders
             details.Customer = _customerService.GetCustomerById(processPaymentRequest.CustomerId);
             if (details.Customer == null)
                 throw new ArgumentException("Customer is not set");
-
-            //affiliate
-            var affiliate = _affiliateService.GetAffiliateById(details.Customer.AffiliateId);
-            if (affiliate != null && affiliate.Active && !affiliate.Deleted)
-                details.AffiliateId = affiliate.Id;
 
             //customer currency
             if (!processPaymentRequest.IsRecurringPayment)

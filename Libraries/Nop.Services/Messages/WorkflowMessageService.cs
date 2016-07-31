@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nop.Core;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Forums;
@@ -1483,43 +1482,6 @@ namespace Nop.Services.Messages
             _messageTokenProvider.AddCustomerTokens(tokens, customer);
             tokens.Add(new Token("VatValidationResult.Name", vatName));
             tokens.Add(new Token("VatValidationResult.Address", vatAddress));
-
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
-
-            var toEmail = emailAccount.Email;
-            var toName = emailAccount.DisplayName;
-            return SendNotification(messageTemplate, emailAccount,
-                languageId, tokens,
-                toEmail, toName);
-        }
-
-        /// <summary>
-        /// Sends a blog comment notification message to a store owner
-        /// </summary>
-        /// <param name="blogComment">Blog comment</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        public virtual int SendBlogCommentNotificationMessage(BlogComment blogComment, int languageId)
-        {
-            if (blogComment == null)
-                throw new ArgumentNullException("blogComment");
-
-            var store = _storeContext.CurrentStore;
-            languageId = EnsureLanguageIsActive(languageId, store.Id);
-
-            var messageTemplate = GetActiveMessageTemplate("Blog.BlogComment", store.Id);
-            if (messageTemplate == null)
-                return 0;
-
-            //email account
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-            _messageTokenProvider.AddBlogCommentTokens(tokens, blogComment);
-            _messageTokenProvider.AddCustomerTokens(tokens, blogComment.Customer);
 
             //event notification
             _eventPublisher.MessageTokensAdded(messageTemplate, tokens);

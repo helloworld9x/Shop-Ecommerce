@@ -23,7 +23,6 @@ using Nop.Admin.Models.Tax;
 using Nop.Admin.Models.Templates;
 using Nop.Admin.Models.Topics;
 using Nop.Admin.Models.Vendors;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -448,23 +447,6 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.ForumGroup, mo => mo.Ignore())
                 .ForMember(dest => dest.CreatedOnUtc, mo => mo.Ignore())
                 .ForMember(dest => dest.UpdatedOnUtc, mo => mo.Ignore());
-            //blogs
-            Mapper.CreateMap<BlogPost, BlogPostModel>()
-                .ForMember(dest => dest.SeName, mo => mo.MapFrom(src => src.GetSeName(src.LanguageId, true, false)))
-                .ForMember(dest => dest.Comments, mo => mo.Ignore())
-                .ForMember(dest => dest.StartDate, mo => mo.Ignore())
-                .ForMember(dest => dest.EndDate, mo => mo.Ignore())
-                .ForMember(dest => dest.CreatedOn, mo => mo.Ignore())
-                .ForMember(dest => dest.AvailableStores, mo => mo.Ignore())
-                .ForMember(dest => dest.SelectedStoreIds, mo => mo.Ignore())
-                .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
-            Mapper.CreateMap<BlogPostModel, BlogPost>()
-                .ForMember(dest => dest.BlogComments, mo => mo.Ignore())
-                .ForMember(dest => dest.Language, mo => mo.Ignore())
-                .ForMember(dest => dest.CommentCount, mo => mo.Ignore())
-                .ForMember(dest => dest.StartDateUtc, mo => mo.Ignore())
-                .ForMember(dest => dest.EndDateUtc, mo => mo.Ignore())
-                .ForMember(dest => dest.CreatedOnUtc, mo => mo.Ignore());
             //news
             Mapper.CreateMap<NewsItem, NewsItemModel>()
                 .ForMember(dest => dest.SeName, mo => mo.MapFrom(src => src.GetSeName(src.LanguageId, true, false)))
@@ -662,16 +644,6 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.PMTextMaxLength, mo => mo.Ignore())
                 .ForMember(dest => dest.HomePageActiveDiscussionsTopicCount, mo => mo.Ignore())
                 .ForMember(dest => dest.ForumSearchTermMinimumLength, mo => mo.Ignore());
-            Mapper.CreateMap<BlogSettings, BlogSettingsModel>()
-                .ForMember(dest => dest.ActiveStoreScopeConfiguration, mo => mo.Ignore())
-                .ForMember(dest => dest.Enabled_OverrideForStore, mo => mo.Ignore())
-                .ForMember(dest => dest.PostsPageSize_OverrideForStore, mo => mo.Ignore())
-                .ForMember(dest => dest.AllowNotRegisteredUsersToLeaveComments_OverrideForStore, mo => mo.Ignore())
-                .ForMember(dest => dest.NotifyAboutNewBlogComments_OverrideForStore, mo => mo.Ignore())
-                .ForMember(dest => dest.NumberOfTags_OverrideForStore, mo => mo.Ignore())
-                .ForMember(dest => dest.ShowHeaderRssUrl_OverrideForStore, mo => mo.Ignore())
-                .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
-            Mapper.CreateMap<BlogSettingsModel, BlogSettings>();
             Mapper.CreateMap<VendorSettings, VendorSettingsModel>()
                 .ForMember(dest => dest.ActiveStoreScopeConfiguration, mo => mo.Ignore())
                 .ForMember(dest => dest.VendorsBlockItemsToDisplay_OverrideForStore, mo => mo.Ignore())

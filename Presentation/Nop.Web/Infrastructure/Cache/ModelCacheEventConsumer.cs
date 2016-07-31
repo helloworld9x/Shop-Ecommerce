@@ -1,5 +1,4 @@
 ﻿using Nop.Core.Caching;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Configuration;
 using Nop.Core.Domain.Directory;
@@ -99,10 +98,6 @@ namespace Nop.Web.Infrastructure.Cache
         IConsumer<EntityInserted<Poll>>,
         IConsumer<EntityUpdated<Poll>>,
         IConsumer<EntityDeleted<Poll>>,
-        //blog posts
-        IConsumer<EntityInserted<BlogPost>>,
-        IConsumer<EntityUpdated<BlogPost>>,
-        IConsumer<EntityDeleted<BlogPost>>,
         //news items
         IConsumer<EntityInserted<NewsItem>>,
         IConsumer<EntityUpdated<NewsItem>>,
@@ -1119,20 +1114,6 @@ namespace Nop.Web.Infrastructure.Cache
         public void HandleEvent(EntityDeleted<Poll> eventMessage)
         {
             _cacheManager.RemoveByPattern(POLLS_PATTERN_KEY);
-        }
-
-        //Blog posts
-        public void HandleEvent(EntityInserted<BlogPost> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(BLOG_PATTERN_KEY);
-        }
-        public void HandleEvent(EntityUpdated<BlogPost> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(BLOG_PATTERN_KEY);
-        }
-        public void HandleEvent(EntityDeleted<BlogPost> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(BLOG_PATTERN_KEY);
         }
 
         //News items

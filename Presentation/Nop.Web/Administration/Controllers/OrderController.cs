@@ -16,7 +16,6 @@ using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Payments;
 using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Tax;
-using Nop.Services.Affiliates;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Directory;
@@ -82,7 +81,6 @@ namespace Nop.Admin.Controllers
         private readonly IAddressAttributeParser _addressAttributeParser;
         private readonly IAddressAttributeService _addressAttributeService;
 	    private readonly IAddressAttributeFormatter _addressAttributeFormatter;
-	    private readonly IAffiliateService _affiliateService;
 	    private readonly IPictureService _pictureService;
 
         private readonly CurrencySettings _currencySettings;
@@ -133,7 +131,6 @@ namespace Nop.Admin.Controllers
             IAddressAttributeParser addressAttributeParser,
             IAddressAttributeService addressAttributeService,
             IAddressAttributeFormatter addressAttributeFormatter,
-            IAffiliateService affiliateService,
             IPictureService pictureService,
             CurrencySettings currencySettings, 
             TaxSettings taxSettings,
@@ -141,52 +138,51 @@ namespace Nop.Admin.Controllers
             AddressSettings addressSettings,
             ShippingSettings shippingSettings)
 		{
-            this._orderService = orderService;
-            this._orderReportService = orderReportService;
-            this._orderProcessingService = orderProcessingService;
-            this._returnRequestService = returnRequestService;
-            this._priceCalculationService = priceCalculationService;
-            this._taxService = taxService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._priceFormatter = priceFormatter;
-            this._discountService = discountService;
-            this._localizationService = localizationService;
-            this._workContext = workContext;
-            this._currencyService = currencyService;
-            this._encryptionService = encryptionService;
-            this._paymentService = paymentService;
-            this._measureService = measureService;
-            this._pdfService = pdfService;
-            this._addressService = addressService;
-            this._countryService = countryService;
-            this._stateProvinceService = stateProvinceService;
-            this._productService = productService;
-            this._exportManager = exportManager;
-            this._permissionService = permissionService;
-            this._workflowMessageService = workflowMessageService;
-            this._categoryService = categoryService;
-            this._manufacturerService = manufacturerService;
-            this._productAttributeService = productAttributeService;
-            this._productAttributeParser = productAttributeParser;
-            this._productAttributeFormatter = productAttributeFormatter;
-            this._shoppingCartService = shoppingCartService;
-            this._giftCardService = giftCardService;
-            this._downloadService = downloadService;
-            this._shipmentService = shipmentService;
-            this._shippingService = shippingService;
-            this._storeService = storeService;
-            this._vendorService = vendorService;
-            this._addressAttributeParser = addressAttributeParser;
-            this._addressAttributeService = addressAttributeService;
-            this._addressAttributeFormatter = addressAttributeFormatter;
-            this._affiliateService = affiliateService;
-            this._pictureService = pictureService;
+            _orderService = orderService;
+            _orderReportService = orderReportService;
+            _orderProcessingService = orderProcessingService;
+            _returnRequestService = returnRequestService;
+            _priceCalculationService = priceCalculationService;
+            _taxService = taxService;
+            _dateTimeHelper = dateTimeHelper;
+            _priceFormatter = priceFormatter;
+            _discountService = discountService;
+            _localizationService = localizationService;
+            _workContext = workContext;
+            _currencyService = currencyService;
+            _encryptionService = encryptionService;
+            _paymentService = paymentService;
+            _measureService = measureService;
+            _pdfService = pdfService;
+            _addressService = addressService;
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
+            _productService = productService;
+            _exportManager = exportManager;
+            _permissionService = permissionService;
+            _workflowMessageService = workflowMessageService;
+            _categoryService = categoryService;
+            _manufacturerService = manufacturerService;
+            _productAttributeService = productAttributeService;
+            _productAttributeParser = productAttributeParser;
+            _productAttributeFormatter = productAttributeFormatter;
+            _shoppingCartService = shoppingCartService;
+            _giftCardService = giftCardService;
+            _downloadService = downloadService;
+            _shipmentService = shipmentService;
+            _shippingService = shippingService;
+            _storeService = storeService;
+            _vendorService = vendorService;
+            _addressAttributeParser = addressAttributeParser;
+            _addressAttributeService = addressAttributeService;
+            _addressAttributeFormatter = addressAttributeFormatter;
+            _pictureService = pictureService;
 
-            this._currencySettings = currencySettings;
-            this._taxSettings = taxSettings;
-            this._measureSettings = measureSettings;
-            this._addressSettings = addressSettings;
-            this._shippingSettings = shippingSettings;
+            _currencySettings = currencySettings;
+            _taxSettings = taxSettings;
+            _measureSettings = measureSettings;
+            _addressSettings = addressSettings;
+            _shippingSettings = shippingSettings;
 		}
         
         #endregion
@@ -286,13 +282,6 @@ namespace Nop.Admin.Controllers
             model.CreatedOn = _dateTimeHelper.ConvertToUserTime(order.CreatedOnUtc, DateTimeKind.Utc);
             model.AllowCustomersToSelectTaxDisplayType = _taxSettings.AllowCustomersToSelectTaxDisplayType;
             model.TaxDisplayType = _taxSettings.TaxDisplayType;
-
-            var affiliate = _affiliateService.GetAffiliateById(order.AffiliateId);
-            if (affiliate != null)
-            {
-                model.AffiliateId = affiliate.Id;
-                model.AffiliateName = affiliate.GetFullName();
-            }
 
             //a vendor should have access only to his products
             model.IsLoggedInAsVendor = _workContext.CurrentVendor != null;
@@ -2385,7 +2374,7 @@ namespace Nop.Admin.Controllers
                         break;
                     case AttributeControlType.FileUpload:
                         {
-                            var httpPostedFile = this.Request.Files[controlId];
+                            var httpPostedFile = Request.Files[controlId];
                             if ((httpPostedFile != null) && (!String.IsNullOrEmpty(httpPostedFile.FileName)))
                             {
                                 var fileSizeOk = true;

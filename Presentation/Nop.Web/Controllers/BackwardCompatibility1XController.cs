@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using Nop.Services.Blogs;
 using Nop.Services.Catalog;
 using Nop.Services.Customers;
 using Nop.Services.Forums;
@@ -20,7 +19,6 @@ namespace Nop.Web.Controllers
         private readonly IManufacturerService _manufacturerService;
         private readonly IProductTagService _productTagService;
         private readonly INewsService _newsService;
-        private readonly IBlogService _blogService;
         private readonly ITopicService _topicService;
         private readonly IForumService _forumService;
         private readonly ICustomerService _customerService;
@@ -31,7 +29,7 @@ namespace Nop.Web.Controllers
         public BackwardCompatibility1XController(IProductService productService,
             ICategoryService categoryService, IManufacturerService manufacturerService,
             IProductTagService productTagService, INewsService newsService,
-            IBlogService blogService, ITopicService topicService,
+             ITopicService topicService,
             IForumService forumService, ICustomerService customerService)
         {
             this._productService = productService;
@@ -39,7 +37,6 @@ namespace Nop.Web.Controllers
             this._manufacturerService = manufacturerService;
             this._productTagService = productTagService;
             this._newsService = newsService;
-            this._blogService = blogService;
             this._topicService = topicService;
             this._forumService = forumService;
             this._customerService = customerService;
@@ -80,10 +77,6 @@ namespace Nop.Web.Controllers
                 case "news":
                     {
                         return RedirectNewsItem(Request.QueryString["newsid"], false);
-                    }
-                case "blog":
-                    {
-                        return RedirectBlogPost(Request.QueryString["blogpostid"], false);
                     }
                 case "topic":
                     {
@@ -198,17 +191,6 @@ namespace Nop.Web.Controllers
                 return RedirectToRoutePermanent("HomePage");
 
             return RedirectToRoutePermanent("NewsItem", new { newsItemId = newsItem.Id, SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false) });
-        }
-
-        public ActionResult RedirectBlogPost(string id, bool idIncludesSename = true)
-        {
-            //we can't use dash in MVC
-            var blogPostId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
-            var blogPost = _blogService.GetBlogPostById(blogPostId);
-            if (blogPost == null)
-                return RedirectToRoutePermanent("HomePage");
-
-            return RedirectToRoutePermanent("BlogPost", new { blogPostId = blogPost.Id, SeName = blogPost.GetSeName(blogPost.LanguageId, ensureTwoPublishedLanguages: false) });
         }
 
         public ActionResult RedirectTopic(string id, bool idIncludesSename = true)

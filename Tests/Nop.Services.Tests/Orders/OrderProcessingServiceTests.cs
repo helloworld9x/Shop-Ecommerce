@@ -14,7 +14,6 @@ using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Stores;
 using Nop.Core.Domain.Tax;
 using Nop.Core.Plugins;
-using Nop.Services.Affiliates;
 using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Customers;
@@ -84,7 +83,6 @@ namespace Nop.Services.Tests.Orders
         private IOrderProcessingService _orderProcessingService;
         private IEventPublisher _eventPublisher;
         private CurrencySettings _currencySettings;
-        private IAffiliateService _affiliateService;
         private IVendorService _vendorService;
         private IPdfService _pdfService;
         private IRewardPointService _rewardPointService;
@@ -198,7 +196,6 @@ namespace Nop.Services.Tests.Orders
             _workflowMessageService = MockRepository.GenerateMock<IWorkflowMessageService>();
             _customerActivityService = MockRepository.GenerateMock<ICustomerActivityService>();
             _currencyService = MockRepository.GenerateMock<ICurrencyService>();
-            _affiliateService = MockRepository.GenerateMock<IAffiliateService>();
             _vendorService = MockRepository.GenerateMock<IVendorService>();
             _pdfService = MockRepository.GenerateMock<IPdfService>();
 
@@ -229,7 +226,7 @@ namespace Nop.Services.Tests.Orders
                 _customerService, _discountService,
                 _encryptionService, _workContext, 
                 _workflowMessageService, _vendorService,
-                _customerActivityService, _currencyService, _affiliateService,
+                _customerActivityService, _currencyService,
                 _eventPublisher,_pdfService, _rewardPointService,
                 _genericAttributeService,
                 _shippingSettings, _paymentSettings, _rewardPointsSettings,

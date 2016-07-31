@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using Nop.Core;
-using Nop.Core.Domain.Blogs;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
@@ -780,14 +779,6 @@ namespace Nop.Services.Messages
 
             //event notification
             _eventPublisher.EntityTokensAdded(productReview, tokens);
-        }
-
-        public virtual void AddBlogCommentTokens(IList<Token> tokens, BlogComment blogComment)
-        {
-            tokens.Add(new Token("BlogComment.BlogPostTitle", blogComment.BlogPost.Title));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(blogComment, tokens);
         }
 
         public virtual void AddNewsCommentTokens(IList<Token> tokens, NewsComment newsComment)

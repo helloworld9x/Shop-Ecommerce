@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using Nop.Services.Blogs;
 using Nop.Services.Catalog;
 using Nop.Services.News;
 using Nop.Services.Seo;
@@ -8,7 +7,7 @@ using Nop.Services.Vendors;
 
 namespace Nop.Web.Controllers
 {
-    public partial class BackwardCompatibility2XController : BasePublicController
+    public class BackwardCompatibility2XController : BasePublicController
     {
 		#region Fields
 
@@ -16,7 +15,6 @@ namespace Nop.Web.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IManufacturerService _manufacturerService;
         private readonly INewsService _newsService;
-        private readonly IBlogService _blogService;
         private readonly ITopicService _topicService;
         private readonly IVendorService _vendorService;
 
@@ -28,7 +26,6 @@ namespace Nop.Web.Controllers
             ICategoryService categoryService, 
             IManufacturerService manufacturerService,
             INewsService newsService, 
-            IBlogService blogService,
             ITopicService topicService,
             IVendorService vendorService)
         {
@@ -36,7 +33,6 @@ namespace Nop.Web.Controllers
             this._categoryService = categoryService;
             this._manufacturerService = manufacturerService;
             this._newsService = newsService;
-            this._blogService = blogService;
             this._topicService = topicService;
             this._vendorService = vendorService;
         }
@@ -80,15 +76,6 @@ namespace Nop.Web.Controllers
                 return RedirectToRoutePermanent("HomePage");
 
             return RedirectToRoutePermanent("NewsItem", new { SeName = newsItem.GetSeName(newsItem.LanguageId, ensureTwoPublishedLanguages: false) });
-        }
-        //in versions 2.00-2.70 we had ID in blog URLs
-        public ActionResult RedirectBlogPostById(int blogPostId)
-        {
-            var blogPost = _blogService.GetBlogPostById(blogPostId);
-            if (blogPost == null)
-                return RedirectToRoutePermanent("HomePage");
-
-            return RedirectToRoutePermanent("BlogPost", new { SeName = blogPost.GetSeName(blogPost.LanguageId, ensureTwoPublishedLanguages: false) });
         }
         //in versions 2.00-3.20 we had SystemName in topic URLs
         public ActionResult RedirectTopicBySystemName(string systemName)

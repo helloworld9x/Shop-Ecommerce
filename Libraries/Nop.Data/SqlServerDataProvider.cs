@@ -105,7 +105,7 @@ namespace Nop.Data
             //use webHelper.MapPath instead of HostingEnvironment.MapPath which is not available in unit tests
             customCommands.AddRange(ParseCommands(HostingEnvironment.MapPath("~/App_Data/Install/SqlServer.StoredProcedures.sql"), false));
 
-            var initializer = new CreateTablesIfNotExist<NopObjectContext>(tablesToValidate, customCommands.ToArray());
+            var initializer = new CreateTablesIfNotExist<GoqObjectContext>(tablesToValidate, customCommands.ToArray());
             Database.SetInitializer(initializer);
         }
 
