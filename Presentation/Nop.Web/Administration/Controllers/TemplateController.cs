@@ -13,11 +13,10 @@ using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Controllers
 {
-    public partial class TemplateController : BaseAdminController
+    public class TemplateController : BaseAdminController
     {
         #region Fields
 
-        private readonly ICategoryTemplateService _categoryTemplateService;
         private readonly IManufacturerTemplateService _manufacturerTemplateService;
         private readonly IProductTemplateService _productTemplateService;
         private readonly ITopicTemplateService _topicTemplateService;
@@ -27,100 +26,16 @@ namespace Nop.Admin.Controllers
 
         #region Constructors
 
-        public TemplateController(ICategoryTemplateService categoryTemplateService,
+        public TemplateController(
             IManufacturerTemplateService manufacturerTemplateService,
             IProductTemplateService productTemplateService,
             ITopicTemplateService topicTemplateService,
             IPermissionService permissionService)
         {
-            this._categoryTemplateService = categoryTemplateService;
-            this._manufacturerTemplateService = manufacturerTemplateService;
-            this._productTemplateService = productTemplateService;
-            this._topicTemplateService = topicTemplateService;
-            this._permissionService = permissionService;
-        }
-
-        #endregion
-
-        #region Category templates
-
-        public ActionResult CategoryTemplates()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult CategoryTemplates(DataSourceRequest command)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            var templatesModel = _categoryTemplateService.GetAllCategoryTemplates()
-                .Select(x => x.ToModel())
-                .ToList();
-            var gridModel = new DataSourceResult
-            {
-                Data = templatesModel,
-                Total = templatesModel.Count
-            };
-
-            return Json(gridModel);
-        }
-
-        [HttpPost]
-        public ActionResult CategoryTemplateUpdate(CategoryTemplateModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            if (!ModelState.IsValid)
-            {
-                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
-            }
-
-            var template = _categoryTemplateService.GetCategoryTemplateById(model.Id);
-            if (template == null)
-                throw new ArgumentException("No template found with the specified id");
-            template = model.ToEntity(template);
-            _categoryTemplateService.UpdateCategoryTemplate(template);
-
-            return new NullJsonResult();
-        }
-
-        [HttpPost]
-        public ActionResult CategoryTemplateAdd([Bind(Exclude = "Id")] CategoryTemplateModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            if (!ModelState.IsValid)
-            {
-                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
-            }
-
-            var template = new CategoryTemplate();
-            template = model.ToEntity(template);
-            _categoryTemplateService.InsertCategoryTemplate(template);
-
-            return new NullJsonResult();
-        }
-
-        [HttpPost]
-        public ActionResult CategoryTemplateDelete(int id)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            var template = _categoryTemplateService.GetCategoryTemplateById(id);
-            if (template == null)
-                throw new ArgumentException("No template found with the specified id");
-
-            _categoryTemplateService.DeleteCategoryTemplate(template);
-
-            return new NullJsonResult();
+            _manufacturerTemplateService = manufacturerTemplateService;
+            _productTemplateService = productTemplateService;
+            _topicTemplateService = topicTemplateService;
+            _permissionService = permissionService;
         }
 
         #endregion

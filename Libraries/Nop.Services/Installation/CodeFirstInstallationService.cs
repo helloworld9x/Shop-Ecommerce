@@ -39,7 +39,7 @@ using Nop.Services.Seo;
 
 namespace Nop.Services.Installation
 {
-    public partial class CodeFirstInstallationService : IInstallationService
+    public class CodeFirstInstallationService : IInstallationService
     {
         #region Fields
 
@@ -74,7 +74,6 @@ namespace Nop.Services.Installation
         private readonly IRepository<ActivityLogType> _activityLogTypeRepository;
         private readonly IRepository<ProductTag> _productTagRepository;
         private readonly IRepository<ProductTemplate> _productTemplateRepository;
-        private readonly IRepository<CategoryTemplate> _categoryTemplateRepository;
         private readonly IRepository<ManufacturerTemplate> _manufacturerTemplateRepository;
         private readonly IRepository<TopicTemplate> _topicTemplateRepository;
         private readonly IRepository<ScheduleTask> _scheduleTaskRepository;
@@ -121,7 +120,6 @@ namespace Nop.Services.Installation
             IRepository<ActivityLogType> activityLogTypeRepository,
             IRepository<ProductTag> productTagRepository,
             IRepository<ProductTemplate> productTemplateRepository,
-            IRepository<CategoryTemplate> categoryTemplateRepository,
             IRepository<ManufacturerTemplate> manufacturerTemplateRepository,
             IRepository<TopicTemplate> topicTemplateRepository,
             IRepository<ScheduleTask> scheduleTaskRepository,
@@ -133,48 +131,47 @@ namespace Nop.Services.Installation
             IGenericAttributeService genericAttributeService,
             IWebHelper webHelper)
         {
-            this._storeRepository = storeRepository;
-            this._measureDimensionRepository = measureDimensionRepository;
-            this._measureWeightRepository = measureWeightRepository;
-            this._taxCategoryRepository = taxCategoryRepository;
-            this._languageRepository = languageRepository;
-            this._currencyRepository = currencyRepository;
-            this._customerRepository = customerRepository;
-            this._customerRoleRepository = customerRoleRepository;
-            this._specificationAttributeRepository = specificationAttributeRepository;
-            this._checkoutAttributeRepository = checkoutAttributeRepository;
-            this._productAttributeRepository = productAttributeRepository;
-            this._categoryRepository = categoryRepository;
-            this._manufacturerRepository = manufacturerRepository;
-            this._productRepository = productRepository;
-            this._urlRecordRepository = urlRecordRepository;
-            this._relatedProductRepository = relatedProductRepository;
-            this._emailAccountRepository = emailAccountRepository;
-            this._messageTemplateRepository = messageTemplateRepository;
-            this._forumGroupRepository = forumGroupRepository;
-            this._forumRepository = forumRepository;
-            this._countryRepository = countryRepository;
-            this._stateProvinceRepository = stateProvinceRepository;
-            this._discountRepository = discountRepository;
-            this._topicRepository = topicRepository;
-            this._newsItemRepository = newsItemRepository;
-            this._pollRepository = pollRepository;
-            this._shippingMethodRepository = shippingMethodRepository;
-            this._deliveryDateRepository = deliveryDateRepository;
-            this._activityLogTypeRepository = activityLogTypeRepository;
-            this._productTagRepository = productTagRepository;
-            this._productTemplateRepository = productTemplateRepository;
-            this._categoryTemplateRepository = categoryTemplateRepository;
-            this._manufacturerTemplateRepository = manufacturerTemplateRepository;
-            this._topicTemplateRepository = topicTemplateRepository;
-            this._scheduleTaskRepository = scheduleTaskRepository;
-            this._returnRequestReasonRepository = returnRequestReasonRepository;
-            this._returnRequestActionRepository = returnRequestActionRepository;
-            this._addressRepository = addressRepository;
-            this._warehouseRepository = warehouseRepository;
-            this._vendorRepository = vendorRepository;
-            this._genericAttributeService = genericAttributeService;
-            this._webHelper = webHelper;
+            _storeRepository = storeRepository;
+            _measureDimensionRepository = measureDimensionRepository;
+            _measureWeightRepository = measureWeightRepository;
+            _taxCategoryRepository = taxCategoryRepository;
+            _languageRepository = languageRepository;
+            _currencyRepository = currencyRepository;
+            _customerRepository = customerRepository;
+            _customerRoleRepository = customerRoleRepository;
+            _specificationAttributeRepository = specificationAttributeRepository;
+            _checkoutAttributeRepository = checkoutAttributeRepository;
+            _productAttributeRepository = productAttributeRepository;
+            _categoryRepository = categoryRepository;
+            _manufacturerRepository = manufacturerRepository;
+            _productRepository = productRepository;
+            _urlRecordRepository = urlRecordRepository;
+            _relatedProductRepository = relatedProductRepository;
+            _emailAccountRepository = emailAccountRepository;
+            _messageTemplateRepository = messageTemplateRepository;
+            _forumGroupRepository = forumGroupRepository;
+            _forumRepository = forumRepository;
+            _countryRepository = countryRepository;
+            _stateProvinceRepository = stateProvinceRepository;
+            _discountRepository = discountRepository;
+            _topicRepository = topicRepository;
+            _newsItemRepository = newsItemRepository;
+            _pollRepository = pollRepository;
+            _shippingMethodRepository = shippingMethodRepository;
+            _deliveryDateRepository = deliveryDateRepository;
+            _activityLogTypeRepository = activityLogTypeRepository;
+            _productTagRepository = productTagRepository;
+            _productTemplateRepository = productTemplateRepository;
+            _manufacturerTemplateRepository = manufacturerTemplateRepository;
+            _topicTemplateRepository = topicTemplateRepository;
+            _scheduleTaskRepository = scheduleTaskRepository;
+            _returnRequestReasonRepository = returnRequestReasonRepository;
+            _returnRequestActionRepository = returnRequestActionRepository;
+            _addressRepository = addressRepository;
+            _warehouseRepository = warehouseRepository;
+            _vendorRepository = vendorRepository;
+            _genericAttributeService = genericAttributeService;
+            _webHelper = webHelper;
         }
 
         #endregion
@@ -5176,10 +5173,10 @@ namespace Nop.Services.Installation
 
 
 
-            var categoryTemplateInGridAndLines = _categoryTemplateRepository
-                .Table.FirstOrDefault(pt => pt.Name == "Products in Grid or Lines");
-            if (categoryTemplateInGridAndLines == null)
-                throw new Exception("Category template cannot be loaded");
+            //var categoryTemplateInGridAndLines = _categoryTemplateRepository
+            //    .Table.FirstOrDefault(pt => pt.Name == "Products in Grid or Lines");
+            //if (categoryTemplateInGridAndLines == null)
+            //    throw new Exception("Category template cannot be loaded");
 
 
             //categories
@@ -5187,7 +5184,6 @@ namespace Nop.Services.Installation
             var categoryComputers = new Category
             {
                 Name = "Computers",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5205,7 +5201,6 @@ namespace Nop.Services.Installation
             var categoryDesktops = new Category
             {
                 Name = "Desktops",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5225,7 +5220,6 @@ namespace Nop.Services.Installation
             var categoryNotebooks = new Category
             {
                 Name = "Notebooks",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5244,7 +5238,7 @@ namespace Nop.Services.Installation
             var categorySoftware = new Category
             {
                 Name = "Software",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5263,7 +5257,7 @@ namespace Nop.Services.Installation
             var categoryElectronics = new Category
             {
                 Name = "Electronics",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5282,7 +5276,7 @@ namespace Nop.Services.Installation
             var categoryCameraPhoto = new Category
             {
                 Name = "Camera & photo",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5302,7 +5296,7 @@ namespace Nop.Services.Installation
             var categoryCellPhones = new Category
             {
                 Name = "Cell phones",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5321,7 +5315,7 @@ namespace Nop.Services.Installation
             var categoryOthers = new Category
             {
                 Name = "Others",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5341,7 +5335,7 @@ namespace Nop.Services.Installation
             var categoryApparel = new Category
             {
                 Name = "Apparel",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5360,7 +5354,7 @@ namespace Nop.Services.Installation
             var categoryShoes = new Category
             {
                 Name = "Shoes",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5380,7 +5374,7 @@ namespace Nop.Services.Installation
             var categoryClothing = new Category
             {
                 Name = "Clothing",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5399,7 +5393,7 @@ namespace Nop.Services.Installation
             var categoryAccessories = new Category
             {
                 Name = "Accessories",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5419,7 +5413,7 @@ namespace Nop.Services.Installation
             var categoryDigitalDownloads = new Category
             {
                 Name = "Digital downloads",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5438,7 +5432,7 @@ namespace Nop.Services.Installation
             var categoryBooks = new Category
             {
                 Name = "Books",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 MetaKeywords = "Books, Dictionary, Textbooks",
                 MetaDescription = "Books category description",
                 PageSize = 6,
@@ -5459,7 +5453,7 @@ namespace Nop.Services.Installation
             var categoryJewelry = new Category
             {
                 Name = "Jewelry",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5477,7 +5471,7 @@ namespace Nop.Services.Installation
             var categoryGiftCards = new Category
             {
                 Name = "Gift Cards",
-                CategoryTemplateId = categoryTemplateInGridAndLines.Id,
+               
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -9762,20 +9756,6 @@ namespace Nop.Services.Installation
             _productTemplateRepository.Insert(productTemplates);
         }
 
-        protected virtual void InstallCategoryTemplates()
-        {
-            var categoryTemplates = new List<CategoryTemplate>
-                               {
-                                   new CategoryTemplate
-                                       {
-                                           Name = "Products in Grid or Lines",
-                                           ViewPath = "CategoryTemplate.ProductsInGridOrLines",
-                                           DisplayOrder = 1
-                                       },
-                               };
-            _categoryTemplateRepository.Insert(categoryTemplates);
-        }
-
         protected virtual void InstallManufacturerTemplates()
         {
             var manufacturerTemplates = new List<ManufacturerTemplate>
@@ -10040,7 +10020,6 @@ namespace Nop.Services.Installation
             InstallActivityLogTypes();
             HashDefaultCustomerPassword(defaultUserEmail, defaultUserPassword);
             InstallProductTemplates();
-            InstallCategoryTemplates();
             InstallManufacturerTemplates();
             InstallScheduleTasks();
             InstallReturnRequestReasons();

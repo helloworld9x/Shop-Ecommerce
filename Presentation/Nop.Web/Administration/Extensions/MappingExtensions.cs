@@ -1000,22 +1000,6 @@ namespace Nop.Admin.Extensions
 
         #region Templates
 
-        public static CategoryTemplateModel ToModel(this CategoryTemplate entity)
-        {
-            return entity.MapTo<CategoryTemplate, CategoryTemplateModel>();
-        }
-
-        public static CategoryTemplate ToEntity(this CategoryTemplateModel model)
-        {
-            return model.MapTo<CategoryTemplateModel, CategoryTemplate>();
-        }
-
-        public static CategoryTemplate ToEntity(this CategoryTemplateModel model, CategoryTemplate destination)
-        {
-            return model.MapTo(destination);
-        }
-
-
         public static ManufacturerTemplateModel ToModel(this ManufacturerTemplate entity)
         {
             return entity.MapTo<ManufacturerTemplate, ManufacturerTemplateModel>();

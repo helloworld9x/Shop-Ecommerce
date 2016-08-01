@@ -11,7 +11,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a category
     /// </summary>
-    public partial class Category : BaseEntity, ILocalizedEntity, ISlugSupported, IAclSupported, IStoreMappingSupported
+    public class Category : BaseEntity, ILocalizedEntity, ISlugSupported, IAclSupported, IStoreMappingSupported
     {
         private ICollection<Discount> _appliedDiscounts;
 
@@ -24,11 +24,6 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the description
         /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value of used category template identifier
-        /// </summary>
-        public int CategoryTemplateId { get; set; }
 
         /// <summary>
         /// Gets or sets the meta keywords

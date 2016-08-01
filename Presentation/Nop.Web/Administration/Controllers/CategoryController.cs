@@ -24,12 +24,11 @@ using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Controllers
 {
-    public partial class CategoryController : BaseAdminController
+    public class CategoryController : BaseAdminController
     {
         #region Fields
 
         private readonly ICategoryService _categoryService;
-        private readonly ICategoryTemplateService _categoryTemplateService;
         private readonly IManufacturerService _manufacturerService;
         private readonly IProductService _productService;
         private readonly ICustomerService _customerService;
@@ -52,7 +51,7 @@ namespace Nop.Admin.Controllers
         
         #region Constructors
 
-        public CategoryController(ICategoryService categoryService, ICategoryTemplateService categoryTemplateService,
+        public CategoryController(ICategoryService categoryService,
             IManufacturerService manufacturerService, IProductService productService, 
             ICustomerService customerService,
             IUrlRecordService urlRecordService, 
@@ -70,25 +69,24 @@ namespace Nop.Admin.Controllers
             ICustomerActivityService customerActivityService,
             CatalogSettings catalogSettings)
         {
-            this._categoryService = categoryService;
-            this._categoryTemplateService = categoryTemplateService;
-            this._manufacturerService = manufacturerService;
-            this._productService = productService;
-            this._customerService = customerService;
-            this._urlRecordService = urlRecordService;
-            this._pictureService = pictureService;
-            this._languageService = languageService;
-            this._localizationService = localizationService;
-            this._localizedEntityService = localizedEntityService;
-            this._discountService = discountService;
-            this._permissionService = permissionService;
-            this._vendorService = vendorService;
-            this._aclService = aclService;
-            this._storeService = storeService;
-            this._storeMappingService = storeMappingService;
-            this._exportManager = exportManager;
-            this._customerActivityService = customerActivityService;
-            this._catalogSettings = catalogSettings;
+            _categoryService = categoryService;
+            _manufacturerService = manufacturerService;
+            _productService = productService;
+            _customerService = customerService;
+            _urlRecordService = urlRecordService;
+            _pictureService = pictureService;
+            _languageService = languageService;
+            _localizationService = localizationService;
+            _localizedEntityService = localizedEntityService;
+            _discountService = discountService;
+            _permissionService = permissionService;
+            _vendorService = vendorService;
+            _aclService = aclService;
+            _storeService = storeService;
+            _storeMappingService = storeMappingService;
+            _exportManager = exportManager;
+            _customerActivityService = customerActivityService;
+            _catalogSettings = catalogSettings;
         }
 
         #endregion
@@ -157,23 +155,6 @@ namespace Nop.Admin.Controllers
                 {
                     Text = c.GetFormattedBreadCrumb(categories),
                     Value = c.Id.ToString()
-                });
-            }
-        }
-
-        [NonAction]
-        protected virtual void PrepareTemplatesModel(CategoryModel model)
-        {
-            if (model == null)
-                throw new ArgumentNullException("model");
-
-            var templates = _categoryTemplateService.GetAllCategoryTemplates();
-            foreach (var template in templates)
-            {
-                model.AvailableCategoryTemplates.Add(new SelectListItem
-                {
-                    Text = template.Name,
-                    Value = template.Id.ToString()
                 });
             }
         }
@@ -353,8 +334,7 @@ namespace Nop.Admin.Controllers
             var model = new CategoryModel();
             //locales
             AddLocales(_languageService, model.Locales);
-            //templates
-            PrepareTemplatesModel(model);
+            
             //categories
             PrepareAllCategoriesModel(model);
             //discounts
@@ -413,8 +393,7 @@ namespace Nop.Admin.Controllers
             }
 
             //If we got this far, something failed, redisplay form
-            //templates
-            PrepareTemplatesModel(model);
+            
             //categories
             PrepareAllCategoriesModel(model);
             //discounts
@@ -447,8 +426,7 @@ namespace Nop.Admin.Controllers
                 locale.MetaTitle = category.GetLocalized(x => x.MetaTitle, languageId, false, false);
                 locale.SeName = category.GetSeName(languageId, false, false);
             });
-            //templates
-            PrepareTemplatesModel(model);
+          
             //categories
             PrepareAllCategoriesModel(model);
             //discounts
@@ -531,8 +509,6 @@ namespace Nop.Admin.Controllers
 
 
             //If we got this far, something failed, redisplay form
-            //templates
-            PrepareTemplatesModel(model);
             //categories
             PrepareAllCategoriesModel(model);
             //discounts

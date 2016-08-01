@@ -70,7 +70,6 @@ namespace Nop.Services.ExportImport
                     xmlWriter.WriteElementString("Id", null, category.Id.ToString());
                     xmlWriter.WriteElementString("Name", null, category.Name);
                     xmlWriter.WriteElementString("Description", null, category.Description);
-                    xmlWriter.WriteElementString("CategoryTemplateId", null, category.CategoryTemplateId.ToString());
                     xmlWriter.WriteElementString("MetaKeywords", null, category.MetaKeywords);
                     xmlWriter.WriteElementString("MetaDescription", null, category.MetaDescription);
                     xmlWriter.WriteElementString("MetaTitle", null, category.MetaTitle);

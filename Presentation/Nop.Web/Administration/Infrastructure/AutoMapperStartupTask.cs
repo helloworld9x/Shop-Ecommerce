@@ -847,10 +847,6 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
             Mapper.CreateMap<ReturnRequestActionModel, ReturnRequestAction>();
 
-            //category template
-            Mapper.CreateMap<CategoryTemplate, CategoryTemplateModel>()
-                .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
-            Mapper.CreateMap<CategoryTemplateModel, CategoryTemplate>();
             //manufacturer template
             Mapper.CreateMap<ManufacturerTemplate, ManufacturerTemplateModel>()
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());

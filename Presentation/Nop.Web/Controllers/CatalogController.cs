@@ -41,7 +41,6 @@ namespace Nop.Web.Controllers
         private readonly IManufacturerService _manufacturerService;
         private readonly IProductService _productService;
         private readonly IVendorService _vendorService;
-        private readonly ICategoryTemplateService _categoryTemplateService;
         private readonly IManufacturerTemplateService _manufacturerTemplateService;
         private readonly IWorkContext _workContext;
         private readonly IStoreContext _storeContext;
@@ -76,7 +75,6 @@ namespace Nop.Web.Controllers
             IManufacturerService manufacturerService,
             IProductService productService, 
             IVendorService vendorService,
-            ICategoryTemplateService categoryTemplateService,
             IManufacturerTemplateService manufacturerTemplateService,
             IWorkContext workContext, 
             IStoreContext storeContext,
@@ -107,7 +105,6 @@ namespace Nop.Web.Controllers
             this._manufacturerService = manufacturerService;
             this._productService = productService;
             this._vendorService = vendorService;
-            this._categoryTemplateService = categoryTemplateService;
             this._manufacturerTemplateService = manufacturerTemplateService;
             this._workContext = workContext;
             this._storeContext = storeContext;
@@ -592,22 +589,23 @@ namespace Nop.Web.Controllers
                 _cacheManager);
             
 
-            //template
-            var templateCacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_TEMPLATE_MODEL_KEY, category.CategoryTemplateId);
-            var templateViewPath = _cacheManager.Get(templateCacheKey, () =>
-                {
-                    var template = _categoryTemplateService.GetCategoryTemplateById(category.CategoryTemplateId);
-                    if (template == null)
-                        template = _categoryTemplateService.GetAllCategoryTemplates().FirstOrDefault();
-                    if (template == null)
-                        throw new Exception("No default template could be loaded");
-                    return template.ViewPath;
-                });
+            ////template
+            //var templateCacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_TEMPLATE_MODEL_KEY, category.CategoryTemplateId);
+            //var templateViewPath = _cacheManager.Get(templateCacheKey, () =>
+            //    {
+            //        var template = _categoryTemplateService.GetCategoryTemplateById(category.CategoryTemplateId);
+            //        if (template == null)
+            //            template = _categoryTemplateService.GetAllCategoryTemplates().FirstOrDefault();
+            //        if (template == null)
+            //            throw new Exception("No default template could be loaded");
+            //        return template.ViewPath;
+            //    });
 
             //activity log
             _customerActivityService.InsertActivity("PublicStore.ViewCategory", _localizationService.GetResource("ActivityLog.PublicStore.ViewCategory"), category.Name);
 
-            return View(templateViewPath, model);
+            //return View(templateViewPath, model);
+            return View(model);
         }
 
         [ChildActionOnly]
