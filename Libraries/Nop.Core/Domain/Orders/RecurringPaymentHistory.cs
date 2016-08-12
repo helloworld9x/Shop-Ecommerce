@@ -5,7 +5,7 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents a recurring payment history
     /// </summary>
-    public partial class RecurringPaymentHistory : BaseEntity
+    public class RecurringPaymentHistory : BaseEntity
     {
         /// <summary>
         /// Gets or sets the recurring payment identifier

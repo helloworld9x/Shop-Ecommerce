@@ -107,22 +107,6 @@ namespace Nop.Admin.Controllers
                                                            x => x.Description,
                                                            localized.Description,
                                                            localized.LanguageId);
-
-                _localizedEntityService.SaveLocalizedValue(category,
-                                                           x => x.MetaKeywords,
-                                                           localized.MetaKeywords,
-                                                           localized.LanguageId);
-
-                _localizedEntityService.SaveLocalizedValue(category,
-                                                           x => x.MetaDescription,
-                                                           localized.MetaDescription,
-                                                           localized.LanguageId);
-
-                _localizedEntityService.SaveLocalizedValue(category,
-                                                           x => x.MetaTitle,
-                                                           localized.MetaTitle,
-                                                           localized.LanguageId);
-
                 //search engine name
                 var seName = category.ValidateSeName(localized.SeName, localized.Name, false);
                 _urlRecordService.SaveSlug(category, seName, localized.LanguageId);
@@ -299,29 +283,6 @@ namespace Nop.Admin.Controllers
             return Json(gridModel);
         }
         
-        public ActionResult Tree()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageCategories))
-                return AccessDeniedView();
-
-            return View();
-        }
-
-        [HttpPost,]
-        public ActionResult TreeLoadChildren(int id = 0)
-        {
-            var categories = _categoryService.GetAllCategoriesByParentCategoryId(id, true)
-                .Select(x => new
-                             {
-                                 id = x.Id,
-                                 Name = x.Name,
-                                 hasChildren = _categoryService.GetAllCategoriesByParentCategoryId(x.Id, true).Count > 0,
-                                 imageUrl = Url.Content("~/Administration/Content/images/ico-content.png")
-                             });
-
-            return Json(categories);
-        }
-
         #endregion
 
         #region Create / Edit / Delete
@@ -421,9 +382,6 @@ namespace Nop.Admin.Controllers
             {
                 locale.Name = category.GetLocalized(x => x.Name, languageId, false, false);
                 locale.Description = category.GetLocalized(x => x.Description, languageId, false, false);
-                locale.MetaKeywords = category.GetLocalized(x => x.MetaKeywords, languageId, false, false);
-                locale.MetaDescription = category.GetLocalized(x => x.MetaDescription, languageId, false, false);
-                locale.MetaTitle = category.GetLocalized(x => x.MetaTitle, languageId, false, false);
                 locale.SeName = category.GetSeName(languageId, false, false);
             });
           

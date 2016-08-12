@@ -13,7 +13,7 @@ using Nop.Web.Models.Polls;
 
 namespace Nop.Web.Controllers
 {
-    public partial class PollController : BasePublicController
+    public class PollController : BasePublicController
     {
         #region Fields
 
@@ -31,10 +31,10 @@ namespace Nop.Web.Controllers
             IPollService pollService,
             ICacheManager cacheManager)
         {
-            this._localizationService = localizationService;
-            this._workContext = workContext;
-            this._pollService = pollService;
-            this._cacheManager = cacheManager;
+            _localizationService = localizationService;
+            _workContext = workContext;
+            _pollService = pollService;
+            _cacheManager = cacheManager;
         }
 
         #endregion
@@ -60,7 +60,7 @@ namespace Nop.Web.Controllers
                     Id = pa.Id,
                     Name = pa.Name,
                     NumberOfVotes = pa.NumberOfVotes,
-                    PercentOfTotalVotes = model.TotalVotes > 0 ? ((Convert.ToDouble(pa.NumberOfVotes) / Convert.ToDouble(model.TotalVotes)) * Convert.ToDouble(100)) : 0,
+                    PercentOfTotalVotes = model.TotalVotes > 0 ? ((Convert.ToDouble(pa.NumberOfVotes) / Convert.ToDouble(model.TotalVotes)) * Convert.ToDouble(100)) : 0
                 });
             }
 
@@ -109,20 +109,20 @@ namespace Nop.Web.Controllers
             if (pollAnswer == null)
                 return Json(new
                 {
-                    error = "No poll answer found with the specified id",
+                    error = "No poll answer found with the specified id"
                 });
 
             var poll = pollAnswer.Poll;
             if (!poll.Published)
                 return Json(new
                 {
-                    error = "Poll is not available",
+                    error = "Poll is not available"
                 });
 
             if (_workContext.CurrentCustomer.IsGuest() && !poll.AllowGuestsToVote)
                 return Json(new
                 {
-                    error = _localizationService.GetResource("Polls.OnlyRegisteredUsersVote"),
+                    error = _localizationService.GetResource("Polls.OnlyRegisteredUsersVote")
                 });
 
             bool alreadyVoted = _pollService.AlreadyVoted(poll.Id, _workContext.CurrentCustomer.Id);
@@ -142,7 +142,7 @@ namespace Nop.Web.Controllers
 
             return Json(new
             {
-                html = this.RenderPartialViewToString("_Poll", PreparePollModel(poll, true)),
+                html = RenderPartialViewToString("_Poll", PreparePollModel(poll, true))
             });
         }
         

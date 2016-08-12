@@ -2,7 +2,7 @@
 
 namespace Nop.Data.Mapping.Shipping
 {
-    public class ShippingMethodMap : NopEntityTypeConfiguration<ShippingMethod>
+    public class ShippingMethodMap : GoqEntityTypeConfiguration<ShippingMethod>
     {
         public ShippingMethodMap()
         {

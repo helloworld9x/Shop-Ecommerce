@@ -2,7 +2,7 @@ using Nop.Core.Domain.Directory;
 
 namespace Nop.Data.Mapping.Directory
 {
-    public partial class MeasureDimensionMap : NopEntityTypeConfiguration<MeasureDimension>
+    public class MeasureDimensionMap : GoqEntityTypeConfiguration<MeasureDimension>
     {
         public MeasureDimensionMap()
         {

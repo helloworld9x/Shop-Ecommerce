@@ -7,7 +7,6 @@ using System.Xml;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.News;
 using Nop.Core.Domain.Security;
 using Nop.Services.Catalog;
@@ -29,7 +28,6 @@ namespace Nop.Services.Seo
         private readonly ITopicService _topicService;
         private readonly CommonSettings _commonSettings;
         private readonly NewsSettings _newsSettings;
-        private readonly ForumSettings _forumSettings;
         private readonly SecuritySettings _securitySettings;
 
         private const string DateFormat = @"yyyy-MM-dd";
@@ -46,18 +44,16 @@ namespace Nop.Services.Seo
             ITopicService topicService,
             CommonSettings commonSettings,
             NewsSettings newsSettings,
-            ForumSettings forumSettings,
             SecuritySettings securitySettings)
         {
-            this._storeContext = storeContext;
-            this._categoryService = categoryService;
-            this._productService = productService;
-            this._manufacturerService = manufacturerService;
-            this._topicService = topicService;
-            this._commonSettings = commonSettings;
-            this._newsSettings = newsSettings;
-            this._forumSettings = forumSettings;
-            this._securitySettings = securitySettings;
+            _storeContext = storeContext;
+            _categoryService = categoryService;
+            _productService = productService;
+            _manufacturerService = manufacturerService;
+            _topicService = topicService;
+            _commonSettings = commonSettings;
+            _newsSettings = newsSettings;
+            _securitySettings = securitySettings;
         }
 
         #endregion
@@ -107,12 +103,7 @@ namespace Nop.Services.Seo
                 var url = urlHelper.RouteUrl("NewsArchive", null, GetHttpProtocol());
                 WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
             }
-            //blog
-            if (_forumSettings.ForumsEnabled)
-            {
-                var url = urlHelper.RouteUrl("Boards", null, GetHttpProtocol());
-                WriteUrlLocation(url, UpdateFrequency.Weekly, DateTime.UtcNow);
-            }
+      
             //categories
             if (_commonSettings.SitemapIncludeCategories)
             {

@@ -29,12 +29,12 @@ namespace Nop.Web.Controllers
             ITopicService topicService,
             IVendorService vendorService)
         {
-            this._productService = productService;
-            this._categoryService = categoryService;
-            this._manufacturerService = manufacturerService;
-            this._newsService = newsService;
-            this._topicService = topicService;
-            this._vendorService = vendorService;
+            _productService = productService;
+            _categoryService = categoryService;
+            _manufacturerService = manufacturerService;
+            _newsService = newsService;
+            _topicService = topicService;
+            _vendorService = vendorService;
         }
 
 		#endregion

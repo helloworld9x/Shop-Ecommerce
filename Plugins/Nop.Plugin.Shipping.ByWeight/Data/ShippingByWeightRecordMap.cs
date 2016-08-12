@@ -3,7 +3,7 @@ using Nop.Plugin.Shipping.ByWeight.Domain;
 
 namespace Nop.Plugin.Shipping.ByWeight.Data
 {
-    public partial class ShippingByWeightRecordMap : NopEntityTypeConfiguration<ShippingByWeightRecord>
+    public partial class ShippingByWeightRecordMap : GoqEntityTypeConfiguration<ShippingByWeightRecord>
     {
         public ShippingByWeightRecordMap()
         {

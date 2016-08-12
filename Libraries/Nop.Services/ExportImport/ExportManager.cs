@@ -70,9 +70,6 @@ namespace Nop.Services.ExportImport
                     xmlWriter.WriteElementString("Id", null, category.Id.ToString());
                     xmlWriter.WriteElementString("Name", null, category.Name);
                     xmlWriter.WriteElementString("Description", null, category.Description);
-                    xmlWriter.WriteElementString("MetaKeywords", null, category.MetaKeywords);
-                    xmlWriter.WriteElementString("MetaDescription", null, category.MetaDescription);
-                    xmlWriter.WriteElementString("MetaTitle", null, category.MetaTitle);
                     xmlWriter.WriteElementString("SeName", null, category.GetSeName(0));
                     xmlWriter.WriteElementString("ParentCategoryId", null, category.ParentCategoryId.ToString());
                     xmlWriter.WriteElementString("PictureId", null, category.PictureId.ToString());
@@ -140,10 +137,6 @@ namespace Nop.Services.ExportImport
                 xmlWriter.WriteElementString("ManufacturerId", null, manufacturer.Id.ToString());
                 xmlWriter.WriteElementString("Name", null, manufacturer.Name);
                 xmlWriter.WriteElementString("Description", null, manufacturer.Description);
-                xmlWriter.WriteElementString("ManufacturerTemplateId", null, manufacturer.ManufacturerTemplateId.ToString());
-                xmlWriter.WriteElementString("MetaKeywords", null, manufacturer.MetaKeywords);
-                xmlWriter.WriteElementString("MetaDescription", null, manufacturer.MetaDescription);
-                xmlWriter.WriteElementString("MetaTitle", null, manufacturer.MetaTitle);
                 xmlWriter.WriteElementString("SEName", null, manufacturer.GetSeName(0));
                 xmlWriter.WriteElementString("PictureId", null, manufacturer.PictureId.ToString());
                 xmlWriter.WriteElementString("PageSize", null, manufacturer.PageSize.ToString());
@@ -235,40 +228,16 @@ namespace Nop.Services.ExportImport
                 xmlWriter.WriteElementString("VendorId", null, product.VendorId.ToString());
                 xmlWriter.WriteElementString("ProductTemplateId", null, product.ProductTemplateId.ToString());
                 xmlWriter.WriteElementString("ShowOnHomePage", null, product.ShowOnHomePage.ToString());
-                xmlWriter.WriteElementString("MetaKeywords", null, product.MetaKeywords);
-                xmlWriter.WriteElementString("MetaDescription", null, product.MetaDescription);
-                xmlWriter.WriteElementString("MetaTitle", null, product.MetaTitle);
                 xmlWriter.WriteElementString("SEName", null, product.GetSeName(0));
                 xmlWriter.WriteElementString("AllowCustomerReviews", null, product.AllowCustomerReviews.ToString());
                 xmlWriter.WriteElementString("SKU", null, product.Sku);
                 xmlWriter.WriteElementString("ManufacturerPartNumber", null, product.ManufacturerPartNumber);
-                xmlWriter.WriteElementString("Gtin", null, product.Gtin);
-                xmlWriter.WriteElementString("IsGiftCard", null, product.IsGiftCard.ToString());
-                xmlWriter.WriteElementString("GiftCardType", null, product.GiftCardType.ToString());
                 xmlWriter.WriteElementString("OverriddenGiftCardAmount", null, product.OverriddenGiftCardAmount.HasValue ? product.OverriddenGiftCardAmount.ToString() : "");
                 xmlWriter.WriteElementString("RequireOtherProducts", null, product.RequireOtherProducts.ToString());
                 xmlWriter.WriteElementString("RequiredProductIds", null, product.RequiredProductIds);
                 xmlWriter.WriteElementString("AutomaticallyAddRequiredProducts", null, product.AutomaticallyAddRequiredProducts.ToString());
-                xmlWriter.WriteElementString("IsDownload", null, product.IsDownload.ToString());
-                xmlWriter.WriteElementString("DownloadId", null, product.DownloadId.ToString());
-                xmlWriter.WriteElementString("UnlimitedDownloads", null, product.UnlimitedDownloads.ToString());
-                xmlWriter.WriteElementString("MaxNumberOfDownloads", null, product.MaxNumberOfDownloads.ToString());
-                if (product.DownloadExpirationDays.HasValue)
-                    xmlWriter.WriteElementString("DownloadExpirationDays", null, product.DownloadExpirationDays.ToString());
-                else
-                    xmlWriter.WriteElementString("DownloadExpirationDays", null, string.Empty);
-                xmlWriter.WriteElementString("DownloadActivationType", null, product.DownloadActivationType.ToString());
-                xmlWriter.WriteElementString("HasSampleDownload", null, product.HasSampleDownload.ToString());
-                xmlWriter.WriteElementString("SampleDownloadId", null, product.SampleDownloadId.ToString());
                 xmlWriter.WriteElementString("HasUserAgreement", null, product.HasUserAgreement.ToString());
                 xmlWriter.WriteElementString("UserAgreementText", null, product.UserAgreementText);
-                xmlWriter.WriteElementString("IsRecurring", null, product.IsRecurring.ToString());
-                xmlWriter.WriteElementString("RecurringCycleLength", null, product.RecurringCycleLength.ToString());
-                xmlWriter.WriteElementString("RecurringCyclePeriodId", null, product.RecurringCyclePeriodId.ToString());
-                xmlWriter.WriteElementString("RecurringTotalCycles", null, product.RecurringTotalCycles.ToString());
-                xmlWriter.WriteElementString("IsRental", null, product.IsRental.ToString());
-                xmlWriter.WriteElementString("RentalPriceLength", null, product.RentalPriceLength.ToString());
-                xmlWriter.WriteElementString("RentalPricePeriodId", null, product.RentalPricePeriodId.ToString());
                 xmlWriter.WriteElementString("IsShipEnabled", null, product.IsShipEnabled.ToString());
                 xmlWriter.WriteElementString("IsFreeShipping", null, product.IsFreeShipping.ToString());
                 xmlWriter.WriteElementString("ShipSeparately", null, product.ShipSeparately.ToString());
@@ -276,7 +245,6 @@ namespace Nop.Services.ExportImport
                 xmlWriter.WriteElementString("DeliveryDateId", null, product.DeliveryDateId.ToString());
                 xmlWriter.WriteElementString("IsTaxExempt", null, product.IsTaxExempt.ToString());
                 xmlWriter.WriteElementString("TaxCategoryId", null, product.TaxCategoryId.ToString());
-                xmlWriter.WriteElementString("IsTelecommunicationsOrBroadcastingOrElectronicServices", null, product.IsTelecommunicationsOrBroadcastingOrElectronicServices.ToString());
                 xmlWriter.WriteElementString("ManageInventoryMethodId", null, product.ManageInventoryMethodId.ToString());
                 xmlWriter.WriteElementString("UseMultipleWarehouses", null, product.UseMultipleWarehouses.ToString());
                 xmlWriter.WriteElementString("WarehouseId", null, product.WarehouseId.ToString());
@@ -331,21 +299,6 @@ namespace Nop.Services.ExportImport
                     xmlWriter.WriteStartElement("Discount");
                     xmlWriter.WriteElementString("DiscountId", null, discount.Id.ToString());
                     xmlWriter.WriteElementString("Name", null, discount.Name);
-                    xmlWriter.WriteEndElement();
-                }
-                xmlWriter.WriteEndElement();
-
-
-                xmlWriter.WriteStartElement("TierPrices");
-                var tierPrices = product.TierPrices;
-                foreach (var tierPrice in tierPrices)
-                {
-                    xmlWriter.WriteStartElement("TierPrice");
-                    xmlWriter.WriteElementString("TierPriceId", null, tierPrice.Id.ToString());
-                    xmlWriter.WriteElementString("StoreId", null, tierPrice.StoreId.ToString());
-                    xmlWriter.WriteElementString("CustomerRoleId", null, tierPrice.CustomerRoleId.HasValue ? tierPrice.CustomerRoleId.ToString() : "0");
-                    xmlWriter.WriteElementString("Quantity", null, tierPrice.Quantity.ToString());
-                    xmlWriter.WriteElementString("Price", null, tierPrice.Price.ToString());
                     xmlWriter.WriteEndElement();
                 }
                 xmlWriter.WriteEndElement();
@@ -647,15 +600,6 @@ namespace Nop.Services.ExportImport
                     worksheet.Cells[row, col].Value = p.ShowOnHomePage;
                     col++;
 
-                    worksheet.Cells[row, col].Value = p.MetaKeywords;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.MetaDescription;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.MetaTitle;
-                    col++;
-
                     worksheet.Cells[row, col].Value = p.GetSeName(0);
                     col++;
 
@@ -671,15 +615,6 @@ namespace Nop.Services.ExportImport
                     worksheet.Cells[row, col].Value = p.ManufacturerPartNumber;
                     col++;
 
-                    worksheet.Cells[row, col].Value = p.Gtin;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.IsGiftCard;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.GiftCardTypeId;
-                    col++;
-
                     worksheet.Cells[row, col].Value = p.OverriddenGiftCardAmount;
                     col++;
 
@@ -692,52 +627,10 @@ namespace Nop.Services.ExportImport
                     worksheet.Cells[row, col].Value = p.AutomaticallyAddRequiredProducts;
                     col++;
 
-                    worksheet.Cells[row, col].Value = p.IsDownload;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.DownloadId;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.UnlimitedDownloads;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.MaxNumberOfDownloads;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.DownloadActivationTypeId;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.HasSampleDownload;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.SampleDownloadId;
-                    col++;
-
                     worksheet.Cells[row, col].Value = p.HasUserAgreement;
                     col++;
 
                     worksheet.Cells[row, col].Value = p.UserAgreementText;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.IsRecurring;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.RecurringCycleLength;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.RecurringCyclePeriodId;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.RecurringTotalCycles;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.IsRental;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.RentalPriceLength;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.RentalPricePeriodId;
                     col++;
 
                     worksheet.Cells[row, col].Value = p.IsShipEnabled;
@@ -759,9 +652,6 @@ namespace Nop.Services.ExportImport
                     col++;
 
                     worksheet.Cells[row, col].Value = p.TaxCategoryId;
-                    col++;
-
-                    worksheet.Cells[row, col].Value = p.IsTelecommunicationsOrBroadcastingOrElectronicServices;
                     col++;
 
                     worksheet.Cells[row, col].Value = p.ManageInventoryMethodId;
@@ -1061,13 +951,6 @@ namespace Nop.Services.ExportImport
                         xmlWriter.WriteElementString("AttributeDescription", null, orderItem.AttributeDescription);
                         xmlWriter.WriteElementString("AttributesXml", null, orderItem.AttributesXml);
                         xmlWriter.WriteElementString("Quantity", null, orderItem.Quantity.ToString());
-                        xmlWriter.WriteElementString("DownloadCount", null, orderItem.DownloadCount.ToString());
-                        xmlWriter.WriteElementString("IsDownloadActivated", null, orderItem.IsDownloadActivated.ToString());
-                        xmlWriter.WriteElementString("LicenseDownloadId", null, orderItem.LicenseDownloadId.ToString());
-                        var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                        xmlWriter.WriteElementString("RentalStartDateUtc", null, rentalStartDate);
-                        var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                        xmlWriter.WriteElementString("RentalEndDateUtc", null, rentalEndDate);
                         xmlWriter.WriteEndElement();
                     }
                     xmlWriter.WriteEndElement();

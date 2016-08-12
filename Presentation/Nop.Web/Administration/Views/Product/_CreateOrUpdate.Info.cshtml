@@ -17,15 +17,9 @@
         $("#@Html.FieldIdFor(model => model.ProductTypeId)").change(toggleProductType);
         $("#@Html.FieldIdFor(model => model.RequireOtherProducts)").click(toggleRequireOtherProducts);
         $("#@Html.FieldIdFor(model => model.AvailableForPreOrder)").click(togglePreOrder);
-        $("#@Html.FieldIdFor(model => model.IsGiftCard)").click(toggleGiftCard);
         $("#@Html.FieldIdFor(model => model.CustomerEntersPrice)").click(toggleCustomerEntersPrice);
         $("#@Html.FieldIdFor(model => model.BasepriceEnabled)").click(toggleBasepriceEnabled);
-        $("#@Html.FieldIdFor(model => model.IsDownload)").click(toggleDownloadableProduct);
-        $("#@Html.FieldIdFor(model => model.UnlimitedDownloads)").click(toggleDownloadableProduct);
-        $("#@Html.FieldIdFor(model => model.HasSampleDownload)").click(toggleDownloadableProduct);
-        $("#@Html.FieldIdFor(model => model.HasUserAgreement)").click(toggleDownloadableProduct);
         $("#@Html.FieldIdFor(model => model.IsRecurring)").click(toggleRecurring);
-        $("#@Html.FieldIdFor(model => model.IsRental)").click(toggleRental);
         $("#@Html.FieldIdFor(model => model.IsShipEnabled)").click(toggleShipping);
         $("#@Html.FieldIdFor(model => model.IsTaxExempt)").click(toggleTax);
         $("#@Html.FieldIdFor(model => model.ManageInventoryMethodId)").change(toggleManageStock);
@@ -41,12 +35,9 @@
         toggleProductType();
         togglePreOrder();
         toggleRequireOtherProducts();
-        toggleGiftCard();
         toggleCustomerEntersPrice();
         toggleBasepriceEnabled();
-        toggleDownloadableProduct();
         toggleRecurring();
-        toggleRental();
         toggleShipping();
         toggleTax();
         toggleManageStock();
@@ -66,25 +57,17 @@
         if (selectedProductTypeId == @(((int) ProductType.SimpleProduct).ToString())) {
             $('#group-prices').show();
             $('#group-required-other-products').show();
-            $('#group-giftcard').show();
-            $('#group-downloads').show();
             $('#group-recurring').show();
-            $('#group-rental').show();
             $('#group-shipping').show();
             $('#group-tax').show();
             $('#group-inventory').show();
-            $('#tab-associated-products').hide();
         } else if (selectedProductTypeId == @(((int) ProductType.GroupedProduct).ToString())) {
             $('#group-prices').hide();
             $('#group-required-other-products').hide();
-            $('#group-giftcard').hide();
-            $('#group-downloads').hide();
             $('#group-recurring').hide();
-            $('#group-rental').hide();
             $('#group-shipping').hide();
             $('#group-tax').hide();
             $('#group-inventory').hide();
-            $('#tab-associated-products').show();
         }
     }
 
@@ -103,16 +86,6 @@
         } else {
             $('#pnlRequiredProductIds').hide();
             $('#pnlAutomaticallyAddRequiredProducts').hide();
-        }
-    }
-
-    function toggleGiftCard() {
-        if ($('#@Html.FieldIdFor(model => model.IsGiftCard)').is(':checked')) {
-            $('#pnlGiftCardType').show();
-            $('#pnlOverriddenGiftCardAmount').show();
-        } else {
-            $('#pnlGiftCardType').hide();
-            $('#pnlOverriddenGiftCardAmount').hide();
         }
     }
 
@@ -140,45 +113,6 @@
         }
     }
 
-    function toggleDownloadableProduct() {
-        if ($('#@Html.FieldIdFor(model => model.IsDownload)').is(':checked')) {
-
-            $('#pnlDownloadFile').show();
-            $('#pnlUnlimitedDownloads').show();
-            if ($('#@Html.FieldIdFor(model => model.UnlimitedDownloads)').is(':checked')) {
-                $('#pnlMaxNumberOfDownloads').hide();
-            } else {
-                $('#pnlMaxNumberOfDownloads').show();
-            }
-            $('#pnlDownloadExpirationDays').show();
-            $('#pnlDownloadActivationType').show();
-
-            $('#pnlHasUserAgreement').show();
-            if ($('#@Html.FieldIdFor(model => model.HasUserAgreement)').is(':checked')) {
-                $('#pnlUserAgreementText').show();
-            } else {
-                $('#pnlUserAgreementText').hide();
-            }
-
-            $('#pnlHasSampleDownload').show();
-
-            if ($('#@Html.FieldIdFor(model => model.HasSampleDownload)').is(':checked')) {
-                $('#pnlSampleDownloadFile').show();
-            } else {
-                $('#pnlSampleDownloadFile').hide();
-            }
-        } else {
-            $('#pnlDownloadFile').hide();
-            $('#pnlUnlimitedDownloads').hide();
-            $('#pnlMaxNumberOfDownloads').hide();
-            $('#pnlDownloadExpirationDays').hide();
-            $('#pnlDownloadActivationType').hide();
-            $('#pnlHasUserAgreement').hide();
-            $('#pnlUserAgreementText').hide();
-            $('#pnlHasSampleDownload').hide();
-            $('#pnlSampleDownloadFile').hide();
-        }
-    }
 
     function toggleShipping() {
         if ($('#@Html.FieldIdFor(model => model.IsShipEnabled)').is(':checked')) {
@@ -211,16 +145,6 @@
             $('#pnlCycleLength').hide();
             $('#pnlCyclePeriod').hide();
             $('#pnlTotalCycles').hide();
-        }
-    }
-
-    function toggleRental() {
-        if ($('#@Html.FieldIdFor(model => model.IsRental)').is(':checked')) {
-            $('#pnlRentalPriceLength').show();
-            $('#pnlRentalPricePeriod').show();
-        } else {
-            $('#pnlRentalPriceLength').hide();
-            $('#pnlRentalPricePeriod').hide();
         }
     }
 
@@ -425,15 +349,6 @@
             </td>
         </tr>
     }
-    <tr>
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.ProductTemplateId):
-        </td>
-        <td class="adminData">
-            @Html.DropDownListFor(model => model.ProductTemplateId, Model.AvailableProductTemplates)
-            @Html.ValidationMessageFor(model => model.ProductTemplateId)
-        </td>
-    </tr>
 </table>
 @(Html.LocalizedEditor<ProductModel, ProductLocalizedModel>("product-info-localized",
                 @<table class="adminContent">
@@ -831,15 +746,6 @@
             @Html.ValidationMessageFor(model => model.IsGiftCard)
         </td>
     </tr>
-    <tr id="pnlGiftCardType">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.GiftCardTypeId):
-        </td>
-        <td class="adminData">
-            @Html.DropDownListFor(model => model.GiftCardTypeId, ((GiftCardType)Model.GiftCardTypeId).ToSelectList())
-            @Html.ValidationMessageFor(model => model.GiftCardTypeId)
-        </td>
-    </tr>
     <tr id="pnlOverriddenGiftCardAmount">
         <td class="adminTitle">
             @Html.NopLabelFor(model => model.OverriddenGiftCardAmount):
@@ -847,103 +753,6 @@
         <td class="adminData">
             @Html.EditorFor(model => model.OverriddenGiftCardAmount)
             @Html.ValidationMessageFor(model => model.OverriddenGiftCardAmount)
-        </td>
-    </tr>
-</table>
-<table class="adminContent" id="group-downloads">
-    <tr class="adminSeparator">
-        <td colspan="2">
-            <hr />
-        </td>
-    </tr>
-    <tr>
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.IsDownload):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.IsDownload)
-            @Html.ValidationMessageFor(model => model.IsDownload)
-        </td>
-    </tr>
-    <tr id="pnlDownloadFile">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.DownloadId):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.DownloadId)
-            @Html.ValidationMessageFor(model => model.DownloadId)
-        </td>
-    </tr>
-    <tr id="pnlUnlimitedDownloads">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.UnlimitedDownloads):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.UnlimitedDownloads)
-            @Html.ValidationMessageFor(model => model.UnlimitedDownloads)
-        </td>
-    </tr>
-    <tr id="pnlMaxNumberOfDownloads">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.MaxNumberOfDownloads):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.MaxNumberOfDownloads)
-            @Html.ValidationMessageFor(model => model.MaxNumberOfDownloads)
-        </td>
-    </tr>
-    <tr id="pnlDownloadExpirationDays">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.DownloadExpirationDays):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.DownloadExpirationDays)
-            @Html.ValidationMessageFor(model => model.DownloadExpirationDays)
-        </td>
-    </tr>
-    <tr id="pnlDownloadActivationType">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.DownloadActivationTypeId):
-        </td>
-        <td class="adminData">
-            @Html.DropDownListFor(model => model.DownloadActivationTypeId, ((DownloadActivationType)Model.DownloadActivationTypeId).ToSelectList())
-            @Html.ValidationMessageFor(model => model.DownloadActivationTypeId)
-        </td>
-    </tr>
-    <tr id="pnlHasUserAgreement">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.HasUserAgreement):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.HasUserAgreement)
-            @Html.ValidationMessageFor(model => model.HasUserAgreement)
-        </td>
-    </tr>
-    <tr id="pnlUserAgreementText">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.UserAgreementText):
-        </td>
-        <td class="adminData">
-            @Html.TextAreaFor(model => model.UserAgreementText)
-            @Html.ValidationMessageFor(model => model.UserAgreementText)
-        </td>
-    </tr>
-    <tr id="pnlHasSampleDownload">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.HasSampleDownload):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.HasSampleDownload)
-            @Html.ValidationMessageFor(model => model.HasSampleDownload)
-        </td>
-    </tr>
-    <tr id="pnlSampleDownloadFile">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.SampleDownloadId):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.SampleDownloadId)
-            @Html.ValidationMessageFor(model => model.SampleDownloadId)
         </td>
     </tr>
 </table>
@@ -987,40 +796,6 @@
         <td class="adminData">
             @Html.EditorFor(model => model.RecurringTotalCycles)
             @Html.ValidationMessageFor(model => model.RecurringTotalCycles)
-        </td>
-    </tr>
-</table>
-<table class="adminContent" id="group-rental">
-    <tr class="adminSeparator">
-        <td colspan="2">
-            <hr />
-        </td>
-    </tr>
-    <tr>
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.IsRental):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.IsRental)
-            @Html.ValidationMessageFor(model => model.IsRental)
-        </td>
-    </tr>
-    <tr id="pnlRentalPriceLength">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.RentalPriceLength):
-        </td>
-        <td class="adminData">
-            @Html.EditorFor(model => model.RentalPriceLength)
-            @Html.ValidationMessageFor(model => model.RentalPriceLength)
-        </td>
-    </tr>
-    <tr id="pnlRentalPricePeriod">
-        <td class="adminTitle">
-            @Html.NopLabelFor(model => model.RentalPricePeriodId):
-        </td>
-        <td class="adminData">
-            @Html.DropDownListFor(model => model.RentalPricePeriodId, ((RentalPricePeriod)Model.RentalPricePeriodId).ToSelectList())
-            @Html.ValidationMessageFor(model => model.RentalPricePeriodId)
         </td>
     </tr>
 </table>

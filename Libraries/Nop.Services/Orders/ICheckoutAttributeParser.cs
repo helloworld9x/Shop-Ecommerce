@@ -6,7 +6,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Checkout attribute parser interface
     /// </summary>
-    public partial interface ICheckoutAttributeParser
+    public interface ICheckoutAttributeParser
     {
         /// <summary>
         /// Gets selected checkout attributes

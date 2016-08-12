@@ -2,7 +2,7 @@ using Nop.Core.Domain.Configuration;
 
 namespace Nop.Data.Mapping.Configuration
 {
-    public partial class SettingMap : NopEntityTypeConfiguration<Setting>
+    public partial class SettingMap : GoqEntityTypeConfiguration<Setting>
     {
         public SettingMap()
         {

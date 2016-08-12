@@ -3,7 +3,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a related product
     /// </summary>
-    public partial class RelatedProduct : BaseEntity
+    public class RelatedProduct : BaseEntity
     {
         /// <summary>
         /// Gets or sets the first product identifier

@@ -38,13 +38,13 @@ namespace Nop.Services.Catalog
 
         public PriceCalculationService(IWorkContext workContext,
             IStoreContext storeContext,
-            IDiscountService discountService, 
+            IDiscountService discountService,
             ICategoryService categoryService,
             IManufacturerService manufacturerService,
-            IProductAttributeParser productAttributeParser, 
+            IProductAttributeParser productAttributeParser,
             IProductService productService,
             ICacheManager cacheManager,
-            ShoppingCartSettings shoppingCartSettings, 
+            ShoppingCartSettings shoppingCartSettings,
             CatalogSettings catalogSettings)
         {
             this._workContext = workContext;
@@ -58,7 +58,7 @@ namespace Nop.Services.Catalog
             this._shoppingCartSettings = shoppingCartSettings;
             this._catalogSettings = catalogSettings;
         }
-        
+
         #endregion
 
         #region Nested classes
@@ -172,57 +172,6 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
-        /// Gets allowed discounts applied to manufacturers
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="customer">Customer</param>
-        /// <returns>Discounts</returns>
-        protected virtual IList<Discount> GetAllowedDiscountsAppliedToManufacturers(Product product, Customer customer)
-        {
-            var allowedDiscounts = new List<Discount>();
-            if (_catalogSettings.IgnoreDiscounts)
-                return allowedDiscounts;
-
-            foreach (var discount in _discountService.GetAllDiscounts(DiscountType.AssignedToManufacturers))
-            {
-                //load identifier of categories with this discount applied to
-                var cacheKey = string.Format(PriceCacheEventConsumer.DISCOUNT_MANUFACTURER_IDS_MODEL_KEY,
-                    discount.Id,
-                    string.Join(",", customer.GetCustomerRoleIds()),
-                    _storeContext.CurrentStore.Id);
-                var appliedToManufacturerIds = _cacheManager.Get(cacheKey,
-                    () => discount.AppliedToManufacturers.Select(x => x.Id).ToList());
-
-                //compare with manufacturers of this product
-                if (appliedToManufacturerIds.Any())
-                {
-                    //load identifier of categories with this discount applied to
-                    var cacheKey2 = string.Format(PriceCacheEventConsumer.DISCOUNT_PRODUCT_MANUFACTURER_IDS_MODEL_KEY,
-                        product.Id,
-                        string.Join(",", customer.GetCustomerRoleIds()),
-                        _storeContext.CurrentStore.Id);
-                    var manufacturerIds = _cacheManager.Get(cacheKey2, () =>
-                        _manufacturerService
-                        .GetProductManufacturersByProductId(product.Id)
-                        .Select(x => x.ManufacturerId)
-                        .ToList());
-                    foreach (var id in manufacturerIds)
-                    {
-                        if (appliedToManufacturerIds.Contains(id))
-                        {
-                            if (_discountService.ValidateDiscount(discount, customer).IsValid &&
-                                discount.DiscountType == DiscountType.AssignedToManufacturers &&
-                                !allowedDiscounts.ContainsDiscount(discount))
-                                allowedDiscounts.Add(discount);
-                        }
-                    }
-                }
-            }
-
-            return allowedDiscounts;
-        }
-
-        /// <summary>
         /// Gets allowed discounts
         /// </summary>
         /// <param name="product">Product</param>
@@ -244,49 +193,7 @@ namespace Nop.Services.Catalog
                 if (!allowedDiscounts.ContainsDiscount(discount))
                     allowedDiscounts.Add(discount);
 
-            //discounts applied to manufacturers
-            foreach (var discount in GetAllowedDiscountsAppliedToManufacturers(product, customer))
-                if (!allowedDiscounts.ContainsDiscount(discount))
-                    allowedDiscounts.Add(discount);
-
             return allowedDiscounts;
-        }
-        
-        /// <summary>
-        /// Gets a tier price
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="customer">Customer</param>
-        /// <param name="quantity">Quantity</param>
-        /// <returns>Price</returns>
-        protected virtual decimal? GetMinimumTierPrice(Product product, Customer customer, int quantity)
-        {
-            if (!product.HasTierPrices)
-                return decimal.Zero;
-
-            var tierPrices = product.TierPrices
-                .OrderBy(tp => tp.Quantity)
-                .ToList()
-                .FilterByStore(_storeContext.CurrentStore.Id)
-                .FilterForCustomer(customer)
-                .RemoveDuplicatedQuantities();
-
-            int previousQty = 1;
-            decimal? previousPrice = null;
-            foreach (var tierPrice in tierPrices)
-            {
-                //check quantity
-                if (quantity < tierPrice.Quantity)
-                    continue;
-                if (tierPrice.Quantity < previousQty)
-                    continue;
-
-                //save new price
-                previousPrice = tierPrice.Price;
-                previousQty = tierPrice.Quantity;
-            }
-            
-            return previousPrice;
         }
 
         /// <summary>
@@ -336,8 +243,6 @@ namespace Nop.Services.Catalog
         #region Methods
 
 
-
-
         /// <summary>
         /// Gets the final price
         /// </summary>
@@ -358,6 +263,7 @@ namespace Nop.Services.Catalog
             return GetFinalPrice(product, customer, additionalCharge, includeDiscounts,
                 quantity, out discountAmount, out appliedDiscount);
         }
+      
         /// <summary>
         /// Gets the final price
         /// </summary>
@@ -369,39 +275,11 @@ namespace Nop.Services.Catalog
         /// <param name="discountAmount">Applied discount amount</param>
         /// <param name="appliedDiscount">Applied discount</param>
         /// <returns>Final price</returns>
-        public virtual decimal GetFinalPrice(Product product, 
+        public virtual decimal GetFinalPrice(Product product,
             Customer customer,
-            decimal additionalCharge, 
+            decimal additionalCharge,
             bool includeDiscounts,
             int quantity,
-            out decimal discountAmount,
-            out Discount appliedDiscount)
-        {
-            return GetFinalPrice(product, customer,
-                additionalCharge, includeDiscounts, quantity,
-                null, null,
-                out discountAmount, out appliedDiscount);
-        }
-        /// <summary>
-        /// Gets the final price
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="customer">The customer</param>
-        /// <param name="additionalCharge">Additional charge</param>
-        /// <param name="includeDiscounts">A value indicating whether include discounts or not for final price computation</param>
-        /// <param name="quantity">Shopping cart item quantity</param>
-        /// <param name="rentalStartDate">Rental period start date (for rental products)</param>
-        /// <param name="rentalEndDate">Rental period end date (for rental products)</param>
-        /// <param name="discountAmount">Applied discount amount</param>
-        /// <param name="appliedDiscount">Applied discount</param>
-        /// <returns>Final price</returns>
-        public virtual decimal GetFinalPrice(Product product, 
-            Customer customer,
-            decimal additionalCharge, 
-            bool includeDiscounts,
-            int quantity,
-            DateTime? rentalStartDate,
-            DateTime? rentalEndDate,
             out decimal discountAmount,
             out Discount appliedDiscount)
         {
@@ -412,17 +290,15 @@ namespace Nop.Services.Catalog
             appliedDiscount = null;
 
             var cacheKey = string.Format(PriceCacheEventConsumer.PRODUCT_PRICE_MODEL_KEY,
-                product.Id, 
+                product.Id,
                 additionalCharge.ToString(CultureInfo.InvariantCulture),
-                includeDiscounts, 
+                includeDiscounts,
                 quantity,
                 string.Join(",", customer.GetCustomerRoleIds()),
                 _storeContext.CurrentStore.Id);
             var cacheTime = _catalogSettings.CacheProductPrices ? 60 : 0;
             //we do not cache price for rental products
             //otherwise, it can cause memory leaks (to store all possible date period combinations)
-            if (product.IsRental)
-                cacheTime = 0;
             var cachedPrice = _cacheManager.Get(cacheKey, cacheTime, () =>
             {
                 var result = new ProductPriceForCaching();
@@ -435,21 +311,8 @@ namespace Nop.Services.Catalog
                 if (specialPrice.HasValue)
                     price = specialPrice.Value;
 
-                //tier prices
-                if (product.HasTierPrices)
-                {
-                    decimal? tierPrice = GetMinimumTierPrice(product, customer, quantity);
-                    if (tierPrice.HasValue)
-                        price = Math.Min(price, tierPrice.Value);
-                }
-
                 //additional charge
                 price = price + additionalCharge;
-
-                //rental products
-                if (product.IsRental)
-                    if (rentalStartDate.HasValue && rentalEndDate.HasValue)
-                        price = price * product.GetRentalPeriods(rentalStartDate.Value, rentalEndDate.Value);
 
                 if (includeDiscounts)
                 {
@@ -525,8 +388,6 @@ namespace Nop.Services.Catalog
                 shoppingCartItem.Quantity,
                 shoppingCartItem.AttributesXml,
                 shoppingCartItem.CustomerEnteredPrice,
-                shoppingCartItem.RentalStartDateUtc,
-                shoppingCartItem.RentalEndDateUtc,
                 includeDiscounts,
                 out discountAmount,
                 out appliedDiscount);
@@ -540,19 +401,16 @@ namespace Nop.Services.Catalog
         /// <param name="quantity">Quantity</param>
         /// <param name="attributesXml">Product atrributes (XML format)</param>
         /// <param name="customerEnteredPrice">Customer entered price (if specified)</param>
-        /// <param name="rentalStartDate">Rental start date (null for not rental products)</param>
-        /// <param name="rentalEndDate">Rental end date (null for not rental products)</param>
         /// <param name="includeDiscounts">A value indicating whether include discounts or not for price computation</param>
         /// <param name="discountAmount">Applied discount amount</param>
         /// <param name="appliedDiscount">Applied discount</param>
         /// <returns>Shopping cart unit price (one item)</returns>
         public virtual decimal GetUnitPrice(Product product,
-            Customer customer, 
+            Customer customer,
             ShoppingCartType shoppingCartType,
             int quantity,
             string attributesXml,
             decimal customerEnteredPrice,
-            DateTime? rentalStartDate, DateTime? rentalEndDate,
             bool includeDiscounts,
             out decimal discountAmount,
             out Discount appliedDiscount)
@@ -616,12 +474,10 @@ namespace Nop.Services.Catalog
                         attributesTotalPrice,
                         includeDiscounts,
                         qty,
-                        product.IsRental ? rentalStartDate : null,
-                        product.IsRental ? rentalEndDate : null,
                         out discountAmount, out appliedDiscount);
                 }
             }
-            
+
             //rounding
             if (_shoppingCartSettings.RoundPricesDuringCalculation)
                 finalPrice = RoundingHelper.RoundPrice(finalPrice);
@@ -676,7 +532,7 @@ namespace Nop.Services.Catalog
 
                     var notDiscountedQuantity = shoppingCartItem.Quantity - discountedQuantity;
                     var notDiscountedUnitPrice = GetUnitPrice(shoppingCartItem, false);
-                    var notDiscountedSubTotal = notDiscountedUnitPrice*notDiscountedQuantity;
+                    var notDiscountedSubTotal = notDiscountedUnitPrice * notDiscountedQuantity;
 
                     subTotal = discountedSubTotal + notDiscountedSubTotal;
                 }
@@ -695,7 +551,7 @@ namespace Nop.Services.Catalog
             }
             return subTotal;
         }
-        
+
 
 
         /// <summary>

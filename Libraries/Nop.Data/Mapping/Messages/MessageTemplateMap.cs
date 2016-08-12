@@ -2,7 +2,7 @@ using Nop.Core.Domain.Messages;
 
 namespace Nop.Data.Mapping.Messages
 {
-    public partial class MessageTemplateMap : NopEntityTypeConfiguration<MessageTemplate>
+    public class MessageTemplateMap : GoqEntityTypeConfiguration<MessageTemplate>
     {
         public MessageTemplateMap()
         {

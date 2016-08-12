@@ -5,10 +5,8 @@ using System.Web.Mvc;
 using Nop.Admin.Extensions;
 using Nop.Admin.Models.Catalog;
 using Nop.Core.Domain.Catalog;
-using Nop.Core.Domain.Discounts;
 using Nop.Services.Catalog;
 using Nop.Services.Customers;
-using Nop.Services.Discounts;
 using Nop.Services.ExportImport;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
@@ -24,13 +22,12 @@ using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Controllers
 {
-    public partial class ManufacturerController : BaseAdminController
+    public class ManufacturerController : BaseAdminController
     {
         #region Fields
 
         private readonly ICategoryService _categoryService;
         private readonly IManufacturerService _manufacturerService;
-        private readonly IManufacturerTemplateService _manufacturerTemplateService;
         private readonly IProductService _productService;
         private readonly ICustomerService _customerService;
         private readonly IStoreService _storeService;
@@ -41,7 +38,6 @@ namespace Nop.Admin.Controllers
         private readonly ILocalizationService _localizationService;
         private readonly ILocalizedEntityService _localizedEntityService;
         private readonly IExportManager _exportManager;
-        private readonly IDiscountService _discountService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IVendorService _vendorService;
         private readonly IAclService _aclService; 
@@ -54,7 +50,6 @@ namespace Nop.Admin.Controllers
 
         public ManufacturerController(ICategoryService categoryService, 
             IManufacturerService manufacturerService,
-            IManufacturerTemplateService manufacturerTemplateService,
             IProductService productService,
             ICustomerService customerService, 
             IStoreService storeService,
@@ -65,32 +60,29 @@ namespace Nop.Admin.Controllers
             ILocalizationService localizationService,
             ILocalizedEntityService localizedEntityService, 
             IExportManager exportManager,
-            IDiscountService discountService,
             ICustomerActivityService customerActivityService, 
             IVendorService vendorService,
             IAclService aclService,
             IPermissionService permissionService,
             CatalogSettings catalogSettings)
         {
-            this._categoryService = categoryService;
-            this._manufacturerTemplateService = manufacturerTemplateService;
-            this._manufacturerService = manufacturerService;
-            this._productService = productService;
-            this._customerService = customerService;
-            this._storeService = storeService;
-            this._storeMappingService = storeMappingService;
-            this._urlRecordService = urlRecordService;
-            this._pictureService = pictureService;
-            this._languageService = languageService;
-            this._localizationService = localizationService;
-            this._localizedEntityService = localizedEntityService;
-            this._exportManager = exportManager;
-            this._discountService = discountService;
-            this._customerActivityService = customerActivityService;
-            this._vendorService = vendorService;
-            this._aclService = aclService;
-            this._permissionService = permissionService;
-            this._catalogSettings = catalogSettings;
+            _categoryService = categoryService;
+            _manufacturerService = manufacturerService;
+            _productService = productService;
+            _customerService = customerService;
+            _storeService = storeService;
+            _storeMappingService = storeMappingService;
+            _urlRecordService = urlRecordService;
+            _pictureService = pictureService;
+            _languageService = languageService;
+            _localizationService = localizationService;
+            _localizedEntityService = localizedEntityService;
+            _exportManager = exportManager;
+            _customerActivityService = customerActivityService;
+            _vendorService = vendorService;
+            _aclService = aclService;
+            _permissionService = permissionService;
+            _catalogSettings = catalogSettings;
         }
 
         #endregion
@@ -112,21 +104,6 @@ namespace Nop.Admin.Controllers
                                                            localized.Description,
                                                            localized.LanguageId);
 
-                _localizedEntityService.SaveLocalizedValue(manufacturer,
-                                                           x => x.MetaKeywords,
-                                                           localized.MetaKeywords,
-                                                           localized.LanguageId);
-
-                _localizedEntityService.SaveLocalizedValue(manufacturer,
-                                                           x => x.MetaDescription,
-                                                           localized.MetaDescription,
-                                                           localized.LanguageId);
-
-                _localizedEntityService.SaveLocalizedValue(manufacturer,
-                                                           x => x.MetaTitle,
-                                                           localized.MetaTitle,
-                                                           localized.LanguageId);
-
                 //search engine name
                 var seName = manufacturer.ValidateSeName(localized.SeName, localized.Name, false);
                 _urlRecordService.SaveSlug(manufacturer, seName, localized.LanguageId);
@@ -141,40 +118,7 @@ namespace Nop.Admin.Controllers
                 _pictureService.SetSeoFilename(picture.Id, _pictureService.GetPictureSeName(manufacturer.Name));
         }
 
-        [NonAction]
-        protected virtual void PrepareTemplatesModel(ManufacturerModel model)
-        {
-            if (model == null)
-                throw new ArgumentNullException("model");
-
-            var templates = _manufacturerTemplateService.GetAllManufacturerTemplates();
-            foreach (var template in templates)
-            {
-                model.AvailableManufacturerTemplates.Add(new SelectListItem
-                {
-                    Text = template.Name,
-                    Value = template.Id.ToString()
-                });
-            }
-        }
-
-        [NonAction]
-        protected virtual void PrepareDiscountModel(ManufacturerModel model, Manufacturer manufacturer, bool excludeProperties)
-        {
-            if (model == null)
-                throw new ArgumentNullException("model");
-
-            model.AvailableDiscounts = _discountService
-                .GetAllDiscounts(DiscountType.AssignedToManufacturers, showHidden: true)
-                .Select(d => d.ToModel())
-                .ToList();
-
-            if (!excludeProperties && manufacturer != null)
-            {
-                model.SelectedDiscountIds = manufacturer.AppliedDiscounts.Select(d => d.Id).ToArray();
-            }
-        }
-
+  
         [NonAction]
         protected virtual void PrepareAclModel(ManufacturerModel model, Manufacturer manufacturer, bool excludeProperties)
         {
@@ -306,10 +250,7 @@ namespace Nop.Admin.Controllers
             var model = new ManufacturerModel();
             //locales
             AddLocales(_languageService, model.Locales);
-            //templates
-            PrepareTemplatesModel(model);
-            //discounts
-            PrepareDiscountModel(model, null, true);
+       
             //ACL
             PrepareAclModel(model, null, false);
             //Stores
@@ -340,13 +281,7 @@ namespace Nop.Admin.Controllers
                 _urlRecordService.SaveSlug(manufacturer, model.SeName, 0);
                 //locales
                 UpdateLocales(manufacturer, model);
-                //discounts
-                var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToManufacturers, showHidden: true);
-                foreach (var discount in allDiscounts)
-                {
-                    if (model.SelectedDiscountIds != null && model.SelectedDiscountIds.Contains(discount.Id))
-                        manufacturer.AppliedDiscounts.Add(discount);
-                }
+              
                 _manufacturerService.UpdateManufacturer(manufacturer);
                 //update picture seo file name
                 UpdatePictureSeoNames(manufacturer);
@@ -363,10 +298,7 @@ namespace Nop.Admin.Controllers
             }
 
             //If we got this far, something failed, redisplay form
-            //templates
-            PrepareTemplatesModel(model);
-            //discounts
-            PrepareDiscountModel(model, null, true);
+         
             //ACL
             PrepareAclModel(model, null, true);
             //Stores
@@ -391,15 +323,9 @@ namespace Nop.Admin.Controllers
             {
                 locale.Name = manufacturer.GetLocalized(x => x.Name, languageId, false, false);
                 locale.Description = manufacturer.GetLocalized(x => x.Description, languageId, false, false);
-                locale.MetaKeywords = manufacturer.GetLocalized(x => x.MetaKeywords, languageId, false, false);
-                locale.MetaDescription = manufacturer.GetLocalized(x => x.MetaDescription, languageId, false, false);
-                locale.MetaTitle = manufacturer.GetLocalized(x => x.MetaTitle, languageId, false, false);
                 locale.SeName = manufacturer.GetSeName(languageId, false, false);
             });
-            //templates
-            PrepareTemplatesModel(model);
-            //discounts
-            PrepareDiscountModel(model, manufacturer, false);
+           
             //ACL
             PrepareAclModel(model, manufacturer, false);
             //Stores
@@ -430,23 +356,7 @@ namespace Nop.Admin.Controllers
                 _urlRecordService.SaveSlug(manufacturer, model.SeName, 0);
                 //locales
                 UpdateLocales(manufacturer, model);
-                //discounts
-                var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToManufacturers, showHidden: true);
-                foreach (var discount in allDiscounts)
-                {
-                    if (model.SelectedDiscountIds != null && model.SelectedDiscountIds.Contains(discount.Id))
-                    {
-                        //new discount
-                        if (manufacturer.AppliedDiscounts.Count(d => d.Id == discount.Id) == 0)
-                            manufacturer.AppliedDiscounts.Add(discount);
-                    }
-                    else
-                    {
-                        //remove discount
-                        if (manufacturer.AppliedDiscounts.Count(d => d.Id == discount.Id) > 0)
-                            manufacturer.AppliedDiscounts.Remove(discount);
-                    }
-                }
+              
                 _manufacturerService.UpdateManufacturer(manufacturer);
                 //delete an old picture (if deleted or updated)
                 if (prevPictureId > 0 && prevPictureId != manufacturer.PictureId)
@@ -479,10 +389,7 @@ namespace Nop.Admin.Controllers
 
 
             //If we got this far, something failed, redisplay form
-            //templates
-            PrepareTemplatesModel(model);
-            //discounts
-            PrepareDiscountModel(model, manufacturer, true);
+
             //ACL
             PrepareAclModel(model, manufacturer, true);
             //Stores

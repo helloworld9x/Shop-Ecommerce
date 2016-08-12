@@ -1,6 +1,5 @@
 ﻿using System;
 using AutoMapper;
-using Nop.Admin.Models.Blogs;
 using Nop.Admin.Models.Catalog;
 using Nop.Admin.Models.Cms;
 using Nop.Admin.Models.Common;
@@ -8,7 +7,6 @@ using Nop.Admin.Models.Customers;
 using Nop.Admin.Models.Directory;
 using Nop.Admin.Models.Discounts;
 using Nop.Admin.Models.ExternalAuthentication;
-using Nop.Admin.Models.Forums;
 using Nop.Admin.Models.Localization;
 using Nop.Admin.Models.Logging;
 using Nop.Admin.Models.Messages;
@@ -29,7 +27,6 @@ using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Logging;
 using Nop.Core.Domain.Media;
@@ -208,46 +205,6 @@ namespace Nop.Admin.Extensions
         }
 
         public static CheckoutAttribute ToEntity(this CheckoutAttributeModel model, CheckoutAttribute destination)
-        {
-            return model.MapTo(destination);
-        }
-
-        #endregion
-
-        #region Customer attributes
-
-        //attributes
-        public static CustomerAttributeModel ToModel(this CustomerAttribute entity)
-        {
-            return entity.MapTo<CustomerAttribute, CustomerAttributeModel>();
-        }
-
-        public static CustomerAttribute ToEntity(this CustomerAttributeModel model)
-        {
-            return model.MapTo<CustomerAttributeModel, CustomerAttribute>();
-        }
-
-        public static CustomerAttribute ToEntity(this CustomerAttributeModel model, CustomerAttribute destination)
-        {
-            return model.MapTo(destination);
-        }
-
-        #endregion
-
-        #region Address attributes
-
-        //attributes
-        public static AddressAttributeModel ToModel(this AddressAttribute entity)
-        {
-            return entity.MapTo<AddressAttribute, AddressAttributeModel>();
-        }
-
-        public static AddressAttribute ToEntity(this AddressAttributeModel model)
-        {
-            return model.MapTo<AddressAttributeModel, AddressAttribute>();
-        }
-
-        public static AddressAttribute ToEntity(this AddressAttributeModel model, AddressAttribute destination)
         {
             return model.MapTo(destination);
         }
@@ -572,97 +529,6 @@ namespace Nop.Admin.Extensions
             return model.MapTo(destination);
         }
 
-        public static void PrepareCustomAddressAttributes(this AddressModel model,
-            Address address,
-            IAddressAttributeService addressAttributeService,
-            IAddressAttributeParser addressAttributeParser)
-        {
-            //this method is very similar to the same one in Nop.Web project
-            if (addressAttributeService == null)
-                throw new ArgumentNullException("addressAttributeService");
-
-            if (addressAttributeParser == null)
-                throw new ArgumentNullException("addressAttributeParser");
-
-            var attributes = addressAttributeService.GetAllAddressAttributes();
-            foreach (var attribute in attributes)
-            {
-                var attributeModel = new AddressModel.AddressAttributeModel
-                {
-                    Id = attribute.Id,
-                    Name = attribute.Name,
-                    IsRequired = attribute.IsRequired,
-                    AttributeControlType = attribute.AttributeControlType,
-                };
-
-                if (attribute.ShouldHaveValues())
-                {
-                    //values
-                    var attributeValues = addressAttributeService.GetAddressAttributeValues(attribute.Id);
-                    foreach (var attributeValue in attributeValues)
-                    {
-                        var attributeValueModel = new AddressModel.AddressAttributeValueModel
-                        {
-                            Id = attributeValue.Id,
-                            Name = attributeValue.Name,
-                            IsPreSelected = attributeValue.IsPreSelected
-                        };
-                        attributeModel.Values.Add(attributeValueModel);
-                    }
-                }
-
-                //set already selected attributes
-                var selectedAddressAttributes = address != null ? address.CustomAttributes : null;
-                switch (attribute.AttributeControlType)
-                {
-                    case AttributeControlType.DropdownList:
-                    case AttributeControlType.RadioList:
-                    case AttributeControlType.Checkboxes:
-                        {
-                            if (!String.IsNullOrEmpty(selectedAddressAttributes))
-                            {
-                                //clear default selection
-                                foreach (var item in attributeModel.Values)
-                                    item.IsPreSelected = false;
-
-                                //select new values
-                                var selectedValues = addressAttributeParser.ParseAddressAttributeValues(selectedAddressAttributes);
-                                foreach (var attributeValue in selectedValues)
-                                    foreach (var item in attributeModel.Values)
-                                        if (attributeValue.Id == item.Id)
-                                            item.IsPreSelected = true;
-                            }
-                        }
-                        break;
-                    case AttributeControlType.ReadonlyCheckboxes:
-                        {
-                            //do nothing
-                            //values are already pre-set
-                        }
-                        break;
-                    case AttributeControlType.TextBox:
-                    case AttributeControlType.MultilineTextbox:
-                        {
-                            if (!String.IsNullOrEmpty(selectedAddressAttributes))
-                            {
-                                var enteredText = addressAttributeParser.ParseValues(selectedAddressAttributes, attribute.Id);
-                                if (enteredText.Count > 0)
-                                    attributeModel.DefaultValue = enteredText[0];
-                            }
-                        }
-                        break;
-                    case AttributeControlType.ColorSquares:
-                    case AttributeControlType.Datepicker:
-                    case AttributeControlType.FileUpload:
-                    default:
-                        //not supported attribute control types
-                        break;
-                }
-
-                model.CustomAddressAttributes.Add(attributeModel);
-            }
-        }
-
         #endregion
 
         #region NewsLetter subscriptions
@@ -701,40 +567,6 @@ namespace Nop.Admin.Extensions
             return model.MapTo(destination);
         }
 
-        #endregion
-
-        #region Forums
-
-        //forum groups
-        public static ForumGroupModel ToModel(this ForumGroup entity)
-        {
-            return entity.MapTo<ForumGroup, ForumGroupModel>();
-        }
-
-        public static ForumGroup ToEntity(this ForumGroupModel model)
-        {
-            return model.MapTo<ForumGroupModel, ForumGroup>();
-        }
-
-        public static ForumGroup ToEntity(this ForumGroupModel model, ForumGroup destination)
-        {
-            return model.MapTo(destination);
-        }
-        //forums
-        public static ForumModel ToModel(this Forum entity)
-        {
-            return entity.MapTo<Forum, ForumModel>();
-        }
-
-        public static Forum ToEntity(this ForumModel model)
-        {
-            return model.MapTo<ForumModel, Forum>();
-        }
-
-        public static Forum ToEntity(this ForumModel model, Forum destination)
-        {
-            return model.MapTo(destination);
-        }
         #endregion
 
         #region News
@@ -797,25 +629,6 @@ namespace Nop.Admin.Extensions
 
         #endregion
 
-        #region Gift Cards
-
-        public static GiftCardModel ToModel(this GiftCard entity)
-        {
-            return entity.MapTo<GiftCard, GiftCardModel>();
-        }
-
-        public static GiftCard ToEntity(this GiftCardModel model)
-        {
-            return model.MapTo<GiftCardModel, GiftCard>();
-        }
-
-        public static GiftCard ToEntity(this GiftCardModel model, GiftCard destination)
-        {
-            return model.MapTo(destination);
-        }
-
-        #endregion
-
         #region Countries / states
 
         public static CountryModel ToModel(this Country entity)
@@ -872,16 +685,6 @@ namespace Nop.Admin.Extensions
             return model.MapTo(destination);
         }
 
-
-        public static ForumSettingsModel ToModel(this ForumSettings entity)
-        {
-            return entity.MapTo<ForumSettings, ForumSettingsModel>();
-        }
-        public static ForumSettings ToEntity(this ForumSettingsModel model, ForumSettings destination)
-        {
-            return model.MapTo(destination);
-        }
-
         public static VendorSettingsModel ToModel(this VendorSettings entity)
         {
             return entity.MapTo<VendorSettings, VendorSettingsModel>();
@@ -910,17 +713,6 @@ namespace Nop.Admin.Extensions
         {
             return model.MapTo(destination);
         }
-
-
-        public static RewardPointsSettingsModel ToModel(this RewardPointsSettings entity)
-        {
-            return entity.MapTo<RewardPointsSettings, RewardPointsSettingsModel>();
-        }
-        public static RewardPointsSettings ToEntity(this RewardPointsSettingsModel model, RewardPointsSettings destination)
-        {
-            return model.MapTo(destination);
-        }
-
 
         public static OrderSettingsModel ToModel(this OrderSettings entity)
         {
@@ -999,21 +791,6 @@ namespace Nop.Admin.Extensions
         #endregion
 
         #region Templates
-
-        public static ManufacturerTemplateModel ToModel(this ManufacturerTemplate entity)
-        {
-            return entity.MapTo<ManufacturerTemplate, ManufacturerTemplateModel>();
-        }
-
-        public static ManufacturerTemplate ToEntity(this ManufacturerTemplateModel model)
-        {
-            return model.MapTo<ManufacturerTemplateModel, ManufacturerTemplate>();
-        }
-
-        public static ManufacturerTemplate ToEntity(this ManufacturerTemplateModel model, ManufacturerTemplate destination)
-        {
-            return model.MapTo(destination);
-        }
 
 
         public static ProductTemplateModel ToModel(this ProductTemplate entity)

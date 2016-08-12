@@ -6,7 +6,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Checkout attribute service
     /// </summary>
-    public partial interface ICheckoutAttributeService
+    public interface ICheckoutAttributeService
     {
         #region Checkout attributes
 

@@ -233,46 +233,6 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
-        /// Formats the price of rental product (with rental period)
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="price">Price</param>
-        /// <returns>Rental product price with period</returns>
-        public virtual string FormatRentalProductPeriod(Product product, string price)
-        {
-            if (product == null)
-                throw new ArgumentNullException("product");
-
-            if (!product.IsRental)
-                return price;
-
-            if (String.IsNullOrWhiteSpace(price))
-                return price;
-
-            string result;
-            switch (product.RentalPricePeriod)
-            {
-                case RentalPricePeriod.Days:
-                    result = string.Format(_localizationService.GetResource("Products.Price.Rental.Days"), price, product.RentalPriceLength);
-                    break;
-                case RentalPricePeriod.Weeks:
-                    result = string.Format(_localizationService.GetResource("Products.Price.Rental.Weeks"), price, product.RentalPriceLength);
-                    break;
-                case RentalPricePeriod.Months:
-                    result = string.Format(_localizationService.GetResource("Products.Price.Rental.Months"), price, product.RentalPriceLength);
-                    break;
-                case RentalPricePeriod.Years:
-                    result = string.Format(_localizationService.GetResource("Products.Price.Rental.Years"), price, product.RentalPriceLength);
-                    break;
-                default:
-                    throw new NopException("Not supported rental period");
-            }
-
-            return result;
-        }
-
-
-        /// <summary>
         /// Formats the shipping price
         /// </summary>
         /// <param name="price">Price</param>

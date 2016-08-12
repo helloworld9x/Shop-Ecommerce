@@ -4,7 +4,6 @@ using System.Linq;
 using Nop.Core;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.News;
 using Nop.Core.Domain.Orders;
@@ -18,7 +17,7 @@ using Nop.Services.Stores;
 
 namespace Nop.Services.Messages
 {
-    public partial class WorkflowMessageService : IWorkflowMessageService
+    public class WorkflowMessageService : IWorkflowMessageService
     {
         #region Fields
 
@@ -48,16 +47,16 @@ namespace Nop.Services.Messages
             EmailAccountSettings emailAccountSettings,
             IEventPublisher eventPublisher)
         {
-            this._messageTemplateService = messageTemplateService;
-            this._queuedEmailService = queuedEmailService;
-            this._languageService = languageService;
-            this._tokenizer = tokenizer;
-            this._emailAccountService = emailAccountService;
-            this._messageTokenProvider = messageTokenProvider;
-            this._storeService = storeService;
-            this._storeContext = storeContext;
-            this._emailAccountSettings = emailAccountSettings;
-            this._eventPublisher = eventPublisher;
+            _messageTemplateService = messageTemplateService;
+            _queuedEmailService = queuedEmailService;
+            _languageService = languageService;
+            _tokenizer = tokenizer;
+            _emailAccountService = emailAccountService;
+            _messageTokenProvider = messageTokenProvider;
+            _storeService = storeService;
+            _storeContext = storeContext;
+            _emailAccountSettings = emailAccountSettings;
+            _eventPublisher = eventPublisher;
         }
 
         #endregion
@@ -790,46 +789,6 @@ namespace Nop.Services.Messages
         }
 
         /// <summary>
-        /// Sends a new order note added notification to a customer
-        /// </summary>
-        /// <param name="orderNote">Order note</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        public virtual int SendNewOrderNoteAddedCustomerNotification(OrderNote orderNote, int languageId)
-        {
-            if (orderNote == null)
-                throw new ArgumentNullException("orderNote");
-           
-            var order = orderNote.Order;
-
-            var store = _storeService.GetStoreById(order.StoreId) ?? _storeContext.CurrentStore;
-            languageId = EnsureLanguageIsActive(languageId, store.Id);
-
-            var messageTemplate = GetActiveMessageTemplate("Customer.NewOrderNote", store.Id);
-            if (messageTemplate == null)
-                return 0;
-
-            //email account
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-            _messageTokenProvider.AddOrderNoteTokens(tokens, orderNote);
-            _messageTokenProvider.AddOrderTokens(tokens, orderNote.Order, languageId);
-            _messageTokenProvider.AddCustomerTokens(tokens, orderNote.Order.Customer);
-            
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
-
-            var toEmail = order.BillingAddress.Email;
-            var toName = string.Format("{0} {1}", order.BillingAddress.FirstName, order.BillingAddress.LastName);
-            return SendNotification(messageTemplate, emailAccount,
-                languageId, tokens,
-                toEmail, toName);
-        }
-
-        /// <summary>
         /// Sends a "Recurring payment cancelled" notification to a store owner
         /// </summary>
         /// <param name="recurringPayment">Recurring payment</param>
@@ -1124,137 +1083,6 @@ namespace Nop.Services.Messages
         
         #endregion
 
-        #region Forum Notifications
-
-        /// <summary>
-        /// Sends a forum subscription message to a customer
-        /// </summary>
-        /// <param name="customer">Customer instance</param>
-        /// <param name="forumTopic">Forum Topic</param>
-        /// <param name="forum">Forum</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        public int SendNewForumTopicMessage(Customer customer,
-            ForumTopic forumTopic, Forum forum, int languageId)
-        {
-            if (customer == null)
-            {
-                throw new ArgumentNullException("customer");
-            }
-            var store = _storeContext.CurrentStore;
-
-            var messageTemplate = GetActiveMessageTemplate("Forums.NewForumTopic", store.Id);
-            if (messageTemplate == null)
-                return 0;
-
-            //email account
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-            _messageTokenProvider.AddForumTopicTokens(tokens, forumTopic);
-            _messageTokenProvider.AddForumTokens(tokens, forumTopic.Forum);
-            _messageTokenProvider.AddCustomerTokens(tokens, customer);
-
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
-
-            var toEmail = customer.Email;
-            var toName = customer.GetFullName();
-
-            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
-        }
-
-        /// <summary>
-        /// Sends a forum subscription message to a customer
-        /// </summary>
-        /// <param name="customer">Customer instance</param>
-        /// <param name="forumPost">Forum post</param>
-        /// <param name="forumTopic">Forum Topic</param>
-        /// <param name="forum">Forum</param>
-        /// <param name="friendlyForumTopicPageIndex">Friendly (starts with 1) forum topic page to use for URL generation</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        public int SendNewForumPostMessage(Customer customer,
-            ForumPost forumPost, ForumTopic forumTopic,
-            Forum forum, int friendlyForumTopicPageIndex, int languageId)
-        {
-            if (customer == null)
-            {
-                throw new ArgumentNullException("customer");
-            }
-
-            var store = _storeContext.CurrentStore;
-
-            var messageTemplate = GetActiveMessageTemplate("Forums.NewForumPost", store.Id);
-            if (messageTemplate == null )
-            {
-                return 0;
-            }
-
-            //email account
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-            _messageTokenProvider.AddForumPostTokens(tokens, forumPost);
-            _messageTokenProvider.AddForumTopicTokens(tokens, forumPost.ForumTopic,
-                friendlyForumTopicPageIndex, forumPost.Id);
-            _messageTokenProvider.AddForumTokens(tokens, forumPost.ForumTopic.Forum);
-            _messageTokenProvider.AddCustomerTokens(tokens, customer);
-
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
-          
-            var toEmail = customer.Email;
-            var toName = customer.GetFullName();
-
-            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
-        }
-
-        /// <summary>
-        /// Sends a private message notification
-        /// </summary>
-        /// <param name="privateMessage">Private message</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        public int SendPrivateMessageNotification(PrivateMessage privateMessage, int languageId)
-        {
-            if (privateMessage == null)
-            {
-                throw new ArgumentNullException("privateMessage");
-            }
-
-            var store = _storeService.GetStoreById(privateMessage.StoreId) ?? _storeContext.CurrentStore;
-
-            var messageTemplate = GetActiveMessageTemplate("Customer.NewPM", store.Id);
-            if (messageTemplate == null )
-            {
-                return 0;
-            }
-
-            //email account
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-            _messageTokenProvider.AddPrivateMessageTokens(tokens, privateMessage);
-            _messageTokenProvider.AddCustomerTokens(tokens, privateMessage.ToCustomer);
-
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
-           
-            var toEmail = privateMessage.ToCustomer.Email;
-            var toName = privateMessage.ToCustomer.GetFullName();
-
-            return SendNotification(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
-        }
-
-        #endregion
-
         #region Misc
 
         /// <summary>
@@ -1298,49 +1126,6 @@ namespace Nop.Services.Messages
                 toEmail, toName);
         }
 
-        /// <summary>
-        /// Sends a gift card notification
-        /// </summary>
-        /// <param name="giftCard">Gift card</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        public virtual int SendGiftCardNotification(GiftCard giftCard, int languageId)
-        {
-            if (giftCard == null)
-                throw new ArgumentNullException("giftCard");
-
-            Store store = null;
-            var order = giftCard.PurchasedWithOrderItem != null ?
-                giftCard.PurchasedWithOrderItem.Order : 
-                null;
-            if (order != null)
-                store = _storeService.GetStoreById(order.StoreId);
-            if (store == null)
-                store = _storeContext.CurrentStore;
-
-            languageId = EnsureLanguageIsActive(languageId, store.Id);
-
-            var messageTemplate = GetActiveMessageTemplate("GiftCard.Notification", store.Id);
-            if (messageTemplate == null)
-                return 0;
-
-            //email account
-            var emailAccount = GetEmailAccountOfMessageTemplate(messageTemplate, languageId);
-
-            //tokens
-            var tokens = new List<Token>();
-            _messageTokenProvider.AddStoreTokens(tokens, store, emailAccount);
-            _messageTokenProvider.AddGiftCardTokens(tokens, giftCard);
-            
-            //event notification
-            _eventPublisher.MessageTokensAdded(messageTemplate, tokens);
-            var toEmail = giftCard.RecipientEmail;
-            var toName = giftCard.RecipientName;
-            return SendNotification(messageTemplate, emailAccount,
-                languageId, tokens,
-                toEmail, toName);
-        }
-        
         /// <summary>
         /// Sends a product review notification message to a store owner
         /// </summary>

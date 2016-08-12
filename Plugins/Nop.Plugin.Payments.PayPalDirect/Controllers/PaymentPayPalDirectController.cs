@@ -393,15 +393,6 @@ namespace Nop.Plugin.Payments.PayPalDirect.Controllers
                             if (order != null)
                             {
 
-                                //order note
-                                order.OrderNotes.Add(new OrderNote
-                                {
-                                    Note = sb.ToString(),
-                                    DisplayToCustomer = false,
-                                    CreatedOnUtc = DateTime.UtcNow
-                                });
-                                _orderService.UpdateOrder(order);
-
                                 switch (newPaymentStatus)
                                 {
                                     case PaymentStatus.Pending:

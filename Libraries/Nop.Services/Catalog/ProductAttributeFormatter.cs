@@ -25,7 +25,6 @@ namespace Nop.Services.Catalog
         private readonly ILocalizationService _localizationService;
         private readonly ITaxService _taxService;
         private readonly IPriceFormatter _priceFormatter;
-        private readonly IDownloadService _downloadService;
         private readonly IWebHelper _webHelper;
         private readonly IPriceCalculationService _priceCalculationService;
         private readonly ShoppingCartSettings _shoppingCartSettings;
@@ -37,7 +36,6 @@ namespace Nop.Services.Catalog
             ILocalizationService localizationService,
             ITaxService taxService,
             IPriceFormatter priceFormatter,
-            IDownloadService downloadService,
             IWebHelper webHelper,
             IPriceCalculationService priceCalculationService,
             ShoppingCartSettings shoppingCartSettings)
@@ -49,7 +47,6 @@ namespace Nop.Services.Catalog
             this._localizationService = localizationService;
             this._taxService = taxService;
             this._priceFormatter = priceFormatter;
-            this._downloadService = downloadService;
             this._webHelper = webHelper;
             this._priceCalculationService = priceCalculationService;
             this._shoppingCartSettings = shoppingCartSettings;
@@ -117,34 +114,6 @@ namespace Nop.Services.Catalog
                                 //file upload
                                 Guid downloadGuid;
                                 Guid.TryParse(valueStr, out downloadGuid);
-                                var download = _downloadService.GetDownloadByGuid(downloadGuid);
-                                if (download != null)
-                                {
-                                    //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
-                                    string attributeText;
-                                    var fileName = string.Format("{0}{1}", 
-                                        download.Filename ?? download.DownloadGuid.ToString(),
-                                        download.Extension);
-                                    //encode (if required)
-                                    if (htmlEncode)
-                                        fileName = HttpUtility.HtmlEncode(fileName);
-                                    if (allowHyperlinks)
-                                    {
-                                        //hyperlinks are allowed
-                                        var downloadLink = string.Format("{0}download/getfileupload/?downloadId={1}", _webHelper.GetStoreLocation(false), download.DownloadGuid);
-                                        attributeText = string.Format("<a href=\"{0}\" class=\"fileuploadattribute\">{1}</a>", downloadLink, fileName);
-                                    }
-                                    else
-                                    {
-                                        //hyperlinks aren't allowed
-                                        attributeText = fileName;
-                                    }
-                                    var attributeName = attribute.ProductAttribute.GetLocalized(a => a.Name, _workContext.WorkingLanguage.Id);
-                                    //encode (if required)
-                                    if (htmlEncode)
-                                        attributeName = HttpUtility.HtmlEncode(attributeName);
-                                    formattedAttribute = string.Format("{0}: {1}", attributeName, attributeText);
-                                }
                             }
                             else
                             {
@@ -212,44 +181,6 @@ namespace Nop.Services.Catalog
                 }
             }
 
-            //gift cards
-            if (renderGiftCardAttributes)
-            {
-                if (product.IsGiftCard)
-                {
-                    string giftCardRecipientName;
-                    string giftCardRecipientEmail;
-                    string giftCardSenderName;
-                    string giftCardSenderEmail;
-                    string giftCardMessage;
-                    _productAttributeParser.GetGiftCardAttribute(attributesXml, out giftCardRecipientName, out giftCardRecipientEmail,
-                        out giftCardSenderName, out giftCardSenderEmail, out giftCardMessage);
-
-                    //sender
-                    var giftCardFrom = product.GiftCardType == GiftCardType.Virtual ?
-                        string.Format(_localizationService.GetResource("GiftCardAttribute.From.Virtual"), giftCardSenderName, giftCardSenderEmail) :
-                        string.Format(_localizationService.GetResource("GiftCardAttribute.From.Physical"), giftCardSenderName);
-                    //recipient
-                    var giftCardFor = product.GiftCardType == GiftCardType.Virtual ?
-                        string.Format(_localizationService.GetResource("GiftCardAttribute.For.Virtual"), giftCardRecipientName, giftCardRecipientEmail) :
-                        string.Format(_localizationService.GetResource("GiftCardAttribute.For.Physical"), giftCardRecipientName);
-
-                    //encode (if required)
-                    if (htmlEncode)
-                    {
-                        giftCardFrom = HttpUtility.HtmlEncode(giftCardFrom);
-                        giftCardFor = HttpUtility.HtmlEncode(giftCardFor);
-                    }
-
-                    if (!String.IsNullOrEmpty(result.ToString()))
-                    {
-                        result.Append(serapator);
-                    }
-                    result.Append(giftCardFrom);
-                    result.Append(serapator);
-                    result.Append(giftCardFor);
-                }
-            }
             return result.ToString();
         }
     }

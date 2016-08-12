@@ -2,7 +2,7 @@ using Nop.Core.Domain.Common;
 
 namespace Nop.Data.Mapping.Common
 {
-    public partial class GenericAttributeMap : NopEntityTypeConfiguration<GenericAttribute>
+    public class GenericAttributeMap : GoqEntityTypeConfiguration<GenericAttribute>
     {
         public GenericAttributeMap()
         {

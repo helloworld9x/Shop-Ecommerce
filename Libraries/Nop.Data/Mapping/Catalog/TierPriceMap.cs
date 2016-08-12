@@ -1,23 +1,23 @@
-using Nop.Core.Domain.Catalog;
+//using Nop.Core.Domain.Catalog;
 
-namespace Nop.Data.Mapping.Catalog
-{
-    public partial class TierPriceMap : NopEntityTypeConfiguration<TierPrice>
-    {
-        public TierPriceMap()
-        {
-            this.ToTable("TierPrice");
-            this.HasKey(tp => tp.Id);
-            this.Property(tp => tp.Price).HasPrecision(18, 4);
+//namespace Nop.Data.Mapping.Catalog
+//{
+//    public class TierPriceMap : GoqEntityTypeConfiguration<TierPrice>
+//    {
+//        public TierPriceMap()
+//        {
+//            ToTable("TierPrice");
+//            HasKey(tp => tp.Id);
+//            Property(tp => tp.Price).HasPrecision(18, 4);
 
-            this.HasRequired(tp => tp.Product)
-                .WithMany(p => p.TierPrices)
-                .HasForeignKey(tp => tp.ProductId);
+//            HasRequired(tp => tp.Product)
+//                .WithMany(p => p.TierPrices)
+//                .HasForeignKey(tp => tp.ProductId);
 
-            this.HasOptional(tp => tp.CustomerRole)
-                .WithMany()
-                .HasForeignKey(tp => tp.CustomerRoleId)
-                .WillCascadeOnDelete(true);
-        }
-    }
-}
+//            HasOptional(tp => tp.CustomerRole)
+//                .WithMany()
+//                .HasForeignKey(tp => tp.CustomerRoleId)
+//                .WillCascadeOnDelete(true);
+//        }
+//    }
+//}

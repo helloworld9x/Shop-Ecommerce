@@ -12,7 +12,7 @@ namespace Nop.Services.Customers
         /// </summary>
         public CustomerRegistrationResult() 
         {
-            this.Errors = new List<string>();
+            Errors = new List<string>();
         }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace Nop.Services.Customers
         /// </summary>
         public bool Success 
         {
-            get { return this.Errors.Count == 0; }
+            get { return Errors.Count == 0; }
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Nop.Services.Customers
         /// <param name="error">Error</param>
         public void AddError(string error) 
         {
-            this.Errors.Add(error);
+            Errors.Add(error);
         }
 
         /// <summary>

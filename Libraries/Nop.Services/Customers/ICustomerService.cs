@@ -9,7 +9,7 @@ namespace Nop.Services.Customers
     /// <summary>
     /// Customer service interface
     /// </summary>
-    public partial interface ICustomerService
+    public interface ICustomerService
     {
         #region Customers
 

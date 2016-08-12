@@ -2,26 +2,26 @@
 
 namespace Nop.Data.Mapping.Orders
 {
-    public partial class ShoppingCartItemMap : NopEntityTypeConfiguration<ShoppingCartItem>
+    public class ShoppingCartItemMap : GoqEntityTypeConfiguration<ShoppingCartItem>
     {
         public ShoppingCartItemMap()
         {
-            this.ToTable("ShoppingCartItem");
-            this.HasKey(sci => sci.Id);
+            ToTable("ShoppingCartItem");
+            HasKey(sci => sci.Id);
 
-            this.Property(sci => sci.CustomerEnteredPrice).HasPrecision(18, 4);
+            Property(sci => sci.CustomerEnteredPrice).HasPrecision(18, 4);
 
-            this.Ignore(sci => sci.ShoppingCartType);
-            this.Ignore(sci => sci.IsFreeShipping);
-            this.Ignore(sci => sci.IsShipEnabled);
-            this.Ignore(sci => sci.AdditionalShippingCharge);
-            this.Ignore(sci => sci.IsTaxExempt);
+            Ignore(sci => sci.ShoppingCartType);
+            Ignore(sci => sci.IsFreeShipping);
+            Ignore(sci => sci.IsShipEnabled);
+            Ignore(sci => sci.AdditionalShippingCharge);
+            Ignore(sci => sci.IsTaxExempt);
 
-            this.HasRequired(sci => sci.Customer)
+            HasRequired(sci => sci.Customer)
                 .WithMany(c => c.ShoppingCartItems)
                 .HasForeignKey(sci => sci.CustomerId);
 
-            this.HasRequired(sci => sci.Product)
+            HasRequired(sci => sci.Product)
                 .WithMany()
                 .HasForeignKey(sci => sci.ProductId);
         }

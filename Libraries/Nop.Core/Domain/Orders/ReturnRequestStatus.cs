@@ -33,6 +33,6 @@ namespace Nop.Core.Domain.Orders
         /// <summary>
         /// Cancelled
         /// </summary>
-        Cancelled = 60,
+        Cancelled = 60
     }
 }

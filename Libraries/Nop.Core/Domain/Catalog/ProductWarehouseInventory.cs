@@ -5,7 +5,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a record to manage product inventory per warehouse
     /// </summary>
-    public partial class ProductWarehouseInventory : BaseEntity
+    public class ProductWarehouseInventory : BaseEntity
     {
         /// <summary>
         /// Gets or sets the product identifier

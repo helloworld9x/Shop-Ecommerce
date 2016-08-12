@@ -9,13 +9,13 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Checkout attribute parser
     /// </summary>
-    public partial class CheckoutAttributeParser : ICheckoutAttributeParser
+    public class CheckoutAttributeParser : ICheckoutAttributeParser
     {
         private readonly ICheckoutAttributeService _checkoutAttributeService;
 
         public CheckoutAttributeParser(ICheckoutAttributeService checkoutAttributeService)
         {
-            this._checkoutAttributeService = checkoutAttributeService;
+            _checkoutAttributeService = checkoutAttributeService;
         }
 
         /// <summary>

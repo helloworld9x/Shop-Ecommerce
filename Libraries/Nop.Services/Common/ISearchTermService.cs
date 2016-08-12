@@ -6,7 +6,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Search term service interafce
     /// </summary>
-    public partial interface ISearchTermService
+    public interface ISearchTermService
     {
         /// <summary>
         /// Deletes a search term record

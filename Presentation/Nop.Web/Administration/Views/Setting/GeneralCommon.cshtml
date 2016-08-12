@@ -47,9 +47,9 @@
             <li @Html.RenderSelectedTabIndex(4, GetSelectedTabIndex())>
                 @T("Admin.Configuration.Settings.GeneralCommon.LocalizationSettings")
             </li>
-            <li @Html.RenderSelectedTabIndex(5, GetSelectedTabIndex())>
+            @*<li @Html.RenderSelectedTabIndex(5, GetSelectedTabIndex())>
                 @T("Admin.Configuration.Settings.GeneralCommon.FullTextSettings")
-            </li>
+            </li>*@
         </ul>
         <div>
             @TabStoreInformationSettings()
@@ -66,9 +66,9 @@
         <div>
             @TabLocalizationSettings()
         </div>
-        <div>
+        @*<div>
             @TabFullTextSettings()
-        </div>
+        </div>*@
     </div>
 
     {
@@ -125,8 +125,8 @@
                         </li>
                     }
                 </ul>
-                @Html.ValidationMessageFor(model => model.StoreInformationSettings.DefaultStoreTheme)
-                <em>@T("Admin.Configuration.Settings.GeneralCommon.DefaultStoreTheme.GetMore") <a href="http://www.nopcommerce.com/extensions-and-themes.aspx?category=4&utm_source=admin-panel&utm_medium=theme-settings&utm_campaign=admin-panel" target="_blank">http://www.nopcommerce.com/extensions-and-themes.aspx</a></em>
+                @*@Html.ValidationMessageFor(model => model.StoreInformationSettings.DefaultStoreTheme)
+                <em>@T("Admin.Configuration.Settings.GeneralCommon.DefaultStoreTheme.GetMore") <a href="http://www.nopcommerce.com/extensions-and-themes.aspx?category=4&utm_source=admin-panel&utm_medium=theme-settings&utm_campaign=admin-panel" target="_blank">http://www.nopcommerce.com/extensions-and-themes.aspx</a></em>*@
             </td>
         </tr>
         <tr>

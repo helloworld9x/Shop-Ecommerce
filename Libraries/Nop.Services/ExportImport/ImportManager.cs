@@ -362,35 +362,15 @@ namespace Nop.Services.ExportImport
                     product.VendorId = vendorId;
                     product.ProductTemplateId = productTemplateId;
                     product.ShowOnHomePage = showOnHomePage;
-                    product.MetaKeywords = metaKeywords;
-                    product.MetaDescription = metaDescription;
-                    product.MetaTitle = metaTitle;
                     product.AllowCustomerReviews = allowCustomerReviews;
                     product.Sku = sku;
                     product.ManufacturerPartNumber = manufacturerPartNumber;
-                    product.Gtin = gtin;
-                    product.IsGiftCard = isGiftCard;
-                    product.GiftCardTypeId = giftCardTypeId;
                     product.OverriddenGiftCardAmount = overriddenGiftCardAmount;
                     product.RequireOtherProducts = requireOtherProducts;
                     product.RequiredProductIds = requiredProductIds;
                     product.AutomaticallyAddRequiredProducts = automaticallyAddRequiredProducts;
-                    product.IsDownload = isDownload;
-                    product.DownloadId = downloadId;
-                    product.UnlimitedDownloads = unlimitedDownloads;
-                    product.MaxNumberOfDownloads = maxNumberOfDownloads;
-                    product.DownloadActivationTypeId = downloadActivationTypeId;
-                    product.HasSampleDownload = hasSampleDownload;
-                    product.SampleDownloadId = sampleDownloadId;
                     product.HasUserAgreement = hasUserAgreement;
                     product.UserAgreementText = userAgreementText;
-                    product.IsRecurring = isRecurring;
-                    product.RecurringCycleLength = recurringCycleLength;
-                    product.RecurringCyclePeriodId = recurringCyclePeriodId;
-                    product.RecurringTotalCycles = recurringTotalCycles;
-                    product.IsRental = isRental;
-                    product.RentalPriceLength = rentalPriceLength;
-                    product.RentalPricePeriodId = rentalPricePeriodId;
                     product.IsShipEnabled = isShipEnabled;
                     product.IsFreeShipping = isFreeShipping;
                     product.ShipSeparately = shipSeparately;
@@ -398,7 +378,6 @@ namespace Nop.Services.ExportImport
                     product.DeliveryDateId = deliveryDateId;
                     product.IsTaxExempt = isTaxExempt;
                     product.TaxCategoryId = taxCategoryId;
-                    product.IsTelecommunicationsOrBroadcastingOrElectronicServices = isTelecommunicationsOrBroadcastingOrElectronicServices;
                     product.ManageInventoryMethodId = manageInventoryMethodId;
                     product.UseMultipleWarehouses = useMultipleWarehouses;
                     product.WarehouseId = warehouseId;
@@ -545,11 +524,8 @@ namespace Nop.Services.ExportImport
                         }
                     }
 
-                    //update "HasTierPrices" and "HasDiscountsApplied" properties
-                    _productService.UpdateHasTierPricesProperty(product);
+                    //update "HasDiscountsApplied" properties
                     _productService.UpdateHasDiscountsApplied(product);
-
-
 
                     //next product
                     iRow++;

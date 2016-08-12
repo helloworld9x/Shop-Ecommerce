@@ -2,7 +2,7 @@ using Nop.Core.Domain.Orders;
 
 namespace Nop.Data.Mapping.Orders
 {
-    public partial class RecurringPaymentMap : NopEntityTypeConfiguration<RecurringPayment>
+    public class RecurringPaymentMap : GoqEntityTypeConfiguration<RecurringPayment>
     {
         public RecurringPaymentMap()
         {

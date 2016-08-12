@@ -3,7 +3,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product manufacturer mapping
     /// </summary>
-    public partial class ProductManufacturer : BaseEntity
+    public class ProductManufacturer : BaseEntity
     {
         /// <summary>
         /// Gets or sets the product identifier

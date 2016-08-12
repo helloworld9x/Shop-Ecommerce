@@ -2,7 +2,7 @@ using Nop.Core.Domain.News;
 
 namespace Nop.Data.Mapping.News
 {
-    public partial class NewsCommentMap : NopEntityTypeConfiguration<NewsComment>
+    public partial class NewsCommentMap : GoqEntityTypeConfiguration<NewsComment>
     {
         public NewsCommentMap()
         {

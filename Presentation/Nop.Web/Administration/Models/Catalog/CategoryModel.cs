@@ -22,7 +22,6 @@ namespace Nop.Admin.Models.Catalog
                 PageSize = 5;
             }
             Locales = new List<CategoryLocalizedModel>();
-            AvailableCategoryTemplates = new List<SelectListItem>();
             AvailableCategories = new List<SelectListItem>();
         }
 
@@ -33,22 +32,6 @@ namespace Nop.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Categories.Fields.Description")]
         [AllowHtml]
         public string Description { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Categories.Fields.CategoryTemplate")]
-        public int CategoryTemplateId { get; set; }
-        public IList<SelectListItem> AvailableCategoryTemplates { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Categories.Fields.MetaKeywords")]
-        [AllowHtml]
-        public string MetaKeywords { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Categories.Fields.MetaDescription")]
-        [AllowHtml]
-        public string MetaDescription { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Categories.Fields.MetaTitle")]
-        [AllowHtml]
-        public string MetaTitle { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Categories.Fields.SeName")]
         [AllowHtml]

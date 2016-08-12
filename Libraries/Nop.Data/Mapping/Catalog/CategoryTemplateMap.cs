@@ -2,7 +2,7 @@
 
 //namespace Nop.Data.Mapping.Catalog
 //{
-//    public partial class CategoryTemplateMap : NopEntityTypeConfiguration<CategoryTemplate>
+//    public partial class CategoryTemplateMap : GoqEntityTypeConfiguration<CategoryTemplate>
 //    {
 //        public CategoryTemplateMap()
 //        {

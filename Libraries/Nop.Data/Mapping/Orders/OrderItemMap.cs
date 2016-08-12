@@ -2,7 +2,7 @@ using Nop.Core.Domain.Orders;
 
 namespace Nop.Data.Mapping.Orders
 {
-    public partial class OrderItemMap : NopEntityTypeConfiguration<OrderItem>
+    public class OrderItemMap : GoqEntityTypeConfiguration<OrderItem>
     {
         public OrderItemMap()
         {

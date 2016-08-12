@@ -11,7 +11,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Return request service
     /// </summary>
-    public partial class ReturnRequestService : IReturnRequestService
+    public class ReturnRequestService : IReturnRequestService
     {
         #region Fields
 
@@ -36,10 +36,10 @@ namespace Nop.Services.Orders
             IRepository<ReturnRequestReason> returnRequestReasonRepository,
             IEventPublisher eventPublisher)
         {
-            this._returnRequestRepository = returnRequestRepository;
-            this._returnRequestActionRepository = returnRequestActionRepository;
-            this._returnRequestReasonRepository = returnRequestReasonRepository;
-            this._eventPublisher = eventPublisher;
+            _returnRequestRepository = returnRequestRepository;
+            _returnRequestActionRepository = returnRequestActionRepository;
+            _returnRequestReasonRepository = returnRequestReasonRepository;
+            _eventPublisher = eventPublisher;
         }
 
         #endregion

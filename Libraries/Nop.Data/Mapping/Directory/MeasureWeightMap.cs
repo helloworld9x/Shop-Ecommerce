@@ -2,7 +2,7 @@ using Nop.Core.Domain.Directory;
 
 namespace Nop.Data.Mapping.Directory
 {
-    public partial class MeasureWeightMap : NopEntityTypeConfiguration<MeasureWeight>
+    public class MeasureWeightMap : GoqEntityTypeConfiguration<MeasureWeight>
     {
         public MeasureWeightMap()
         {

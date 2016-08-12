@@ -1,0 +1,801 @@
+﻿@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+<div class="page home-page">
+    <div class="page-body">
+        <div class="center-1">
+            <div id="ph-topic" class="page topic-page">
+                <div class="page-body">
+                    <div class="lion-parcel-content">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <aside>
+                                    <div class="tabbable tabs-left">
+                                        <ul class="nav nav-tabs vertical-tabs">
+                                            <li class="sidebar-nav-subhead">@T("Company Profile")</li>
+                                            <li class="active"><a href="/">@T("Profile")</a></li>
+                                            <li><a href="/lion-parcel-service">@T("Services")</a></li>
+                                            <li><a href="/lion-parcel-news">@T("News")</a></li>
+                                            <li><a href="/lion-parcel-network">@T("Network")</a></li>
+                                            <li><a href="/lionair-parcel-registration">@T("Registration")</a></li>
+                                            <li><a href="/lion-parcel-contact-us">@T("Contact Us")</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="col-md-3 col-md-push-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">@T("Check Our Tariff")</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <select id="origin" class="form-control valid" name="slc-origin">
+                                                <option></option>
+                                                <option value="MDC">AERTEMBAGA, BITUNG TIMUR (MDC) </option>
+                                                <option value="SOQ">AIMAS (SOQ)    </option>
+                                                <option value="MDC">AIRMADIDI, MINAHASA UTARA (MDC</option>
+                                                <option value="KOE">ALAK (KOE) </option>
+                                                <option value="SRG">AMBARAWA (SRG)</option>
+                                                <option value="AMQ">AMBON (AMQ)</option>
+                                                <option value="BPN">BALIK PAPAN (BPN)  </option>
+                                                <option value="BPN">BALIKPAPAN MULAWARMAN/ LAMARU (BPN) </option>
+                                                <option value="BPN">BALIKPAPAN.JL.KM 7 (BPN)</option>
+                                                <option value="BTJ">BANDA ACEH (BTJ)</option>
+                                                <option value="KOTA">BANDAR LAMPUNG (KOTA) (TKG)</option>
+                                                <option value="BDO">BANDUNG (BDO) </option>
+                                                <option value="BDO">BANDUNG KABUPATEN (BDO)</option>
+                                                <option value="BDO">BANJAR KOTA (BDO)  </option>
+                                                <option value="BDJ">BANJARMASIN (BDJ) </option>
+                                                <option value="UPG">BANTAENG (UPG)  </option>
+                                                <option value="JOG">BANTUL (JOG)</option>
+                                                <option value="JOG">BANTUL ODA (JOG)</option>
+                                                <option value="BTH">BARELANG (MAKS JEMBATAN 3) (BTH)</option>
+                                                <option value="UPG">BARRU (UPG) </option>
+                                                <option value="KOE">BATAKTE (KOE)</option>
+                                                <option value="BTH">BATAM (BTH)</option>
+                                                <option value="BTH">BATU BESAR & NONGSA (BTH) </option>
+                                                <option value="BPN">BATU KAJANG SIDE (BPN)</option>
+                                                <option value="PLM">BATU RAJA (PLM) </option>
+                                                <option value="KOE">BATUPLAT (KOE)  </option>
+                                                <option value="KOE">BAU (KOE)      </option>
+                                                <option value="BUW">BAU BAU (BUW)    </option>
+                                                <option value="KOE">BAUMATA (KOE) </option>
+                                                <option value="KOE">BAUN (KOE) </option>
+                                                <option value="SRG">BAWEN (SRG)        </option>
+                                                <option value="KOE">BELO (KOE)    </option>
+                                                <option value="UPG">BELOPA (UPG)</option>
+                                                <option value="BKS">BENGKULU (BKS</option>
+                                                <option value="BEJ">BERAU (BEJ)</option>
+                                                <option value="BEJ">BIDUK BIDUK (BEJ)</option>
+                                                <option value="BMU">BIMA (BMU)</option>
+                                                <option value="KOE">BISMARAK (KOE)       </option>
+                                                <option value="MDC">BITUNG KOTA (MDC)   </option>
+                                                <option value="SRG">BOJA (SRG)</option>
+                                                <option value="KOE">BOLOK (KOE)   </option>
+                                                <option value="KDI">BOMBANA (KDI)</option>
+                                                <option value="UPG">BONE (UPG)    </option>
+                                                <option value="KOE">BONEANA (KOE)</option>
+                                                <option value="BPN">BPN.HANDIL (BPN) </option>
+                                                <option value="BPN">BPN.HANDIL II (BPN)      </option>
+                                                <option value="BPN">BPN.SENIPAH VICO (BPN)        </option>
+                                                <option value="WUB">BULI (WUB)   </option>
+                                                <option value="UPG">BULUKUMBA (UPG) </option>
+                                                <option value="PKY">BUNTOK (PKY)</option>
+                                                <option value="KDI">BUTON (KDI) </option>
+                                                <option value="KDI">BUTON UTARA (KDI)    </option>
+                                                <option value="BDO">CIAMIS KOTA (BDO)</option>
+                                                <option value="BDO">CIANJUR KOTA (BDO)      </option>
+                                                <option value="BDO">CIMAHI KOTA (BDO) </option>
+                                                <option value="BDO">CIREBON KOTA (BDO)    </option>
+                                                <option value="BDO">CISAGA BANJAR (BDO)    </option>
+                                                <option value="BTH">DAIK & DABO (BTH)    </option>
+                                                <option value="SRG">DEMAK (SRG)        </option>
+                                                <option value="DPS">DENPASAR (DPS)</option>
+                                                <option value="MDC">DIMEMBE, MINAHASA UTARA (MDC)  </option>
+                                                <option value="ENE">ENDE (ENE)</option>
+                                                <option value="UPG">ENREKANG (UPG)      </option>
+                                                <option value="FKQ">FAKFAK (FKQ)      </option>
+                                                <option value="KOE">FATUKOA (KOE)    </option>
+                                                <option value="BDO">GARUT KOTA (BDO)       </option>
+                                                <option value="MDC">GIRIAN, BITUNG (MDC)       </option>
+                                                <option value="GTO">GORONTALO (GTO)   </option>
+                                                <option value="UPG">GOWA / SUNGGUMINASA (UPG)</option>
+                                                <option value="SRG">GROBOGAN (SRG)      </option>
+                                                <option value="JOG">GUNUNG KIDUL (JOG) </option>
+                                                <option value="JOG">GUNUNG KIDUL ODA (JOG)        </option>
+                                                <option value="GNS">GUNUNG SITOLI (GNS)</option>
+                                                <option value="BEJ">GUNUNG TABUR (BEJ) </option>
+                                                <option value="BDO">INDRAMAYU KOTA (BDO)</option>
+                                                <option value="CGK">JAKARTA (CGK)</option>
+                                                <option value="DJB">JAMBI (DJB)</option>
+                                                <option value="BDO">JATINAGOR KOTA (BDO)</option>
+                                                <option value="DJJ">JAYAPURA (DJJ)</option>
+                                                <option value="UPG">JENEPONTO (UPG)</option>
+                                                <option value="SRG">JEPARA (SRG)</option>
+                                                <option value="JOG">JOGJAKARTA (JOG) </option>
+                                                <option value="KDI">KABANGKA (KDI)  </option>
+                                                <option value="KDI">KABAWO (KDI)      </option>
+                                                <option value="KNG">KAIMANA (KNG)</option>
+                                                <option value="MDC">KAKAS KOTA, MINAHASA (MDC)       </option>
+                                                <option value="MDC">KALASEY, MINAHASA (MDC)   </option>
+                                                <option value="MDC">KALAWAT, MINAHASA UTARA (MDC)</option>
+                                                <option value="SRG">KALIWUNGU (SRG)    </option>
+                                                <option value="BDO">KARAWANG KOTA (BDO)      </option>
+                                                <option value="BPN">KARIANGAU (BPN)      </option>
+                                                <option value="PKY">KATINGAN (PKY)    </option>
+                                                <option value="KAZ">KAU (KAZ)</option>
+                                                <option value="MDC">KAUDITAN, MINAHASA UTARA (MDC)       </option>
+                                                <option value="TNJ">KAWAL (TNJ)       </option>
+                                                <option value="MDC">KAWANGKOAN, MINAHASA (MDC)   </option>
+                                                <option value="LUW">KEC. KINTOM (LUW)    </option>
+                                                <option value="WGP">KELURAHAN HAMBALA (WGP)       </option>
+                                                <option value="WGP">KELURAHAN KAMBAJAWA (WGP)       </option>
+                                                <option value="WGP">KELURAHAN KAWANGU (WGP)   </option>
+                                                <option value="WGP">KELURAHAN LAMBANAPU (WGP)      </option>
+                                                <option value="MDC">KEMA, MINAHASA UTARA (MDC)    </option>
+                                                <option value="SRG">KENDAL (SRG)       </option>
+                                                <option value="KDI">KENDARI (KDI)        </option>
+                                                <option value="TNJ">KIJANG (TNJ)</option>
+                                                <option value="JOG">KODYA YOGJAKARTA (JOG)       </option>
+                                                <option value="KOE">KOTA ATAMBUA (KOE)        </option>
+                                                <option value="KOE">KOTA KEFA (KOE)    </option>
+                                                <option value="KOE">KOTA SOE (KOE)   </option>
+                                                <option value="MDC">KOTAMOBAGU KOTA (MDC)</option>
+                                                <option value="SRG">KUDUS (SRG)        </option>
+                                                <option value="JOG">KULON PROGO (JOG)      </option>
+                                                <option value="JOG">KULON PROGO ODA (JOG)      </option>
+                                                <option value="BDO">KUNINGAN KOTA (BDO)    </option>
+                                                <option value="KOE">KUPANG (KOE)</option>
+                                                <option value="TKG">LAMPUNG (TKG)      </option>
+                                                <option value="TKG">LAMPUNG BARAT (TKG)      </option>
+                                                <option value="TKG">LAMPUNG SELATAN (TKG)       </option>
+                                                <option value="TKG">LAMPUNG TENGAH (TKG)  </option>
+                                                <option value="TKG">LAMPUNG TIMUR (TKG)      </option>
+                                                <option value="TKG">LAMPUNG UTARA (TKG)       </option>
+                                                <option value="LSW">LHOKSEUMAWE (LSW)</option>
+                                                <option value="LOP">LOMBOK BARAT (LOP)</option>
+                                                <option value="LOP">LOMBOK TENGAH (LOP)</option>
+                                                <option value="LOP">LOMBOK TIMUR (LOP)</option>
+                                                <option value="LUW">LUWUK (LUW)      </option>
+                                                <option value="MDC">MADIDIR, BITUNG TENGAH (MDC)</option>
+                                                <option value="BDO">MAJALENGKA KOTA (BDO)        </option>
+                                                <option value="UPG">MAKALE (UPG)</option>
+                                                <option value="UPG">MAKASSAR (UPG) </option>
+                                                <option value="UPG">MALILI (UPG)</option>
+                                                <option value="MJU">MAMUJU (MJU)</option>
+                                                <option value="MDC">MANADO (MDC)   </option>
+                                                <option value="LBJ">MANGGARAI BARAT (LBJ)    </option>
+                                                <option value="MKW">MANOKWARI (MKW)</option>
+                                                <option value="KOE">MANULAI 2 (KOE)</option>
+                                                <option value="UPG">MAROS (UPG)</option>
+                                                <option value="UPG">MASAMBA (UPG)     </option>
+                                                <option value="BTH">MATAK (BTH)     </option>
+                                                <option value="LOP">MATARAM (LOP)</option>
+                                                <option value="MDC">MATUARI, BITUNG BARAT (MDC)        </option>
+                                                <option value="MOF">MAUMERE (MOF)        </option>
+                                                <option value="KNO">MEDAN (KNO)       </option>
+                                                <option value="MES">MEDAN (MES)  </option>
+                                                <option value="MNA">MELANGUANE (MNA)</option>
+                                                <option value="MKQ">MERAUKE (MKQ)</option>
+                                                <option value="KOTA">METRO (KOTA) (TKG)</option>
+                                                <option value="MEQ">MEULABOH (MEQ)       </option>
+                                                <option value="SRG">MRANGGEN (SRG)       </option>
+                                                <option value="KDI">MUNA (KDI)</option>
+                                                <option value="NBX">NABIRE (NBX)      </option>
+                                                <option value="NAH">NAHA (NAH)       </option>
+                                                <option value="KOE">NAIBONAT (KOE)  </option>
+                                                <option value="KOE">NAIONI (KOE)  </option>
+                                                <option value="KOE">NEKAMESE (KOE)    </option>
+                                                <option value="KOE">NOELBAKI (KOE)  </option>
+                                                <option value="KOE">OEBELO (KOE)       </option>
+                                                <option value="KOEKOE">OELAMASI (KOE)       </option>
+                                                <option value="KOE">OENESU (KOE)    </option>
+                                                <option value="KOE">OESAO (KOE) </option>
+                                                <option value="PDG">PADANG (PDG)   </option>
+                                                <option value="AEG">PADANG SIDEMPUAN (AEG)   </option>
+                                                <option value="PKY">PALANGKARAYA (PKY)     </option>
+                                                <option value="PLM">PALEMBANG (PLM)     </option>
+                                                <option value="UPG">PALOPO (UPG)</option>
+                                                <option value="PLW">PALU (PLW)</option>
+                                                <option value="BDO">PANGANDARAN (BDO)  </option>
+                                                <option value="PGK">PANGKAL PINANG (PGK) </option>
+                                                <option value="PKY">PANGKALANBUN (PKY)  </option>
+                                                <option value="UPG">PANGKEP (UPG)  </option>
+                                                <option value="UPG">PARE-PARE (UPG)       </option>
+                                                <option value="SRG">PATI (SRG)    </option>
+                                                <option value="PKU">PEKANBARU (PKU)</option>
+                                                <option value="BPN">PENAJAM LAWE (BPN)      </option>
+                                                <option value="BPN">PENAJAM PASIR UTARA (BPN)        </option>
+                                                <option value="TKG">PESAWARAN (TKG)</option>
+                                                <option value="MDC">PINELENG, MINAHASA (MDC)      </option>
+                                                <option value="UPG">PINRANG (UPG)   </option>
+                                                <option value="PUM">POMALA (PUM)</option>
+                                                <option value="PNK">PONTIANAK (PNK)</option>
+                                                <option value="PSJ">POSO (PSJ)  </option>
+                                                <option value="LOP">PRINGGAYA (LOP)        </option>
+                                                <option value="BDO">PUNCAK (BDO)</option>
+                                                <option value="BTH">PUNGGUR & KABIL (BTH)</option>
+                                                <option value="BDO">PURWAKARTA KOTA (BDO)</option>
+                                                <option value="SOQ">RAJA AMPAT (SOQ)</option>
+                                                <option value="BDO">RAJAPOLA TASIK (BDO)       </option>
+                                                <option value="BTH">RANAI (BTH)        </option>
+                                                <option value="MDC">RANOWUDU, BITUNG UTARA (MDC)        </option>
+                                                <option value="UPG">RANTEPAO (UPG)   </option>
+                                                <option value="MDC">REMBOKEN, MINAHASA (MDC)        </option>
+                                                <option value="LBJ">RUTENG (LBJ)   </option>
+                                                <option value="SRG">SALATIGA (SRG)</option>
+                                                <option value="SRI">SAMARINDA (SRI)</option>
+                                                <option value="BEJ">SAMBALIUNG (BEJ)   </option>
+                                                <option value="BPN">SAMBOJA (BPN)</option>
+                                                <option value="PKY">SAMPIT (PKY)    </option>
+                                                <option value="SMQ">SAMPIT (SMQ)     </option>
+                                                <option value="SXK">SAUMLAKI (SXK) </option>
+                                                <option value="BEJ">SEGAH (BEJ</option>
+                                                <option value="UPG">SELAYAR (UPG)</option>
+                                                <option value="SRG">SEMARANG (SRG)</option>
+                                                <option value="UPG">SENGKANG (UPG)      </option>
+                                                <option value="FLZ">SIBOLGA (FLZ)       </option>
+                                                <option value="UPG">SIDRAP (UPG)   </option>
+                                                <option value="BDO">SINGAPARNA TASIK (BDO)    </option>
+                                                <option value="UPG">SINJAI (UPG)</option>
+                                                <option value="SQG">SINTANG (SQG)      </option>
+                                                <option value="JOG">SLEMAN (JOG)       </option>
+                                                <option value="JOG">SLEMAN ODA (JOG)       </option>
+                                                <option value="SOC">SOLO (SOC)    </option>
+                                                <option value="MDC">SONDER, MINAHASA (MDC)        </option>
+                                                <option value="UPG">SOPPENG (UPG)       </option>
+                                                <option value="UPG">SOROAKO (UPG)    </option>
+                                                <option value="SOQ">SORONG (SOQ)   </option>
+                                                <option value="SOQ">SORONG (SOQ)</option>
+                                                <option value="SOQ">SORONG SELATAN/TEMINABUAN (SOQ)       </option>
+                                                <option value="BDO">SUBANG KOTA (BDO)        </option>
+                                                <option value="BDO">SUKABUMI KOTA (BDO)       </option>
+                                                <option value="LOP">SUMBAWA BARAT (TALIWANG) (LOP)       </option>
+                                                <option value="BDO">SUMEDANG KOTA (BDO)  </option>
+                                                <option value="KOE">SUMLILI (KOE)      </option>
+                                                <option value="SUB">SURABAYA (SUB) </option>
+                                                <option value="KOE">TABLOLONG (KOE) </option>
+                                                <option value="SUB">TAKALAR (UPG)  </option>
+                                                <option value="KOE">TAKLALE (KOE)        </option>
+                                                <option value="MDC">TALAWAAN, MINAHASA UTARA (MDC)        </option>
+                                                <option value="BEJ">TALISAYAN (BEJ)</option>
+                                                <option value="BPN">TANAH GROGOT (BPN)        </option>
+                                                <option value="KOE">TANAH MERAH (KOE) </option>
+                                                <option value="TKG">TANGGAMUS (TKG)</option>
+                                                <option value="BEJ">TANJUNG BATU (BEJ) </option>
+                                                <option value="TJQ">TANJUNG PANDAN (TJQ)      </option>
+                                                <option value="TNJ">TANJUNG PINANG (TNJ)        </option>
+                                                <option value="BEJ">TANJUNG REDEB (BEJ)</option>
+                                                <option value="BDO">TANJUNG SARI (BDO)</option>
+                                                <option value="TNJ">TANJUNG UBAN (TNJ)    </option>
+                                                <option value="BTH">TANJUNG UNCANG (BTH)</option>
+                                                <option value="TRK">TARAKAN (TRK)      </option>
+                                                <option value="TRK">TARAKAN BARAT (TRK) </option>
+                                                <option value="TRK">TARAKAN TIMUR (TRK) </option>
+                                                <option value="TRK">TARAKAN UTARA (TRK) </option>
+                                                <option value="KOE">TARUS (KOE)      </option>
+                                                <option value="BDO">TASIKMALAYA KOTA (BDO)       </option>
+                                                <option value="MDC">TATELI, MINAHASA (MDC)</option>
+                                                <option value="BEJ">TELUK BAYUR (BEJ)</option>
+                                                <option value="SOQ">TELUK BINTUNI (SOQ)</option>
+                                                <option value="SOQ">TELUK WONDAMA/WASIOR (SOQ)</option>
+                                                <option value="KOE">TENAU (KOE)       </option>
+                                                <option value="TTE">TERNATE (TTE)      </option>
+                                                <option value="BTH">TG BALAI KARIMUN (BTH)        </option>
+                                                <option value="BTH">TG BATU (BTH)      </option>
+                                                <option value="TLI">TOLI-TOLI (TLI)    </option>
+                                                <option value="MDC">TOMBARIRI, MINAHASA (MDC)      </option>
+                                                <option value="MDC">TOMBULU, MINAHASA (MDC)    </option>
+                                                <option value="MDC">TOMOHON BARAT, TOMOHON (MDC)    </option>
+                                                <option value="MDC">TOMOHON KOTA (MDC)        </option>
+                                                <option value="MDC">TOMOHON SELATAN, TOMOHON (MDC)       </option>
+                                                <option value="MDC">TOMOHON TIMUR. TOMOHON (MDC)   </option>
+                                                <option value="MDC">TOMOHON UTARA, TOMOHON (MDC)      </option>
+                                                <option value="MDC">TOMPASO, MINAHASA (MDC)       </option>
+                                                <option value="MDC">TONDANO KOTA BARAT, MINAHASA (MDC)      </option>
+                                                <option value="MDC">TONDANO KOTA SELATAN, MINAHASA (MDC      </option>
+                                                <option value="MDC">TONDANO KOTA TIMUR, MINAHASA (MDC)</option>
+                                                <option value="MDC">TONDANO KOTA UTARA, MINAHASA (MDC)      </option>
+                                                <option value="MDC">TONDANO KOTA, MINAHASA (MDC)       </option>
+                                                <option value="LUV">TUAL (LUV)</option>
+                                                <option value="KOE">TUAPUKAN (KOE)        </option>
+                                                <option value="TKG">TULANG BAWANG (TKG)       </option>
+                                                <option value="SRG">UNGARAN (SRG)  </option>
+                                                <option value="TMC">WAIKABUBAK (TMC)    </option>
+                                                <option value="WGP">WAINGAPU (WGP)  </option>
+                                                <option value="WNI">WAKATOBI (WNI)    </option>
+                                                <option value="TKG">WAY KANAN (TKG)       </option>
+                                                <option value="MDC">WORI, MINAHASA UTARA (MDC)   </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="destination" class="form-control" name="slc-destination">
+                                                <option></option>
+                                                <option value="MDC">AERTEMBAGA, BITUNG TIMUR (MDC) </option>
+                                                <option value="SOQ">AIMAS (SOQ)    </option>
+                                                <option value="MDC">AIRMADIDI, MINAHASA UTARA (MDC</option>
+                                                <option value="KOE">ALAK (KOE) </option>
+                                                <option value="SRG">AMBARAWA (SRG)</option>
+                                                <option value="AMQ">AMBON (AMQ)</option>
+                                                <option value="BPN">BALIK PAPAN (BPN)  </option>
+                                                <option value="BPN">BALIKPAPAN MULAWARMAN/ LAMARU (BPN) </option>
+                                                <option value="BPN">BALIKPAPAN.JL.KM 7 (BPN)</option>
+                                                <option value="BTJ">BANDA ACEH (BTJ)</option>
+                                                <option value="KOTA">BANDAR LAMPUNG (KOTA) (TKG)</option>
+                                                <option value="BDO">BANDUNG (BDO) </option>
+                                                <option value="BDO">BANDUNG KABUPATEN (BDO)</option>
+                                                <option value="BDO">BANJAR KOTA (BDO)  </option>
+                                                <option value="BDJ">BANJARMASIN (BDJ) </option>
+                                                <option value="UPG">BANTAENG (UPG)  </option>
+                                                <option value="JOG">BANTUL (JOG)</option>
+                                                <option value="JOG">BANTUL ODA (JOG)</option>
+                                                <option value="BTH">BARELANG (MAKS JEMBATAN 3) (BTH)</option>
+                                                <option value="UPG">BARRU (UPG) </option>
+                                                <option value="KOE">BATAKTE (KOE)</option>
+                                                <option value="BTH">BATAM (BTH)</option>
+                                                <option value="BTH">BATU BESAR & NONGSA (BTH) </option>
+                                                <option value="BPN">BATU KAJANG SIDE (BPN)</option>
+                                                <option value="PLM">BATU RAJA (PLM) </option>
+                                                <option value="KOE">BATUPLAT (KOE)  </option>
+                                                <option value="KOE">BAU (KOE)      </option>
+                                                <option value="BUW">BAU BAU (BUW)    </option>
+                                                <option value="KOE">BAUMATA (KOE) </option>
+                                                <option value="KOE">BAUN (KOE) </option>
+                                                <option value="SRG">BAWEN (SRG)        </option>
+                                                <option value="KOE">BELO (KOE)    </option>
+                                                <option value="UPG">BELOPA (UPG)</option>
+                                                <option value="BKS">BENGKULU (BKS</option>
+                                                <option value="BEJ">BERAU (BEJ)</option>
+                                                <option value="BEJ">BIDUK BIDUK (BEJ)</option>
+                                                <option value="BMU">BIMA (BMU)</option>
+                                                <option value="KOE">BISMARAK (KOE)       </option>
+                                                <option value="MDC">BITUNG KOTA (MDC)   </option>
+                                                <option value="SRG">BOJA (SRG)</option>
+                                                <option value="KOE">BOLOK (KOE)   </option>
+                                                <option value="KDI">BOMBANA (KDI)</option>
+                                                <option value="UPG">BONE (UPG)    </option>
+                                                <option value="KOE">BONEANA (KOE)</option>
+                                                <option value="BPN">BPN.HANDIL (BPN) </option>
+                                                <option value="BPN">BPN.HANDIL II (BPN)      </option>
+                                                <option value="BPN">BPN.SENIPAH VICO (BPN)        </option>
+                                                <option value="WUB">BULI (WUB)   </option>
+                                                <option value="UPG">BULUKUMBA (UPG) </option>
+                                                <option value="PKY">BUNTOK (PKY)</option>
+                                                <option value="KDI">BUTON (KDI) </option>
+                                                <option value="KDI">BUTON UTARA (KDI)    </option>
+                                                <option value="BDO">CIAMIS KOTA (BDO)</option>
+                                                <option value="BDO">CIANJUR KOTA (BDO)      </option>
+                                                <option value="BDO">CIMAHI KOTA (BDO) </option>
+                                                <option value="BDO">CIREBON KOTA (BDO)    </option>
+                                                <option value="BDO">CISAGA BANJAR (BDO)    </option>
+                                                <option value="BTH">DAIK & DABO (BTH)    </option>
+                                                <option value="SRG">DEMAK (SRG)        </option>
+                                                <option value="DPS">DENPASAR (DPS)</option>
+                                                <option value="MDC">DIMEMBE, MINAHASA UTARA (MDC)  </option>
+                                                <option value="ENE">ENDE (ENE)</option>
+                                                <option value="UPG">ENREKANG (UPG)      </option>
+                                                <option value="FKQ">FAKFAK (FKQ)      </option>
+                                                <option value="KOE">FATUKOA (KOE)    </option>
+                                                <option value="BDO">GARUT KOTA (BDO)       </option>
+                                                <option value="MDC">GIRIAN, BITUNG (MDC)       </option>
+                                                <option value="GTO">GORONTALO (GTO)   </option>
+                                                <option value="UPG">GOWA / SUNGGUMINASA (UPG)</option>
+                                                <option value="SRG">GROBOGAN (SRG)      </option>
+                                                <option value="JOG">GUNUNG KIDUL (JOG) </option>
+                                                <option value="JOG">GUNUNG KIDUL ODA (JOG)        </option>
+                                                <option value="GNS">GUNUNG SITOLI (GNS)</option>
+                                                <option value="BEJ">GUNUNG TABUR (BEJ) </option>
+                                                <option value="BDO">INDRAMAYU KOTA (BDO)</option>
+                                                <option value="CGK">JAKARTA (CGK)</option>
+                                                <option value="DJB">JAMBI (DJB)</option>
+                                                <option value="BDO">JATINAGOR KOTA (BDO)</option>
+                                                <option value="DJJ">JAYAPURA (DJJ)</option>
+                                                <option value="UPG">JENEPONTO (UPG)</option>
+                                                <option value="SRG">JEPARA (SRG)</option>
+                                                <option value="JOG">JOGJAKARTA (JOG) </option>
+                                                <option value="KDI">KABANGKA (KDI)  </option>
+                                                <option value="KDI">KABAWO (KDI)      </option>
+                                                <option value="KNG">KAIMANA (KNG)</option>
+                                                <option value="MDC">KAKAS KOTA, MINAHASA (MDC)       </option>
+                                                <option value="MDC">KALASEY, MINAHASA (MDC)   </option>
+                                                <option value="MDC">KALAWAT, MINAHASA UTARA (MDC)</option>
+                                                <option value="SRG">KALIWUNGU (SRG)    </option>
+                                                <option value="BDO">KARAWANG KOTA (BDO)      </option>
+                                                <option value="BPN">KARIANGAU (BPN)      </option>
+                                                <option value="PKY">KATINGAN (PKY)    </option>
+                                                <option value="KAZ">KAU (KAZ)</option>
+                                                <option value="MDC">KAUDITAN, MINAHASA UTARA (MDC)       </option>
+                                                <option value="TNJ">KAWAL (TNJ)       </option>
+                                                <option value="MDC">KAWANGKOAN, MINAHASA (MDC)   </option>
+                                                <option value="LUW">KEC. KINTOM (LUW)    </option>
+                                                <option value="WGP">KELURAHAN HAMBALA (WGP)       </option>
+                                                <option value="WGP">KELURAHAN KAMBAJAWA (WGP)       </option>
+                                                <option value="WGP">KELURAHAN KAWANGU (WGP)   </option>
+                                                <option value="WGP">KELURAHAN LAMBANAPU (WGP)      </option>
+                                                <option value="MDC">KEMA, MINAHASA UTARA (MDC)    </option>
+                                                <option value="SRG">KENDAL (SRG)       </option>
+                                                <option value="KDI">KENDARI (KDI)        </option>
+                                                <option value="TNJ">KIJANG (TNJ)</option>
+                                                <option value="JOG">KODYA YOGJAKARTA (JOG)       </option>
+                                                <option value="KOE">KOTA ATAMBUA (KOE)        </option>
+                                                <option value="KOE">KOTA KEFA (KOE)    </option>
+                                                <option value="KOE">KOTA SOE (KOE)   </option>
+                                                <option value="MDC">KOTAMOBAGU KOTA (MDC)</option>
+                                                <option value="SRG">KUDUS (SRG)        </option>
+                                                <option value="JOG">KULON PROGO (JOG)      </option>
+                                                <option value="JOG">KULON PROGO ODA (JOG)      </option>
+                                                <option value="BDO">KUNINGAN KOTA (BDO)    </option>
+                                                <option value="KOE">KUPANG (KOE)</option>
+                                                <option value="TKG">LAMPUNG (TKG)      </option>
+                                                <option value="TKG">LAMPUNG BARAT (TKG)      </option>
+                                                <option value="TKG">LAMPUNG SELATAN (TKG)       </option>
+                                                <option value="TKG">LAMPUNG TENGAH (TKG)  </option>
+                                                <option value="TKG">LAMPUNG TIMUR (TKG)      </option>
+                                                <option value="TKG">LAMPUNG UTARA (TKG)       </option>
+                                                <option value="LSW">LHOKSEUMAWE (LSW)</option>
+                                                <option value="LOP">LOMBOK BARAT (LOP)</option>
+                                                <option value="LOP">LOMBOK TENGAH (LOP)</option>
+                                                <option value="LOP">LOMBOK TIMUR (LOP)</option>
+                                                <option value="LUW">LUWUK (LUW)      </option>
+                                                <option value="MDC">MADIDIR, BITUNG TENGAH (MDC)</option>
+                                                <option value="BDO">MAJALENGKA KOTA (BDO)        </option>
+                                                <option value="UPG">MAKALE (UPG)</option>
+                                                <option value="UPG">MAKASSAR (UPG) </option>
+                                                <option value="UPG">MALILI (UPG)</option>
+                                                <option value="MJU">MAMUJU (MJU)</option>
+                                                <option value="MDC">MANADO (MDC)   </option>
+                                                <option value="LBJ">MANGGARAI BARAT (LBJ)    </option>
+                                                <option value="MKW">MANOKWARI (MKW)</option>
+                                                <option value="KOE">MANULAI 2 (KOE)</option>
+                                                <option value="UPG">MAROS (UPG)</option>
+                                                <option value="UPG">MASAMBA (UPG)     </option>
+                                                <option value="BTH">MATAK (BTH)     </option>
+                                                <option value="LOP">MATARAM (LOP)</option>
+                                                <option value="MDC">MATUARI, BITUNG BARAT (MDC)        </option>
+                                                <option value="MOF">MAUMERE (MOF)        </option>
+                                                <option value="KNO">MEDAN (KNO)       </option>
+                                                <option value="MES">MEDAN (MES)  </option>
+                                                <option value="MNA">MELANGUANE (MNA)</option>
+                                                <option value="MKQ">MERAUKE (MKQ)</option>
+                                                <option value="KOTA">METRO (KOTA) (TKG)</option>
+                                                <option value="MEQ">MEULABOH (MEQ)       </option>
+                                                <option value="SRG">MRANGGEN (SRG)       </option>
+                                                <option value="KDI">MUNA (KDI)</option>
+                                                <option value="NBX">NABIRE (NBX)      </option>
+                                                <option value="NAH">NAHA (NAH)       </option>
+                                                <option value="KOE">NAIBONAT (KOE)  </option>
+                                                <option value="KOE">NAIONI (KOE)  </option>
+                                                <option value="KOE">NEKAMESE (KOE)    </option>
+                                                <option value="KOE">NOELBAKI (KOE)  </option>
+                                                <option value="KOE">OEBELO (KOE)       </option>
+                                                <option value="KOEKOE">OELAMASI (KOE)       </option>
+                                                <option value="KOE">OENESU (KOE)    </option>
+                                                <option value="KOE">OESAO (KOE) </option>
+                                                <option value="PDG">PADANG (PDG)   </option>
+                                                <option value="AEG">PADANG SIDEMPUAN (AEG)   </option>
+                                                <option value="PKY">PALANGKARAYA (PKY)     </option>
+                                                <option value="PLM">PALEMBANG (PLM)     </option>
+                                                <option value="UPG">PALOPO (UPG)</option>
+                                                <option value="PLW">PALU (PLW)</option>
+                                                <option value="BDO">PANGANDARAN (BDO)  </option>
+                                                <option value="PGK">PANGKAL PINANG (PGK) </option>
+                                                <option value="PKY">PANGKALANBUN (PKY)  </option>
+                                                <option value="UPG">PANGKEP (UPG)  </option>
+                                                <option value="UPG">PARE-PARE (UPG)       </option>
+                                                <option value="SRG">PATI (SRG)    </option>
+                                                <option value="PKU">PEKANBARU (PKU)</option>
+                                                <option value="BPN">PENAJAM LAWE (BPN)      </option>
+                                                <option value="BPN">PENAJAM PASIR UTARA (BPN)        </option>
+                                                <option value="TKG">PESAWARAN (TKG)</option>
+                                                <option value="MDC">PINELENG, MINAHASA (MDC)      </option>
+                                                <option value="UPG">PINRANG (UPG)   </option>
+                                                <option value="PUM">POMALA (PUM)</option>
+                                                <option value="PNK">PONTIANAK (PNK)</option>
+                                                <option value="PSJ">POSO (PSJ)  </option>
+                                                <option value="LOP">PRINGGAYA (LOP)        </option>
+                                                <option value="BDO">PUNCAK (BDO)</option>
+                                                <option value="BTH">PUNGGUR & KABIL (BTH)</option>
+                                                <option value="BDO">PURWAKARTA KOTA (BDO)</option>
+                                                <option value="SOQ">RAJA AMPAT (SOQ)</option>
+                                                <option value="BDO">RAJAPOLA TASIK (BDO)       </option>
+                                                <option value="BTH">RANAI (BTH)        </option>
+                                                <option value="MDC">RANOWUDU, BITUNG UTARA (MDC)        </option>
+                                                <option value="UPG">RANTEPAO (UPG)   </option>
+                                                <option value="MDC">REMBOKEN, MINAHASA (MDC)        </option>
+                                                <option value="LBJ">RUTENG (LBJ)   </option>
+                                                <option value="SRG">SALATIGA (SRG)</option>
+                                                <option value="SRI">SAMARINDA (SRI)</option>
+                                                <option value="BEJ">SAMBALIUNG (BEJ)   </option>
+                                                <option value="BPN">SAMBOJA (BPN)</option>
+                                                <option value="PKY">SAMPIT (PKY)    </option>
+                                                <option value="SMQ">SAMPIT (SMQ)     </option>
+                                                <option value="SXK">SAUMLAKI (SXK) </option>
+                                                <option value="BEJ">SEGAH (BEJ</option>
+                                                <option value="UPG">SELAYAR (UPG)</option>
+                                                <option value="SRG">SEMARANG (SRG)</option>
+                                                <option value="UPG">SENGKANG (UPG)      </option>
+                                                <option value="FLZ">SIBOLGA (FLZ)       </option>
+                                                <option value="UPG">SIDRAP (UPG)   </option>
+                                                <option value="BDO">SINGAPARNA TASIK (BDO)    </option>
+                                                <option value="UPG">SINJAI (UPG)</option>
+                                                <option value="SQG">SINTANG (SQG)      </option>
+                                                <option value="JOG">SLEMAN (JOG)       </option>
+                                                <option value="JOG">SLEMAN ODA (JOG)       </option>
+                                                <option value="SOC">SOLO (SOC)    </option>
+                                                <option value="MDC">SONDER, MINAHASA (MDC)        </option>
+                                                <option value="UPG">SOPPENG (UPG)       </option>
+                                                <option value="UPG">SOROAKO (UPG)    </option>
+                                                <option value="SOQ">SORONG (SOQ)   </option>
+                                                <option value="SOQ">SORONG (SOQ)</option>
+                                                <option value="SOQ">SORONG SELATAN/TEMINABUAN (SOQ)       </option>
+                                                <option value="BDO">SUBANG KOTA (BDO)        </option>
+                                                <option value="BDO">SUKABUMI KOTA (BDO)       </option>
+                                                <option value="LOP">SUMBAWA BARAT (TALIWANG) (LOP)       </option>
+                                                <option value="BDO">SUMEDANG KOTA (BDO)  </option>
+                                                <option value="KOE">SUMLILI (KOE)      </option>
+                                                <option value="SUB">SURABAYA (SUB) </option>
+                                                <option value="KOE">TABLOLONG (KOE) </option>
+                                                <option value="SUB">TAKALAR (UPG)  </option>
+                                                <option value="KOE">TAKLALE (KOE)        </option>
+                                                <option value="MDC">TALAWAAN, MINAHASA UTARA (MDC)        </option>
+                                                <option value="BEJ">TALISAYAN (BEJ)</option>
+                                                <option value="BPN">TANAH GROGOT (BPN)        </option>
+                                                <option value="KOE">TANAH MERAH (KOE) </option>
+                                                <option value="TKG">TANGGAMUS (TKG)</option>
+                                                <option value="BEJ">TANJUNG BATU (BEJ) </option>
+                                                <option value="TJQ">TANJUNG PANDAN (TJQ)      </option>
+                                                <option value="TNJ">TANJUNG PINANG (TNJ)        </option>
+                                                <option value="BEJ">TANJUNG REDEB (BEJ)</option>
+                                                <option value="BDO">TANJUNG SARI (BDO)</option>
+                                                <option value="TNJ">TANJUNG UBAN (TNJ)    </option>
+                                                <option value="BTH">TANJUNG UNCANG (BTH)</option>
+                                                <option value="TRK">TARAKAN (TRK)      </option>
+                                                <option value="TRK">TARAKAN BARAT (TRK) </option>
+                                                <option value="TRK">TARAKAN TIMUR (TRK) </option>
+                                                <option value="TRK">TARAKAN UTARA (TRK) </option>
+                                                <option value="KOE">TARUS (KOE)      </option>
+                                                <option value="BDO">TASIKMALAYA KOTA (BDO)       </option>
+                                                <option value="MDC">TATELI, MINAHASA (MDC)</option>
+                                                <option value="BEJ">TELUK BAYUR (BEJ)</option>
+                                                <option value="SOQ">TELUK BINTUNI (SOQ)</option>
+                                                <option value="SOQ">TELUK WONDAMA/WASIOR (SOQ)</option>
+                                                <option value="KOE">TENAU (KOE)       </option>
+                                                <option value="TTE">TERNATE (TTE)      </option>
+                                                <option value="BTH">TG BALAI KARIMUN (BTH)        </option>
+                                                <option value="BTH">TG BATU (BTH)      </option>
+                                                <option value="TLI">TOLI-TOLI (TLI)    </option>
+                                                <option value="MDC">TOMBARIRI, MINAHASA (MDC)      </option>
+                                                <option value="MDC">TOMBULU, MINAHASA (MDC)    </option>
+                                                <option value="MDC">TOMOHON BARAT, TOMOHON (MDC)    </option>
+                                                <option value="MDC">TOMOHON KOTA (MDC)        </option>
+                                                <option value="MDC">TOMOHON SELATAN, TOMOHON (MDC)       </option>
+                                                <option value="MDC">TOMOHON TIMUR. TOMOHON (MDC)   </option>
+                                                <option value="MDC">TOMOHON UTARA, TOMOHON (MDC)      </option>
+                                                <option value="MDC">TOMPASO, MINAHASA (MDC)       </option>
+                                                <option value="MDC">TONDANO KOTA BARAT, MINAHASA (MDC)      </option>
+                                                <option value="MDC">TONDANO KOTA SELATAN, MINAHASA (MDC      </option>
+                                                <option value="MDC">TONDANO KOTA TIMUR, MINAHASA (MDC)</option>
+                                                <option value="MDC">TONDANO KOTA UTARA, MINAHASA (MDC)      </option>
+                                                <option value="MDC">TONDANO KOTA, MINAHASA (MDC)       </option>
+                                                <option value="LUV">TUAL (LUV)</option>
+                                                <option value="KOE">TUAPUKAN (KOE)        </option>
+                                                <option value="TKG">TULANG BAWANG (TKG)       </option>
+                                                <option value="SRG">UNGARAN (SRG)  </option>
+                                                <option value="TMC">WAIKABUBAK (TMC)    </option>
+                                                <option value="WGP">WAINGAPU (WGP)  </option>
+                                                <option value="WNI">WAKATOBI (WNI)    </option>
+                                                <option value="TKG">WAY KANAN (TKG)       </option>
+                                                <option value="MDC">WORI, MINAHASA UTARA (MDC)   </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group"><input class="form-control" name="inp-weight" type="text" value="" placeholder="@T("Enter weight")" /></div>
+                                        <button id="tariffSearch" class="btn btn-danger btn-block" type="button">@T("Search")</button>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Check Your Parcel</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group"><textarea class="form-control" name="txt-sttbnumber" placeholder="@T("Enter STT’s number (max. 10)")"></textarea></div>
+                                        <button id="trackingSearch" class="btn btn-danger btn-block" type="button">@T("Search")</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-md-pull-3">
+                                <div class="lion-parcel-content-render">
+                                    <div id="lion-parcel-first-content">
+                                        <div class="lion-parcel-content-render">
+                                            <div class="col-md-12">
+                                                <p><img class="img-responsive" src="https://s32.postimg.org/5ba7qe6bp/EB24_C8_CE94_A8_FE82_E5_A1_DEE1_F8_B8_EA7_FD8_C388_C52_EC926_C.jpg" alt="image1.jpeg" /></p>
+                                                <h2 class="main-title" style="border-bottom: none; margin: 0 0 20px;">@T("ABOUT LION PARCEL")</h2>
+                                                <p>@T("About.lionParcel.line1")</p>
+                                                <p>@T("About.lionParcel.line2")</p>
+                                                <p>@T("About.lionParcel.line3")</p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h2 class="main-title" style="border-bottom: none; margin: 0 0 20px;">@T("ABOUT LION AIR GROUP")</h2>
+                                                <p>@T("About.lionParcelAirGroup.line1")</p>
+                                                <p>@T("About.lionParcelAirGroup.line2")</p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h2 class="main-title" style="border-bottom: none; margin: 0 0 20px;">@("Vision")</h2>
+                                                <p>@T("About.lionParcelVision")</p>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <h2 class="main-title" style="border-bottom: none; margin: 0 0 20px;">@T("Mission")</h2>
+                                                <p>@T("About.lionParcelMision")</p>
+                                            </div>
+                                            <div class="col-md-12" style="margin-bottom: 20px;">
+                                                <h2 class="main-title" style="border-bottom: none; margin: 0 0 20px;">@T("Our Partners")</h2>
+                                                <img style="margin: 2px" src="/Themes/ShopLion/Content/images/lion2.png" alt="lion2" /> <img style="margin: 2px" src="/Themes/ShopLion/Content/images/batik.png" alt="batik" /> <img style="margin: 2px" src="/Themes/ShopLion/Content/images/wings.png" alt="wings" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="lion-parcel-content">&nbsp;</div>
+                                    <div id="lion-parcel-tracking">&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          <script>
+            // <![CDATA[
+            $(document).ready(function () {
+
+                function addCommas(nStr) {
+                    nStr += '';
+                    x = nStr.split('.');
+                    x1 = x[0];
+                    x2 = x.length > 1 ? '.' + x[1] : '';
+                    var rgx = /(\d+)(\d{3})/;
+                    while (rgx.test(x1)) {
+                        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                    }
+                    return x1 + x2;
+                }
+
+                $("#tariffSearch").on("click", function () {
+                    var origin = $("select[name='slc-origin']").val();
+                    var destination = $("select[name='slc-destination']").val();
+                    var weight = $("input[name='inp-weight']").val();
+                    if (origin && destination && origin !== destination && weight) {
+                        var u = 'https://system.lionexpress.co.id/ewebportal/eLexysTariffService.svc/CalculateTariff?cf_signature=H7KoLR7PTz94uS9/pKuJIJ6PbJM=';
+						var d = JSON.stringify({ Origin: origin, Destination: destination, Weight:weight });
+                        $.ajax({
+                            url: u,
+                            type: "POST",
+							dataType: "json",
+                            data: d,
+							async: false, 
+							contentType: "application/json; charset=UTF-8", cache: false,
+                            success: function (data) {
+                                if (data) {
+                                    var result = data;
+                                    if (result !== "[]") {
+                                        var myData = JSON.parse(result);
+                                        if (myData.ErrorStatus[0]["ErrorMessage"] != "OK") {
+                                            alert(myData.ErrorStatus[0]["ErrorMessage"]);
+                                            //$("#lion-parcel-content").html(myData.ErrorStatus[0]["ErrorMessage"]);
+                                            //ERROR
+                                        } else {
+                                            var str = "<table class='table'>";
+                                            str += "<thead><tr><th>Product</th><th>Description</th><th>Price</th><th>Section</th></tr></thead>";
+                                            str += "<tbody>";
+                                            var results = myData.TariffResult;
+                                            for (var i = 0; i < results.length; i++) {
+                                                str += "<tr>";
+                                                str += "<td>" + results[i].Product + "</td>";
+                                                str += "<td>" + results[i].ServiceType + "</td>";
+                                                str += "<td>Rp. " + addCommas("" + results[i].TotalAmountTariff) + "</td>";
+                                                str += "<td>" + results[i].TariffSection + "</td>";
+                                                str += "</tr>";
+                                            }
+                                            str += "</tbody>";
+                                            str += "</table>";
+                                            $("#lion-parcel-content").html(str);
+                                            $("#lion-parcel-first-content").html("");
+
+                                        }
+                                    }
+                                }
+                            },
+                            error: function (xhr,status,throwMessage) {
+                            alert("Oops. Somethings went wrong.");
+                        }
+                }
+            );
+                }
+            });
+
+            $("#trackingSearch").on("click", function () {
+                var sttbnumber = $("textarea[name='txt-sttbnumber']").val();
+                if (sttbnumber)
+                    $.ajax({
+                        url: 'https://system.lionexpress.co.id//ewebportal/eLexysTrackingService.svc/GetTracking?cf_signature=TeUnxzqUs8DkWNjPo4WtGI5jxU=',
+                        async: false, type: "POST",
+                     
+							data: JSON.stringify({ sttNumber: sttbnumber }),
+			contentType: "application/json; charset=UTF-8", cache: false,
+                        success: function (data) {
+                            if (data) {
+                                var result = data;
+                                if (result !== []) {
+                                    var myData = JSON.parse(result);
+                                    var sttDetails = myData.STTDetails;
+                                    var shipmentTravelHistory = myData.ShipmentTravelHistory;
+                                    var allStr = "";
+                                    if (sttDetails.length > 0 || shipmentTravelHistory.length > 0) {
+                                        for (var i = 0; i < sttDetails.length; i++) {
+                                            var sttnumber = sttDetails[i].STTNumber;
+                                            var str = "<h4>" + sttnumber + "</h4><table class='table'>";
+                                            str += "<thead><tr><th>Service Type</th><th>Product</th><th>GrossWt</th><th>Pieces</th><th>Status</th></tr></thead>";
+                                            str += "<tbody>";
+                                            var results = myData.TariffResult;
+                                            str += "<tr>";
+                                            str += "<td>" + sttDetails[i].ServiceType + "</td>";
+                                            str += "<td>" + sttDetails[i].ProductName + "</td>";
+                                            str += "<td>" + sttDetails[i].GrossWt + "</td>";
+                                            str += "<td>" + sttDetails[i].Pieces + "</td>";
+                                            str += "<td>" + sttDetails[i].CurrentStatus + "</td>";
+                                            str += "</tr>";
+
+                                            str += "</tbody>";
+                                            str += "</table>";
+                                            str += "</br>";
+                                            str += "<table class='table'>";
+                                            str += "<thead><tr><th>Date</th><th>Tracking Code</th><th>Location</th><th>Remarks</th></tr></thead>";
+                                            str += "<tbody>"
+                                            for (var j = 0; j < shipmentTravelHistory.length; j++) {
+                                                if (shipmentTravelHistory[j].STTNumber == sttnumber) {
+                                                    str += "<tr>";
+                                                    str += "<td>" + shipmentTravelHistory[j].Date + "</td>";
+                                                    str += "<td>" + shipmentTravelHistory[j].TrackCode + "</td>";
+                                                    str += "<td>" + shipmentTravelHistory[j].Location + "</td>";
+                                                    str += "<td>" + shipmentTravelHistory[j].Remarks + "</td>";
+                                                    str += "</tr>";
+                                                }
+                                            }
+                                            str += "</tbody>";
+                                            str += "</table>";
+                                            str += "</br>";
+                                            str += "</br>";
+                                            allStr += str;
+                                        }
+                                        $("#lion-parcel-tracking").html(allStr);
+                                        $("#lion-parcel-first-content").html("");
+                                    } else {
+                                        $("#lion-parcel-tracking").html('No Record Found');
+                                        $("#lion-parcel-first-content").html("");
+                                    }
+                                }
+                            }
+                        },
+
+                        error: function () {
+                            alert("Oops. Somethings went wrong.")
+                        }
+                    });
+
+            });
+            $("#origin").select2({
+                placeholder: 'Origin'
+            });;
+            $("#destination").select2({
+                placeholder: 'Destination'
+            });;
+            });
+            // ]]></script>
+    </div>
+</div>
+<div id="boxes-popoup">
+    <div id="popupthesoon" class="window-popoup img-responsive" style="top: 160px; left: 540px; display: block;">
+        <a href="#" class="close-popup">X</a>
+        <img src="~/Themes/ShopLion/Content/images/PopUpMain.jpg" class="img-responsive">
+    </div>
+    <!-- Mask to cover the whole screen -->
+    <div id="mask-popup" style="width: 1680px; height: 2292px; display: block; opacity: 0.8;"></div>
+</div>

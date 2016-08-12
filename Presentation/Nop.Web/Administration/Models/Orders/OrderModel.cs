@@ -10,7 +10,7 @@ using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Models.Orders
 {
-    public partial class OrderModel : BaseNopEntityModel
+    public class OrderModel : BaseNopEntityModel
     {
         public OrderModel()
         {
@@ -284,22 +284,7 @@ namespace Nop.Admin.Models.Orders
             public string Amount { get; set; }
         }
 
-        public partial class OrderNote : BaseNopEntityModel
-        {
-            public int OrderId { get; set; }
-            [NopResourceDisplayName("Admin.Orders.OrderNotes.Fields.DisplayToCustomer")]
-            public bool DisplayToCustomer { get; set; }
-            [NopResourceDisplayName("Admin.Orders.OrderNotes.Fields.Note")]
-            public string Note { get; set; }
-            [NopResourceDisplayName("Admin.Orders.OrderNotes.Fields.Download")]
-            public int DownloadId { get; set; }
-            [NopResourceDisplayName("Admin.Orders.OrderNotes.Fields.Download")]
-            public Guid DownloadGuid { get; set; }
-            [NopResourceDisplayName("Admin.Orders.OrderNotes.Fields.CreatedOn")]
-            public DateTime CreatedOn { get; set; }
-        }
-
-        public partial class UploadLicenseModel : BaseNopModel
+        public class UploadLicenseModel : BaseNopModel
         {
             public int OrderId { get; set; }
 
@@ -382,8 +367,7 @@ namespace Nop.Admin.Models.Orders
                 public IList<ProductAttributeModel> ProductAttributes { get; set; }
                 //gift card info
                 public GiftCardModel GiftCard { get; set; }
-                //rental
-                public bool IsRental { get; set; }
+              
 
                 public List<string> Warnings { get; set; }
 
@@ -437,7 +421,6 @@ namespace Nop.Admin.Models.Orders
                 [AllowHtml]
                 public string Message { get; set; }
 
-                public GiftCardType GiftCardType { get; set; }
             }
             #endregion
         }

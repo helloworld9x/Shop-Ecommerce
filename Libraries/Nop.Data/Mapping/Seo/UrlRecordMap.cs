@@ -2,7 +2,7 @@ using Nop.Core.Domain.Seo;
 
 namespace Nop.Data.Mapping.Seo
 {
-    public partial class UrlRecordMap : NopEntityTypeConfiguration<UrlRecord>
+    public partial class UrlRecordMap : GoqEntityTypeConfiguration<UrlRecord>
     {
         public UrlRecordMap()
         {

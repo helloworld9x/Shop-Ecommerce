@@ -3,7 +3,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product attribute combination
     /// </summary>
-    public partial class ProductAttributeCombination : BaseEntity
+    public class ProductAttributeCombination : BaseEntity
     {
         /// <summary>
         /// Gets or sets the product identifier

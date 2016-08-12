@@ -9,7 +9,7 @@ using Nop.Web.Models.Newsletter;
 
 namespace Nop.Web.Controllers
 {
-    public partial class NewsletterController : BasePublicController
+    public class NewsletterController : BasePublicController
     {
         private readonly ILocalizationService _localizationService;
         private readonly IWorkContext _workContext;
@@ -26,12 +26,12 @@ namespace Nop.Web.Controllers
             IStoreContext storeContext,
             CustomerSettings customerSettings)
         {
-            this._localizationService = localizationService;
-            this._workContext = workContext;
-            this._newsLetterSubscriptionService = newsLetterSubscriptionService;
-            this._workflowMessageService = workflowMessageService;
-            this._storeContext = storeContext;
-            this._customerSettings = customerSettings;
+            _localizationService = localizationService;
+            _workContext = workContext;
+            _newsLetterSubscriptionService = newsLetterSubscriptionService;
+            _workflowMessageService = workflowMessageService;
+            _storeContext = storeContext;
+            _customerSettings = customerSettings;
         }
 
         [ChildActionOnly]
@@ -40,7 +40,7 @@ namespace Nop.Web.Controllers
             if (_customerSettings.HideNewsletterBlock)
                 return Content("");
 
-            var model = new NewsletterBoxModel()
+            var model = new NewsletterBoxModel
             {
                 AllowToUnsubscribe = _customerSettings.NewsletterBlockAllowToUnsubscribe
             };
@@ -107,7 +107,7 @@ namespace Nop.Web.Controllers
             return Json(new
             {
                 Success = success,
-                Result = result,
+                Result = result
             });
         }
 

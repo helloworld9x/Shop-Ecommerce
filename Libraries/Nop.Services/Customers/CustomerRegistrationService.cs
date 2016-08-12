@@ -4,7 +4,6 @@ using Nop.Core;
 using Nop.Core.Domain.Customers;
 using Nop.Services.Localization;
 using Nop.Services.Messages;
-using Nop.Services.Orders;
 using Nop.Services.Security;
 using Nop.Services.Stores;
 
@@ -13,7 +12,7 @@ namespace Nop.Services.Customers
     /// <summary>
     /// Customer registration service
     /// </summary>
-    public partial class CustomerRegistrationService : ICustomerRegistrationService
+    public class CustomerRegistrationService : ICustomerRegistrationService
     {
         #region Fields
 
@@ -22,8 +21,6 @@ namespace Nop.Services.Customers
         private readonly INewsLetterSubscriptionService _newsLetterSubscriptionService;
         private readonly ILocalizationService _localizationService;
         private readonly IStoreService _storeService;
-        private readonly IRewardPointService _rewardPointService;
-        private readonly RewardPointsSettings _rewardPointsSettings;
         private readonly CustomerSettings _customerSettings;
 
         #endregion
@@ -38,26 +35,20 @@ namespace Nop.Services.Customers
         /// <param name="newsLetterSubscriptionService">Newsletter subscription service</param>
         /// <param name="localizationService">Localization service</param>
         /// <param name="storeService">Store service</param>
-        /// <param name="rewardPointService">Reward points service</param>
-        /// <param name="rewardPointsSettings">Reward points settings</param>
         /// <param name="customerSettings">Customer settings</param>
         public CustomerRegistrationService(ICustomerService customerService, 
             IEncryptionService encryptionService, 
             INewsLetterSubscriptionService newsLetterSubscriptionService,
             ILocalizationService localizationService,
             IStoreService storeService,
-            IRewardPointService rewardPointService,
-            RewardPointsSettings rewardPointsSettings,
             CustomerSettings customerSettings)
         {
-            this._customerService = customerService;
-            this._encryptionService = encryptionService;
-            this._newsLetterSubscriptionService = newsLetterSubscriptionService;
-            this._localizationService = localizationService;
-            this._storeService = storeService;
-            this._rewardPointService = rewardPointService;
-            this._rewardPointsSettings = rewardPointsSettings;
-            this._customerSettings = customerSettings;
+            _customerService = customerService;
+            _encryptionService = encryptionService;
+            _newsLetterSubscriptionService = newsLetterSubscriptionService;
+            _localizationService = localizationService;
+            _storeService = storeService;
+            _customerSettings = customerSettings;
         }
 
         #endregion
@@ -218,16 +209,6 @@ namespace Nop.Services.Customers
             if (guestRole != null)
                 request.Customer.CustomerRoles.Remove(guestRole);
             
-            //Add reward points for customer registration (if enabled)
-            if (_rewardPointsSettings.Enabled &&
-                _rewardPointsSettings.PointsForRegistration > 0)
-            {
-                _rewardPointService.AddRewardPointsHistoryEntry(request.Customer, 
-                    _rewardPointsSettings.PointsForRegistration,
-                    request.StoreId,
-                    _localizationService.GetResource("RewardPoints.Message.EarnedForRegistration"));
-            }
-
             _customerService.UpdateCustomer(request.Customer);
             return result;
         }

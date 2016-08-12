@@ -2,7 +2,7 @@ using Nop.Core.Domain.Logging;
 
 namespace Nop.Data.Mapping.Logging
 {
-    public partial class LogMap : NopEntityTypeConfiguration<Log>
+    public partial class LogMap : GoqEntityTypeConfiguration<Log>
     {
         public LogMap()
         {

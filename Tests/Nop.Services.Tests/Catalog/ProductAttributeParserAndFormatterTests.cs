@@ -37,7 +37,6 @@ namespace Nop.Services.Tests.Catalog
         private ITaxService _taxService;
         private IPriceFormatter _priceFormatter;
         private IPriceCalculationService _priceCalculationService;
-        private IDownloadService _downloadService;
         private IWebHelper _webHelper;
         private ShoppingCartSettings _shoppingCartSettings;
         private IProductAttributeFormatter _productAttributeFormatter;
@@ -197,7 +196,6 @@ namespace Nop.Services.Tests.Catalog
             _localizationService.Expect(x => x.GetResource("GiftCardAttribute.From.Physical")).Return("From: {0}");
             _taxService = MockRepository.GenerateMock<ITaxService>();
             _priceFormatter = MockRepository.GenerateMock<IPriceFormatter>();
-            _downloadService = MockRepository.GenerateMock<IDownloadService>();
             _webHelper = MockRepository.GenerateMock<IWebHelper>();
             _shoppingCartSettings = MockRepository.GenerateMock<ShoppingCartSettings>();
 
@@ -208,7 +206,6 @@ namespace Nop.Services.Tests.Catalog
                 _localizationService,
                 _taxService,
                 _priceFormatter,
-                _downloadService,
                 _webHelper,
                 _priceCalculationService,
                 _shoppingCartSettings);
@@ -294,11 +291,8 @@ namespace Nop.Services.Tests.Catalog
                 "recipientName 1", "recipientEmail@gmail.com",
                 "senderName 1", "senderEmail@gmail.com", "custom message");
 
-            var product = new Product
-            {
-                IsGiftCard = true,
-                GiftCardType = GiftCardType.Virtual,
-            };
+            var product = new Product();
+          
             var customer = new Customer();
             string formattedAttributes = _productAttributeFormatter.FormatAttributes(product,
                 attributes, customer, "<br />", false, false, true, true);
@@ -312,11 +306,7 @@ namespace Nop.Services.Tests.Catalog
                 "recipientName 1", "recipientEmail@gmail.com",
                 "senderName 1", "senderEmail@gmail.com", "custom message");
 
-            var product = new Product
-            {
-                IsGiftCard = true,
-                GiftCardType = GiftCardType.Physical,
-            };
+            var product = new Product();
             var customer = new Customer();
             string formattedAttributes = _productAttributeFormatter.FormatAttributes(product,
                 attributes, customer, "<br />", false, false, true, true);
@@ -340,11 +330,7 @@ namespace Nop.Services.Tests.Catalog
                 "recipientName 1", "recipientEmail@gmail.com",
                 "senderName 1", "senderEmail@gmail.com", "custom message");
 
-            var product = new Product
-            {
-                IsGiftCard = true,
-                GiftCardType = GiftCardType.Virtual,
-            };
+            var product = new Product();
             var customer = new Customer();
             string formattedAttributes = _productAttributeFormatter.FormatAttributes(product,
                 attributes, customer, "<br />", false, false, true, true);

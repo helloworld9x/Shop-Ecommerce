@@ -2,15 +2,15 @@ using Nop.Core.Domain.Orders;
 
 namespace Nop.Data.Mapping.Orders
 {
-    public partial class CheckoutAttributeMap : NopEntityTypeConfiguration<CheckoutAttribute>
+    public class CheckoutAttributeMap : GoqEntityTypeConfiguration<CheckoutAttribute>
     {
         public CheckoutAttributeMap()
         {
-            this.ToTable("CheckoutAttribute");
-            this.HasKey(ca => ca.Id);
-            this.Property(ca => ca.Name).IsRequired().HasMaxLength(400);
+            ToTable("CheckoutAttribute");
+            HasKey(ca => ca.Id);
+            Property(ca => ca.Name).IsRequired().HasMaxLength(400);
 
-            this.Ignore(ca => ca.AttributeControlType);
+            Ignore(ca => ca.AttributeControlType);
         }
     }
 }

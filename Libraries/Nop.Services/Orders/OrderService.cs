@@ -15,13 +15,12 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order service
     /// </summary>
-    public partial class OrderService : IOrderService
+    public class OrderService : IOrderService
     {
         #region Fields
 
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<OrderItem> _orderItemRepository;
-        private readonly IRepository<OrderNote> _orderNoteRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<RecurringPayment> _recurringPaymentRepository;
         private readonly IRepository<Customer> _customerRepository;
@@ -43,19 +42,17 @@ namespace Nop.Services.Orders
         /// <param name="eventPublisher">Event published</param>
         public OrderService(IRepository<Order> orderRepository,
             IRepository<OrderItem> orderItemRepository,
-            IRepository<OrderNote> orderNoteRepository,
             IRepository<Product> productRepository,
             IRepository<RecurringPayment> recurringPaymentRepository,
             IRepository<Customer> customerRepository, 
             IEventPublisher eventPublisher)
         {
-            this._orderRepository = orderRepository;
-            this._orderItemRepository = orderItemRepository;
-            this._orderNoteRepository = orderNoteRepository;
-            this._productRepository = productRepository;
-            this._recurringPaymentRepository = recurringPaymentRepository;
-            this._customerRepository = customerRepository;
-            this._eventPublisher = eventPublisher;
+            _orderRepository = orderRepository;
+            _orderItemRepository = orderItemRepository;
+            _productRepository = productRepository;
+            _recurringPaymentRepository = recurringPaymentRepository;
+            _customerRepository = customerRepository;
+            _eventPublisher = eventPublisher;
         }
 
         #endregion
@@ -233,8 +230,7 @@ namespace Nop.Services.Orders
                 query = query.Where(o => o.BillingAddress != null && !String.IsNullOrEmpty(o.BillingAddress.Email) && o.BillingAddress.Email.Contains(billingEmail));
             if (!String.IsNullOrEmpty(billingLastName))
                 query = query.Where(o => o.BillingAddress != null && !String.IsNullOrEmpty(o.BillingAddress.LastName) && o.BillingAddress.LastName.Contains(billingLastName));
-            if (!String.IsNullOrEmpty(orderNotes))
-                query = query.Where(o => o.OrderNotes.Any(on => on.Note.Contains(orderNotes)));
+           
             query = query.Where(o => !o.Deleted);
             query = query.OrderByDescending(o => o.CreatedOnUtc);
 
@@ -377,7 +373,7 @@ namespace Nop.Services.Orders
                         (!orderStatusId.HasValue || orderStatusId == o.OrderStatusId) &&
                         (!paymentStatusId.HasValue || paymentStatusId.Value == o.PaymentStatusId) &&
                         (!shippingStatusId.HasValue || shippingStatusId.Value == o.ShippingStatusId) &&
-                        (!loadDownloableProductsOnly || p.IsDownload) &&
+                        (!loadDownloableProductsOnly) &&
                         !o.Deleted
                         orderby o.CreatedOnUtc descending, orderItem.Id
                         select orderItem;
@@ -399,38 +395,6 @@ namespace Nop.Services.Orders
 
             //event notification
             _eventPublisher.EntityDeleted(orderItem);
-        }
-
-        #endregion
-
-        #region Orders notes
-
-        /// <summary>
-        /// Gets an order note
-        /// </summary>
-        /// <param name="orderNoteId">The order note identifier</param>
-        /// <returns>Order note</returns>
-        public virtual OrderNote GetOrderNoteById(int orderNoteId)
-        {
-            if (orderNoteId == 0)
-                return null;
-
-            return _orderNoteRepository.GetById(orderNoteId);
-        }
-
-        /// <summary>
-        /// Deletes an order note
-        /// </summary>
-        /// <param name="orderNote">The order note</param>
-        public virtual void DeleteOrderNote(OrderNote orderNote)
-        {
-            if (orderNote == null)
-                throw new ArgumentNullException("orderNote");
-
-            _orderNoteRepository.Delete(orderNote);
-
-            //event notification
-            _eventPublisher.EntityDeleted(orderNote);
         }
 
         #endregion

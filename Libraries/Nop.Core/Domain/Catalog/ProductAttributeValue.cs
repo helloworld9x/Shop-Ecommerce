@@ -5,7 +5,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product attribute value
     /// </summary>
-    public partial class ProductAttributeValue : BaseEntity, ILocalizedEntity
+    public class ProductAttributeValue : BaseEntity, ILocalizedEntity
     {
         /// <summary>
         /// Gets or sets the product attribute mapping identifier
@@ -79,11 +79,11 @@ namespace Nop.Core.Domain.Catalog
         {
             get
             {
-                return (AttributeValueType)this.AttributeValueTypeId;
+                return (AttributeValueType)AttributeValueTypeId;
             }
             set
             {
-                this.AttributeValueTypeId = (int)value;
+                AttributeValueTypeId = (int)value;
             }
         }
     }

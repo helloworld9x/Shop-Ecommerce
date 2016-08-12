@@ -2,7 +2,7 @@ using Nop.Core.Domain.Messages;
 
 namespace Nop.Data.Mapping.Messages
 {
-    public partial class NewsLetterSubscriptionMap : NopEntityTypeConfiguration<NewsLetterSubscription>
+    public class NewsLetterSubscriptionMap : GoqEntityTypeConfiguration<NewsLetterSubscription>
     {
         public NewsLetterSubscriptionMap()
         {

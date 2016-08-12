@@ -10,7 +10,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order service interface
     /// </summary>
-    public partial interface IOrderService
+    public interface IOrderService
     {
         #region Orders
 
@@ -134,23 +134,6 @@ namespace Nop.Services.Orders
         /// </summary>
         /// <param name="orderItem">The order item</param>
         void DeleteOrderItem(OrderItem orderItem);
-
-        #endregion
-
-        #region Order notes
-
-        /// <summary>
-        /// Gets an order note
-        /// </summary>
-        /// <param name="orderNoteId">The order note identifier</param>
-        /// <returns>Order note</returns>
-        OrderNote GetOrderNoteById(int orderNoteId);
-
-        /// <summary>
-        /// Deletes an order note
-        /// </summary>
-        /// <param name="orderNote">The order note</param>
-        void DeleteOrderNote(OrderNote orderNote);
 
         #endregion
 

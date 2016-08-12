@@ -5,7 +5,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product review helpfulness
     /// </summary>
-    public partial class ProductReviewHelpfulness : BaseEntity
+    public class ProductReviewHelpfulness : BaseEntity
     {
         /// <summary>
         /// Gets or sets the product review identifier

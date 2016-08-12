@@ -7,7 +7,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Return request service interface
     /// </summary>
-    public partial interface IReturnRequestService
+    public interface IReturnRequestService
     {
         /// <summary>
         /// Deletes a return request

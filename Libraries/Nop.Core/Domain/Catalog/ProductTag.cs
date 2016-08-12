@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product tag
     /// </summary>
-    public partial class ProductTag : BaseEntity, ILocalizedEntity
+    public class ProductTag : BaseEntity, ILocalizedEntity
     {
         private ICollection<Product> _products;
 

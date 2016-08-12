@@ -3,7 +3,7 @@ using Nop.Plugin.Feed.Froogle.Domain;
 
 namespace Nop.Plugin.Feed.Froogle.Data
 {
-    public partial class GoogleProductRecordMap : NopEntityTypeConfiguration<GoogleProductRecord>
+    public partial class GoogleProductRecordMap : GoqEntityTypeConfiguration<GoogleProductRecord>
     {
         public GoogleProductRecordMap()
         {

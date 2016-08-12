@@ -6,13 +6,13 @@ namespace Nop.Services.Customers
     /// <summary>
     /// Represents a task for deleting guest customers
     /// </summary>
-    public partial class DeleteGuestsTask : ITask
+    public class DeleteGuestsTask : ITask
     {
         private readonly ICustomerService _customerService;
 
         public DeleteGuestsTask(ICustomerService customerService)
         {
-            this._customerService = customerService;
+            _customerService = customerService;
         }
 
         /// <summary>

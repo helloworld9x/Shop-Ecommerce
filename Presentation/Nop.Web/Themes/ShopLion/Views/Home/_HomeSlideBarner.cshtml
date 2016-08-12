@@ -1,0 +1,15 @@
+﻿@{
+    int currentCategoryId = 0;
+    int currentProductId = 0;
+}
+<section class="home-section">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 affix-sidebar">
+                @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId })
+            </div>
+            <div class="col-xs-12 col-sm-9">
+                @Html.Widget("home_page_top")
+            </div>
+        </div>
+   
+</section>

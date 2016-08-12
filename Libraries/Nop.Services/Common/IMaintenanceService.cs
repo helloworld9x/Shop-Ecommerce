@@ -5,7 +5,7 @@ namespace Nop.Services.Common
     /// <summary>
     ///  Maintenance service interface
     /// </summary>
-    public partial interface IMaintenanceService
+    public interface IMaintenanceService
     {
         /// <summary>
         /// Get the current ident value

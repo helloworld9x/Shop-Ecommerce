@@ -27,9 +27,6 @@ namespace Nop.Data.Tests.Catalog
                                                                       {
                                                                           Name = "Books",
                                                                           Description = "Description 1",
-                                                                          MetaKeywords = "Meta keywords",
-                                                                          MetaDescription = "Meta description",
-                                                                          MetaTitle = "Meta title",
                                                                           ParentCategoryId = 2,
                                                                           PictureId = 3,
                                                                           PageSize = 4,

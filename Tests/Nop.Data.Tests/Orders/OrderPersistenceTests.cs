@@ -151,36 +151,6 @@ namespace Nop.Data.Tests.Orders
         }
 
         [Test]
-        public void Can_save_and_load_order_with_usedRewardPoints()
-        {
-            var order = new Order
-            {
-                OrderGuid = Guid.NewGuid(),
-                Customer = GetTestCustomer(),
-                RedeemedRewardPointsEntry = new RewardPointsHistory
-                {
-                    Customer = GetTestCustomer(),
-                    StoreId = 1,
-                    Points = -1,
-                    Message = "Used with order",
-                    PointsBalance = 2,
-                    UsedAmount = 3,
-                    CreatedOnUtc = new DateTime(2010, 01, 01)
-                },
-                BillingAddress = GetTestBillingAddress(),
-                CreatedOnUtc = new DateTime(2010, 01, 01)
-            };
-
-            var fromDb = SaveAndLoadEntity(order);
-            fromDb.ShouldNotBeNull();
-            fromDb.Deleted.ShouldEqual(false);
-            fromDb.CreatedOnUtc.ShouldEqual(new DateTime(2010, 01, 01));
-
-            fromDb.RedeemedRewardPointsEntry.ShouldNotBeNull();
-            fromDb.RedeemedRewardPointsEntry.Points.ShouldEqual(-1);
-        }
-
-        [Test]
         public void Can_save_and_load_order_with_discountUsageHistory()
         {
             var testCustomer = GetTestCustomer();
@@ -219,21 +189,9 @@ namespace Nop.Data.Tests.Orders
                 BillingAddress = GetTestBillingAddress(),
                 CreatedOnUtc = new DateTime(2010, 01, 01)
             };
-            order.GiftCardUsageHistory.Add
-                (
-                    new GiftCardUsageHistory
-                    {
-                        UsedValue = 1.1M,
-                        CreatedOnUtc = new DateTime(2010, 01, 01),
-                        GiftCard = GetTestGiftCard()
-                    }
-                );
+          
             var fromDb = SaveAndLoadEntity(order);
             fromDb.ShouldNotBeNull();
-
-            fromDb.GiftCardUsageHistory.ShouldNotBeNull();
-            fromDb.GiftCardUsageHistory.Count.ShouldEqual(1);
-            fromDb.GiftCardUsageHistory.First().CreatedOnUtc.ShouldEqual(new DateTime(2010, 01, 01));
         }
 
         [Test]
@@ -246,20 +204,9 @@ namespace Nop.Data.Tests.Orders
                 BillingAddress = GetTestBillingAddress(),
                 CreatedOnUtc = new DateTime(2010, 01, 01)
             };
-            order.OrderNotes.Add
-                (
-                    new OrderNote
-                    {
-                        Note = "Note 1",
-                        CreatedOnUtc = new DateTime(2010, 01, 01),
-                    }
-                );
+         
             var fromDb = SaveAndLoadEntity(order);
             fromDb.ShouldNotBeNull();
-
-            fromDb.OrderNotes.ShouldNotBeNull();
-            fromDb.OrderNotes.Count.ShouldEqual(1);
-            fromDb.OrderNotes.First().Note.ShouldEqual("Note 1");
         }
 
         [Test]
@@ -378,23 +325,6 @@ namespace Nop.Data.Tests.Orders
                 SubjectToVat = true,
                 Published = true,
                 DisplayOrder = 1
-            };
-        }
-
-        protected GiftCard GetTestGiftCard()
-        {
-            return new GiftCard
-            {
-                Amount = 1,
-                IsGiftCardActivated = true,
-                GiftCardCouponCode = "Secret",
-                RecipientName = "RecipientName 1",
-                RecipientEmail = "a@b.c",
-                SenderName = "SenderName 1",
-                SenderEmail = "d@e.f",
-                Message = "Message 1",
-                IsRecipientNotified = true,
-                CreatedOnUtc = new DateTime(2010, 01, 01),
             };
         }
 

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Nop.Core;
 using Nop.Core.Domain;
-using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Messages;
@@ -27,7 +24,6 @@ using Nop.Services.Logging;
 using Nop.Services.Media;
 using Nop.Services.Messages;
 using Nop.Services.Orders;
-using Nop.Services.Seo;
 using Nop.Services.Stores;
 using Nop.Services.Tax;
 using Nop.Web.Extensions;
@@ -38,11 +34,10 @@ using Nop.Web.Framework.Security.Captcha;
 using Nop.Web.Framework.Security.Honeypot;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Customer;
-using WebGrease.Css.Extensions;
 
 namespace Nop.Web.Controllers
 {
-    public partial class CustomerController : BasePublicController
+    public class CustomerController : BasePublicController
     {
         #region Fields
         private readonly IAuthenticationService _authenticationService;
@@ -54,15 +49,11 @@ namespace Nop.Web.Controllers
         private readonly IStoreContext _storeContext;
         private readonly IStoreMappingService _storeMappingService;
         private readonly ICustomerService _customerService;
-        private readonly ICustomerAttributeParser _customerAttributeParser;
-        private readonly ICustomerAttributeService _customerAttributeService;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly ICustomerRegistrationService _customerRegistrationService;
         private readonly ITaxService _taxService;
-        private readonly RewardPointsSettings _rewardPointsSettings;
         private readonly CustomerSettings _customerSettings;
         private readonly AddressSettings _addressSettings;
-        private readonly ForumSettings _forumSettings;
         private readonly OrderSettings _orderSettings;
         private readonly IAddressService _addressService;
         private readonly ICountryService _countryService;
@@ -72,12 +63,8 @@ namespace Nop.Web.Controllers
         private readonly INewsLetterSubscriptionService _newsLetterSubscriptionService;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IOpenAuthenticationService _openAuthenticationService;
-        private readonly IDownloadService _downloadService;
         private readonly IWebHelper _webHelper;
         private readonly ICustomerActivityService _customerActivityService;
-        private readonly IAddressAttributeParser _addressAttributeParser;
-        private readonly IAddressAttributeService _addressAttributeService;
-        private readonly IAddressAttributeFormatter _addressAttributeFormatter;
         private readonly IReturnRequestService _returnRequestService;
         private readonly IEventPublisher _eventPublisher;
 
@@ -95,37 +82,29 @@ namespace Nop.Web.Controllers
 
         public CustomerController(IAuthenticationService authenticationService,
             IDateTimeHelper dateTimeHelper,
-            DateTimeSettings dateTimeSettings, 
+            DateTimeSettings dateTimeSettings,
             TaxSettings taxSettings,
             ILocalizationService localizationService,
             IWorkContext workContext,
             IStoreContext storeContext,
             IStoreMappingService storeMappingService,
             ICustomerService customerService,
-            ICustomerAttributeParser customerAttributeParser,
-            ICustomerAttributeService customerAttributeService,
             IGenericAttributeService genericAttributeService,
             ICustomerRegistrationService customerRegistrationService,
-            ITaxService taxService, 
-            RewardPointsSettings rewardPointsSettings,
+            ITaxService taxService,
             CustomerSettings customerSettings,
-            AddressSettings addressSettings, 
-            ForumSettings forumSettings,
-            OrderSettings orderSettings, 
+            AddressSettings addressSettings,
+            OrderSettings orderSettings,
             IAddressService addressService,
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
             IOrderService orderService,
-            IPictureService pictureService, 
+            IPictureService pictureService,
             INewsLetterSubscriptionService newsLetterSubscriptionService,
             IShoppingCartService shoppingCartService,
             IOpenAuthenticationService openAuthenticationService,
-            IDownloadService downloadService,
             IWebHelper webHelper,
             ICustomerActivityService customerActivityService,
-            IAddressAttributeParser addressAttributeParser,
-            IAddressAttributeService addressAttributeService,
-            IAddressAttributeFormatter addressAttributeFormatter,
             IReturnRequestService returnRequestService,
             IEventPublisher eventPublisher,
             MediaSettings mediaSettings,
@@ -136,54 +115,46 @@ namespace Nop.Web.Controllers
             ExternalAuthenticationSettings externalAuthenticationSettings,
             StoreInformationSettings storeInformationSettings)
         {
-            this._authenticationService = authenticationService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._dateTimeSettings = dateTimeSettings;
-            this._taxSettings = taxSettings;
-            this._localizationService = localizationService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._storeMappingService = storeMappingService;
-            this._customerService = customerService;
-            this._customerAttributeParser = customerAttributeParser;
-            this._customerAttributeService = customerAttributeService;
-            this._genericAttributeService = genericAttributeService;
-            this._customerRegistrationService = customerRegistrationService;
-            this._taxService = taxService;
-            this._rewardPointsSettings = rewardPointsSettings;
-            this._customerSettings = customerSettings;
-            this._addressSettings = addressSettings;
-            this._forumSettings = forumSettings;
-            this._orderSettings = orderSettings;
-            this._addressService = addressService;
-            this._countryService = countryService;
-            this._stateProvinceService = stateProvinceService;
-            this._orderService = orderService;
-            this._pictureService = pictureService;
-            this._newsLetterSubscriptionService = newsLetterSubscriptionService;
-            this._shoppingCartService = shoppingCartService;
-            this._openAuthenticationService = openAuthenticationService;
-            this._downloadService = downloadService;
-            this._webHelper = webHelper;
-            this._customerActivityService = customerActivityService;
-            this._addressAttributeParser = addressAttributeParser;
-            this._addressAttributeService = addressAttributeService;
-            this._addressAttributeFormatter = addressAttributeFormatter;
-            this._returnRequestService = returnRequestService;
-            this._eventPublisher = eventPublisher;
-            this._mediaSettings = mediaSettings;
-            this._workflowMessageService = workflowMessageService;
-            this._localizationSettings = localizationSettings;
-            this._captchaSettings = captchaSettings;
-            this._securitySettings = securitySettings;
-            this._externalAuthenticationSettings = externalAuthenticationSettings;
-            this._storeInformationSettings = storeInformationSettings;
+            _authenticationService = authenticationService;
+            _dateTimeHelper = dateTimeHelper;
+            _dateTimeSettings = dateTimeSettings;
+            _taxSettings = taxSettings;
+            _localizationService = localizationService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _storeMappingService = storeMappingService;
+            _customerService = customerService;
+            _genericAttributeService = genericAttributeService;
+            _customerRegistrationService = customerRegistrationService;
+            _taxService = taxService;
+            _customerSettings = customerSettings;
+            _addressSettings = addressSettings;
+            _orderSettings = orderSettings;
+            _addressService = addressService;
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
+            _orderService = orderService;
+            _pictureService = pictureService;
+            _newsLetterSubscriptionService = newsLetterSubscriptionService;
+            _shoppingCartService = shoppingCartService;
+            _openAuthenticationService = openAuthenticationService;
+            _webHelper = webHelper;
+            _customerActivityService = customerActivityService;
+            _returnRequestService = returnRequestService;
+            _eventPublisher = eventPublisher;
+            _mediaSettings = mediaSettings;
+            _workflowMessageService = workflowMessageService;
+            _localizationSettings = localizationSettings;
+            _captchaSettings = captchaSettings;
+            _securitySettings = securitySettings;
+            _externalAuthenticationSettings = externalAuthenticationSettings;
+            _storeInformationSettings = storeInformationSettings;
         }
 
         #endregion
 
         #region Utilities
-        
+
         [NonAction]
         protected virtual void TryAssociateAccountWithExternalAccount(Customer customer)
         {
@@ -197,104 +168,6 @@ namespace Nop.Web.Controllers
             _openAuthenticationService.AssociateExternalAccountWithUser(customer, parameters);
         }
 
-        /// <summary>
-        /// Prepare custom customer attribute models
-        /// </summary>
-        /// <param name="customer">Customer</param>
-        /// <param name="overrideAttributesXml">When specified we do not use attributes of a customer</param>
-        /// <returns>A list of customer attribute models</returns>
-        [NonAction]
-        protected virtual IList<CustomerAttributeModel> PrepareCustomCustomerAttributes(Customer customer,
-            string overrideAttributesXml = "")
-        {
-            if (customer == null)
-                throw new ArgumentNullException("customer");
-
-            var result = new List<CustomerAttributeModel>();
-
-            var customerAttributes = _customerAttributeService.GetAllCustomerAttributes();
-            foreach (var attribute in customerAttributes)
-            {
-                var attributeModel = new CustomerAttributeModel
-                {
-                    Id = attribute.Id,
-                    Name = attribute.GetLocalized(x => x.Name),
-                    IsRequired = attribute.IsRequired,
-                    AttributeControlType = attribute.AttributeControlType,
-                };
-
-                if (attribute.ShouldHaveValues())
-                {
-                    //values
-                    var attributeValues = _customerAttributeService.GetCustomerAttributeValues(attribute.Id);
-                    foreach (var attributeValue in attributeValues)
-                    {
-                        var valueModel = new CustomerAttributeValueModel
-                        {
-                            Id = attributeValue.Id,
-                            Name = attributeValue.GetLocalized(x => x.Name),
-                            IsPreSelected = attributeValue.IsPreSelected
-                        };
-                        attributeModel.Values.Add(valueModel);
-                    }
-                }
-
-                //set already selected attributes
-                var selectedAttributesXml = !String.IsNullOrEmpty(overrideAttributesXml) ?
-                    overrideAttributesXml : 
-                    customer.GetAttribute<string>(SystemCustomerAttributeNames.CustomCustomerAttributes, _genericAttributeService);
-                switch (attribute.AttributeControlType)
-                {
-                    case AttributeControlType.DropdownList:
-                    case AttributeControlType.RadioList:
-                    case AttributeControlType.Checkboxes:
-                        {
-                            if (!String.IsNullOrEmpty(selectedAttributesXml))
-                            {
-                                //clear default selection
-                                foreach (var item in attributeModel.Values)
-                                    item.IsPreSelected = false;
-
-                                //select new values
-                                var selectedValues = _customerAttributeParser.ParseCustomerAttributeValues(selectedAttributesXml);
-                                foreach (var attributeValue in selectedValues)
-                                    foreach (var item in attributeModel.Values)
-                                        if (attributeValue.Id == item.Id)
-                                            item.IsPreSelected = true;
-                            }
-                        }
-                        break;
-                    case AttributeControlType.ReadonlyCheckboxes:
-                        {
-                            //do nothing
-                            //values are already pre-set
-                        }
-                        break;
-                    case AttributeControlType.TextBox:
-                    case AttributeControlType.MultilineTextbox:
-                        {
-                            if (!String.IsNullOrEmpty(selectedAttributesXml))
-                            {
-                                var enteredText = _customerAttributeParser.ParseValues(selectedAttributesXml, attribute.Id);
-                                if (enteredText.Count > 0)
-                                    attributeModel.DefaultValue = enteredText[0];
-                            }
-                        }
-                        break;
-                    case AttributeControlType.ColorSquares:
-                    case AttributeControlType.Datepicker:
-                    case AttributeControlType.FileUpload:
-                    default:
-                        //not supported attribute control types
-                        break;
-                }
-
-                result.Add(attributeModel);
-            }
-
-
-            return result;
-        }
 
         [NonAction]
         protected virtual void PrepareCustomerInfoModel(CustomerInfoModel model, Customer customer,
@@ -388,7 +261,7 @@ namespace Nop.Web.Controllers
 
                 }
             }
-            model.DisplayVatNumber = _taxSettings.EuVatEnabled;
+            model.DisplayVatNumber = false;
             model.VatNumberStatusNote = ((VatNumberStatus)customer.GetAttribute<int>(SystemCustomerAttributeNames.VatNumberStatusId))
                 .GetLocalizedEnum(_localizationService, _workContext);
             model.GenderEnabled = _customerSettings.GenderEnabled;
@@ -416,7 +289,6 @@ namespace Nop.Web.Controllers
             model.UsernamesEnabled = _customerSettings.UsernamesEnabled;
             model.AllowUsersToChangeUsernames = _customerSettings.AllowUsersToChangeUsernames;
             model.CheckUsernameAvailabilityEnabled = _customerSettings.CheckUsernameAvailabilityEnabled;
-            model.SignatureEnabled = _forumSettings.ForumsEnabled && _forumSettings.SignaturesEnabled;
 
             //external authentication
             model.NumberOfExternalAuthenticationProviders = _openAuthenticationService
@@ -436,10 +308,6 @@ namespace Nop.Web.Controllers
                     AuthMethodName = authMethod.GetLocalizedFriendlyName(_localizationService, _workContext.WorkingLanguage.Id)
                 });
             }
-
-            //custom customer attributes
-            var customAttributes = PrepareCustomCustomerAttributes(customer, overrideCustomCustomerAttributesXml);
-            customAttributes.ForEach(model.CustomerAttributes.Add);
         }
 
         [NonAction]
@@ -452,8 +320,8 @@ namespace Nop.Web.Controllers
             model.AllowCustomersToSetTimeZone = _dateTimeSettings.AllowCustomersToSetTimeZone;
             foreach (var tzi in _dateTimeHelper.GetSystemTimeZones())
                 model.AvailableTimeZones.Add(new SelectListItem { Text = tzi.DisplayName, Value = tzi.Id, Selected = (excludeProperties ? tzi.Id == model.TimeZoneId : tzi.Id == _dateTimeHelper.CurrentTimeZone.Id) });
-            
-            model.DisplayVatNumber = _taxSettings.EuVatEnabled;
+
+            model.DisplayVatNumber = false;
             //form fields
             model.GenderEnabled = _customerSettings.GenderEnabled;
             model.DateOfBirthEnabled = _customerSettings.DateOfBirthEnabled;
@@ -482,7 +350,7 @@ namespace Nop.Web.Controllers
             model.CheckUsernameAvailabilityEnabled = _customerSettings.CheckUsernameAvailabilityEnabled;
             model.HoneypotEnabled = _securitySettings.HoneypotEnabled;
             model.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnRegistrationPage;
-            
+
             //countries and states
             if (_customerSettings.CountryEnabled)
             {
@@ -517,96 +385,13 @@ namespace Nop.Web.Controllers
 
                         model.AvailableStates.Add(new SelectListItem
                         {
-                            Text = _localizationService.GetResource(anyCountrySelected ? "Address.OtherNonUS" : "Address.SelectState"), 
+                            Text = _localizationService.GetResource(anyCountrySelected ? "Address.OtherNonUS" : "Address.SelectState"),
                             Value = "0"
                         });
                     }
 
                 }
             }
-
-            //custom customer attributes
-            var customAttributes = PrepareCustomCustomerAttributes(_workContext.CurrentCustomer, overrideCustomCustomerAttributesXml);
-            customAttributes.ForEach(model.CustomerAttributes.Add);
-        }
-
-        [NonAction]
-        protected virtual string ParseCustomCustomerAttributes(FormCollection form)
-        {
-            if (form == null)
-                throw new ArgumentNullException("form");
-
-            string attributesXml = "";
-            var attributes = _customerAttributeService.GetAllCustomerAttributes();
-            foreach (var attribute in attributes)
-            {
-                string controlId = string.Format("customer_attribute_{0}", attribute.Id);
-                switch (attribute.AttributeControlType)
-                {
-                    case AttributeControlType.DropdownList:
-                    case AttributeControlType.RadioList:
-                        {
-                            var ctrlAttributes = form[controlId];
-                            if (!String.IsNullOrEmpty(ctrlAttributes))
-                            {
-                                int selectedAttributeId = int.Parse(ctrlAttributes);
-                                if (selectedAttributeId > 0)
-                                    attributesXml = _customerAttributeParser.AddCustomerAttribute(attributesXml,
-                                        attribute, selectedAttributeId.ToString());
-                            }
-                        }
-                        break;
-                    case AttributeControlType.Checkboxes:
-                        {
-                            var cblAttributes = form[controlId];
-                            if (!String.IsNullOrEmpty(cblAttributes))
-                            {
-                                foreach (var item in cblAttributes.Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                                {
-                                        int selectedAttributeId = int.Parse(item);
-                                        if (selectedAttributeId > 0)
-                                            attributesXml = _customerAttributeParser.AddCustomerAttribute(attributesXml,
-                                                attribute, selectedAttributeId.ToString());
-                                }
-                            }
-                        }
-                        break;
-                    case AttributeControlType.ReadonlyCheckboxes:
-                        {
-                            //load read-only (already server-side selected) values
-                            var attributeValues = _customerAttributeService.GetCustomerAttributeValues(attribute.Id);
-                            foreach (var selectedAttributeId in attributeValues
-                                .Where(v => v.IsPreSelected)
-                                .Select(v => v.Id)
-                                .ToList())
-                            {
-                                attributesXml = _customerAttributeParser.AddCustomerAttribute(attributesXml,
-                                            attribute, selectedAttributeId.ToString());
-                            }
-                        }
-                        break;
-                    case AttributeControlType.TextBox:
-                    case AttributeControlType.MultilineTextbox:
-                        {
-                            var ctrlAttributes = form[controlId];
-                            if (!String.IsNullOrEmpty(ctrlAttributes))
-                            {
-                                string enteredText = ctrlAttributes.Trim();
-                                attributesXml = _customerAttributeParser.AddCustomerAttribute(attributesXml,
-                                    attribute, enteredText);
-                            }
-                        }
-                        break;
-                    case AttributeControlType.Datepicker:
-                    case AttributeControlType.ColorSquares:
-                    case AttributeControlType.FileUpload:
-                        //not supported customer attributes
-                    default:
-                        break;
-                }
-            }
-
-            return attributesXml;
         }
 
         #endregion
@@ -668,7 +453,7 @@ namespace Nop.Web.Controllers
 
                             if (String.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
                                 return RedirectToRoute("HomePage");
-                            
+
                             return Redirect(returnUrl);
                         }
                     case CustomerLoginResults.CustomerNotExist:
@@ -711,7 +496,7 @@ namespace Nop.Web.Controllers
                 _genericAttributeService.SaveAttribute<int?>(_workContext.OriginalCustomerIfImpersonated,
                     SystemCustomerAttributeNames.ImpersonatedCustomerId, null);
                 //redirect back to customer details page (admin area)
-                return this.RedirectToAction("Edit", "Customer", new { id = _workContext.CurrentCustomer.Id, area = "Admin" });
+                return RedirectToAction("Edit", "Customer", new { id = _workContext.CurrentCustomer.Id, area = "Admin" });
 
             }
 
@@ -894,24 +679,16 @@ namespace Nop.Web.Controllers
             //check whether registration is allowed
             if (_customerSettings.UserRegistrationType == UserRegistrationType.Disabled)
                 return RedirectToRoute("RegisterResult", new { resultId = (int)UserRegistrationType.Disabled });
-            
+
             if (_workContext.CurrentCustomer.IsRegistered())
             {
                 //Already registered customer. 
                 _authenticationService.SignOut();
-                
+
                 //Save a new record
                 _workContext.CurrentCustomer = _customerService.InsertGuestCustomer();
             }
             var customer = _workContext.CurrentCustomer;
-
-            //custom customer attributes
-            var customerAttributesXml = ParseCustomCustomerAttributes(form);
-            var customerAttributeWarnings = _customerAttributeParser.GetAttributeWarnings(customerAttributesXml);
-            foreach (var error in customerAttributeWarnings)
-            {
-                ModelState.AddModelError("", error);
-            }
 
             //validate CAPTCHA
             if (_captchaSettings.Enabled && _captchaSettings.ShowOnRegistrationPage && !captchaValid)
@@ -927,10 +704,10 @@ namespace Nop.Web.Controllers
                 }
 
                 bool isApproved = _customerSettings.UserRegistrationType == UserRegistrationType.Standard;
-                var registrationRequest = new CustomerRegistrationRequest(customer, 
+                var registrationRequest = new CustomerRegistrationRequest(customer,
                     model.Email,
-                    _customerSettings.UsernamesEnabled ? model.Username : model.Email, 
-                    model.Password, 
+                    _customerSettings.UsernamesEnabled ? model.Username : model.Email,
+                    model.Password,
                     _customerSettings.DefaultPasswordFormat,
                     _storeContext.CurrentStore.Id,
                     isApproved);
@@ -942,23 +719,6 @@ namespace Nop.Web.Controllers
                     {
                         _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.TimeZoneId, model.TimeZoneId);
                     }
-                    //VAT number
-                    if (_taxSettings.EuVatEnabled)
-                    {
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.VatNumber, model.VatNumber);
-                        
-                        string vatName;
-                        string vatAddress;
-                        var vatNumberStatus = _taxService.GetVatNumberStatus(model.VatNumber, out vatName, out vatAddress);
-                        _genericAttributeService.SaveAttribute(customer,
-                            SystemCustomerAttributeNames.VatNumberStatusId,
-                            (int)vatNumberStatus);
-                        //send VAT number admin notification
-                        if (!String.IsNullOrEmpty(model.VatNumber) && _taxSettings.EuVatEmailAdminWhenNewVatSubmitted)
-                            _workflowMessageService.SendNewVatSubmittedStoreOwnerNotification(customer, model.VatNumber, vatAddress, _localizationSettings.DefaultAdminLanguageId);
-
-                    }
-
                     //form fields
                     if (_customerSettings.GenderEnabled)
                         _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.Gender, model.Gender);
@@ -1002,8 +762,8 @@ namespace Nop.Web.Controllers
                             }
                             //else
                             //{
-                                //When registering, not checking the newsletter check box should not take an existing email address off of the subscription list.
-                                //_newsLetterSubscriptionService.DeleteNewsLetterSubscription(newsletter);
+                            //When registering, not checking the newsletter check box should not take an existing email address off of the subscription list.
+                            //_newsLetterSubscriptionService.DeleteNewsLetterSubscription(newsletter);
                             //}
                         }
                         else
@@ -1022,16 +782,13 @@ namespace Nop.Web.Controllers
                         }
                     }
 
-                    //save customer attributes
-                    _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.CustomCustomerAttributes, customerAttributesXml);
-                    
                     //login customer now
                     if (isApproved)
                         _authenticationService.SignIn(customer, true);
 
                     //associated with external account (if possible)
                     TryAssociateAccountWithExternalAccount(customer);
-                    
+
                     //insert default address (if possible)
                     var defaultAddress = new Address
                     {
@@ -1039,7 +796,7 @@ namespace Nop.Web.Controllers
                         LastName = customer.GetAttribute<string>(SystemCustomerAttributeNames.LastName),
                         Email = customer.Email,
                         Company = customer.GetAttribute<string>(SystemCustomerAttributeNames.Company),
-                        CountryId = customer.GetAttribute<int>(SystemCustomerAttributeNames.CountryId) > 0 ? 
+                        CountryId = customer.GetAttribute<int>(SystemCustomerAttributeNames.CountryId) > 0 ?
                             (int?)customer.GetAttribute<int>(SystemCustomerAttributeNames.CountryId) : null,
                         StateProvinceId = customer.GetAttribute<int>(SystemCustomerAttributeNames.StateProvinceId) > 0 ?
                             (int?)customer.GetAttribute<int>(SystemCustomerAttributeNames.StateProvinceId) : null,
@@ -1051,7 +808,7 @@ namespace Nop.Web.Controllers
                         FaxNumber = customer.GetAttribute<string>(SystemCustomerAttributeNames.Fax),
                         CreatedOnUtc = customer.CreatedOnUtc
                     };
-                    if (this._addressService.IsAddressValid(defaultAddress))
+                    if (_addressService.IsAddressValid(defaultAddress))
                     {
                         //some validation
                         if (defaultAddress.CountryId == 0)
@@ -1110,7 +867,7 @@ namespace Nop.Web.Controllers
             }
 
             //If we got this far, something failed, redisplay form
-            PrepareCustomerRegisterModel(model, true, customerAttributesXml);
+            PrepareCustomerRegisterModel(model, true);
             return View(model);
         }
 
@@ -1174,7 +931,7 @@ namespace Nop.Web.Controllers
 
             return Json(new { Available = usernameAvailable, Text = statusText });
         }
-        
+
         [NopHttpsRequirement(SslRequirement.Yes)]
         //available even when navigation is not allowed
         [PublicStoreAllowNavigation(true)]
@@ -1197,7 +954,7 @@ namespace Nop.Web.Controllers
             _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.AccountActivationToken, "");
             //send welcome message
             _workflowMessageService.SendCustomerWelcomeMessage(customer, _workContext.WorkingLanguage.Id);
-            
+
             var model = new AccountActivationModel();
             model.Result = _localizationService.GetResource("Account.AccountActivation.Activated");
             return View(model);
@@ -1212,8 +969,6 @@ namespace Nop.Web.Controllers
         {
             var model = new CustomerNavigationModel();
             model.HideAvatar = !_customerSettings.AllowCustomersToUploadAvatars;
-            model.HideRewardPoints = !_rewardPointsSettings.Enabled;
-            model.HideForumSubscriptions = !_forumSettings.ForumsEnabled || !_forumSettings.AllowCustomersToManageSubscriptions;
             model.HideReturnRequests = !_orderSettings.ReturnRequestsEnabled ||
                 _returnRequestService.SearchReturnRequests(_storeContext.CurrentStore.Id, _workContext.CurrentCustomer.Id, 0, null, 0, 1).Count == 0;
             model.HideDownloadableProducts = _customerSettings.HideDownloadableProductsTab;
@@ -1248,20 +1003,12 @@ namespace Nop.Web.Controllers
 
             var customer = _workContext.CurrentCustomer;
 
-            //custom customer attributes
-            var customerAttributesXml = ParseCustomCustomerAttributes(form);
-            var customerAttributeWarnings = _customerAttributeParser.GetAttributeWarnings(customerAttributesXml);
-            foreach (var error in customerAttributeWarnings)
-            {
-                ModelState.AddModelError("", error);
-            }
-
             try
             {
                 if (ModelState.IsValid)
                 {
                     //username 
-                    if (_customerSettings.UsernamesEnabled && this._customerSettings.AllowUsersToChangeUsernames)
+                    if (_customerSettings.UsernamesEnabled && _customerSettings.AllowUsersToChangeUsernames)
                     {
                         if (!customer.Username.Equals(model.Username.Trim(), StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -1288,26 +1035,6 @@ namespace Nop.Web.Controllers
                     {
                         _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.TimeZoneId, model.TimeZoneId);
                     }
-                    //VAT number
-                    if (_taxSettings.EuVatEnabled)
-                    {
-                        var prevVatNumber = customer.GetAttribute<string>(SystemCustomerAttributeNames.VatNumber);
-
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.VatNumber, model.VatNumber);
-                        if (prevVatNumber != model.VatNumber)
-                        {
-                            string vatName;
-                            string vatAddress;
-                            var vatNumberStatus = _taxService.GetVatNumberStatus(model.VatNumber, out vatName, out vatAddress);
-                            _genericAttributeService.SaveAttribute(customer,
-                                    SystemCustomerAttributeNames.VatNumberStatusId,
-                                    (int)vatNumberStatus);
-                            //send VAT number admin notification
-                            if (!String.IsNullOrEmpty(model.VatNumber) && _taxSettings.EuVatEmailAdminWhenNewVatSubmitted)
-                                _workflowMessageService.SendNewVatSubmittedStoreOwnerNotification(customer, model.VatNumber, vatAddress, _localizationSettings.DefaultAdminLanguageId);
-                        }
-                    }
-
                     //form fields
                     if (_customerSettings.GenderEnabled)
                         _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.Gender, model.Gender);
@@ -1368,12 +1095,6 @@ namespace Nop.Web.Controllers
                         }
                     }
 
-                    if (_forumSettings.ForumsEnabled && _forumSettings.SignaturesEnabled)
-                        _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.Signature, model.Signature);
-
-                    //save customer attributes
-                    _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer, SystemCustomerAttributeNames.CustomCustomerAttributes, customerAttributesXml);
-
                     return RedirectToRoute("CustomerInfo");
                 }
             }
@@ -1384,7 +1105,7 @@ namespace Nop.Web.Controllers
 
 
             //If we got this far, something failed, redisplay form
-            PrepareCustomerInfoModel(model, customer, true, customerAttributesXml);
+            PrepareCustomerInfoModel(model, customer, true);
             return View(model);
         }
 
@@ -1425,13 +1146,7 @@ namespace Nop.Web.Controllers
             foreach (var address in addresses)
             {
                 var addressModel = new AddressModel();
-                addressModel.PrepareModel(
-                    address: address,
-                    excludeProperties: false,
-                    addressSettings: _addressSettings,
-                    localizationService: _localizationService,
-                    stateProvinceService: _stateProvinceService,
-                    addressAttributeFormatter: _addressAttributeFormatter,
+                addressModel.PrepareModel(address, false, _addressSettings, _localizationService, _stateProvinceService,
                     loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id));
                 model.Addresses.Add(addressModel);
             }
@@ -1466,14 +1181,7 @@ namespace Nop.Web.Controllers
                 return new HttpUnauthorizedResult();
 
             var model = new CustomerAddressEditModel();
-            model.Address.PrepareModel(
-                address: null,
-                excludeProperties: false,
-                addressSettings:_addressSettings,
-                localizationService:_localizationService,
-                stateProvinceService: _stateProvinceService,
-                addressAttributeService: _addressAttributeService,
-                addressAttributeParser: _addressAttributeParser,
+            model.Address.PrepareModel(null, false, _addressSettings, _localizationService, _stateProvinceService, 
                 loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id));
 
             return View(model);
@@ -1489,18 +1197,9 @@ namespace Nop.Web.Controllers
 
             var customer = _workContext.CurrentCustomer;
 
-            //custom address attributes
-            var customAttributes = form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
-            var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
-            foreach (var error in customAttributeWarnings)
-            {
-                ModelState.AddModelError("", error);
-            }
-
             if (ModelState.IsValid)
             {
                 var address = model.Address.ToEntity();
-                address.CustomAttributes = customAttributes;
                 address.CreatedOnUtc = DateTime.UtcNow;
                 //some validation
                 if (address.CountryId == 0)
@@ -1514,16 +1213,8 @@ namespace Nop.Web.Controllers
             }
 
             //If we got this far, something failed, redisplay form
-            model.Address.PrepareModel(
-                address: null,
-                excludeProperties: true,
-                addressSettings:_addressSettings,
-                localizationService:_localizationService,
-                stateProvinceService: _stateProvinceService,
-                addressAttributeService: _addressAttributeService,
-                addressAttributeParser: _addressAttributeParser,
-                loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id),
-                overrideAttributesXml: customAttributes);
+            model.Address.PrepareModel(null, true, _addressSettings, _localizationService, _stateProvinceService, 
+                loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id));
 
             return View(model);
         }
@@ -1542,13 +1233,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("CustomerAddresses");
 
             var model = new CustomerAddressEditModel();
-            model.Address.PrepareModel(address: address,
-                excludeProperties: false,
-                addressSettings: _addressSettings,
-                localizationService: _localizationService,
-                stateProvinceService: _stateProvinceService,
-                addressAttributeService: _addressAttributeService,
-                addressAttributeParser: _addressAttributeParser,
+            model.Address.PrepareModel(address, false, _addressSettings, _localizationService, _stateProvinceService, 
                 loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id));
 
             return View(model);
@@ -1569,75 +1254,24 @@ namespace Nop.Web.Controllers
                 //address is not found
                 return RedirectToRoute("CustomerAddresses");
 
-            //custom address attributes
-            var customAttributes = form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
-            var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
-            foreach (var error in customAttributeWarnings)
-            {
-                ModelState.AddModelError("", error);
-            }
-
             if (ModelState.IsValid)
             {
                 address = model.Address.ToEntity(address);
-                address.CustomAttributes = customAttributes;
                 _addressService.UpdateAddress(address);
 
                 return RedirectToRoute("CustomerAddresses");
             }
 
             //If we got this far, something failed, redisplay form
-            model.Address.PrepareModel(
-                address: address,
-                excludeProperties: true,
-                addressSettings: _addressSettings,
-                localizationService: _localizationService,
-                stateProvinceService: _stateProvinceService,
-                addressAttributeService: _addressAttributeService,
-                addressAttributeParser: _addressAttributeParser,
-                loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id),
-                overrideAttributesXml: customAttributes);
+            model.Address.PrepareModel(address, true, _addressSettings, _localizationService, _stateProvinceService,
+                loadCountries: () => _countryService.GetAllCountries(_workContext.WorkingLanguage.Id)
+               );
             return View(model);
         }
 
         #endregion
 
         #region My account / Downloadable products
-
-        [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult DownloadableProducts()
-        {
-            if (!_workContext.CurrentCustomer.IsRegistered())
-                return new HttpUnauthorizedResult();
-
-            var customer = _workContext.CurrentCustomer;
-
-            var model = new CustomerDownloadableProductsModel();
-            var items = _orderService.GetAllOrderItems(null, customer.Id, null, null,
-                null, null, null, true);
-            foreach (var item in items)
-            {
-                var itemModel = new CustomerDownloadableProductsModel.DownloadableProductsModel
-                {
-                    OrderItemGuid = item.OrderItemGuid,
-                    OrderId = item.OrderId,
-                    CreatedOn = _dateTimeHelper.ConvertToUserTime(item.Order.CreatedOnUtc, DateTimeKind.Utc),
-                    ProductName = item.Product.GetLocalized(x => x.Name),
-                    ProductSeName = item.Product.GetSeName(),
-                    ProductAttributes = item.AttributeDescription,
-                    ProductId = item.ProductId
-                };
-                model.Items.Add(itemModel);
-
-                if (_downloadService.IsDownloadAllowed(item))
-                    itemModel.DownloadId = item.Product.DownloadId;
-
-                if (_downloadService.IsLicenseDownloadAllowed(item))
-                    itemModel.LicenseId = item.LicenseDownloadId.HasValue ? item.LicenseDownloadId.Value : 0;
-            }
-
-            return View(model);
-        }
 
         public ActionResult UserAgreement(Guid orderItemId)
         {
@@ -1689,7 +1323,7 @@ namespace Nop.Web.Controllers
                     model.Result = _localizationService.GetResource("Account.ChangePassword.Success");
                     return View(model);
                 }
-                
+
                 //errors
                 foreach (var error in changePasswordResult.Errors)
                     ModelState.AddModelError("", error);
@@ -1735,7 +1369,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("CustomerInfo");
 
             var customer = _workContext.CurrentCustomer;
-            
+
             if (ModelState.IsValid)
             {
                 try

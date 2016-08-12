@@ -8,7 +8,7 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents a checkout attribute
     /// </summary>
-    public partial class CheckoutAttribute : BaseEntity, ILocalizedEntity, IStoreMappingSupported
+    public class CheckoutAttribute : BaseEntity, ILocalizedEntity, IStoreMappingSupported
     {
         private ICollection<CheckoutAttributeValue> _checkoutAttributeValues;
 
@@ -98,11 +98,11 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return (AttributeControlType)this.AttributeControlTypeId;
+                return (AttributeControlType)AttributeControlTypeId;
             }
             set
             {
-                this.AttributeControlTypeId = (int)value;
+                AttributeControlTypeId = (int)value;
             }
         }
         /// <summary>

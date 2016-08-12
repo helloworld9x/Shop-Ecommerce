@@ -27,7 +27,7 @@ using Nop.Web.Models.Order;
 
 namespace Nop.Web.Controllers
 {
-    public partial class OrderController : BasePublicController
+    public class OrderController : BasePublicController
     {
 		#region Fields
 
@@ -45,18 +45,14 @@ namespace Nop.Web.Controllers
         private readonly ICountryService _countryService;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IWebHelper _webHelper;
-        private readonly IDownloadService _downloadService;
-        private readonly IAddressAttributeFormatter _addressAttributeFormatter;
         private readonly IStoreContext _storeContext;
         private readonly IOrderTotalCalculationService _orderTotalCalculationService;
-        private readonly IRewardPointService _rewardPointService;
 
         private readonly OrderSettings _orderSettings;
         private readonly TaxSettings _taxSettings;
         private readonly CatalogSettings _catalogSettings;
         private readonly ShippingSettings _shippingSettings;
         private readonly AddressSettings _addressSettings;
-        private readonly RewardPointsSettings _rewardPointsSettings;
         private readonly PdfSettings _pdfSettings;
 
         #endregion
@@ -77,46 +73,38 @@ namespace Nop.Web.Controllers
             ICountryService countryService, 
             IProductAttributeParser productAttributeParser,
             IWebHelper webHelper,
-            IDownloadService downloadService,
-            IAddressAttributeFormatter addressAttributeFormatter,
             IStoreContext storeContext,
             IOrderTotalCalculationService orderTotalCalculationService,
-            IRewardPointService rewardPointService,
             CatalogSettings catalogSettings,
             OrderSettings orderSettings,
             TaxSettings taxSettings,
             ShippingSettings shippingSettings, 
             AddressSettings addressSettings,
-            RewardPointsSettings rewardPointsSettings,
             PdfSettings pdfSettings)
         {
-            this._orderService = orderService;
-            this._shipmentService = shipmentService;
-            this._workContext = workContext;
-            this._currencyService = currencyService;
-            this._priceFormatter = priceFormatter;
-            this._orderProcessingService = orderProcessingService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._paymentService = paymentService;
-            this._localizationService = localizationService;
-            this._pdfService = pdfService;
-            this._shippingService = shippingService;
-            this._countryService = countryService;
-            this._productAttributeParser = productAttributeParser;
-            this._webHelper = webHelper;
-            this._downloadService = downloadService;
-            this._addressAttributeFormatter = addressAttributeFormatter;
-            this._storeContext = storeContext;
-            this._orderTotalCalculationService = orderTotalCalculationService;
-            this._rewardPointService = rewardPointService;
+            _orderService = orderService;
+            _shipmentService = shipmentService;
+            _workContext = workContext;
+            _currencyService = currencyService;
+            _priceFormatter = priceFormatter;
+            _orderProcessingService = orderProcessingService;
+            _dateTimeHelper = dateTimeHelper;
+            _paymentService = paymentService;
+            _localizationService = localizationService;
+            _pdfService = pdfService;
+            _shippingService = shippingService;
+            _countryService = countryService;
+            _productAttributeParser = productAttributeParser;
+            _webHelper = webHelper;
+            _storeContext = storeContext;
+            _orderTotalCalculationService = orderTotalCalculationService;
 
-            this._catalogSettings = catalogSettings;
-            this._orderSettings = orderSettings;
-            this._taxSettings = taxSettings;
-            this._shippingSettings = shippingSettings;
-            this._addressSettings = addressSettings;
-            this._rewardPointsSettings = rewardPointsSettings;
-            this._pdfSettings = pdfSettings;
+            _catalogSettings = catalogSettings;
+            _orderSettings = orderSettings;
+            _taxSettings = taxSettings;
+            _shippingSettings = shippingSettings;
+            _addressSettings = addressSettings;
+            _pdfSettings = pdfSettings;
         }
 
         #endregion
@@ -127,7 +115,7 @@ namespace Nop.Web.Controllers
         protected virtual CustomerOrderListModel PrepareCustomerOrderListModel()
         {
             var model = new CustomerOrderListModel();
-            var orders = _orderService.SearchOrders(storeId: _storeContext.CurrentStore.Id,
+            var orders = _orderService.SearchOrders(_storeContext.CurrentStore.Id,
                 customerId: _workContext.CurrentCustomer.Id);
             foreach (var order in orders)
             {
@@ -160,7 +148,7 @@ namespace Nop.Web.Controllers
                     TotalCycles = recurringPayment.TotalCycles,
                     CyclesRemaining = recurringPayment.CyclesRemaining,
                     InitialOrderId = recurringPayment.InitialOrder.Id,
-                    CanCancel = _orderProcessingService.CanCancelRecurringPayment(_workContext.CurrentCustomer, recurringPayment),
+                    CanCancel = _orderProcessingService.CanCancelRecurringPayment(_workContext.CurrentCustomer, recurringPayment)
                 };
 
                 model.RecurringOrders.Add(recurringPaymentModel);
@@ -191,11 +179,7 @@ namespace Nop.Web.Controllers
                 model.PickUpInStore = order.PickUpInStore;
                 if (!order.PickUpInStore)
                 {
-                    model.ShippingAddress.PrepareModel(
-                        address: order.ShippingAddress,
-                        excludeProperties: false,
-                        addressSettings: _addressSettings,
-                        addressAttributeFormatter: _addressAttributeFormatter);
+                    model.ShippingAddress.PrepareModel(order.ShippingAddress, false, _addressSettings);
                 }
                 model.ShippingMethod = order.ShippingMethod;
    
@@ -207,7 +191,7 @@ namespace Nop.Web.Controllers
                     var shipmentModel = new OrderDetailsModel.ShipmentBriefModel
                     {
                         Id = shipment.Id,
-                        TrackingNumber = shipment.TrackingNumber,
+                        TrackingNumber = shipment.TrackingNumber
                     };
                     if (shipment.ShippedDateUtc.HasValue)
                         shipmentModel.ShippedDate = _dateTimeHelper.ConvertToUserTime(shipment.ShippedDateUtc.Value, DateTimeKind.Utc);
@@ -219,11 +203,7 @@ namespace Nop.Web.Controllers
 
 
             //billing info
-            model.BillingAddress.PrepareModel(
-                address: order.BillingAddress,
-                excludeProperties: false,
-                addressSettings: _addressSettings,
-                addressAttributeFormatter: _addressAttributeFormatter);
+            model.BillingAddress.PrepareModel(order.BillingAddress, false, _addressSettings);
 
             //VAT number
             model.VatNumber = order.VatNumber;
@@ -317,7 +297,7 @@ namespace Nop.Web.Controllers
                         {
                             Rate = _priceFormatter.FormatTaxRate(tr.Key),
                             //TODO pass languageId to _priceFormatter.FormatPrice
-                            Value = _priceFormatter.FormatPrice(_currencyService.ConvertCurrency(tr.Value, order.CurrencyRate), true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage),
+                            Value = _priceFormatter.FormatPrice(_currencyService.ConvertCurrency(tr.Value, order.CurrencyRate), true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage)
                         });
                     }
                 }
@@ -332,46 +312,12 @@ namespace Nop.Web.Controllers
             if (orderDiscountInCustomerCurrency > decimal.Zero)
                 model.OrderTotalDiscount = _priceFormatter.FormatPrice(-orderDiscountInCustomerCurrency, true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage);
 
-
-            //gift cards
-            foreach (var gcuh in order.GiftCardUsageHistory)
-            {
-                model.GiftCards.Add(new OrderDetailsModel.GiftCard
-                {
-                    CouponCode = gcuh.GiftCard.GiftCardCouponCode,
-                    Amount = _priceFormatter.FormatPrice(-(_currencyService.ConvertCurrency(gcuh.UsedValue, order.CurrencyRate)), true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage),
-                });
-            }
-
-            //reward points           
-            if (order.RedeemedRewardPointsEntry != null)
-            {
-                model.RedeemedRewardPoints = -order.RedeemedRewardPointsEntry.Points;
-                model.RedeemedRewardPointsAmount = _priceFormatter.FormatPrice(-(_currencyService.ConvertCurrency(order.RedeemedRewardPointsEntry.UsedAmount, order.CurrencyRate)), true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage);
-            }
-
             //total
             var orderTotalInCustomerCurrency = _currencyService.ConvertCurrency(order.OrderTotal, order.CurrencyRate);
             model.OrderTotal = _priceFormatter.FormatPrice(orderTotalInCustomerCurrency, true, order.CustomerCurrencyCode, false, _workContext.WorkingLanguage);
 
             //checkout attributes
             model.CheckoutAttributeInfo = order.CheckoutAttributeDescription;
-
-            //order notes
-            foreach (var orderNote in order.OrderNotes
-                .Where(on => on.DisplayToCustomer)
-                .OrderByDescending(on => on.CreatedOnUtc)
-                .ToList())
-            {
-                model.OrderNotes.Add(new OrderDetailsModel.OrderNote
-                {
-                    Id = orderNote.Id,
-                    HasDownload = orderNote.DownloadId > 0,
-                    Note = orderNote.FormatOrderNoteText(),
-                    CreatedOn = _dateTimeHelper.ConvertToUserTime(orderNote.CreatedOnUtc, DateTimeKind.Utc)
-                });
-            }
-
 
             //purchased products
             model.ShowSku = _catalogSettings.ShowProductSku;
@@ -387,16 +333,9 @@ namespace Nop.Web.Controllers
                     ProductName = orderItem.Product.GetLocalized(x => x.Name),
                     ProductSeName = orderItem.Product.GetSeName(),
                     Quantity = orderItem.Quantity,
-                    AttributeInfo = orderItem.AttributeDescription,
+                    AttributeInfo = orderItem.AttributeDescription
                 };
-                //rental info
-                if (orderItem.Product.IsRental)
-                {
-                    var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                    orderItemModel.RentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                }
+            
                 model.Items.Add(orderItemModel);
 
                 //unit price, subtotal
@@ -418,12 +357,6 @@ namespace Nop.Web.Controllers
                     var priceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.PriceExclTax, order.CurrencyRate);
                     orderItemModel.SubTotal = _priceFormatter.FormatPrice(priceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, _workContext.WorkingLanguage, false);
                 }
-
-                //downloadable products
-                if (_downloadService.IsDownloadAllowed(orderItem))
-                    orderItemModel.DownloadId = orderItem.Product.DownloadId;
-                if (_downloadService.IsLicenseDownloadAllowed(orderItem))
-                    orderItemModel.LicenseId = orderItem.LicenseDownloadId.HasValue ? orderItem.LicenseDownloadId.Value : 0;
             }
 
             return model;
@@ -499,16 +432,9 @@ namespace Nop.Web.Controllers
                     ProductSeName = orderItem.Product.GetSeName(),
                     AttributeInfo = orderItem.AttributeDescription,
                     QuantityOrdered = orderItem.Quantity,
-                    QuantityShipped = shipmentItem.Quantity,
+                    QuantityShipped = shipmentItem.Quantity
                 };
-                //rental info
-                if (orderItem.Product.IsRental)
-                {
-                    var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                    shipmentItemModel.RentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                }
+            
                 model.Items.Add(shipmentItemModel);
             }
 
@@ -563,48 +489,7 @@ namespace Nop.Web.Controllers
 
                 return View(model);
             }
-            else
-            {
-                return RedirectToRoute("CustomerOrders");
-            }
-        }
-
-        //My account / Reward points
-        [NopHttpsRequirement(SslRequirement.Yes)]
-        public ActionResult CustomerRewardPoints()
-        {
-            if (!_workContext.CurrentCustomer.IsRegistered())
-                return new HttpUnauthorizedResult();
-
-            if (!_rewardPointsSettings.Enabled)
-                return RedirectToRoute("CustomerInfo");
-
-            var customer = _workContext.CurrentCustomer;
-
-            var model = new CustomerRewardPointsModel();
-            foreach (var rph in _rewardPointService.GetRewardPointsHistory(customer.Id))
-            {
-                model.RewardPoints.Add(new CustomerRewardPointsModel.RewardPointsHistoryModel
-                {
-                    Points = rph.Points,
-                    PointsBalance = rph.PointsBalance,
-                    Message = rph.Message,
-                    CreatedOn = _dateTimeHelper.ConvertToUserTime(rph.CreatedOnUtc, DateTimeKind.Utc)
-                });
-            }
-            //current amount/balance
-            int rewardPointsBalance = _rewardPointService.GetRewardPointsBalance(customer.Id, _storeContext.CurrentStore.Id);
-            decimal rewardPointsAmountBase = _orderTotalCalculationService.ConvertRewardPointsToAmount(rewardPointsBalance);
-            decimal rewardPointsAmount = _currencyService.ConvertFromPrimaryStoreCurrency(rewardPointsAmountBase, _workContext.WorkingCurrency);
-            model.RewardPointsBalance = rewardPointsBalance;
-            model.RewardPointsAmount = _priceFormatter.FormatPrice(rewardPointsAmount, true, false);
-            //minimum amount/balance
-            int minimumRewardPointsBalance = _rewardPointsSettings.MinimumRewardPointsToUse;
-            decimal minimumRewardPointsAmountBase = _orderTotalCalculationService.ConvertRewardPointsToAmount(minimumRewardPointsBalance);
-            decimal minimumRewardPointsAmount = _currencyService.ConvertFromPrimaryStoreCurrency(minimumRewardPointsAmountBase, _workContext.WorkingCurrency);
-            model.MinimumRewardPointsBalance = minimumRewardPointsBalance;
-            model.MinimumRewardPointsAmount = _priceFormatter.FormatPrice(minimumRewardPointsAmount, true, false);
-            return View(model);
+            return RedirectToRoute("CustomerOrders");
         }
 
         //My account / Order details page
@@ -674,7 +559,7 @@ namespace Nop.Web.Controllers
                 return new HttpUnauthorizedResult();
 
             if (!_paymentService.CanRePostProcessPayment(order))
-                return RedirectToRoute("OrderDetails", new { orderId = orderId });
+                return RedirectToRoute("OrderDetails", new {orderId });
 
             var postProcessPaymentRequest = new PostProcessPaymentRequest
             {
@@ -690,7 +575,7 @@ namespace Nop.Web.Controllers
 
             //if no redirection has been done (to a third-party payment page)
             //theoretically it's not possible
-            return RedirectToRoute("OrderDetails", new { orderId = orderId });
+            return RedirectToRoute("OrderDetails", new {orderId });
         }
 
         //My account / Order details page / Shipment details page

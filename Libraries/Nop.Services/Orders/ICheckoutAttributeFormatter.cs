@@ -7,7 +7,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Checkout attribute helper
     /// </summary>
-    public partial interface ICheckoutAttributeFormatter
+    public interface ICheckoutAttributeFormatter
     {
         /// <summary>
         /// Formats attributes

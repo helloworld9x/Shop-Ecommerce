@@ -13,7 +13,7 @@ namespace Nop.Services.Customers
     /// <summary>
     /// Customer report service
     /// </summary>
-    public partial class CustomerReportService : ICustomerReportService
+    public class CustomerReportService : ICustomerReportService
     {
         #region Fields
 
@@ -37,10 +37,10 @@ namespace Nop.Services.Customers
             IRepository<Order> orderRepository, ICustomerService customerService,
             IDateTimeHelper dateTimeHelper)
         {
-            this._customerRepository = customerRepository;
-            this._orderRepository = orderRepository;
-            this._customerService = customerService;
-            this._dateTimeHelper = dateTimeHelper;
+            _customerRepository = customerRepository;
+            _orderRepository = orderRepository;
+            _customerService = customerService;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion

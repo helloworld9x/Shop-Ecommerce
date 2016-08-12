@@ -24,7 +24,6 @@ namespace Nop.Services.Catalog
         private readonly ICategoryService _categoryService;
         private readonly IManufacturerService _manufacturerService;
         private readonly ISpecificationAttributeService _specificationAttributeService;
-        private readonly IDownloadService _downloadService;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IUrlRecordService _urlRecordService;
         private readonly IStoreMappingService _storeMappingService;
@@ -41,7 +40,6 @@ namespace Nop.Services.Catalog
             ICategoryService categoryService, 
             IManufacturerService manufacturerService,
             ISpecificationAttributeService specificationAttributeService,
-            IDownloadService downloadService,
             IProductAttributeParser productAttributeParser,
             IUrlRecordService urlRecordService, 
             IStoreMappingService storeMappingService)
@@ -54,7 +52,6 @@ namespace Nop.Services.Catalog
             this._categoryService = categoryService;
             this._manufacturerService = manufacturerService;
             this._specificationAttributeService = specificationAttributeService;
-            this._downloadService = downloadService;
             this._productAttributeParser = productAttributeParser;
             this._urlRecordService = urlRecordService;
             this._storeMappingService = storeMappingService;
@@ -81,52 +78,7 @@ namespace Nop.Services.Catalog
 
             if (String.IsNullOrEmpty(newName))
                 throw new ArgumentException("Product name is required");
-
-            //product download & sample download
-            int downloadId = product.DownloadId;
-            int sampleDownloadId = product.SampleDownloadId;
-            if (product.IsDownload)
-            {
-                var download = _downloadService.GetDownloadById(product.DownloadId);
-                if (download != null)
-                {
-                    var downloadCopy = new Download
-                    {
-                        DownloadGuid = Guid.NewGuid(),
-                        UseDownloadUrl = download.UseDownloadUrl,
-                        DownloadUrl = download.DownloadUrl,
-                        DownloadBinary = download.DownloadBinary,
-                        ContentType = download.ContentType,
-                        Filename = download.Filename,
-                        Extension = download.Extension,
-                        IsNew = download.IsNew,
-                    };
-                    _downloadService.InsertDownload(downloadCopy);
-                    downloadId = downloadCopy.Id;
-                }
-
-                if (product.HasSampleDownload)
-                {
-                    var sampleDownload = _downloadService.GetDownloadById(product.SampleDownloadId);
-                    if (sampleDownload != null)
-                    {
-                        var sampleDownloadCopy = new Download
-                        {
-                            DownloadGuid = Guid.NewGuid(),
-                            UseDownloadUrl = sampleDownload.UseDownloadUrl,
-                            DownloadUrl = sampleDownload.DownloadUrl,
-                            DownloadBinary = sampleDownload.DownloadBinary,
-                            ContentType = sampleDownload.ContentType,
-                            Filename = sampleDownload.Filename,
-                            Extension = sampleDownload.Extension,
-                            IsNew = sampleDownload.IsNew
-                        };
-                        _downloadService.InsertDownload(sampleDownloadCopy);
-                        sampleDownloadId = sampleDownloadCopy.Id;
-                    }
-                }
-            }
-
+           
             // product
             var productCopy = new Product
             {
@@ -137,40 +89,18 @@ namespace Nop.Services.Catalog
                 ShortDescription = product.ShortDescription,
                 FullDescription = product.FullDescription,
                 VendorId = product.VendorId,
-                ProductTemplateId = product.ProductTemplateId,
                 AdminComment = product.AdminComment,
                 ShowOnHomePage = product.ShowOnHomePage,
-                MetaKeywords = product.MetaKeywords,
-                MetaDescription = product.MetaDescription,
-                MetaTitle = product.MetaTitle,
                 AllowCustomerReviews = product.AllowCustomerReviews,
                 LimitedToStores = product.LimitedToStores,
                 Sku = product.Sku,
                 ManufacturerPartNumber = product.ManufacturerPartNumber,
-                Gtin = product.Gtin,
-                IsGiftCard = product.IsGiftCard,
-                GiftCardType = product.GiftCardType,
                 OverriddenGiftCardAmount = product.OverriddenGiftCardAmount,
                 RequireOtherProducts = product.RequireOtherProducts,
                 RequiredProductIds = product.RequiredProductIds,
                 AutomaticallyAddRequiredProducts = product.AutomaticallyAddRequiredProducts,
-                IsDownload = product.IsDownload,
-                DownloadId = downloadId,
-                UnlimitedDownloads = product.UnlimitedDownloads,
-                MaxNumberOfDownloads = product.MaxNumberOfDownloads,
-                DownloadExpirationDays = product.DownloadExpirationDays,
-                DownloadActivationType = product.DownloadActivationType,
-                HasSampleDownload = product.HasSampleDownload,
-                SampleDownloadId = sampleDownloadId,
                 HasUserAgreement = product.HasUserAgreement,
                 UserAgreementText = product.UserAgreementText,
-                IsRecurring = product.IsRecurring,
-                RecurringCycleLength = product.RecurringCycleLength,
-                RecurringCyclePeriod = product.RecurringCyclePeriod,
-                RecurringTotalCycles = product.RecurringTotalCycles,
-                IsRental = product.IsRental,
-                RentalPriceLength = product.RentalPriceLength,
-                RentalPricePeriod = product.RentalPricePeriod,
                 IsShipEnabled = product.IsShipEnabled,
                 IsFreeShipping = product.IsFreeShipping,
                 ShipSeparately = product.ShipSeparately,
@@ -178,7 +108,6 @@ namespace Nop.Services.Catalog
                 DeliveryDateId = product.DeliveryDateId,
                 IsTaxExempt = product.IsTaxExempt,
                 TaxCategoryId = product.TaxCategoryId,
-                IsTelecommunicationsOrBroadcastingOrElectronicServices = product.IsTelecommunicationsOrBroadcastingOrElectronicServices,
                 ManageInventoryMethod = product.ManageInventoryMethod,
                 UseMultipleWarehouses = product.UseMultipleWarehouses,
                 WarehouseId = product.WarehouseId,
@@ -251,18 +180,6 @@ namespace Nop.Services.Catalog
                 var fullDescription = product.GetLocalized(x => x.FullDescription, lang.Id, false, false);
                 if (!String.IsNullOrEmpty(fullDescription))
                     _localizedEntityService.SaveLocalizedValue(productCopy, x => x.FullDescription, fullDescription, lang.Id);
-
-                var metaKeywords = product.GetLocalized(x => x.MetaKeywords, lang.Id, false, false);
-                if (!String.IsNullOrEmpty(metaKeywords))
-                    _localizedEntityService.SaveLocalizedValue(productCopy, x => x.MetaKeywords, metaKeywords, lang.Id);
-
-                var metaDescription = product.GetLocalized(x => x.MetaDescription, lang.Id, false, false);
-                if (!String.IsNullOrEmpty(metaDescription))
-                    _localizedEntityService.SaveLocalizedValue(productCopy, x => x.MetaDescription, metaDescription, lang.Id);
-
-                var metaTitle = product.GetLocalized(x => x.MetaTitle, lang.Id, false, false);
-                if (!String.IsNullOrEmpty(metaTitle))
-                    _localizedEntityService.SaveLocalizedValue(productCopy, x => x.MetaTitle, metaTitle, lang.Id);
 
                 //search engine name
                 _urlRecordService.SaveSlug(productCopy, productCopy.ValidateSeName("", name, false), lang.Id);
@@ -506,20 +423,6 @@ namespace Nop.Services.Catalog
                 _productAttributeService.InsertProductAttributeCombination(combinationCopy);
             }
 
-            //tier prices
-            foreach (var tierPrice in product.TierPrices)
-            {
-                _productService.InsertTierPrice(
-                    new TierPrice
-                    {
-                        ProductId = productCopy.Id,
-                        StoreId = tierPrice.StoreId,
-                        CustomerRoleId = tierPrice.CustomerRoleId,
-                        Quantity = tierPrice.Quantity,
-                        Price = tierPrice.Price
-                    });
-            }
-
             // product <-> discounts mapping
             foreach (var discount in product.AppliedDiscounts)
             {
@@ -527,9 +430,7 @@ namespace Nop.Services.Catalog
                 _productService.UpdateProduct(productCopy);
             }
 
-
             //update "HasTierPrices" and "HasDiscountsApplied" properties
-            _productService.UpdateHasTierPricesProperty(productCopy);
             _productService.UpdateHasDiscountsApplied(productCopy);
 
 

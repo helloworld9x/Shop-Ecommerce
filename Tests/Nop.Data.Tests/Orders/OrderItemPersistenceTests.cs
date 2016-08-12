@@ -30,9 +30,6 @@ namespace Nop.Data.Tests.Orders
                 OriginalProductCost = 7.1M,
                 AttributeDescription= "AttributeDescription1",
                 AttributesXml= "AttributesXml1",
-                DownloadCount= 7,
-                IsDownloadActivated=true,
-                LicenseDownloadId= 8,
                 ItemWeight = 9.87M,
                 RentalStartDateUtc = new DateTime(2010, 01, 01),
                 RentalEndDateUtc = new DateTime(2010, 01, 02)
@@ -51,41 +48,11 @@ namespace Nop.Data.Tests.Orders
             fromDb.OriginalProductCost.ShouldEqual(7.1M);
             fromDb.AttributeDescription.ShouldEqual("AttributeDescription1");
             fromDb.AttributesXml.ShouldEqual("AttributesXml1");
-            fromDb.DownloadCount.ShouldEqual(7);
-            fromDb.IsDownloadActivated.ShouldEqual(true);
-            fromDb.LicenseDownloadId.ShouldEqual(8);
             fromDb.ItemWeight.ShouldEqual(9.87M);
             fromDb.RentalStartDateUtc.ShouldEqual(new DateTime(2010, 01, 01));
             fromDb.RentalEndDateUtc.ShouldEqual(new DateTime(2010, 01, 02));
 
             fromDb.Order.ShouldNotBeNull();
-        }
-
-        [Test]
-        public void Can_save_and_load_orderItem_with_giftCard()
-        {
-            var orderItem = new OrderItem
-            {
-                Order = GetTestOrder(),
-                Product = GetTestProduct(),
-            };
-            orderItem.AssociatedGiftCards.Add(GetTestGiftCard());
-
-            var fromDb = SaveAndLoadEntity(orderItem);
-            fromDb.ShouldNotBeNull();
-
-            fromDb.AssociatedGiftCards.ShouldNotBeNull();
-            (fromDb.AssociatedGiftCards.Count == 1).ShouldBeTrue();
-            fromDb.AssociatedGiftCards.First().Amount.ShouldEqual(10);
-        }
-
-        protected GiftCard GetTestGiftCard()
-        {
-            return new GiftCard
-            {
-                Amount = 10,
-                CreatedOnUtc = DateTime.UtcNow
-            };
         }
 
         protected Product GetTestProduct()

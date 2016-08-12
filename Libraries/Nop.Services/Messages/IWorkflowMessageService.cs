@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.News;
 using Nop.Core.Domain.Orders;
@@ -10,7 +9,7 @@ using Nop.Core.Domain.Vendors;
 
 namespace Nop.Services.Messages
 {
-    public partial interface IWorkflowMessageService
+    public interface IWorkflowMessageService
     {
         #region Customer workflow
 
@@ -160,14 +159,6 @@ namespace Nop.Services.Messages
         int SendOrderRefundedCustomerNotification(Order order, decimal refundedAmount, int languageId);
 
         /// <summary>
-        /// Sends a new order note added notification to a customer
-        /// </summary>
-        /// <param name="orderNote">Order note</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        int SendNewOrderNoteAddedCustomerNotification(OrderNote orderNote, int languageId);
-
-        /// <summary>
         /// Sends a "Recurring payment cancelled" notification to a store owner
         /// </summary>
         /// <param name="recurringPayment">Recurring payment</param>
@@ -251,44 +242,6 @@ namespace Nop.Services.Messages
 
         #endregion
 
-        #region Forum Notifications
-
-        /// <summary>
-        /// Sends a forum subscription message to a customer
-        /// </summary>
-        /// <param name="customer">Customer instance</param>
-        /// <param name="forumTopic">Forum Topic</param>
-        /// <param name="forum">Forum</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        int SendNewForumTopicMessage(Customer customer,
-            ForumTopic forumTopic, Forum forum, int languageId);
-
-        /// <summary>
-        /// Sends a forum subscription message to a customer
-        /// </summary>
-        /// <param name="customer">Customer instance</param>
-        /// <param name="forumPost">Forum post</param>
-        /// <param name="forumTopic">Forum Topic</param>
-        /// <param name="forum">Forum</param>
-        /// <param name="friendlyForumTopicPageIndex">Friendly (starts with 1) forum topic page to use for URL generation</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        int SendNewForumPostMessage(Customer customer,
-            ForumPost forumPost, ForumTopic forumTopic,
-            Forum forum, int friendlyForumTopicPageIndex, 
-            int languageId);
-
-        /// <summary>
-        /// Sends a private message notification
-        /// </summary>
-        /// <param name="privateMessage">Private message</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        int SendPrivateMessageNotification(PrivateMessage privateMessage, int languageId);
-
-        #endregion
-        
         #region Misc
 
         /// <summary>
@@ -308,15 +261,6 @@ namespace Nop.Services.Messages
         /// <returns>Queued email identifier</returns>
         int SendProductReviewNotificationMessage(ProductReview productReview,
             int languageId);
-
-        /// <summary>
-        /// Sends a gift card notification
-        /// </summary>
-        /// <param name="giftCard">Gift card</param>
-        /// <param name="languageId">Message language identifier</param>
-        /// <returns>Queued email identifier</returns>
-        int SendGiftCardNotification(GiftCard giftCard, int languageId);
-
 
         /// <summary>
         /// Sends a "quantity below" notification to a store owner

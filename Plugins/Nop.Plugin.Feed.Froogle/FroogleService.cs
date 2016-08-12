@@ -370,50 +370,6 @@ namespace Nop.Plugin.Feed.Froogle
 
                         #endregion
 
-                        #region Unique Product Identifiers
-
-                        /* Unique product identifiers such as UPC, EAN, JAN or ISBN allow us to show your listing on the appropriate product page. If you don't provide the required unique product identifiers, your store may not appear on product pages, and all your items may be removed from Product Search.
-                         * We require unique product identifiers for all products - except for custom made goods. For apparel, you must submit the 'brand' attribute. For media (such as books, movies, music and video games), you must submit the 'gtin' attribute. In all cases, we recommend you submit all three attributes.
-                         * You need to submit at least two attributes of 'brand', 'gtin' and 'mpn', but we recommend that you submit all three if available. For media (such as books, movies, music and video games), you must submit the 'gtin' attribute, but we recommend that you include 'brand' and 'mpn' if available.
-                        */
-
-                        //GTIN [gtin] - GTIN
-                        var gtin = product.Gtin;
-                        if (!String.IsNullOrEmpty(gtin))
-                        {
-                            writer.WriteStartElement("g", "gtin", googleBaseNamespace);
-                            writer.WriteCData(gtin);
-                            writer.WriteFullEndElement(); // g:gtin
-                        }
-
-                        //brand [brand] - Brand of the item
-                        var defaultManufacturer =
-                            _manufacturerService.GetProductManufacturersByProductId((product.Id)).FirstOrDefault();
-                        if (defaultManufacturer != null)
-                        {
-                            writer.WriteStartElement("g", "brand", googleBaseNamespace);
-                            writer.WriteCData(defaultManufacturer.Manufacturer.Name);
-                            writer.WriteFullEndElement(); // g:brand
-                        }
-
-
-                        //mpn [mpn] - Manufacturer Part Number (MPN) of the item
-                        var mpn = product.ManufacturerPartNumber;
-                        if (!String.IsNullOrEmpty(mpn))
-                        {
-                            writer.WriteStartElement("g", "mpn", googleBaseNamespace);
-                            writer.WriteCData(mpn);
-                            writer.WriteFullEndElement(); // g:mpn
-                        }
-
-                        //identifier exists [identifier_exists] - Submit custom goods
-                        if (googleProduct != null && googleProduct.CustomGoods)
-                        {
-                            writer.WriteElementString("g", "identifier_exists", googleBaseNamespace, "FALSE");
-                        }
-
-                        #endregion
-
                         #region Apparel Products
 
                         /* Apparel includes all products that fall under 'Apparel & Accessories' (including all sub-categories)

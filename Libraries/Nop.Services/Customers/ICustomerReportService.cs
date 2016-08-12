@@ -10,7 +10,7 @@ namespace Nop.Services.Customers
     /// <summary>
     /// Customer report service interface
     /// </summary>
-    public partial interface ICustomerReportService
+    public interface ICustomerReportService
     {
         /// <summary>
         /// Get best customers

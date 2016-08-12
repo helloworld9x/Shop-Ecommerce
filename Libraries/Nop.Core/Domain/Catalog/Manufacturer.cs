@@ -11,7 +11,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a manufacturer
     /// </summary>
-    public partial class Manufacturer : BaseEntity, ILocalizedEntity, ISlugSupported, IAclSupported, IStoreMappingSupported
+    public class Manufacturer : BaseEntity, ILocalizedEntity, ISlugSupported, IAclSupported, IStoreMappingSupported
     {
         private ICollection<Discount> _appliedDiscounts;
 
@@ -24,26 +24,6 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the description
         /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value of used manufacturer template identifier
-        /// </summary>
-        public int ManufacturerTemplateId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the meta keywords
-        /// </summary>
-        public string MetaKeywords { get; set; }
-
-        /// <summary>
-        /// Gets or sets the meta description
-        /// </summary>
-        public string MetaDescription { get; set; }
-
-        /// <summary>
-        /// Gets or sets the meta title
-        /// </summary>
-        public string MetaTitle { get; set; }
 
         /// <summary>
         /// Gets or sets the parent picture identifier
@@ -105,14 +85,5 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the date and time of instance update
         /// </summary>
         public DateTime UpdatedOnUtc { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of applied discounts
-        /// </summary>
-        public virtual ICollection<Discount> AppliedDiscounts
-        {
-            get { return _appliedDiscounts ?? (_appliedDiscounts = new List<Discount>()); }
-            protected set { _appliedDiscounts = value; }
-        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.News;
 using Nop.Core.Domain.Orders;
@@ -11,7 +10,7 @@ using Nop.Core.Domain.Vendors;
 
 namespace Nop.Services.Messages
 {
-    public partial interface IMessageTokenProvider
+    public interface IMessageTokenProvider
     {
         void AddStoreTokens(IList<Token> tokens, Store store, EmailAccount emailAccount);
 
@@ -21,13 +20,9 @@ namespace Nop.Services.Messages
 
         void AddShipmentTokens(IList<Token> tokens, Shipment shipment, int languageId);
 
-        void AddOrderNoteTokens(IList<Token> tokens, OrderNote orderNote);
-
         void AddRecurringPaymentTokens(IList<Token> tokens, RecurringPayment recurringPayment);
 
         void AddReturnRequestTokens(IList<Token> tokens, ReturnRequest returnRequest, OrderItem orderItem);
-
-        void AddGiftCardTokens(IList<Token> tokens, GiftCard giftCard);
 
         void AddCustomerTokens(IList<Token> tokens, Customer customer);
 
@@ -42,15 +37,6 @@ namespace Nop.Services.Messages
         void AddProductTokens(IList<Token> tokens, Product product, int languageId);
 
         void AddAttributeCombinationTokens(IList<Token> tokens, ProductAttributeCombination combination, int languageId);
-
-        void AddForumTokens(IList<Token> tokens, Forum forum);
-
-        void AddForumTopicTokens(IList<Token> tokens, ForumTopic forumTopic,
-            int? friendlyForumTopicPageIndex = null, int? appendedPostIdentifierAnchor = null);
-
-        void AddForumPostTokens(IList<Token> tokens, ForumPost forumPost);
-
-        void AddPrivateMessageTokens(IList<Token> tokens, PrivateMessage privateMessage);
 
         void AddBackInStockTokens(IList<Token> tokens, BackInStockSubscription subscription);
 

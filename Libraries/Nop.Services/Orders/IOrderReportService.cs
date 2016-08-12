@@ -11,7 +11,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order report service interface
     /// </summary>
-    public partial interface IOrderReportService
+    public interface IOrderReportService
     {
         /// <summary>
         /// Get "order by country" report

@@ -5,7 +5,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a predefined (default) product attribute value
     /// </summary>
-    public partial class PredefinedProductAttributeValue : BaseEntity, ILocalizedEntity
+    public class PredefinedProductAttributeValue : BaseEntity, ILocalizedEntity
     {
         /// <summary>
         /// Gets or sets the product attribute identifier

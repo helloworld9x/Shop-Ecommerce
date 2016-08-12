@@ -14,7 +14,7 @@ using Nop.Web.Models.Vendors;
 
 namespace Nop.Web.Controllers
 {
-    public partial class VendorController : BasePublicController
+    public class VendorController : BasePublicController
     {
 		#region Fields
 
@@ -43,16 +43,16 @@ namespace Nop.Web.Controllers
             VendorSettings vendorSettings,
             CaptchaSettings captchaSettings)
         {
-            this._workContext = workContext;
-            this._localizationService = localizationService;
-            this._customerService = customerService;
-            this._workflowMessageService = workflowMessageService;
-            this._vendorService = vendorService;
-            this._urlRecordService = urlRecordService;
+            _workContext = workContext;
+            _localizationService = localizationService;
+            _customerService = customerService;
+            _workflowMessageService = workflowMessageService;
+            _vendorService = vendorService;
+            _urlRecordService = urlRecordService;
 
-            this._localizationSettings = localizationSettings;
-            this._vendorSettings = vendorSettings;
-            this._captchaSettings = captchaSettings;
+            _localizationSettings = localizationSettings;
+            _vendorSettings = vendorSettings;
+            _captchaSettings = captchaSettings;
         }
 
         #endregion

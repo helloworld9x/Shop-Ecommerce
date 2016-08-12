@@ -8,9 +8,7 @@ namespace Nop.Web.Models.Boards
         public SearchModel()
         {
             LimitList = new List<SelectListItem>();
-            ForumList = new List<SelectListItem>();
             WithinList = new List<SelectListItem>();
-            this.ForumTopics = new List<ForumTopicRowModel>();
         }
 
         public bool ShowAdvancedSearch { get; set; }
@@ -24,7 +22,6 @@ namespace Nop.Web.Models.Boards
 
         public int? LimitDays { get; set; }
 
-        public IList<ForumTopicRowModel> ForumTopics { get; set; }
         public int TopicPageSize { get; set; }
         public int TopicTotalRecords { get; set; }
         public int TopicPageIndex { get; set; }

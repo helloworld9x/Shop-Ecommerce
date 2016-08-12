@@ -9,7 +9,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Full-Text service
     /// </summary>
-    public partial class FulltextService : IFulltextService
+    public class FulltextService : IFulltextService
     {
         #region Fields
 
@@ -29,9 +29,9 @@ namespace Nop.Services.Common
         public FulltextService(IDataProvider dataProvider, IDbContext dbContext,
             CommonSettings commonSettings)
         {
-            this._dataProvider = dataProvider;
-            this._dbContext = dbContext;
-            this._commonSettings = commonSettings;
+            _dataProvider = dataProvider;
+            _dbContext = dbContext;
+            _commonSettings = commonSettings;
         }
 
         #endregion

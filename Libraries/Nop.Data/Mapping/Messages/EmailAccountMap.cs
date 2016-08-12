@@ -2,7 +2,7 @@ using Nop.Core.Domain.Messages;
 
 namespace Nop.Data.Mapping.Messages
 {
-    public partial class EmailAccountMap : NopEntityTypeConfiguration<EmailAccount>
+    public class EmailAccountMap : GoqEntityTypeConfiguration<EmailAccount>
     {
         public EmailAccountMap()
         {

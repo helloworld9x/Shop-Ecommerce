@@ -5,7 +5,7 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents a gift card usage history entry
     /// </summary>
-    public partial class GiftCardUsageHistory : BaseEntity
+    public class GiftCardUsageHistory : BaseEntity
     {
         /// <summary>
         /// Gets or sets the gift card identifier
@@ -27,14 +27,6 @@ namespace Nop.Core.Domain.Orders
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
         
-        /// <summary>
-        /// Gets the gift card
-        /// </summary>
-        public virtual GiftCard GiftCard { get; set; }
-
-        /// <summary>
-        /// Gets the gift card
-        /// </summary>
         public virtual Order UsedWithOrder { get; set; }
     }
 }

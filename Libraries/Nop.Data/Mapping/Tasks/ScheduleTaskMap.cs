@@ -2,7 +2,7 @@ using Nop.Core.Domain.Tasks;
 
 namespace Nop.Data.Mapping.Tasks
 {
-    public partial class ScheduleTaskMap : NopEntityTypeConfiguration<ScheduleTask>
+    public partial class ScheduleTaskMap : GoqEntityTypeConfiguration<ScheduleTask>
     {
         public ScheduleTaskMap()
         {

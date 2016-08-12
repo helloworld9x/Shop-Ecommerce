@@ -11,7 +11,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product
     /// </summary>
-    public partial class Product : BaseEntity, ILocalizedEntity, ISlugSupported, IAclSupported, IStoreMappingSupported
+    public class Product : BaseEntity, ILocalizedEntity, ISlugSupported, IAclSupported, IStoreMappingSupported
     {
         private ICollection<ProductCategory> _productCategories;
         private ICollection<ProductManufacturer> _productManufacturers;
@@ -21,7 +21,6 @@ namespace Nop.Core.Domain.Catalog
         private ICollection<ProductTag> _productTags;
         private ICollection<ProductAttributeMapping> _productAttributeMappings;
         private ICollection<ProductAttributeCombination> _productAttributeCombinations;
-        private ICollection<TierPrice> _tierPrices;
         private ICollection<Discount> _appliedDiscounts;
         private ICollection<ProductWarehouseInventory> _productWarehouseInventory;
 
@@ -75,19 +74,6 @@ namespace Nop.Core.Domain.Catalog
         public bool ShowOnHomePage { get; set; }
 
         /// <summary>
-        /// Gets or sets the meta keywords
-        /// </summary>
-        public string MetaKeywords { get; set; }
-        /// <summary>
-        /// Gets or sets the meta description
-        /// </summary>
-        public string MetaDescription { get; set; }
-        /// <summary>
-        /// Gets or sets the meta title
-        /// </summary>
-        public string MetaTitle { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the product allows customer reviews
         /// </summary>
         public bool AllowCustomerReviews { get; set; }
@@ -121,26 +107,12 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the SKU
         /// </summary>
         public string Sku { get; set; }
+
         /// <summary>
         /// Gets or sets the manufacturer part number
         /// </summary>
         public string ManufacturerPartNumber { get; set; }
-        /// <summary>
-        /// Gets or sets the Global Trade Item Number (GTIN). These identifiers include UPC (in North America), EAN (in Europe), JAN (in Japan), and ISBN (for books).
-        /// </summary>
-        public string Gtin { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the product is gift card
-        /// </summary>
-        public bool IsGiftCard { get; set; }
-        /// <summary>
-        /// Gets or sets the gift card type identifier
-        /// </summary>
-        public int GiftCardTypeId { get; set; }
-        /// <summary>
-        /// Gets or sets gift card amount that can be used after purchase. If not specified, then product price will be used.
-        /// </summary>
+       
         public decimal? OverriddenGiftCardAmount { get; set; }
 
         /// <summary>
@@ -157,38 +129,6 @@ namespace Nop.Core.Domain.Catalog
         public bool AutomaticallyAddRequiredProducts { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the product is download
-        /// </summary>
-        public bool IsDownload { get; set; }
-        /// <summary>
-        /// Gets or sets the download identifier
-        /// </summary>
-        public int DownloadId { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this downloadable product can be downloaded unlimited number of times
-        /// </summary>
-        public bool UnlimitedDownloads { get; set; }
-        /// <summary>
-        /// Gets or sets the maximum number of downloads
-        /// </summary>
-        public int MaxNumberOfDownloads { get; set; }
-        /// <summary>
-        /// Gets or sets the number of days during customers keeps access to the file.
-        /// </summary>
-        public int? DownloadExpirationDays { get; set; }
-        /// <summary>
-        /// Gets or sets the download activation type
-        /// </summary>
-        public int DownloadActivationTypeId { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether the product has a sample download file
-        /// </summary>
-        public bool HasSampleDownload { get; set; }
-        /// <summary>
-        /// Gets or sets the sample download identifier
-        /// </summary>
-        public int SampleDownloadId { get; set; }
-        /// <summary>
         /// Gets or sets a value indicating whether the product has user agreement
         /// </summary>
         public bool HasUserAgreement { get; set; }
@@ -196,36 +136,6 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the text of license agreement
         /// </summary>
         public string UserAgreementText { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the product is recurring
-        /// </summary>
-        public bool IsRecurring { get; set; }
-        /// <summary>
-        /// Gets or sets the cycle length
-        /// </summary>
-        public int RecurringCycleLength { get; set; }
-        /// <summary>
-        /// Gets or sets the cycle period
-        /// </summary>
-        public int RecurringCyclePeriodId { get; set; }
-        /// <summary>
-        /// Gets or sets the total cycles
-        /// </summary>
-        public int RecurringTotalCycles { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the product is rental
-        /// </summary>
-        public bool IsRental { get; set; }
-        /// <summary>
-        /// Gets or sets the rental length for some period (price for this period)
-        /// </summary>
-        public int RentalPriceLength { get; set; }
-        /// <summary>
-        /// Gets or sets the rental period (price for this period)
-        /// </summary>
-        public int RentalPricePeriodId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the entity is ship enabled
@@ -256,10 +166,6 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the tax category identifier
         /// </summary>
         public int TaxCategoryId { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether the product is telecommunications or broadcasting or electronic services
-        /// </summary>
-        public bool IsTelecommunicationsOrBroadcastingOrElectronicServices { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating how to manage inventory
@@ -401,7 +307,6 @@ namespace Nop.Core.Domain.Catalog
         /// </summary>
         public int BasepriceBaseUnitId { get; set; }
 
-
         /// <summary>
         /// Gets or sets a value indicating whether this product is marked as new
         /// </summary>
@@ -415,14 +320,6 @@ namespace Nop.Core.Domain.Catalog
         /// </summary>
         public DateTime? MarkAsNewEndDateTimeUtc { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this product has tier prices configured
-        /// <remarks>The same as if we run this.TierPrices.Count > 0
-        /// We use this property for performance optimization:
-        /// if this property is set to false, then we do not need to load tier prices navigation property
-        /// </remarks>
-        /// </summary>
-        public bool HasTierPrices { get; set; }
         /// <summary>
         /// Gets or sets a value indicating whether this product has discounts applied
         /// <remarks>The same as if we run this.AppliedDiscounts.Count > 0
@@ -494,11 +391,11 @@ namespace Nop.Core.Domain.Catalog
         {
             get
             {
-                return (ProductType)this.ProductTypeId;
+                return (ProductType)ProductTypeId;
             }
             set
             {
-                this.ProductTypeId = (int)value;
+                ProductTypeId = (int)value;
             }
         }
 
@@ -509,43 +406,14 @@ namespace Nop.Core.Domain.Catalog
         {
             get
             {
-                return (BackorderMode)this.BackorderModeId;
+                return (BackorderMode)BackorderModeId;
             }
             set
             {
-                this.BackorderModeId = (int)value;
+                BackorderModeId = (int)value;
             }
         }
 
-        /// <summary>
-        /// Gets or sets the download activation type
-        /// </summary>
-        public DownloadActivationType DownloadActivationType
-        {
-            get
-            {
-                return (DownloadActivationType)this.DownloadActivationTypeId;
-            }
-            set
-            {
-                this.DownloadActivationTypeId = (int)value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the gift card type
-        /// </summary>
-        public GiftCardType GiftCardType
-        {
-            get
-            {
-                return (GiftCardType)this.GiftCardTypeId;
-            }
-            set
-            {
-                this.GiftCardTypeId = (int)value;
-            }
-        }
 
         /// <summary>
         /// Gets or sets the low stock activity
@@ -554,11 +422,11 @@ namespace Nop.Core.Domain.Catalog
         {
             get
             {
-                return (LowStockActivity)this.LowStockActivityId;
+                return (LowStockActivity)LowStockActivityId;
             }
             set
             {
-                this.LowStockActivityId = (int)value;
+                LowStockActivityId = (int)value;
             }
         }
 
@@ -569,48 +437,13 @@ namespace Nop.Core.Domain.Catalog
         {
             get
             {
-                return (ManageInventoryMethod)this.ManageInventoryMethodId;
+                return (ManageInventoryMethod)ManageInventoryMethodId;
             }
             set
             {
-                this.ManageInventoryMethodId = (int)value;
+                ManageInventoryMethodId = (int)value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the cycle period for recurring products
-        /// </summary>
-        public RecurringProductCyclePeriod RecurringCyclePeriod
-        {
-            get
-            {
-                return (RecurringProductCyclePeriod)this.RecurringCyclePeriodId;
-            }
-            set
-            {
-                this.RecurringCyclePeriodId = (int)value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the period for rental products
-        /// </summary>
-        public RentalPricePeriod RentalPricePeriod
-        {
-            get
-            {
-                return (RentalPricePeriod)this.RentalPricePeriodId;
-            }
-            set
-            {
-                this.RentalPricePeriodId = (int)value;
-            }
-        }
-
-
-
-
-
 
         /// <summary>
         /// Gets or sets the collection of ProductCategory
@@ -682,15 +515,6 @@ namespace Nop.Core.Domain.Catalog
         {
             get { return _productAttributeCombinations ?? (_productAttributeCombinations = new List<ProductAttributeCombination>()); }
             protected set { _productAttributeCombinations = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the tier prices
-        /// </summary>
-        public virtual ICollection<TierPrice> TierPrices
-        {
-            get { return _tierPrices ?? (_tierPrices = new List<TierPrice>()); }
-            protected set { _tierPrices = value; }
         }
 
         /// <summary>

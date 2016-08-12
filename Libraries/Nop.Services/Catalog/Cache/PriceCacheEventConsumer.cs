@@ -39,10 +39,7 @@ namespace Nop.Services.Catalog.Cache
         IConsumer<EntityInserted<Product>>,
         IConsumer<EntityUpdated<Product>>,
         IConsumer<EntityDeleted<Product>>,
-        //tier prices
-        IConsumer<EntityInserted<TierPrice>>,
-        IConsumer<EntityUpdated<TierPrice>>,
-        IConsumer<EntityDeleted<TierPrice>>,
+       
         //orders
         IConsumer<EntityInserted<Order>>,
         IConsumer<EntityUpdated<Order>>,
@@ -219,20 +216,6 @@ namespace Nop.Services.Catalog.Cache
             _cacheManager.RemoveByPattern(PRODUCT_PRICE_PATTERN_KEY);
         }
         public void HandleEvent(EntityDeleted<Product> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(PRODUCT_PRICE_PATTERN_KEY);
-        }
-
-        //tier prices
-        public void HandleEvent(EntityInserted<TierPrice> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(PRODUCT_PRICE_PATTERN_KEY);
-        }
-        public void HandleEvent(EntityUpdated<TierPrice> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(PRODUCT_PRICE_PATTERN_KEY);
-        }
-        public void HandleEvent(EntityDeleted<TierPrice> eventMessage)
         {
             _cacheManager.RemoveByPattern(PRODUCT_PRICE_PATTERN_KEY);
         }

@@ -10,7 +10,7 @@ using Nop.Web.Models.Cms;
 
 namespace Nop.Web.Controllers
 {
-    public partial class WidgetController : BasePublicController
+    public class WidgetController : BasePublicController
     {
 		#region Fields
 
@@ -28,10 +28,10 @@ namespace Nop.Web.Controllers
             IThemeContext themeContext,
             ICacheManager cacheManager)
         {
-            this._widgetService = widgetService;
-            this._storeContext = storeContext;
-            this._themeContext = themeContext;
-            this._cacheManager = cacheManager;
+            _widgetService = widgetService;
+            _storeContext = storeContext;
+            _themeContext = themeContext;
+            _cacheManager = cacheManager;
         }
 
         #endregion

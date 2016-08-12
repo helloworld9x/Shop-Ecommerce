@@ -1,0 +1,21 @@
+﻿@model ShoppingCartModel.GiftCardBoxModel
+@using Nop.Web.Models.ShoppingCart;
+@if (Model.Display)
+{
+    <div class="border-square ">
+        <div class="coupon-code">
+            <div class="input-group">
+                <input name="giftcardcouponcode" type="text" class="gift-card-coupon-code form-control" placeholder="Enter gift card code"/>
+                <span class="input-group-btn">
+                    <input type="submit" name="applygiftcardcouponcode" value="@T("ShoppingCart.GiftCardCouponCode.Button")" class="btn btn-primary" />
+                </span>
+            </div><!-- /input-group -->
+        </div>
+        @if (!String.IsNullOrEmpty(Model.Message))
+        {
+            <div class="@(Model.IsApplied ? "message-success" : "message-failure")">
+                @Model.Message
+            </div>
+        }
+    </div>
+}

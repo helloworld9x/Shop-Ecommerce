@@ -2,7 +2,7 @@
 
 namespace Nop.Data.Mapping.Tax
 {
-    public class TaxCategoryMap : NopEntityTypeConfiguration<TaxCategory>
+    public class TaxCategoryMap : GoqEntityTypeConfiguration<TaxCategory>
     {
         public TaxCategoryMap()
         {

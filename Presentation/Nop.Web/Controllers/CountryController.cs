@@ -10,7 +10,7 @@ using Nop.Web.Infrastructure.Cache;
 
 namespace Nop.Web.Controllers
 {
-    public partial class CountryController : BasePublicController
+    public class CountryController : BasePublicController
 	{
 		#region Fields
 
@@ -30,11 +30,11 @@ namespace Nop.Web.Controllers
             IWorkContext workContext,
             ICacheManager cacheManager)
 		{
-            this._countryService = countryService;
-            this._stateProvinceService = stateProvinceService;
-            this._localizationService = localizationService;
-            this._workContext = workContext;
-            this._cacheManager = cacheManager;
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
+            _localizationService = localizationService;
+            _workContext = workContext;
+            _cacheManager = cacheManager;
 		}
 
         #endregion

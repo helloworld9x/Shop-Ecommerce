@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Orders
     /// Represents a best sellers report line
     /// </summary>
     [Serializable]
-    public partial class BestsellersReportLine
+    public class BestsellersReportLine
     {
         /// <summary>
         /// Gets or sets the product identifier

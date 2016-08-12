@@ -7,7 +7,7 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents a shopping cart item
     /// </summary>
-    public partial class ShoppingCartItem : BaseEntity
+    public class ShoppingCartItem : BaseEntity
     {
         /// <summary>
         /// Gets or sets the store identifier
@@ -45,16 +45,6 @@ namespace Nop.Core.Domain.Orders
         public int Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets the rental product start date (null if it's not a rental product)
-        /// </summary>
-        public DateTime? RentalStartDateUtc { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rental product end date (null if it's not a rental product)
-        /// </summary>
-        public DateTime? RentalEndDateUtc { get; set; }
-
-        /// <summary>
         /// Gets or sets the date and time of instance creation
         /// </summary>
         public DateTime CreatedOnUtc { get; set; }
@@ -71,11 +61,11 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return (ShoppingCartType)this.ShoppingCartTypeId;
+                return (ShoppingCartType)ShoppingCartTypeId;
             }
             set
             {
-                this.ShoppingCartTypeId = (int)value;
+                ShoppingCartTypeId = (int)value;
             }
         }
 
@@ -96,7 +86,7 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                var product = this.Product;
+                var product = Product;
                 if (product != null)
                     return product.IsFreeShipping;
                 return true;
@@ -110,7 +100,7 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                var product = this.Product;
+                var product = Product;
                 if (product != null)
                     return product.IsShipEnabled;
                 return false;
@@ -125,7 +115,7 @@ namespace Nop.Core.Domain.Orders
             get
             {
                 decimal additionalShippingCharge = decimal.Zero;
-                var product = this.Product;
+                var product = Product;
                 if (product != null)
                     additionalShippingCharge = product.AdditionalShippingCharge * Quantity;
                 return additionalShippingCharge;
@@ -139,7 +129,7 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                var product = this.Product;
+                var product = Product;
                 if (product != null)
                     return product.IsTaxExempt;
                 return false;

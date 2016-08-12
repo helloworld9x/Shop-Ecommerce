@@ -1,0 +1,179 @@
+﻿@using System.Diagnostics
+@using Nop.Core.Domain.Common;
+@using Nop.Core.Infrastructure;
+@using Nop.Web.Framework.Themes
+@{
+    var displayMiniProfiler = EngineContext.Current.Resolve<Nop.Core.Domain.StoreInformationSettings>().DisplayMiniProfilerInPublicStore;
+    var themeName = EngineContext.Current.Resolve<IThemeContext>().WorkingThemeName;
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/gtn-script.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/slick.min.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/star-rating.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/lodash.min.js", themeName));
+    //Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/target-script-min.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/highlight.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/form-validation.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/page-script.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/select2-autocomplete.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/select2.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/filter-list.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/classie.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/b-carousel.js", themeName));
+    //Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/search.js", themeName));
+
+
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/form-validation-malindo-list.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/form-script.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery.mobile.custom.min.js", themeName));
+
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/data.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery.flagstrap.min.js", themeName));
+
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery.countdown.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/public.ajaxcart.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/public.common.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/bootstrap-datepicker-init.js", themeName));
+
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery-ui-datepicker.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/bootstrap-datepicker.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery-ui-1.10.3.custom.min.js", themeName));
+
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery.autocomplete.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/owl-carousel.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/Bootstrap/js/bootstrap.min.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery.validate.unobtrusive.min.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery-migrate-1.2.1.min.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery.validate.min.js", themeName));
+    Html.AppendScriptParts(string.Format("~/Themes/{0}/Content/js/jquery-1.10.2.min.js", themeName));
+
+
+
+    //X-UA-Compatible tag
+    var commonSettings = EngineContext.Current.Resolve<CommonSettings>();
+    if (commonSettings.RenderXuaCompatible)
+    {
+        Html.AppendHeadCustomParts(string.Format("<meta http-equiv=\"X-UA-Compatible\" content=\"{0}\"/>", commonSettings.XuaCompatibleValue));
+    }
+}
+<!DOCTYPE html>
+<html @Html.Partial("LanguageAttributes")>
+<head>
+    <title>@Html.NopTitle(true)</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <meta name="description" content="@(Html.NopMetaDescription())" />
+    <meta name="keywords" content="@(Html.NopMetaKeywords())" />
+    <meta name="generator" content="nopCommerce" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @Html.NopHeadCustom()
+    @*This is used so that themes can inject content into the header*@
+    @Html.Partial("Head")
+    @Html.Widget("head_html_tag")
+    @Html.NopCssFiles(this.Url, ResourceLocation.Head)
+    @Html.NopScripts(this.Url, ResourceLocation.Head)
+    @Html.NopCanonicalUrls()
+    @Html.Action("RssHeaderLink", "News")
+    @*Favicon - upload favicon.ico file to the root directory*@
+    @Html.Action("Favicon", "Common")
+    @if (displayMiniProfiler)
+    {
+        @StackExchange.Profiling.MiniProfiler.RenderIncludes()
+    }
+    <!--Powered by nopCommerce - http://www.nopCommerce.com-->
+</head>
+<body>
+    @RenderBody()
+    @Html.NopCssFiles(this.Url, ResourceLocation.Foot)
+    @Html.NopScripts(this.Url, ResourceLocation.Foot)
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+
+        var id = '#popupthesoon';
+
+        //Get the screen height and width
+        var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+
+        //Set heigth and width to mask to fill up the whole screen
+        $('#mask-popup').css({ 'width': maskWidth, 'height': maskHeight });
+
+        //transition effect
+        $('#mask-popup').fadeIn(1000);
+        $('#mask-popup').fadeTo("slow", 0.8);
+
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+
+        //Set the popup window to center
+        $(id).css('top', winH / 2 - $(id).height() / 2);
+        $(id).css('left', winW / 2 - $(id).width() / 2);
+
+        //transition effect
+        $(id).fadeIn(2000);
+
+        //if close button is clicked
+        $('.window-popoup .close-popup').click(function (e) {
+            //Cancel the link behavior
+            e.preventDefault();
+
+            $('#mask-popup').hide();
+            $('.window-popoup').hide();
+        });
+        //if mask is clicked
+        $('#mask-popup').click(function () {
+            $(this).hide();
+            $('.window-popoup').hide();
+        });
+
+    });
+    $(document).ready(function() {
+        $("[rel='tooltip']").tooltip();
+
+        $('.promo-pack .thumbnail').hover(
+            function() {
+                $(this).find('.caption').slideDown(250); //.fadeIn(250)
+            },
+            function() {
+                $(this).find('.caption').slideUp(250); //.fadeOut(205)
+            }
+        );
+        // Add class for Lion Parcel Page
+        $('.lion-parcel-content').parents('body').addClass('lion-parcel-page');
+    });
+    $(document).ready(function () {
+        $(window).load(function () {
+            $(window).scroll(function () {
+                var windowsize = $(window).width();
+                if ($(window).scrollTop() > 120 && windowsize > 1000) {
+
+                    $('#floating-menu').css('position', 'fixed');
+                    $('#floating-menu').css('top', 0);
+                    $('#floating-menu').css('z-index', 10000);
+                } else {
+                    if (windowsize > 1000) {
+                        $('#floating-menu').css('position', 'absolute');
+                        $('#floating-menu').css('top', 120);
+                        $('#floating-menu').css('z-index', 4);
+                    }
+
+
+
+                }
+            });
+        });
+    })
+    $(window).load(function () {
+        $('.flexslider').flexslider({
+            animation: "slide",
+            controlNav: false
+        });
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+
+
+

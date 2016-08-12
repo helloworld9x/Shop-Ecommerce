@@ -10,7 +10,7 @@ namespace Nop.Services.Common
     /// <summary>
     ///  Maintenance service
     /// </summary>
-    public partial class MaintenanceService : IMaintenanceService
+    public class MaintenanceService : IMaintenanceService
     {
         #region Fields
 
@@ -30,9 +30,9 @@ namespace Nop.Services.Common
         public MaintenanceService(IDataProvider dataProvider, IDbContext dbContext,
             CommonSettings commonSettings)
         {
-            this._dataProvider = dataProvider;
-            this._dbContext = dbContext;
-            this._commonSettings = commonSettings;
+            _dataProvider = dataProvider;
+            _dbContext = dbContext;
+            _commonSettings = commonSettings;
         }
 
         #endregion

@@ -146,26 +146,6 @@ namespace Nop.Services.Tax
             }
 
             var basedOn = _taxSettings.TaxBasedOn;
-            //new EU VAT rules starting January 1st 2015
-            //find more info at http://ec.europa.eu/taxation_customs/taxation/vat/how_vat_works/telecom/index_en.htm#new_rules
-            //EU VAT enabled?
-            if (_taxSettings.EuVatEnabled)
-            {
-                //telecommunications, broadcasting and electronic services?
-                if (product != null && product.IsTelecommunicationsOrBroadcastingOrElectronicServices)
-                {
-                    //January 1st 2015 passed?
-                    if (DateTime.UtcNow > new DateTime(2015, 1, 1, 0, 0, 0, DateTimeKind.Utc))
-                    {
-                        //Europe Union consumer?
-                        if (IsEuConsumer(customer))
-                        {
-                            //We must charge VAT in the EU country where the customer belongs (not where the business is based)
-                            basedOn = TaxBasedOn.BillingAddress;
-                        }
-                    }
-                }
-            }
             if (basedOn == TaxBasedOn.BillingAddress && customer.BillingAddress == null)
                 basedOn = TaxBasedOn.DefaultAddress;
             if (basedOn == TaxBasedOn.ShippingAddress && customer.ShippingAddress == null)
@@ -249,8 +229,7 @@ namespace Nop.Services.Tax
                 isTaxable = false;
             }
             //make EU VAT exempt validation (the European Union Value Added Tax)
-            if (isTaxable && 
-                _taxSettings.EuVatEnabled &&
+            if (isTaxable &&
                 IsVatExempt(calculateTaxRequest.Address, calculateTaxRequest.Customer))
             {
                 //VAT is not chargeable
@@ -678,12 +657,6 @@ namespace Nop.Services.Tax
             if (String.IsNullOrEmpty(vatNumber))
                 return VatNumberStatus.Empty;
 
-            if (_taxSettings.EuVatAssumeValid)
-                return VatNumberStatus.Valid;
-
-            if (!_taxSettings.EuVatUseWebService)
-                return VatNumberStatus.Unknown;
-
             Exception exception;
             return DoVatCheck(twoLetterIsoCode, vatNumber, out name, out address, out exception);
         }
@@ -785,9 +758,6 @@ namespace Nop.Services.Tax
         /// <returns>Result</returns>
         public virtual bool IsVatExempt(Address address, Customer customer)
         {
-            if (!_taxSettings.EuVatEnabled)
-                return false;
-
             if (address == null || address.Country == null || customer == null)
                 return false;
 
@@ -799,9 +769,8 @@ namespace Nop.Services.Tax
             // VAT not chargeable if address, customer and config meet our VAT exemption requirements:
             // returns true if this customer is VAT exempt because they are shipping within the EU but outside our shop country, they have supplied a validated VAT number, and the shop is configured to allow VAT exemption
             var customerVatStatus = (VatNumberStatus) customer.GetAttribute<int>(SystemCustomerAttributeNames.VatNumberStatusId);
-            return address.CountryId != _taxSettings.EuVatShopCountryId &&
-                   customerVatStatus == VatNumberStatus.Valid &&
-                   _taxSettings.EuVatAllowVatExemption;
+            return
+                customerVatStatus == VatNumberStatus.Valid;
         }
 
         #endregion

@@ -2,7 +2,7 @@
 
 namespace Nop.Data.Mapping.Common
 {
-    public partial class SearchTermMap : NopEntityTypeConfiguration<SearchTerm>
+    public class SearchTermMap : GoqEntityTypeConfiguration<SearchTerm>
     {
         public SearchTermMap()
         {

@@ -90,34 +90,5 @@ namespace Nop.Core.Domain.Tax
         /// </summary>
         public int PaymentMethodAdditionalFeeTaxClassId { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether EU VAT (Eupore Union Value Added Tax) is enabled
-        /// </summary>
-        public bool EuVatEnabled { get; set; }
-
-        /// <summary>
-        /// Gets or sets a shop country identifier
-        /// </summary>
-        public int EuVatShopCountryId { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this store will exempt eligible VAT-registered customers from VAT
-        /// </summary>
-        public bool EuVatAllowVatExemption { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether we should use the EU web service to validate VAT numbers
-        /// </summary>
-        public bool EuVatUseWebService { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether VAT numbers should be automatically assumed valid
-        /// </summary>
-        public bool EuVatAssumeValid { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether we should notify a store owner when a new VAT number is submitted
-        /// </summary>
-        public bool EuVatEmailAdminWhenNewVatSubmitted { get; set; }
     }
 }

@@ -327,24 +327,6 @@ namespace Nop.Services.Discounts
                     return result;
             }
 
-            //Do not allow discounts applied to order subtotal or total when a customer has gift cards in the cart.
-            //Otherwise, this customer can purchase gift cards with discount and get more than paid ("free money").
-            if (discount.DiscountType == DiscountType.AssignedToOrderSubTotal ||
-                discount.DiscountType == DiscountType.AssignedToOrderTotal)
-            {
-                var cart = customer.ShoppingCartItems
-                    .Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart)
-                    .LimitPerStore(_storeContext.CurrentStore.Id)
-                    .ToList();
-
-                var hasGiftCards = cart.Any(x => x.Product.IsGiftCard);
-                if (hasGiftCards)
-                {
-                    result.UserError = _localizationService.GetResource("ShoppingCart.Discount.CannotBeUsedWithGiftCards");
-                    return result;
-                }
-            }
-
             //check date range
             DateTime now = DateTime.UtcNow;
             if (discount.StartDateUtc.HasValue)
@@ -393,47 +375,6 @@ namespace Nop.Services.Discounts
                 default:
                     break;
             }
-
-            //discount requirements
-            //UNDONE we should inject static cache manager into constructor. we we already have "per request" cache manager injected. better way to do it?
-            //we cache meta info of rdiscount requirements. this way we should not load them for each HTTP request
-            var staticCacheManager = EngineContext.Current.ContainerManager.Resolve<ICacheManager>("nop_cache_static");
-            string key = string.Format(DiscountRequirementEventConsumer.DISCOUNT_REQUIREMENT_MODEL_KEY, discount.Id);
-            //var requirements = discount.DiscountRequirements;
-            var requirements = staticCacheManager.Get(key, () =>
-            {
-                var cachedRequirements = new List<DiscountRequirementForCaching>();
-                foreach (var dr in discount.DiscountRequirements)
-                    cachedRequirements.Add(new DiscountRequirementForCaching
-                    {
-                        Id = dr.Id,
-                        SystemName = dr.DiscountRequirementRuleSystemName
-                    });
-                return cachedRequirements;
-            });
-            foreach (var req in requirements)
-            {
-                //load a plugin
-                var requirementRulePlugin = LoadDiscountRequirementRuleBySystemName(req.SystemName);
-                if (requirementRulePlugin == null)
-                    continue;
-                if (!_pluginFinder.AuthenticateStore(requirementRulePlugin.PluginDescriptor, _storeContext.CurrentStore.Id))
-                    continue;
-
-                var ruleRequest = new DiscountRequirementValidationRequest
-                {
-                    DiscountRequirementId = req.Id,
-                    Customer = customer,
-                    Store = _storeContext.CurrentStore
-                };
-                var ruleResult = requirementRulePlugin.CheckRequirement(ruleRequest);
-                if (!ruleResult.IsValid)
-                {
-                    result.UserError = ruleResult.UserError;
-                    return result;
-                }
-            }
-
             result.IsValid = true;
             return result;
         }

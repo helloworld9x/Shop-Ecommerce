@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents a return request
     /// </summary>
-    public partial class ReturnRequest : BaseEntity
+    public class ReturnRequest : BaseEntity
     {
         /// <summary>
         /// Gets or sets the store identifier
@@ -70,11 +70,11 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return (ReturnRequestStatus)this.ReturnRequestStatusId;
+                return (ReturnRequestStatus)ReturnRequestStatusId;
             }
             set
             {
-                this.ReturnRequestStatusId = (int)value;
+                ReturnRequestStatusId = (int)value;
             }
         }
 

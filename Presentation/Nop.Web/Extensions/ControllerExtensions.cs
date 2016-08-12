@@ -216,9 +216,6 @@ namespace Nop.Web.Extensions
                                 //compare products
                                 priceModel.DisableAddToCompareListButton = !catalogSettings.CompareProductsEnabled;
 
-                                //rental
-                                priceModel.IsRental = product.IsRental;
-
                                 //pre-order
                                 if (product.AvailableForPreOrder)
                                 {
@@ -253,49 +250,18 @@ namespace Nop.Web.Extensions
                                             decimal oldPrice = currencyService.ConvertFromPrimaryStoreCurrency(oldPriceBase, workContext.WorkingCurrency);
                                             decimal finalPrice = currencyService.ConvertFromPrimaryStoreCurrency(finalPriceBase, workContext.WorkingCurrency);
 
-                                            //do we have tier prices configured?
-                                            var tierPrices = new List<TierPrice>();
-                                            if (product.HasTierPrices)
+                                            if (finalPriceBase != oldPriceBase && oldPriceBase != decimal.Zero)
                                             {
-                                                tierPrices.AddRange(product.TierPrices
-                                                    .OrderBy(tp => tp.Quantity)
-                                                    .ToList()
-                                                    .FilterByStore(storeContext.CurrentStore.Id)
-                                                    .FilterForCustomer(workContext.CurrentCustomer)
-                                                    .RemoveDuplicatedQuantities());
-                                            }
-                                            //When there is just one tier (with  qty 1), 
-                                            //there are no actual savings in the list.
-                                            bool displayFromMessage = tierPrices.Count > 0 &&
-                                                !(tierPrices.Count == 1 && tierPrices[0].Quantity <= 1);
-                                            if (displayFromMessage)
-                                            {
-                                                priceModel.OldPrice = null;
-                                                priceModel.Price = String.Format(localizationService.GetResource("Products.PriceRangeFrom"), priceFormatter.FormatPrice(finalPrice));
+                                                priceModel.OldPrice = priceFormatter.FormatPrice(oldPrice);
+                                                priceModel.Price = priceFormatter.FormatPrice(finalPrice);
                                                 priceModel.PriceValue = finalPrice;
                                             }
                                             else
                                             {
-                                                if (finalPriceBase != oldPriceBase && oldPriceBase != decimal.Zero)
-                                                {
-                                                    priceModel.OldPrice = priceFormatter.FormatPrice(oldPrice);
-                                                    priceModel.Price = priceFormatter.FormatPrice(finalPrice);
-                                                    priceModel.PriceValue = finalPrice;
-                                                }
-                                                else
-                                                {
-                                                    priceModel.OldPrice = null;
-                                                    priceModel.Price = priceFormatter.FormatPrice(finalPrice);
-                                                    priceModel.PriceValue = finalPrice;
-                                                }
+                                                priceModel.OldPrice = null;
+                                                priceModel.Price = priceFormatter.FormatPrice(finalPrice);
+                                                priceModel.PriceValue = finalPrice;
                                             }
-                                            if (product.IsRental)
-                                            {
-                                                //rental product
-                                                priceModel.OldPrice = priceFormatter.FormatRentalProductPeriod(product, priceModel.OldPrice);
-                                                priceModel.Price = priceFormatter.FormatRentalProductPeriod(product, priceModel.Price);
-                                            }
-
 
                                             //property for German market
                                             //we display tax/shipping info only with "shipping enabled" for this product
@@ -348,7 +314,7 @@ namespace Nop.Web.Extensions
                         pictureModel.AlternateText = (picture != null && !string.IsNullOrEmpty(picture.AltAttribute)) ?
                             picture.AltAttribute :
                             string.Format(localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), model.Name);
-                        
+
                         return pictureModel;
                     });
 

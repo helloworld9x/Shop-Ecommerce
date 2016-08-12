@@ -9,7 +9,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order processing service interface
     /// </summary>
-    public partial interface IOrderProcessingService
+    public interface IOrderProcessingService
     {
         /// <summary>
         /// Checks order status

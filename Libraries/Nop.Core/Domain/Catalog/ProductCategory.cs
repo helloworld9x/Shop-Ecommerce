@@ -3,7 +3,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product category mapping
     /// </summary>
-    public partial class ProductCategory : BaseEntity
+    public class ProductCategory : BaseEntity
     {
         /// <summary>
         /// Gets or sets the product identifier

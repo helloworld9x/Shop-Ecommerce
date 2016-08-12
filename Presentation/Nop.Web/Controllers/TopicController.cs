@@ -16,7 +16,7 @@ using Nop.Web.Models.Topics;
 
 namespace Nop.Web.Controllers
 {
-    public partial class TopicController : BasePublicController
+    public class TopicController : BasePublicController
     {
         #region Fields
 
@@ -42,14 +42,14 @@ namespace Nop.Web.Controllers
             IAclService aclService,
             ITopicTemplateService topicTemplateService)
         {
-            this._topicService = topicService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._localizationService = localizationService;
-            this._cacheManager = cacheManager;
-            this._storeMappingService = storeMappingService;
-            this._aclService = aclService;
-            this._topicTemplateService = topicTemplateService;
+            _topicService = topicService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _localizationService = localizationService;
+            _cacheManager = cacheManager;
+            _storeMappingService = storeMappingService;
+            _aclService = aclService;
+            _topicTemplateService = topicTemplateService;
         }
 
         #endregion

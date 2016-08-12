@@ -1,0 +1,90 @@
+﻿@model TopMenuModel
+@using System.IdentityModel
+@using Autofac
+@using AutoMapper.Internal
+@using Nop.Core.Infrastructure
+@using Nop.Core.Infrastructure.DependencyManagement
+@using Nop.Services.Directory
+@using Nop.Web.Models.Catalog;
+@{
+    var rootCategories = Model.Categories.Where(x => x.IncludeInTopMenu).ToList();
+    var getIp = WorkContext.CurrentCustomer.LastIpAddress;
+    //var getIp = "115.85.71.156";
+    var geoLookupService = EngineContext.Current.Resolve<IGeoLookupService>();
+    var iso = geoLookupService.LookupCountryIsoCode(getIp);
+
+}
+@helper RenderCategoryLine(CategorySimpleModel category, int level, bool responsiveMobileMenu)
+{
+    <li>
+        <a href="@Url.RouteUrl("Category", new {SeName = category.SeName})">
+            @category.Name
+            @if (category.NumberOfProducts.HasValue)
+            {
+                <text> </text>@T("Categories.TotalProducts", category.NumberOfProducts.Value)
+            }
+        </a>
+    </li>
+}
+<div class="main-menu" id="floating-menu" style="">
+    <div class="container">
+
+
+        <div class="booking-form">
+            <ul class="nav nav-tabs booking-form-nav header-menu collapse" id="bookTab">
+                @Html.Widget("header_menu_before")
+                @*Home*@
+                @*<li data-active-header="home"><a href="@Url.RouteUrl("HomePage")">@T("Home")</a></li>*@
+                <li data-active-header="home" class="home-lionParcel"><a href="@Url.RouteUrl("HomePage")">@T("Home")</a></li>
+                @*Travel*@
+                <li data-active-header="travel" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                        <em class="icon im-train"></em>
+                        <span>@T("TRAVEL")</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul style="display: none;" id="#travel" class="dropdown-menu" aria-labelledby="travel">
+                        <li><a href="/flights">@T("Flight")</a></li>
+                        <li><a href="/flight-travel">@T("Flight + Hotels")</a></li>
+                        <li><a href="/hotel">@T("Hotels")</a></li>
+                        <li><a href="/comming-soon">@T("AIRLINE merchandise")</a></li>
+                        <li><a href="/comming-soon">@T("Attractions Tickets")</a></li>
+                        <li><a href="/comming-soon">@T("Taxis &amp;Limousines") </a></li>
+                        <li><a href="/comming-soon">@T("Airport Lounge Access")</a></li>
+                        <li><a href="/comming-soon">@T("CRUISES")</a></li>
+                        <li><a href="/comming-soon">@T("Rent A Car")</a></li>
+                    </ul>
+                </li>
+                @*Retail*@
+                @*<li><a href="/shopping-home">@T("RETAIL")</a></li>*@
+
+                @*Other*@
+                @foreach (var topic in Model.Topics)
+                {
+                    <li><a href="@Url.RouteUrl("Topic", new { SeName = topic.SeName })">@topic.Name</a></li>
+                }
+                @if (iso != "ID")
+                {
+                    <li class="dropdown">
+                        <a href="/shopping-home" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="False">
+                            <em class="icon im-train"></em>
+                            <span>@T("RETAIL")</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul style="display: none;" id="#shopping-home" class="dropdown-menu" aria-labelledby="shopping-home">
+                            @foreach (var category in rootCategories)
+                            {
+                                <li>@RenderCategoryLine(category, 0, false)</li>
+                            }
+                        </ul>
+                    </li>
+                    <li data-active-header="home"><a href="/shop">@T("Shop")</a></li>
+
+                    <li data-active-header="login"><a href="/comming-soon"> @T("INSURANCE")</a></li>
+                }
+                @*<li data-active-header="login"><a href="http://www.lionparcel.com/"><img src="~/Themes/ShopLion/Content/images/logo-malindo-mini.png" />@T("LION PARCEL")</a></li>*@
+                <li data-active-header="contact"><a href="/contactus" class="li-last">@T("CONTACT US")</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

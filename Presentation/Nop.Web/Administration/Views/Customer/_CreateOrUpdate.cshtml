@@ -40,12 +40,6 @@
             <li @Html.RenderSelectedTabIndex(6, GetSelectedTabIndex())>
                 @T("Admin.Customers.Customers.ActivityLog")
             </li>
-            <li @Html.RenderSelectedTabIndex(7, GetSelectedTabIndex())>
-                @T("Admin.Customers.Customers.Impersonate")
-            </li>
-            <li @Html.RenderSelectedTabIndex(8, GetSelectedTabIndex())>
-                @T("Admin.Customers.Customers.BackInStockSubscriptions")
-            </li>
         }
         @if (Model.DisplayRewardPointsHistory)
         {
@@ -77,12 +71,7 @@
         <div>
             @TabActivityLog()
         </div>
-        <div>
-            @TabImpersonate()
-        </div>
-        <div>
-            @TabBackInStockSubscriptions()
-        </div>
+      
     }
     @if (Model.DisplayRewardPointsHistory)
     {
@@ -434,10 +423,6 @@
                 </td>
             </tr>
         }
-        @if (Model.CustomerAttributes.Count > 0)
-        {
-            @Html.Partial("_CustomerAttributes", Model.CustomerAttributes)
-        }
         <tr>
             <td class="adminTitle">
                 @Html.NopLabelFor(model => model.AdminComment):
@@ -468,18 +453,7 @@
                 </td>
             </tr>
         }
-        @if (Model.AffiliateId > 0)
-        {
-            <tr>
-                <td class="adminTitle">
-                    @Html.NopLabelFor(model => model.AffiliateId):
-                </td>
-                <td class="adminData">
-                    <a href="@Url.Action("Edit", "Affiliate", new { id = Model.AffiliateId })">@Model.AffiliateName - @T("Admin.Common.View")</a>
-                    <input type="submit" name="remove-affiliate" class="k-button" value="@T("Admin.Customers.Customers.Fields.Affiliate.Remove")" />
-                </td>
-            </tr>
-        }
+       
         @if (Model.DisplayVatNumber)
         {
             <tr>

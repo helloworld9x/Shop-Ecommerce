@@ -1,0 +1,44 @@
+﻿@model ProductDetailsModel.GiftCardModel
+@using Nop.Web.Models.Catalog;
+@if (Model.IsGiftCard)
+{
+    <div class="giftcard">
+        <div class="row">
+            @Html.LabelFor(model => model.RecipientName, new {@class="col-md-5 label-input-sm" }, ":")
+            <div class="form-group col-md-7">
+                @Html.TextBoxFor(model => model.RecipientName, new { @class = "recipient-name form-control input-sm" })
+            </div>
+        </div>
+        @if (Model.GiftCardType == Nop.Core.Domain.Catalog.GiftCardType.Virtual)
+        {
+            <div class="row">
+                @Html.LabelFor(model => model.RecipientEmail, new { @class = "col-md-5 label-input-sm" }, ":")
+                <div class="form-group col-md-7">
+                    @Html.TextBoxFor(model => model.RecipientEmail, new { @class = "recipient-email form-control input-sm" })
+                    </div>
+            </div>
+        }
+        <div class="row">
+            @Html.LabelFor(model => model.SenderName, new { @class = "col-md-5 label-input-sm" }, ":") 
+            <div class="form-group col-md-7">
+                @Html.TextBoxFor(model => model.SenderName, new { @class = "sender-name form-control input-sm" })
+                </div>
+        </div>
+        @if (Model.GiftCardType == Nop.Core.Domain.Catalog.GiftCardType.Virtual)
+        {
+            <div class="row">
+                @Html.LabelFor(model => model.SenderEmail, new { @class = "col-md-5 label-input-sm" }, ":")
+                <div class="form-group col-md-7">
+                    @Html.TextBoxFor(model => model.SenderEmail, new { @class = "sender-email form-control input-sm" })
+                    </div>
+            </div>
+        }
+        <div class="row">
+            @Html.LabelFor(model => model.Message, new { @class = "col-md-5 label-input-sm" }, ":")
+            <div class="form-group col-md-7">
+                @Html.TextAreaFor(model => model.Message, new { @class = "message form-control input-sm" })
+                </div>
+        </div>
+    </div>
+    <hr class="bordered">
+}

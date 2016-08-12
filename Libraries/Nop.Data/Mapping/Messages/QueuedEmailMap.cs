@@ -2,7 +2,7 @@ using Nop.Core.Domain.Messages;
 
 namespace Nop.Data.Mapping.Messages
 {
-    public partial class QueuedEmailMap : NopEntityTypeConfiguration<QueuedEmail>
+    public class QueuedEmailMap : GoqEntityTypeConfiguration<QueuedEmail>
     {
         public QueuedEmailMap()
         {

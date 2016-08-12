@@ -7,7 +7,7 @@ namespace Nop.Services.Catalog
     /// <summary>
     /// Price formatter
     /// </summary>
-    public partial interface IPriceFormatter
+    public  interface IPriceFormatter
     {
         /// <summary>
         /// Formats the price
@@ -82,15 +82,6 @@ namespace Nop.Services.Catalog
         /// <returns>Price</returns>
         string FormatPrice(decimal price, bool showCurrency, 
             Currency targetCurrency, Language language, bool priceIncludesTax, bool showTax);
-
-        /// <summary>
-        /// Formats the price of rental product (with rental period)
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="price">Price</param>
-        /// <returns>Rental product price with period</returns>
-        string FormatRentalProductPeriod(Product product, string price);
-
 
 
         /// <summary>

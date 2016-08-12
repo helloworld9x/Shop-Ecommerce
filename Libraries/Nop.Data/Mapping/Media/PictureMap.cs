@@ -2,7 +2,7 @@ using Nop.Core.Domain.Media;
 
 namespace Nop.Data.Mapping.Media
 {
-    public partial class PictureMap : NopEntityTypeConfiguration<Picture>
+    public partial class PictureMap : GoqEntityTypeConfiguration<Picture>
     {
         public PictureMap()
         {

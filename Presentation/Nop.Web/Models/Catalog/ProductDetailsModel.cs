@@ -14,7 +14,6 @@ namespace Nop.Web.Models.Catalog
         {
             DefaultPictureModel = new PictureModel();
             PictureModels = new List<PictureModel>();
-            GiftCard = new GiftCardModel();
             ProductPrice = new ProductPriceModel();
             AddToCart = new AddToCartModel();
             ProductAttributes = new List<ProductAttributeModel>();
@@ -25,7 +24,6 @@ namespace Nop.Web.Models.Catalog
             ProductSpecifications= new List<ProductSpecificationModel>();
             ProductManufacturers = new List<ManufacturerModel>();
             ProductReviewOverview = new ProductReviewOverviewModel();
-            TierPrices = new List<TierPriceModel>();
         }
 
         //picture(s)
@@ -37,9 +35,7 @@ namespace Nop.Web.Models.Catalog
         public string ShortDescription { get; set; }
         public string FullDescription { get; set; }
         public string ProductTemplateViewPath { get; set; }
-        public string MetaKeywords { get; set; }
-        public string MetaDescription { get; set; }
-        public string MetaTitle { get; set; }
+     
         public string SeName { get; set; }
 
         public bool ShowSku { get; set; }
@@ -54,20 +50,10 @@ namespace Nop.Web.Models.Catalog
         public bool ShowVendor { get; set; }
         public VendorBriefInfoModel VendorModel { get; set; }
 
-        public bool HasSampleDownload { get; set; }
-
-        public GiftCardModel GiftCard { get; set; }
-
         public bool IsShipEnabled { get; set; }
         public bool IsFreeShipping { get; set; }
         public bool FreeShippingNotificationEnabled { get; set; }
         public string DeliveryDate { get; set; }
-
-
-        public bool IsRental { get; set; }
-        public DateTime? RentalStartDate { get; set; }
-        public DateTime? RentalEndDate { get; set; }
-
         public string StockAvailability { get; set; }
 
         public bool DisplayBackInStockSubscription { get; set; }
@@ -92,8 +78,6 @@ namespace Nop.Web.Models.Catalog
         public IList<ManufacturerModel> ProductManufacturers { get; set; }
 
         public ProductReviewOverviewModel ProductReviewOverview { get; set; }
-
-        public IList<TierPriceModel> TierPrices { get; set; }
 
         //a list of associated products. For example, "Grouped" products could have several child "simple" products
         public IList<ProductDetailsModel> AssociatedProducts { get; set; }
@@ -140,9 +124,6 @@ namespace Nop.Web.Models.Catalog
             public bool DisableBuyButton { get; set; }
             public bool DisableWishlistButton { get; set; }
 
-            //rental
-            public bool IsRental { get; set; }
-
             //pre-order
             public bool AvailableForPreOrder { get; set; }
             public DateTime? PreOrderAvailabilityStartDateTimeUtc { get; set; }
@@ -172,10 +153,6 @@ namespace Nop.Web.Models.Catalog
 
             public bool HidePrices { get; set; }
 
-            //rental
-            public bool IsRental { get; set; }
-            public string RentalPrice { get; set; }
-
             /// <summary>
             /// A value indicating whether we should display tax/shipping info (used in Germany)
             /// </summary>
@@ -184,36 +161,6 @@ namespace Nop.Web.Models.Catalog
             /// PAngV baseprice (used in Germany)
             /// </summary>
             public string BasePricePAngV { get; set; }
-        }
-
-        public partial class GiftCardModel : BaseNopModel
-        {
-            public bool IsGiftCard { get; set; }
-
-            [NopResourceDisplayName("Products.GiftCard.RecipientName")]
-            [AllowHtml]
-            public string RecipientName { get; set; }
-            [NopResourceDisplayName("Products.GiftCard.RecipientEmail")]
-            [AllowHtml]
-            public string RecipientEmail { get; set; }
-            [NopResourceDisplayName("Products.GiftCard.SenderName")]
-            [AllowHtml]
-            public string SenderName { get; set; }
-            [NopResourceDisplayName("Products.GiftCard.SenderEmail")]
-            [AllowHtml]
-            public string SenderEmail { get; set; }
-            [NopResourceDisplayName("Products.GiftCard.Message")]
-            [AllowHtml]
-            public string Message { get; set; }
-
-            public GiftCardType GiftCardType { get; set; }
-        }
-
-        public partial class TierPriceModel : BaseNopModel
-        {
-            public string Price { get; set; }
-
-            public int Quantity { get; set; }
         }
 
         public partial class ProductAttributeModel : BaseNopEntityModel

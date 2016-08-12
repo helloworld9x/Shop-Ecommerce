@@ -10,7 +10,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Search term service
     /// </summary>
-    public partial class SearchTermService : ISearchTermService
+    public class SearchTermService : ISearchTermService
     {
         #region Fields
 
@@ -24,8 +24,8 @@ namespace Nop.Services.Common
         public SearchTermService(IRepository<SearchTerm> searchTermRepository,
             IEventPublisher eventPublisher)
         {
-            this._searchTermRepository = searchTermRepository;
-            this._eventPublisher = eventPublisher;
+            _searchTermRepository = searchTermRepository;
+            _eventPublisher = eventPublisher;
         }
 
         #endregion

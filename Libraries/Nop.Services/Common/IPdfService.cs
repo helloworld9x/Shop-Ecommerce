@@ -9,7 +9,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Customer service interface
     /// </summary>
-    public partial interface IPdfService
+    public interface IPdfService
     {
         /// <summary>
         /// Print an order to PDF

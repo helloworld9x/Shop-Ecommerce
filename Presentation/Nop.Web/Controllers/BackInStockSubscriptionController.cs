@@ -11,7 +11,7 @@ using Nop.Web.Models.Common;
 
 namespace Nop.Web.Controllers
 {
-    public partial class BackInStockSubscriptionController : BasePublicController
+    public class BackInStockSubscriptionController : BasePublicController
     {
 		#region Fields
 
@@ -35,13 +35,13 @@ namespace Nop.Web.Controllers
             CatalogSettings catalogSettings,
             CustomerSettings customerSettings)
         {
-            this._productService = productService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._localizationService = localizationService;
-            this._backInStockSubscriptionService = backInStockSubscriptionService;
-            this._catalogSettings = catalogSettings;
-            this._customerSettings = customerSettings;
+            _productService = productService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _localizationService = localizationService;
+            _backInStockSubscriptionService = backInStockSubscriptionService;
+            _catalogSettings = catalogSettings;
+            _customerSettings = customerSettings;
         }
 
         #endregion
@@ -158,7 +158,7 @@ namespace Nop.Web.Controllers
                         Id = subscription.Id,
                         ProductId = product.Id,
                         ProductName = product.GetLocalized(x => x.Name),
-                        SeName = product.GetSeName(),
+                        SeName = product.GetSeName()
                     };
                     model.Subscriptions.Add(subscriptionModel);
                 }

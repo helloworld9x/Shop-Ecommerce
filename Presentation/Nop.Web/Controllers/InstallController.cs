@@ -19,7 +19,7 @@ using Nop.Web.Models.Install;
 
 namespace Nop.Web.Controllers
 {
-    public partial class InstallController : BasePublicController
+    public class InstallController : BasePublicController
     {
         #region Fields
 
@@ -32,8 +32,8 @@ namespace Nop.Web.Controllers
 
         public InstallController(IInstallationLocalizationService locService, NopConfig config)
         {
-            this._locService = locService;
-            this._config = config;
+            _locService = locService;
+            _config = config;
         }
 
         #endregion
@@ -133,7 +133,7 @@ namespace Nop.Web.Controllers
                 builder.Password = password;
             }
             builder.PersistSecurityInfo = false;
-            if (this.UseMars)
+            if (UseMars)
             {
                 builder.MultipleActiveResultSets = true;
             }
@@ -154,7 +154,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("HomePage");
 
             //set page timeout to 5 minutes
-            this.Server.ScriptTimeout = 300;
+            Server.ScriptTimeout = 300;
 
 
             var model = new InstallModel
@@ -170,7 +170,7 @@ namespace Nop.Web.Controllers
                 SqlConnectionInfo = "sqlconnectioninfo_values",
                 SqlServerCreateDatabase = false,
                 UseCustomCollation = false,
-                Collation = "SQL_Latin1_General_CP1_CI_AS",
+                Collation = "SQL_Latin1_General_CP1_CI_AS"
             };
             foreach (var lang in _locService.GetAvailableLanguages())
             {
@@ -178,7 +178,7 @@ namespace Nop.Web.Controllers
                 {
                     Value = Url.Action("ChangeLanguage", "Install", new { language = lang.Code}),
                     Text = lang.Name,
-                    Selected = _locService.GetCurrentLanguage().Code == lang.Code,
+                    Selected = _locService.GetCurrentLanguage().Code == lang.Code
                 });
             }
 
@@ -192,7 +192,7 @@ namespace Nop.Web.Controllers
                 return RedirectToRoute("HomePage");
 
             //set page timeout to 5 minutes
-            this.Server.ScriptTimeout = 300;
+            Server.ScriptTimeout = 300;
 
             if (model.DatabaseConnectionString != null)
                 model.DatabaseConnectionString = model.DatabaseConnectionString.Trim();
@@ -204,7 +204,7 @@ namespace Nop.Web.Controllers
                 {
                     Value = Url.Action("ChangeLanguage", "Install", new { language = lang.Code }),
                     Text = lang.Name,
-                    Selected = _locService.GetCurrentLanguage().Code == lang.Code,
+                    Selected = _locService.GetCurrentLanguage().Code == lang.Code
                 });
             }
 
@@ -286,7 +286,7 @@ namespace Nop.Web.Controllers
                             //we know that MARS option is required when using Entity Framework
                             //let's ensure that it's specified
                             var sqlCsb = new SqlConnectionStringBuilder(model.DatabaseConnectionString);
-                            if (this.UseMars)
+                            if (UseMars)
                             {
                                 sqlCsb.MultipleActiveResultSets = true;
                             }

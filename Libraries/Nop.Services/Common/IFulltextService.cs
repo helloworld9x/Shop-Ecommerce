@@ -4,7 +4,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Full-Text service interface
     /// </summary>
-    public partial interface IFulltextService
+    public interface IFulltextService
     {
         /// <summary>
         /// Gets value indicating whether Full-Text is supported

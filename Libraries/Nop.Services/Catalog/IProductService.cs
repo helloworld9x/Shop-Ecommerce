@@ -10,7 +10,7 @@ namespace Nop.Services.Catalog
     /// <summary>
     /// Product service
     /// </summary>
-    public partial interface IProductService
+    public interface IProductService
     {
         #region Products
 
@@ -221,12 +221,6 @@ namespace Nop.Services.Catalog
         Product GetProductBySku(string sku);
 
         /// <summary>
-        /// Update HasTierPrices property (used for performance optimization)
-        /// </summary>
-        /// <param name="product">Product</param>
-        void UpdateHasTierPricesProperty(Product product);
-
-        /// <summary>
         /// Update HasDiscountsApplied property (used for performance optimization)
         /// </summary>
         /// <param name="product">Product</param>
@@ -358,35 +352,6 @@ namespace Nop.Services.Catalog
 
         #endregion
         
-        #region Tier prices
-
-        /// <summary>
-        /// Deletes a tier price
-        /// </summary>
-        /// <param name="tierPrice">Tier price</param>
-        void DeleteTierPrice(TierPrice tierPrice);
-
-        /// <summary>
-        /// Gets a tier price
-        /// </summary>
-        /// <param name="tierPriceId">Tier price identifier</param>
-        /// <returns>Tier price</returns>
-        TierPrice GetTierPriceById(int tierPriceId);
-
-        /// <summary>
-        /// Inserts a tier price
-        /// </summary>
-        /// <param name="tierPrice">Tier price</param>
-        void InsertTierPrice(TierPrice tierPrice);
-
-        /// <summary>
-        /// Updates the tier price
-        /// </summary>
-        /// <param name="tierPrice">Tier price</param>
-        void UpdateTierPrice(TierPrice tierPrice);
-
-        #endregion
-
         #region Product pictures
 
         /// <summary>

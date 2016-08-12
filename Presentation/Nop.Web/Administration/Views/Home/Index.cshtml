@@ -16,7 +16,7 @@
 </div>
 <table class="dashboard">
     @Html.Widget("admin_dashboard_top")
-    <tr>
+    <tsr>
         <td class="maincol">
             <div class="section-header">
                 <div class="title">
@@ -98,12 +98,6 @@
                 </table>
             }
         </td>
-        @if (!Model.IsLoggedInAsVendor)
-        {
-            <td class="rightcol">
-                @Html.Action("NopCommerceNews", "Home")
-            </td>
-        }
-    </tr>
+    </tsr>
     @Html.Widget("admin_dashboard_bottom")
 </table>

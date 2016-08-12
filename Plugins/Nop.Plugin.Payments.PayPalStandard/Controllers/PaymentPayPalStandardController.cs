@@ -284,15 +284,6 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
                     var newPaymentStatus = PaypalHelper.GetPaymentStatus(payment_status, pending_reason);
                     sb.AppendLine("New payment status: " + newPaymentStatus);
 
-                    //order note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = sb.ToString(),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-
                     //load settings for a chosen store scope
                     var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
                     var payPalStandardPaymentSettings = _settingService.LoadSetting<PayPalStandardPaymentSettings>(storeScope);
@@ -323,26 +314,6 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
             }
             else
             {
-                string orderNumber = string.Empty;
-                values.TryGetValue("custom", out orderNumber);
-                Guid orderNumberGuid = Guid.Empty;
-                try
-                {
-                    orderNumberGuid = new Guid(orderNumber);
-                }
-                catch { }
-                Order order = _orderService.GetOrderByGuid(orderNumberGuid);
-                if (order != null)
-                {
-                    //order note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = "PayPal PDT failed. " + response,
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-                }
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
         }
@@ -484,16 +455,6 @@ namespace Nop.Plugin.Payments.PayPalStandard.Controllers
                             var order = _orderService.GetOrderByGuid(orderNumberGuid);
                             if (order != null)
                             {
-
-                                //order note
-                                order.OrderNotes.Add(new OrderNote
-                                {
-                                    Note = sb.ToString(),
-                                    DisplayToCustomer = false,
-                                    CreatedOnUtc = DateTime.UtcNow
-                                });
-                                _orderService.UpdateOrder(order);
-
                                 switch (newPaymentStatus)
                                 {
                                     case PaymentStatus.Pending:

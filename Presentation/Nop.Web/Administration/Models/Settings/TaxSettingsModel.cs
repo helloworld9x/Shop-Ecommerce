@@ -6,13 +6,12 @@ using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Models.Settings
 {
-    public partial class TaxSettingsModel : BaseNopModel
+    public class TaxSettingsModel : BaseNopModel
     {
         public TaxSettingsModel()
         {
             PaymentMethodAdditionalFeeTaxCategories = new List<SelectListItem>();
             ShippingTaxCategories = new List<SelectListItem>();
-            EuVatShopCountries = new List<SelectListItem>();
             DefaultTaxAddress = new AddressModel();
         }
 
@@ -82,10 +81,6 @@ namespace Nop.Admin.Models.Settings
         public bool ShippingTaxClassId_OverrideForStore { get; set; }
         public IList<SelectListItem> ShippingTaxCategories { get; set; }
 
-
-
-
-
         [NopResourceDisplayName("Admin.Configuration.Settings.Tax.PaymentMethodAdditionalFeeIsTaxable")]
         public bool PaymentMethodAdditionalFeeIsTaxable { get; set; }
         public bool PaymentMethodAdditionalFeeIsTaxable_OverrideForStore { get; set; }
@@ -98,33 +93,6 @@ namespace Nop.Admin.Models.Settings
         public int PaymentMethodAdditionalFeeTaxClassId { get; set; }
         public bool PaymentMethodAdditionalFeeTaxClassId_OverrideForStore { get; set; }
         public IList<SelectListItem> PaymentMethodAdditionalFeeTaxCategories { get; set; }
-
-
-
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Tax.EuVatEnabled")]
-        public bool EuVatEnabled { get; set; }
-        public bool EuVatEnabled_OverrideForStore { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Tax.EuVatShopCountry")]
-        public int EuVatShopCountryId { get; set; }
-        public bool EuVatShopCountryId_OverrideForStore { get; set; }
-        public IList<SelectListItem> EuVatShopCountries { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Tax.EuVatAllowVatExemption")]
-        public bool EuVatAllowVatExemption { get; set; }
-        public bool EuVatAllowVatExemption_OverrideForStore { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Tax.EuVatUseWebService")]
-        public bool EuVatUseWebService { get; set; }
-        public bool EuVatUseWebService_OverrideForStore { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Tax.EuVatAssumeValid")]
-        public bool EuVatAssumeValid { get; set; }
-        public bool EuVatAssumeValid_OverrideForStore { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Tax.EuVatEmailAdminWhenNewVatSubmitted")]
-        public bool EuVatEmailAdminWhenNewVatSubmitted { get; set; }
-        public bool EuVatEmailAdminWhenNewVatSubmitted_OverrideForStore { get; set; }
+      
     }
 }

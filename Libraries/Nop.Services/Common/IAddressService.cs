@@ -7,7 +7,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Address service interface
     /// </summary>
-    public partial interface IAddressService
+    public interface IAddressService
     {
         /// <summary>
         /// Deletes an address

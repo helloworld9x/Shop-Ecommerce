@@ -1,3 +1,5 @@
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\obj\Debug\Nop.Web.MVC.Tests.csproj.App.config
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\obj\Debug\Nop.Web.MVC.Tests.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\bin\Debug\Nop.Web.MVC.Tests.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\bin\Debug\Nop.Web.MVC.Tests.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\bin\Debug\Nop.Web.MVC.Tests.pdb
@@ -145,7 +147,5 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\bin\Debug
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\bin\Debug\ru\System.Spatial.resources.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\bin\Debug\zh-Hans\System.Spatial.resources.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\bin\Debug\zh-Hant\System.Spatial.resources.dll
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\obj\Debug\Nop.Web.MVC.Tests.csproj.App.config
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\obj\Debug\Nop.Web.MVC.Tests.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\obj\Debug\Nop.Web.MVC.Tests.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Web.MVC.Tests\obj\Debug\Nop.Web.MVC.Tests.pdb

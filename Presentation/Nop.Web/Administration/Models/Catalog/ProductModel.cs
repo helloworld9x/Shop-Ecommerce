@@ -23,7 +23,6 @@ namespace Nop.Admin.Models.Catalog
             CopyProductModel = new CopyProductModel();
             AvailableBasepriceUnits = new List<SelectListItem>();
             AvailableBasepriceBaseUnits = new List<SelectListItem>();
-            AvailableProductTemplates = new List<SelectListItem>();
             AvailableVendors = new List<SelectListItem>();
             AvailableTaxCategories = new List<SelectListItem>();
             AvailableDeliveryDates = new List<SelectListItem>();
@@ -57,10 +56,6 @@ namespace Nop.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.VisibleIndividually")]
         public bool VisibleIndividually { get; set; }
 
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.ProductTemplate")]
-        public int ProductTemplateId { get; set; }
-        public IList<SelectListItem> AvailableProductTemplates { get; set; }
-
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Name")]
         [AllowHtml]
         public string Name { get; set; }
@@ -83,18 +78,6 @@ namespace Nop.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ShowOnHomePage")]
         public bool ShowOnHomePage { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaKeywords")]
-        [AllowHtml]
-        public string MetaKeywords { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaDescription")]
-        [AllowHtml]
-        public string MetaDescription { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MetaTitle")]
-        [AllowHtml]
-        public string MetaTitle { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.SeName")]
         [AllowHtml]
@@ -123,8 +106,7 @@ namespace Nop.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsGiftCard")]
         public bool IsGiftCard { get; set; }
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.GiftCardType")]
-        public int GiftCardTypeId { get; set; }
+      
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.OverriddenGiftCardAmount")]
         [UIHint("DecimalNullable")]
         public decimal? OverriddenGiftCardAmount { get; set; }
@@ -138,40 +120,6 @@ namespace Nop.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.AutomaticallyAddRequiredProducts")]
         public bool AutomaticallyAddRequiredProducts { get; set; }
 
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsDownload")]
-        public bool IsDownload { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.Download")]
-        [UIHint("Download")]
-        public int DownloadId { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.UnlimitedDownloads")]
-        public bool UnlimitedDownloads { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.MaxNumberOfDownloads")]
-        public int MaxNumberOfDownloads { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.DownloadExpirationDays")]
-        [UIHint("Int32Nullable")]
-        public int? DownloadExpirationDays { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.DownloadActivationType")]
-        public int DownloadActivationTypeId { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.HasSampleDownload")]
-        public bool HasSampleDownload { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.SampleDownload")]
-        [UIHint("Download")]
-        public int SampleDownloadId { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.HasUserAgreement")]
-        public bool HasUserAgreement { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.UserAgreementText")]
-        [AllowHtml]
-        public string UserAgreementText { get; set; }
-
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsRecurring")]
         public bool IsRecurring { get; set; }
 
@@ -183,15 +131,6 @@ namespace Nop.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.RecurringTotalCycles")]
         public int RecurringTotalCycles { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsRental")]
-        public bool IsRental { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.RentalPriceLength")]
-        public int RentalPriceLength { get; set; }
-
-        [NopResourceDisplayName("Admin.Catalog.Products.Fields.RentalPricePeriod")]
-        public int RentalPricePeriodId { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsShipEnabled")]
         public bool IsShipEnabled { get; set; }

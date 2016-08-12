@@ -2,7 +2,7 @@ using Nop.Core.Domain.Localization;
 
 namespace Nop.Data.Mapping.Localization
 {
-    public partial class LocalizedPropertyMap : NopEntityTypeConfiguration<LocalizedProperty>
+    public partial class LocalizedPropertyMap : GoqEntityTypeConfiguration<LocalizedProperty>
     {
         public LocalizedPropertyMap()
         {

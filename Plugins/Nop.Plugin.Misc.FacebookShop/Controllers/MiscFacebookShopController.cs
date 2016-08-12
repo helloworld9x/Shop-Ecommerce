@@ -44,7 +44,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
         private readonly IWorkContext _workContext;
 
         #endregion
-        
+
         #region Ctor
 
         public MiscFacebookShopController(IAclService aclService,
@@ -79,9 +79,9 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
             this._taxService = taxService;
             this._workContext = workContext;
         }
-        
+
         #endregion
-        
+
         #region Utilities
 
         //just copy this method from CatalogController (removed some redundant code)
@@ -259,9 +259,6 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                                     !_permissionService.Authorize(StandardPermissionProvider.EnableWishlist) ||
                                     !_permissionService.Authorize(StandardPermissionProvider.DisplayPrices);
 
-                                //rental
-                                priceModel.IsRental = product.IsRental;
-
                                 //pre-order
                                 if (product.AvailableForPreOrder)
                                 {
@@ -296,44 +293,16 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                                             decimal oldPrice = _currencyService.ConvertFromPrimaryStoreCurrency(oldPriceBase, _workContext.WorkingCurrency);
                                             decimal finalPrice = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceBase, _workContext.WorkingCurrency);
 
-                                            //do we have tier prices configured?
-                                            var tierPrices = new List<TierPrice>();
-                                            if (product.HasTierPrices)
+
+                                            if (finalPriceBase != oldPriceBase && oldPriceBase != decimal.Zero)
                                             {
-                                                tierPrices.AddRange(product.TierPrices
-                                                    .OrderBy(tp => tp.Quantity)
-                                                    .ToList()
-                                                    .FilterByStore(_storeContext.CurrentStore.Id)
-                                                    .FilterForCustomer(_workContext.CurrentCustomer)
-                                                    .RemoveDuplicatedQuantities());
-                                            }
-                                            //When there is just one tier (with  qty 1), 
-                                            //there are no actual savings in the list.
-                                            bool displayFromMessage = tierPrices.Count > 0 &&
-                                                !(tierPrices.Count == 1 && tierPrices[0].Quantity <= 1);
-                                            if (displayFromMessage)
-                                            {
-                                                priceModel.OldPrice = null;
-                                                priceModel.Price = String.Format(_localizationService.GetResource("Products.PriceRangeFrom"), _priceFormatter.FormatPrice(finalPrice));
+                                                priceModel.OldPrice = _priceFormatter.FormatPrice(oldPrice);
+                                                priceModel.Price = _priceFormatter.FormatPrice(finalPrice);
                                             }
                                             else
                                             {
-                                                if (finalPriceBase != oldPriceBase && oldPriceBase != decimal.Zero)
-                                                {
-                                                    priceModel.OldPrice = _priceFormatter.FormatPrice(oldPrice);
-                                                    priceModel.Price = _priceFormatter.FormatPrice(finalPrice);
-                                                }
-                                                else
-                                                {
-                                                    priceModel.OldPrice = null;
-                                                    priceModel.Price = _priceFormatter.FormatPrice(finalPrice);
-                                                }
-                                            }
-                                            if (product.IsRental)
-                                            {
-                                                //rental product
-                                                priceModel.OldPrice = _priceFormatter.FormatRentalProductPeriod(product, priceModel.OldPrice);
-                                                priceModel.Price = _priceFormatter.FormatRentalProductPeriod(product, priceModel.Price);
+                                                priceModel.OldPrice = null;
+                                                priceModel.Price = _priceFormatter.FormatPrice(finalPrice);
                                             }
                                         }
                                     }
@@ -365,10 +334,10 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                     //prepare picture model
                     var picture = _pictureService.GetPicturesByProductId(product.Id, 1).FirstOrDefault();
                     model.DefaultPictureModel = new PictureModel
-                        {
-                            ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
-                            FullSizeImageUrl = _pictureService.GetPictureUrl(picture)
-                        };
+                    {
+                        ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture)
+                    };
                     //"title" attribute
                     model.DefaultPictureModel.Title = (picture != null && !string.IsNullOrEmpty(picture.TitleAttribute)) ?
                         picture.TitleAttribute :
@@ -377,7 +346,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                     model.DefaultPictureModel.AlternateText = (picture != null && !string.IsNullOrEmpty(picture.AltAttribute)) ?
                         picture.AltAttribute :
                         string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), model.Name);
-                        
+
                     #endregion
                 }
 
@@ -414,7 +383,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
 
         public ActionResult CategoryNavigation()
         {
-            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_NAVIGATION_MODEL_KEY, 
+            string cacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_NAVIGATION_MODEL_KEY,
                 _workContext.WorkingLanguage.Id,
                 string.Join(",", _workContext.CurrentCustomer.GetCustomerRoleIds()),
                 _storeContext.CurrentStore.Id);
@@ -476,12 +445,12 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
                     int pictureSize = 125;
                     var picture = _pictureService.GetPictureById(x.PictureId);
                     subCatModel.PictureModel = new PictureModel
-                        {
-                            FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
-                            ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
-                            Title = string.Format(_localizationService.GetResource("Media.Category.ImageLinkTitleFormat"), subCatName),
-                            AlternateText = string.Format(_localizationService.GetResource("Media.Category.ImageAlternateTextFormat"), subCatName)
-                        };
+                    {
+                        FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
+                        ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize),
+                        Title = string.Format(_localizationService.GetResource("Media.Category.ImageLinkTitleFormat"), subCatName),
+                        AlternateText = string.Format(_localizationService.GetResource("Media.Category.ImageAlternateTextFormat"), subCatName)
+                    };
 
                     return subCatModel;
                 })
@@ -508,7 +477,7 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
 
             return PartialView("~/Plugins/Misc.FacebookShop/Views/MiscFacebookShop/Category.cshtml", model);
         }
-        
+
         [ValidateInput(false)]
         public ActionResult Search(SearchModel model, CatalogPagingFilteringModel command)
         {
@@ -569,4 +538,4 @@ namespace Nop.Plugin.Misc.FacebookShop.Controllers
 
         #endregion
     }
-}   
+}

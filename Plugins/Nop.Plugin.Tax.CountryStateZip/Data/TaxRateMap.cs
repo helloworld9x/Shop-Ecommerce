@@ -3,7 +3,7 @@ using Nop.Plugin.Tax.CountryStateZip.Domain;
 
 namespace Nop.Plugin.Tax.CountryStateZip.Data
 {
-    public partial class TaxRateMap : NopEntityTypeConfiguration<TaxRate>
+    public partial class TaxRateMap : GoqEntityTypeConfiguration<TaxRate>
     {
         public TaxRateMap()
         {

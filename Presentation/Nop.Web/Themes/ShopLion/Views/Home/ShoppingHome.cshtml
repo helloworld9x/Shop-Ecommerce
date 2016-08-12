@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+}
+@*<div class="container">*@
+@Html.Widget("home_page_top")
+
+    @Html.Action("HomepageBestSellers", "Product")
+
+    @Html.Action("NewProducts", "Product")
+    @*@Html.Action("HomepageProducts", "Product")
+
+    @Html.Action("HomepageCategories", "Catalog")
+
+    @Html.Widget("home_page_before_best_sellers")
+
+    @Html.Widget("home_page_before_best_sellers")
+
+
+
+    @Html.Widget("home_page_before_news")
+    @Html.Action("HomePageNews", "News")
+
+    @Html.Widget("home_page_bottom")*@
+
+@*</div>*@
+

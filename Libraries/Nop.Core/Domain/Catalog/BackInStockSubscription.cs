@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a back in stock subscription
     /// </summary>
-    public partial class BackInStockSubscription : BaseEntity
+    public class BackInStockSubscription : BaseEntity
     {
         /// <summary>
         /// Gets or sets the store identifier

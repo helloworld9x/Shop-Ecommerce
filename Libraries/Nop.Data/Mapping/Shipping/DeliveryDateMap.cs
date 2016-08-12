@@ -2,7 +2,7 @@
 
 namespace Nop.Data.Mapping.Shipping
 {
-    public class DeliveryDateMap : NopEntityTypeConfiguration<DeliveryDate>
+    public class DeliveryDateMap : GoqEntityTypeConfiguration<DeliveryDate>
     {
         public DeliveryDateMap()
         {

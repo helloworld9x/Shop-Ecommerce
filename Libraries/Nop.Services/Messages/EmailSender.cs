@@ -14,12 +14,12 @@ namespace Nop.Services.Messages
     /// </summary>
     public partial class EmailSender : IEmailSender
     {
-        private readonly IDownloadService _downloadService;
+        //private readonly IDownloadService _downloadService;
 
-        public EmailSender(IDownloadService downloadService)
-        {
-            this._downloadService = downloadService;
-        }
+        //public EmailSender(IDownloadService downloadService)
+        //{
+        //    this._downloadService = downloadService;
+        //}
 
         /// <summary>
         /// Sends an email
@@ -91,30 +91,30 @@ namespace Nop.Services.Messages
                 }
                 message.Attachments.Add(attachment);
             }
-            //another attachment?
-            if (attachedDownloadId > 0)
-            {
-                var download = _downloadService.GetDownloadById(attachedDownloadId);
-                if (download != null)
-                {
-                    //we do not support URLs as attachments
-                    if (!download.UseDownloadUrl)
-                    {
-                        string fileName = !String.IsNullOrWhiteSpace(download.Filename) ? download.Filename : download.Id.ToString();
-                        fileName += download.Extension;
+            ////another attachment?
+            //if (attachedDownloadId > 0)
+            //{
+            //    var download = _downloadService.GetDownloadById(attachedDownloadId);
+            //    if (download != null)
+            //    {
+            //        //we do not support URLs as attachments
+            //        if (!download.UseDownloadUrl)
+            //        {
+            //            string fileName = !String.IsNullOrWhiteSpace(download.Filename) ? download.Filename : download.Id.ToString();
+            //            fileName += download.Extension;
 
                         
-                        var ms = new MemoryStream(download.DownloadBinary);
-                        var attachment = new Attachment(ms, fileName);
-                        //string contentType = !String.IsNullOrWhiteSpace(download.ContentType) ? download.ContentType : "application/octet-stream";
-                        //var attachment = new Attachment(ms, fileName, contentType);
-                        attachment.ContentDisposition.CreationDate = DateTime.UtcNow;
-                        attachment.ContentDisposition.ModificationDate = DateTime.UtcNow;
-                        attachment.ContentDisposition.ReadDate = DateTime.UtcNow;
-                        message.Attachments.Add(attachment);
-                    }
-                }
-            }
+            //            var ms = new MemoryStream(download.DownloadBinary);
+            //            var attachment = new Attachment(ms, fileName);
+            //            //string contentType = !String.IsNullOrWhiteSpace(download.ContentType) ? download.ContentType : "application/octet-stream";
+            //            //var attachment = new Attachment(ms, fileName, contentType);
+            //            attachment.ContentDisposition.CreationDate = DateTime.UtcNow;
+            //            attachment.ContentDisposition.ModificationDate = DateTime.UtcNow;
+            //            attachment.ContentDisposition.ReadDate = DateTime.UtcNow;
+            //            message.Attachments.Add(attachment);
+            //        }
+            //    }
+            //}
 
             //send email
             using (var smtpClient = new SmtpClient())

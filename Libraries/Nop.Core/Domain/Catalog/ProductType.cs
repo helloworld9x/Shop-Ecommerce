@@ -12,6 +12,6 @@ namespace Nop.Core.Domain.Catalog
         /// <summary>
         /// Grouped (product with variants)
         /// </summary>
-        GroupedProduct = 10,
+        GroupedProduct = 10
     }
 }

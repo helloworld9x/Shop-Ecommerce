@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Nop.Core.Domain.Catalog;
 
 namespace Nop.Core.Domain.Orders
@@ -7,10 +6,8 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents an order item
     /// </summary>
-    public partial class OrderItem : BaseEntity
+    public class OrderItem : BaseEntity
     {
-        private ICollection<GiftCard> _associatedGiftCards;
-
         /// <summary>
         /// Gets or sets the order item identifier
         /// </summary>
@@ -77,21 +74,6 @@ namespace Nop.Core.Domain.Orders
         public string AttributesXml { get; set; }
         
         /// <summary>
-        /// Gets or sets the download count
-        /// </summary>
-        public int DownloadCount { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether download is activated
-        /// </summary>
-        public bool IsDownloadActivated { get; set; }
-
-        /// <summary>
-        /// Gets or sets a license download identifier (in case this is a downloadable product)
-        /// </summary>
-        public int? LicenseDownloadId { get; set; }
-
-        /// <summary>
         /// Gets or sets the total weight of one item
         /// It's nullable for compatibility with the previous version of nopCommerce where was no such property
         /// </summary>
@@ -116,14 +98,5 @@ namespace Nop.Core.Domain.Orders
         /// Gets the product
         /// </summary>
         public virtual Product Product { get; set; }
-
-        /// <summary>
-        /// Gets or sets the associated gift card
-        /// </summary>
-        public virtual ICollection<GiftCard> AssociatedGiftCards
-        {
-            get { return _associatedGiftCards ?? (_associatedGiftCards = new List<GiftCard>()); }
-            protected set { _associatedGiftCards = value; }
-        }
     }
 }

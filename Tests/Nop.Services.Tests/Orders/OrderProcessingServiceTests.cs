@@ -46,10 +46,8 @@ namespace Nop.Services.Tests.Orders
         private IPaymentService _paymentService;
         private ICheckoutAttributeParser _checkoutAttributeParser;
         private IDiscountService _discountService;
-        private IGiftCardService _giftCardService;
         private IGenericAttributeService _genericAttributeService;
         private TaxSettings _taxSettings;
-        private RewardPointsSettings _rewardPointsSettings;
         private ICategoryService _categoryService;
         private IManufacturerService _manufacturerService;
         private IProductAttributeParser _productAttributeParser;
@@ -85,8 +83,6 @@ namespace Nop.Services.Tests.Orders
         private CurrencySettings _currencySettings;
         private IVendorService _vendorService;
         private IPdfService _pdfService;
-        private IRewardPointService _rewardPointService;
-
         private IGeoLookupService _geoLookupService;
         private ICountryService _countryService;
         private CustomerSettings _customerSettings;
@@ -157,7 +153,6 @@ namespace Nop.Services.Tests.Orders
 
             _paymentService = MockRepository.GenerateMock<IPaymentService>();
             _checkoutAttributeParser = MockRepository.GenerateMock<ICheckoutAttributeParser>();
-            _giftCardService = MockRepository.GenerateMock<IGiftCardService>();
             _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
 
             _geoLookupService = MockRepository.GenerateMock<IGeoLookupService>();
@@ -175,14 +170,11 @@ namespace Nop.Services.Tests.Orders
             _taxService = new TaxService(_addressService, _workContext, _taxSettings,
                 pluginFinder, _geoLookupService, _countryService, _customerSettings, _addressSettings);
 
-            _rewardPointService = MockRepository.GenerateMock<IRewardPointService>();
-            _rewardPointsSettings = new RewardPointsSettings();
-
             _orderTotalCalcService = new OrderTotalCalculationService(_workContext, _storeContext,
                 _priceCalcService, _taxService, _shippingService, _paymentService,
-                _checkoutAttributeParser, _discountService, _giftCardService,
-                _genericAttributeService, _rewardPointService,
-                _taxSettings, _rewardPointsSettings, _shippingSettings, _shoppingCartSettings, _catalogSettings);
+                _checkoutAttributeParser, _discountService, 
+                _genericAttributeService,
+                _taxSettings, _shippingSettings, _shoppingCartSettings, _catalogSettings);
 
             _orderService = MockRepository.GenerateMock<IOrderService>();
             _webHelper = MockRepository.GenerateMock<IWebHelper>();
@@ -213,23 +205,21 @@ namespace Nop.Services.Tests.Orders
             _eventPublisher = MockRepository.GenerateMock<IEventPublisher>();
             _eventPublisher.Expect(x => x.Publish(Arg<object>.Is.Anything));
 
-            _rewardPointService = MockRepository.GenerateMock<IRewardPointService>();
             _currencySettings = new CurrencySettings();
 
             _orderProcessingService = new OrderProcessingService(_orderService, _webHelper,
                 _localizationService, _languageService,
                 _productService, _paymentService, _logger,
                 _orderTotalCalcService, _priceCalcService, _priceFormatter,
-                _productAttributeParser, _productAttributeFormatter,
-                _giftCardService, _shoppingCartService, _checkoutAttributeFormatter,
+                _productAttributeParser, _productAttributeFormatter, _shoppingCartService, _checkoutAttributeFormatter,
                 _shippingService, _shipmentService, _taxService,
                 _customerService, _discountService,
                 _encryptionService, _workContext, 
                 _workflowMessageService, _vendorService,
                 _customerActivityService, _currencyService,
-                _eventPublisher,_pdfService, _rewardPointService,
+                _eventPublisher,_pdfService,
                 _genericAttributeService,
-                _shippingSettings, _paymentSettings, _rewardPointsSettings,
+                _shippingSettings, _paymentSettings, 
                 _orderSettings, _taxSettings, _localizationSettings,
                 _currencySettings);
         }

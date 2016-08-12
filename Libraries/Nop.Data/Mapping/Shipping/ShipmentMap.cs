@@ -2,7 +2,7 @@ using Nop.Core.Domain.Shipping;
 
 namespace Nop.Data.Mapping.Shipping
 {
-    public partial class ShipmentMap : NopEntityTypeConfiguration<Shipment>
+    public partial class ShipmentMap : GoqEntityTypeConfiguration<Shipment>
     {
         public ShipmentMap()
         {

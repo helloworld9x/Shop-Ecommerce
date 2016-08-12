@@ -272,71 +272,6 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
-        /// Get number of rental periods (price ratio)
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="startDate">Start date</param>
-        /// <param name="endDate">End date</param>
-        /// <returns>Number of rental periods</returns>
-        public static int GetRentalPeriods(this Product product,
-            DateTime startDate, DateTime endDate)
-        {
-            if (product == null)
-                throw new ArgumentNullException("product");
-
-            if (!product.IsRental)
-                return 1;
-
-            if (startDate.CompareTo(endDate) >= 0)
-                return 1;
-
-            int totalPeriods;
-            switch (product.RentalPricePeriod)
-            {
-                case RentalPricePeriod.Days:
-                {
-                    var totalDaysToRent = Math.Max((endDate - startDate).TotalDays, 1);
-                    int configuredPeriodDays = product.RentalPriceLength;
-                    totalPeriods = Convert.ToInt32(Math.Ceiling(totalDaysToRent/configuredPeriodDays));
-                }
-                    break;
-                case RentalPricePeriod.Weeks:
-                    {
-                        var totalDaysToRent = Math.Max((endDate - startDate).TotalDays, 1);
-                        int configuredPeriodDays = 7 * product.RentalPriceLength;
-                        totalPeriods = Convert.ToInt32(Math.Ceiling(totalDaysToRent / configuredPeriodDays));
-                    }
-                    break;
-                case RentalPricePeriod.Months:
-                    {
-                        //Source: http://stackoverflow.com/questions/4638993/difference-in-months-between-two-dates
-                        var totalMonthsToRent = ((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month;
-                        if (startDate.AddMonths(totalMonthsToRent) < endDate)
-                        {
-                            //several days added (not full month)
-                            totalMonthsToRent++;
-                        }
-                        int configuredPeriodMonths = product.RentalPriceLength;
-                        totalPeriods = Convert.ToInt32(Math.Ceiling((double)totalMonthsToRent / configuredPeriodMonths));
-                    }
-                    break;
-                case RentalPricePeriod.Years:
-                    {
-                        var totalDaysToRent = Math.Max((endDate - startDate).TotalDays, 1);
-                        int configuredPeriodDays = 365 * product.RentalPriceLength;
-                        totalPeriods = Convert.ToInt32(Math.Ceiling(totalDaysToRent / configuredPeriodDays));
-                    }
-                    break;
-                default:
-                    throw new Exception("Not supported rental period");
-            }
-
-            return totalPeriods;
-        }
-
-
-
-        /// <summary>
         /// Gets SKU, Manufacturer part number and GTIN
         /// </summary>
         /// <param name="product">Product</param>
@@ -376,8 +311,6 @@ namespace Nop.Services.Catalog
                 sku = product.Sku;
             if (String.IsNullOrEmpty(manufacturerPartNumber))
                 manufacturerPartNumber = product.ManufacturerPartNumber;
-            if (String.IsNullOrEmpty(gtin))
-                gtin = product.Gtin;
         }
 
         /// <summary>
@@ -444,23 +377,6 @@ namespace Nop.Services.Catalog
                 out sku, out manufacturerPartNumber, out gtin);
 
             return gtin;
-        }
-
-        /// <summary>
-        /// Formats start/end date for rental product
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="date">Date</param>
-        /// <returns>Formatted date</returns>
-        public static string FormatRentalDate(this Product product, DateTime date)
-        {
-            if (product == null)
-                throw new ArgumentNullException("product");
-
-            if (!product.IsRental)
-                return null;
-
-            return date.ToShortDateString();
         }
 
         /// <summary>

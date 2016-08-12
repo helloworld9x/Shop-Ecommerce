@@ -2,7 +2,7 @@ using Nop.Core.Domain.Security;
 
 namespace Nop.Data.Mapping.Security
 {
-    public partial class PermissionRecordMap : NopEntityTypeConfiguration<PermissionRecord>
+    public partial class PermissionRecordMap : GoqEntityTypeConfiguration<PermissionRecord>
     {
         public PermissionRecordMap()
         {

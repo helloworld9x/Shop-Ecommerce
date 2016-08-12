@@ -72,15 +72,10 @@ namespace Nop.Admin.Controllers
 	    private readonly IProductAttributeParser _productAttributeParser;
 	    private readonly IProductAttributeFormatter _productAttributeFormatter;
         private readonly IShoppingCartService _shoppingCartService;
-        private readonly IGiftCardService _giftCardService;
-        private readonly IDownloadService _downloadService;
         private readonly IShipmentService _shipmentService;
 	    private readonly IShippingService _shippingService;
         private readonly IStoreService _storeService;
         private readonly IVendorService _vendorService;
-        private readonly IAddressAttributeParser _addressAttributeParser;
-        private readonly IAddressAttributeService _addressAttributeService;
-	    private readonly IAddressAttributeFormatter _addressAttributeFormatter;
 	    private readonly IPictureService _pictureService;
 
         private readonly CurrencySettings _currencySettings;
@@ -122,15 +117,10 @@ namespace Nop.Admin.Controllers
             IProductAttributeParser productAttributeParser,
             IProductAttributeFormatter productAttributeFormatter, 
             IShoppingCartService shoppingCartService,
-            IGiftCardService giftCardService, 
-            IDownloadService downloadService,
             IShipmentService shipmentService, 
             IShippingService shippingService,
             IStoreService storeService,
             IVendorService vendorService,
-            IAddressAttributeParser addressAttributeParser,
-            IAddressAttributeService addressAttributeService,
-            IAddressAttributeFormatter addressAttributeFormatter,
             IPictureService pictureService,
             CurrencySettings currencySettings, 
             TaxSettings taxSettings,
@@ -167,15 +157,10 @@ namespace Nop.Admin.Controllers
             _productAttributeParser = productAttributeParser;
             _productAttributeFormatter = productAttributeFormatter;
             _shoppingCartService = shoppingCartService;
-            _giftCardService = giftCardService;
-            _downloadService = downloadService;
             _shipmentService = shipmentService;
             _shippingService = shippingService;
             _storeService = storeService;
             _vendorService = vendorService;
-            _addressAttributeParser = addressAttributeParser;
-            _addressAttributeService = addressAttributeService;
-            _addressAttributeFormatter = addressAttributeFormatter;
             _pictureService = pictureService;
 
             _currencySettings = currencySettings;
@@ -348,23 +333,6 @@ namespace Nop.Admin.Controllers
                 model.OrderTotalDiscount = _priceFormatter.FormatPrice(-order.OrderDiscount, true, false);
             model.OrderTotalDiscountValue = order.OrderDiscount;
 
-            //gift cards
-            foreach (var gcuh in order.GiftCardUsageHistory)
-            {
-                model.GiftCards.Add(new OrderModel.GiftCard
-                {
-                    CouponCode = gcuh.GiftCard.GiftCardCouponCode,
-                    Amount = _priceFormatter.FormatPrice(-gcuh.UsedValue, true, false),
-                });
-            }
-
-            //reward points
-            if (order.RedeemedRewardPointsEntry != null)
-            {
-                model.RedeemedRewardPoints = -order.RedeemedRewardPointsEntry.Points;
-                model.RedeemedRewardPointsAmount = _priceFormatter.FormatPrice(-order.RedeemedRewardPointsEntry.UsedAmount, true, false);
-            }
-
             //total
             model.OrderTotal = _priceFormatter.FormatPrice(order.OrderTotal, true, false);
             model.OrderTotalValue = order.OrderTotal;
@@ -422,7 +390,6 @@ namespace Nop.Admin.Controllers
                     model.CardNumber = maskedCreditCardNumberDecrypted;
             }
 
-
             //payment transaction info
             model.AuthorizationTransactionId = order.AuthorizationTransactionId;
             model.CaptureTransactionId = order.CaptureTransactionId;
@@ -458,7 +425,6 @@ namespace Nop.Admin.Controllers
             #region Billing & shipping info
 
             model.BillingAddress = order.BillingAddress.ToModel();
-            model.BillingAddress.FormattedCustomAddressAttributes = _addressAttributeFormatter.FormatAttributes(order.BillingAddress.CustomAttributes);
             model.BillingAddress.FirstNameEnabled = true;
             model.BillingAddress.FirstNameRequired = true;
             model.BillingAddress.LastNameEnabled = true;
@@ -491,7 +457,6 @@ namespace Nop.Admin.Controllers
                 if (!order.PickUpInStore)
                 {
                     model.ShippingAddress = order.ShippingAddress.ToModel();
-                    model.ShippingAddress.FormattedCustomAddressAttributes = _addressAttributeFormatter.FormatAttributes(order.ShippingAddress.CustomAttributes);
                     model.ShippingAddress.FirstNameEnabled = true;
                     model.ShippingAddress.FirstNameRequired = true;
                     model.ShippingAddress.LastNameEnabled = true;
@@ -538,9 +503,6 @@ namespace Nop.Admin.Controllers
             }
             foreach (var orderItem in products)
             {
-                if (orderItem.Product.IsDownload)
-                    hasDownloadableItems = true;
-
                 var orderItemModel = new OrderModel.OrderItemModel
                 {
                     Id = orderItem.Id,
@@ -548,24 +510,11 @@ namespace Nop.Admin.Controllers
                     ProductName = orderItem.Product.Name,
                     Sku = orderItem.Product.FormatSku(orderItem.AttributesXml, _productAttributeParser),
                     Quantity = orderItem.Quantity,
-                    IsDownload = orderItem.Product.IsDownload,
-                    DownloadCount = orderItem.DownloadCount,
-                    DownloadActivationType = orderItem.Product.DownloadActivationType,
-                    IsDownloadActivated = orderItem.IsDownloadActivated
                 };
                 //picture
                 var orderItemPicture = orderItem.Product.GetProductPicture(orderItem.AttributesXml, _pictureService, _productAttributeParser);
                 orderItemModel.PictureThumbnailUrl = _pictureService.GetPictureUrl(orderItemPicture, 75, true);
 
-                //license file
-                if (orderItem.LicenseDownloadId.HasValue)
-                {
-                    var licenseDownload = _downloadService.GetDownloadById(orderItem.LicenseDownloadId.Value);
-                    if (licenseDownload != null)
-                    {
-                        orderItemModel.LicenseDownloadGuid = licenseDownload.DownloadGuid;
-                    }
-                }
                 //vendor
                 var vendor = _vendorService.GetVendorById(orderItem.Product.VendorId);
                 orderItemModel.VendorName = vendor != null ? vendor.Name : "";
@@ -587,23 +536,10 @@ namespace Nop.Admin.Controllers
                 orderItemModel.SubTotalExclTax = _priceFormatter.FormatPrice(orderItem.PriceExclTax, true, primaryStoreCurrency, _workContext.WorkingLanguage, false, true);
 
                 orderItemModel.AttributeInfo = orderItem.AttributeDescription;
-                if (orderItem.Product.IsRecurring)
-                    orderItemModel.RecurringInfo = string.Format(_localizationService.GetResource("Admin.Orders.Products.RecurringPeriod"), orderItem.Product.RecurringCycleLength, orderItem.Product.RecurringCyclePeriod.GetLocalizedEnum(_localizationService, _workContext));
-                //rental info
-                if (orderItem.Product.IsRental)
-                {
-                    var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                    orderItemModel.RentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                }
-
+            
                 //return requests
                 orderItemModel.ReturnRequestIds = _returnRequestService.SearchReturnRequests(orderItemId: orderItem.Id)
                     .Select(rr => rr.Id).ToList();
-                //gift cards
-                orderItemModel.PurchasedGiftCardIds = _giftCardService.GetGiftCardsByPurchasedWithOrderItemId(orderItem.Id)
-                    .Select(gc => gc.Id).ToList();
 
                 model.Items.Add(orderItemModel);
             }
@@ -673,14 +609,7 @@ namespace Nop.Admin.Controllers
 
                 model.ProductAttributes.Add(attributeModel);
             }
-            //gift card
-            model.GiftCard.IsGiftCard = product.IsGiftCard;
-            if (model.GiftCard.IsGiftCard)
-            {
-                model.GiftCard.GiftCardType = product.GiftCardType;
-            }
-            //rental
-            model.IsRental = product.IsRental;
+          
             return model;
         }
 
@@ -740,14 +669,6 @@ namespace Nop.Admin.Controllers
                         QuantityInAllShipments = qtyInAllShipments,
                         QuantityToAdd = maxQtyToAdd,
                     };
-                    //rental info
-                    if (orderItem.Product.IsRental)
-                    {
-                        var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                        var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                        shipmentItemModel.RentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-                            rentalStartDate, rentalEndDate);
-                    }
 
                     model.Items.Add(shipmentItemModel);
                 }
@@ -1542,15 +1463,6 @@ namespace Nop.Admin.Controllers
                 order.OrderStatusId = model.OrderStatusId;
                 _orderService.UpdateOrder(order);
 
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Order status has been edited. New status: {0}", order.OrderStatus.GetLocalizedEnum(_localizationService, _workContext)),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
                 model = new OrderModel();
                 PrepareOrderDetailsModel(model, order);
                 return View(model);
@@ -1756,15 +1668,6 @@ namespace Nop.Admin.Controllers
                 _orderService.UpdateOrder(order);
             }
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Credit card info has been edited",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
-
             PrepareOrderDetailsModel(model, order);
             return View(model);
         }
@@ -1799,15 +1702,6 @@ namespace Nop.Admin.Controllers
             order.OrderTotal = model.OrderTotalValue;
             _orderService.UpdateOrder(order);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Order totals have been edited",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
-
             PrepareOrderDetailsModel(model, order);
             return View(model);
         }
@@ -1829,15 +1723,6 @@ namespace Nop.Admin.Controllers
                 return RedirectToAction("Edit", "Order", new { id = id });
 
             order.ShippingMethod = model.ShippingMethod;
-            _orderService.UpdateOrder(order);
-
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Shipping method has been edited",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
             _orderService.UpdateOrder(order);
 
             PrepareOrderDetailsModel(model, order);
@@ -1919,15 +1804,6 @@ namespace Nop.Admin.Controllers
                 _orderService.DeleteOrderItem(orderItem);
             }
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Order item has been edited",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
-
             var model = new OrderModel();
             PrepareOrderDetailsModel(model, order);
 
@@ -1964,40 +1840,12 @@ namespace Nop.Admin.Controllers
             if (orderItem == null)
                 throw new ArgumentException("No order item found with the specified id");
 
-            if (_giftCardService.GetGiftCardsByPurchasedWithOrderItemId(orderItem.Id).Count > 0)
-            {
-                //we cannot delete an order item with associated gift cards
-                //a store owner should delete them first
-
-                var model = new OrderModel();
-                PrepareOrderDetailsModel(model, order);
-
-                ErrorNotification("This order item has an associated gift card record. Please delete it first.", false);
-
-                //selected tab
-                SaveSelectedTabIndex(persistForTheNextRequest: false);
-
-                return View(model);
-
-            }
-            else
-            {
                 //adjust inventory
                 _productService.AdjustInventory(orderItem.Product, orderItem.Quantity, orderItem.AttributesXml);
 
                 //delete item
                 _orderService.DeleteOrderItem(orderItem);
 
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = "Order item has been deleted",
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
-
                 var model = new OrderModel();
                 PrepareOrderDetailsModel(model, order);
 
@@ -2005,183 +1853,6 @@ namespace Nop.Admin.Controllers
                 SaveSelectedTabIndex(persistForTheNextRequest: false);
 
                 return View(model);
-            }
-        }
-
-        [HttpPost, ActionName("Edit")]
-        [FormValueRequired(FormValueRequirement.StartsWith, "btnResetDownloadCount")]
-        [ValidateInput(false)]
-        public ActionResult ResetDownloadCount(int id, FormCollection form)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(id);
-            if (order == null)
-                //No order found with the specified id
-                return RedirectToAction("List");
-
-            //get order item identifier
-            int orderItemId = 0;
-            foreach (var formValue in form.AllKeys)
-                if (formValue.StartsWith("btnResetDownloadCount", StringComparison.InvariantCultureIgnoreCase))
-                    orderItemId = Convert.ToInt32(formValue.Substring("btnResetDownloadCount".Length));
-
-            var orderItem = order.OrderItems.FirstOrDefault(x => x.Id == orderItemId);
-            if (orderItem == null)
-                throw new ArgumentException("No order item found with the specified id");
-
-            //ensure a vendor has access only to his products 
-            if (_workContext.CurrentVendor != null && !HasAccessToOrderItem(orderItem))
-                return RedirectToAction("List");
-
-            orderItem.DownloadCount = 0;
-            _orderService.UpdateOrder(order);
-
-            var model = new OrderModel();
-            PrepareOrderDetailsModel(model, order);
-
-            //selected tab
-            SaveSelectedTabIndex(persistForTheNextRequest: false);
-
-            return View(model);
-        }
-
-        [HttpPost, ActionName("Edit")]
-        [FormValueRequired(FormValueRequirement.StartsWith, "btnPvActivateDownload")]
-        [ValidateInput(false)]
-        public ActionResult ActivateDownloadItem(int id, FormCollection form)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(id);
-            if (order == null)
-                //No order found with the specified id
-                return RedirectToAction("List");
-
-            //get order item identifier
-            int orderItemId = 0;
-            foreach (var formValue in form.AllKeys)
-                if (formValue.StartsWith("btnPvActivateDownload", StringComparison.InvariantCultureIgnoreCase))
-                    orderItemId = Convert.ToInt32(formValue.Substring("btnPvActivateDownload".Length));
-
-            var orderItem = order.OrderItems.FirstOrDefault(x => x.Id == orderItemId);
-            if (orderItem == null)
-                throw new ArgumentException("No order item found with the specified id");
-
-            //ensure a vendor has access only to his products 
-            if (_workContext.CurrentVendor != null && !HasAccessToOrderItem(orderItem))
-                return RedirectToAction("List");
-
-            orderItem.IsDownloadActivated = !orderItem.IsDownloadActivated;
-            _orderService.UpdateOrder(order);
-
-            var model = new OrderModel();
-            PrepareOrderDetailsModel(model, order);
-
-            //selected tab
-            SaveSelectedTabIndex(persistForTheNextRequest: false);
-
-            return View(model);
-        }
-
-        public ActionResult UploadLicenseFilePopup(int id, int orderItemId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(id);
-            if (order == null)
-                //No order found with the specified id
-                return RedirectToAction("List");
-
-            var orderItem = order.OrderItems.FirstOrDefault(x => x.Id == orderItemId);
-            if (orderItem == null)
-                throw new ArgumentException("No order item found with the specified id");
-
-            if (!orderItem.Product.IsDownload)
-                throw new ArgumentException("Product is not downloadable");
-
-            //ensure a vendor has access only to his products 
-            if (_workContext.CurrentVendor != null && !HasAccessToOrderItem(orderItem))
-                return RedirectToAction("List");
-
-            var model = new OrderModel.UploadLicenseModel
-            {
-                LicenseDownloadId = orderItem.LicenseDownloadId.HasValue ? orderItem.LicenseDownloadId.Value : 0,
-                OrderId = order.Id,
-                OrderItemId = orderItem.Id
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [FormValueRequired("uploadlicense")]
-        public ActionResult UploadLicenseFilePopup(string btnId, string formId, OrderModel.UploadLicenseModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(model.OrderId);
-            if (order == null)
-                //No order found with the specified id
-                return RedirectToAction("List");
-
-            var orderItem = order.OrderItems.FirstOrDefault(x => x.Id == model.OrderItemId);
-            if (orderItem == null)
-                throw new ArgumentException("No order item found with the specified id");
-
-            //ensure a vendor has access only to his products 
-            if (_workContext.CurrentVendor != null && !HasAccessToOrderItem(orderItem))
-                return RedirectToAction("List");
-
-            //attach license
-            if (model.LicenseDownloadId > 0)
-                orderItem.LicenseDownloadId = model.LicenseDownloadId;
-            else
-                orderItem.LicenseDownloadId = null;
-            _orderService.UpdateOrder(order);
-
-            //success
-            ViewBag.RefreshPage = true;
-            ViewBag.btnId = btnId;
-            ViewBag.formId = formId;
-
-            return View(model);
-        }
-
-        [HttpPost, ActionName("UploadLicenseFilePopup")]
-        [FormValueRequired("deletelicense")]
-        public ActionResult DeleteLicenseFilePopup(string btnId, string formId, OrderModel.UploadLicenseModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(model.OrderId);
-            if (order == null)
-                //No order found with the specified id
-                return RedirectToAction("List");
-
-            var orderItem = order.OrderItems.FirstOrDefault(x => x.Id == model.OrderItemId);
-            if (orderItem == null)
-                throw new ArgumentException("No order item found with the specified id");
-
-            //ensure a vendor has access only to his products 
-            if (_workContext.CurrentVendor != null && !HasAccessToOrderItem(orderItem))
-                return RedirectToAction("List");
-
-            //attach license
-            orderItem.LicenseDownloadId = null;
-            _orderService.UpdateOrder(order);
-
-            //success
-            ViewBag.RefreshPage = true;
-            ViewBag.btnId = btnId;
-            ViewBag.formId = formId;
-
-            return View(model);
         }
 
         public ActionResult AddProductToOrder(int orderId)
@@ -2388,25 +2059,6 @@ namespace Nop.Admin.Controllers
                                         fileSizeOk = false;
                                     }
                                 }
-                                if (fileSizeOk)
-                                {
-                                    //save an uploaded file
-                                    var download = new Download
-                                    {
-                                        DownloadGuid = Guid.NewGuid(),
-                                        UseDownloadUrl = false,
-                                        DownloadUrl = "",
-                                        DownloadBinary = httpPostedFile.GetDownloadBits(),
-                                        ContentType = httpPostedFile.ContentType,
-                                        Filename = Path.GetFileNameWithoutExtension(httpPostedFile.FileName),
-                                        Extension = Path.GetExtension(httpPostedFile.FileName),
-                                        IsNew = true
-                                    };
-                                    _downloadService.InsertDownload(download);
-                                    //save attribute
-                                    attributesXml = _productAttributeParser.AddProductAttribute(attributesXml,
-                                        attribute, download.DownloadGuid.ToString());
-                                }
                             }
                         }
                         break;
@@ -2426,76 +2078,8 @@ namespace Nop.Admin.Controllers
 
             #endregion
 
-            #region Gift cards
-
-            string recipientName = "";
-            string recipientEmail = "";
-            string senderName = "";
-            string senderEmail = "";
-            string giftCardMessage = "";
-            if (product.IsGiftCard)
-            {
-                foreach (string formKey in form.AllKeys)
-                {
-                    if (formKey.Equals("giftcard.RecipientName", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        recipientName = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals("giftcard.RecipientEmail", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        recipientEmail = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals("giftcard.SenderName", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        senderName = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals("giftcard.SenderEmail", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        senderEmail = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals("giftcard.Message", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        giftCardMessage = form[formKey];
-                        continue;
-                    }
-                }
-
-                attributesXml = _productAttributeParser.AddGiftCardAttribute(attributesXml,
-                    recipientName, recipientEmail, senderName, senderEmail, giftCardMessage);
-            }
-
-            #endregion
-
-            #region Rental product
-
-            DateTime? rentalStartDate = null;
-            DateTime? rentalEndDate = null;
-            if (product.IsRental)
-            {
-                var ctrlStartDate = form["rental_start_date"];
-                var ctrlEndDate = form["rental_end_date"];
-                try
-                {
-                    //currenly we support only this format (as in the \Views\Order\_ProductAddRentalInfo.cshtml file)
-                    const string datePickerFormat = "MM/dd/yyyy";
-                    rentalStartDate = DateTime.ParseExact(ctrlStartDate, datePickerFormat, CultureInfo.InvariantCulture);
-                    rentalEndDate = DateTime.ParseExact(ctrlEndDate, datePickerFormat, CultureInfo.InvariantCulture);
-                }
-                catch
-                {
-                }
-            }
-
-            #endregion
-
             //warnings
             warnings.AddRange(_shoppingCartService.GetShoppingCartItemAttributeWarnings(order.Customer, ShoppingCartType.ShoppingCart, product, quantity, attributesXml));
-            warnings.AddRange(_shoppingCartService.GetShoppingCartItemGiftCardWarnings(ShoppingCartType.ShoppingCart, product, attributesXml));
-            warnings.AddRange(_shoppingCartService.GetRentalProductWarnings(product, rentalStartDate, rentalEndDate));
             if (warnings.Count == 0)
             {
                 //no errors
@@ -2519,50 +2103,12 @@ namespace Nop.Admin.Controllers
                     Quantity = quantity,
                     DiscountAmountInclTax = decimal.Zero,
                     DiscountAmountExclTax = decimal.Zero,
-                    DownloadCount = 0,
-                    IsDownloadActivated = false,
-                    LicenseDownloadId = 0,
-                    RentalStartDateUtc = rentalStartDate,
-                    RentalEndDateUtc = rentalEndDate
                 };
                 order.OrderItems.Add(orderItem);
                 _orderService.UpdateOrder(order);
 
                 //adjust inventory
                 _productService.AdjustInventory(orderItem.Product, -orderItem.Quantity, orderItem.AttributesXml);
-
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = "A new order item has been added",
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
-                //gift cards
-                if (product.IsGiftCard)
-                {
-                    for (int i = 0; i < orderItem.Quantity; i++)
-                    {
-                        var gc = new GiftCard
-                        {
-                            GiftCardType = product.GiftCardType,
-                            PurchasedWithOrderItem = orderItem,
-                            Amount = unitPriceExclTax,
-                            IsGiftCardActivated = false,
-                            GiftCardCouponCode = _giftCardService.GenerateGiftCardCode(),
-                            RecipientName = recipientName,
-                            RecipientEmail = recipientEmail,
-                            SenderName = senderName,
-                            SenderEmail = senderEmail,
-                            Message = giftCardMessage,
-                            IsRecipientNotified = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        };
-                        _giftCardService.InsertGiftCard(gc);
-                    }
-                }
 
                 //redirect to order details page
                 return RedirectToAction("Edit", "Order", new { id = order.Id });
@@ -2637,8 +2183,6 @@ namespace Nop.Admin.Controllers
             }
             else
                 model.Address.AvailableStates.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
-            //customer attribute services
-            model.Address.PrepareCustomAddressAttributes(address, _addressAttributeService, _addressAttributeParser);
 
             return View(model);
         }
@@ -2663,28 +2207,11 @@ namespace Nop.Admin.Controllers
             if (address == null)
                 throw new ArgumentException("No address found with the specified id");
 
-            //custom address attributes
-            var customAttributes = form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
-            var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
-            foreach (var error in customAttributeWarnings)
-            {
-                ModelState.AddModelError("", error);
-            }
 
             if (ModelState.IsValid)
             {
                 address = model.Address.ToEntity(address);
-                address.CustomAttributes = customAttributes;
                 _addressService.UpdateAddress(address);
-
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = "Address has been edited",
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
 
                 return RedirectToAction("AddressEdit", new { addressId = model.Address.Id, orderId = model.OrderId });
             }
@@ -2727,8 +2254,6 @@ namespace Nop.Admin.Controllers
             }
             else
                 model.Address.AvailableStates.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.OtherNonUS"), Value = "0" });
-            //customer attribute services
-            model.Address.PrepareCustomAddressAttributes(address, _addressAttributeService, _addressAttributeParser);
 
             return View(model);
         }
@@ -2928,14 +2453,6 @@ namespace Nop.Admin.Controllers
                     QuantityInAllShipments = qtyInAllShipments,
                     QuantityToAdd = maxQtyToAdd,
                 };
-                //rental info
-                if (orderItem.Product.IsRental)
-                {
-                    var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                    shipmentItemModel.RentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                }
 
                 if (orderItem.Product.ManageInventoryMethod == ManageInventoryMethod.ManageStock &&
                     orderItem.Product.UseMultipleWarehouses)
@@ -3096,15 +2613,6 @@ namespace Nop.Admin.Controllers
                 shipment.TotalWeight = totalWeight;
                 _shipmentService.InsertShipment(shipment);
 
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = "A shipment has been added",
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
                 SuccessNotification(_localizationService.GetResource("Admin.Orders.Shipments.Added"));
                 return continueEditing
                            ? RedirectToAction("ShipmentDetails", new {id = shipment.Id})
@@ -3159,16 +2667,6 @@ namespace Nop.Admin.Controllers
 
             var orderId = shipment.OrderId;
             _shipmentService.DeleteShipment(shipment);
-
-            var order =_orderService.GetOrderById(orderId);
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "A shipment has been deleted",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
 
             SuccessNotification(_localizationService.GetResource("Admin.Orders.Shipments.Deleted"));
             return RedirectToAction("Edit", new { id = orderId });
@@ -3517,109 +3015,6 @@ namespace Nop.Admin.Controllers
             return Json(new { Result = true });
         }
         
-        #endregion
-
-        #region Order notes
-        
-        [HttpPost]
-        public ActionResult OrderNotesSelect(int orderId, DataSourceRequest command)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(orderId);
-            if (order == null)
-                throw new ArgumentException("No order found with the specified id");
-
-            //a vendor does not have access to this functionality
-            if (_workContext.CurrentVendor != null)
-                return Content("");
-
-            //order notes
-            var orderNoteModels = new List<OrderModel.OrderNote>();
-            foreach (var orderNote in order.OrderNotes
-                .OrderByDescending(on => on.CreatedOnUtc))
-            {
-                var download = _downloadService.GetDownloadById(orderNote.DownloadId);
-                orderNoteModels.Add(new OrderModel.OrderNote
-                {
-                    Id = orderNote.Id,
-                    OrderId = orderNote.OrderId,
-                    DownloadId = orderNote.DownloadId,
-                    DownloadGuid = download != null ? download.DownloadGuid : Guid.Empty,
-                    DisplayToCustomer = orderNote.DisplayToCustomer,
-                    Note = orderNote.FormatOrderNoteText(),
-                    CreatedOn = _dateTimeHelper.ConvertToUserTime(orderNote.CreatedOnUtc, DateTimeKind.Utc)
-                });
-            }
-
-            var gridModel = new DataSourceResult
-            {
-                Data = orderNoteModels,
-                Total = orderNoteModels.Count
-            };
-
-            return Json(gridModel);
-        }
-        
-        [ValidateInput(false)]
-        public ActionResult OrderNoteAdd(int orderId, int downloadId, bool displayToCustomer, string message)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(orderId);
-            if (order == null)
-                return Json(new { Result = false }, JsonRequestBehavior.AllowGet);
-
-            //a vendor does not have access to this functionality
-            if (_workContext.CurrentVendor != null)
-                return Json(new { Result = false }, JsonRequestBehavior.AllowGet);
-
-            var orderNote = new OrderNote
-            {
-                DisplayToCustomer = displayToCustomer,
-                Note = message,
-                DownloadId = downloadId,
-                CreatedOnUtc = DateTime.UtcNow,
-            };
-            order.OrderNotes.Add(orderNote);
-            _orderService.UpdateOrder(order);
-
-            //new order notification
-            if (displayToCustomer)
-            {
-                //email
-                _workflowMessageService.SendNewOrderNoteAddedCustomerNotification(
-                    orderNote, _workContext.WorkingLanguage.Id);
-
-            }
-
-            return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public ActionResult OrderNoteDelete(int id, int orderId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageOrders))
-                return AccessDeniedView();
-
-            var order = _orderService.GetOrderById(orderId);
-            if (order == null)
-                throw new ArgumentException("No order found with the specified id");
-
-            //a vendor does not have access to this functionality
-            if (_workContext.CurrentVendor != null)
-                return RedirectToAction("Edit", "Order", new { id = orderId });
-
-            var orderNote = order.OrderNotes.FirstOrDefault(on => on.Id == id);
-            if (orderNote == null)
-                throw new ArgumentException("No order note found with the specified id");
-            _orderService.DeleteOrderNote(orderNote);
-
-            return new NullJsonResult();
-        }
-
         #endregion
 
         #region Reports

@@ -1,0 +1,121 @@
+﻿@model IList<ProductOverviewModel>
+@using Nop.Core.Domain.Orders
+@using Nop.Web.Models.Catalog;
+
+@if (Model.Any())
+{
+    <div class="list-slider">
+        <div class="main-title1">
+            <h4>@T("Bestsellers")</h4>
+        </div>
+        <div class="carousel fdi-Carousel slide" id="eventBestsellers" data-interval="0">
+            <div class="controls pull-right hidden-xs">
+                <a class="im im-chevron-left btn btn-default" href="#eventBestsellers" data-slide="prev"></a>
+                <a class="im im-chevron-right btn btn-default" href="#eventBestsellers" data-slide="next"></a>
+            </div>
+            <div class="row">
+                <div class="carousel-inner onebyone-carosel">
+                    @{
+                        int index3 = 0;
+                        var quantity = 1;
+                        foreach (var itemProduct in Model)
+                        {
+                            string cssactivenew = "";
+                            index3++;
+                            if (index3 == 1)
+                            {
+                                cssactivenew = "active";
+                            }
+                            var addtowishlistlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = itemProduct.Id, shoppingCartTypeId = (int)ShoppingCartType.Wishlist, quantity = quantity });
+                            var addtocomparelink = Url.RouteUrl("AddProductToCompare", new { productId = itemProduct.Id });
+                            string addtocartlink = "";
+                            var shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart;
+                            if (itemProduct.ProductPrice.ForceRedirectionAfterAddingToCart)
+                            {
+                                addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = itemProduct.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity, forceredirection = itemProduct.ProductPrice.ForceRedirectionAfterAddingToCart });
+                            }
+                            else
+                            {
+                                addtocartlink = Url.RouteUrl("AddProductToCart-Catalog", new { productId = itemProduct.Id, shoppingCartTypeId = shoppingCartTypeId, quantity = quantity });
+                            }
+
+                            <div class="item @cssactivenew">
+                                <div class="col-md-4">
+                                    <div class="thumb-list">
+                                        <div class="image_cover">
+                                            <a href="#"><img src="@itemProduct.DefaultPictureModel.ImageUrl" class="img-responsive center-block"></a>
+                                        </div>
+                                        <div class="conditions-box">
+
+                                            @if (!string.IsNullOrEmpty(itemProduct.ProductPrice.OldPrice))
+                                            {
+                                                <p class="sale">Sale</p>
+
+                                            }
+
+
+                                        </div>
+                                        <div class="price-block">
+                                            <h5><a href="@Url.Action("Index", "Product", new {seName = itemProduct.SeName, area = "Commerce"})">@itemProduct.Name</a></h5>
+                                            <div class="price-rating">
+                                                <div class="stars" id="stars">
+                                                    @for (int i = 1; i <= 5; i++)
+                                                    {
+
+                                                        if (i <= itemProduct.ReviewOverviewModel.RatingSum)
+                                                        {
+                                                            <span class="im im-star-full"></span>
+                                                        }
+
+                                                    }
+                                                </div>
+                                                <div class="content_price">
+                                                    <span class="price product-price"> @itemProduct.ProductPrice.Price </span>
+                                                    @if (!string.IsNullOrEmpty(itemProduct.ProductPrice.OldPrice))
+                                                    {
+                                                        <span class="old-price product-price"> @itemProduct.ProductPrice.OldPrice </span>
+                                                        @*<span class="price-percent-reduction">@itemProduct.ProductPrice.Save</span>*@
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="button-container">
+                                            <div class="button-quickview">
+                                                <a class="btn-quickview btn btn-primary" href="@Url.RouteUrl("Product", new {SeName = itemProduct.SeName})" title="VIEW DETAILS">
+                                                    <span class="wrap_text"><i class="im im-eye"></i> VIEW DETAILS <span class="bg_tranp"></span> </span>
+                                                </a>
+                                            </div>
+                                            <div class="gr_button">
+                                                <div class="tab_button">
+                                                    @*@if (!itemProduct.DisableButtonAddToCart)
+                                                        {*@
+                                                    <a class="btn-addcart btn btn-default" onclick="AjaxCart.addproducttocart_catalog('@addtocartlink');return false;" >
+                                                        <i class=" im im-cart">
+                                                        </i> <span>Add to cart</span>
+                                                    </a>
+                                                    @*}*@
+
+                                                    @*@if (!itemProduct.DisableWishlistButton)
+                                                        {*@
+                                                    <a class="btn-addToWishlist btn btn-default" onclick="AjaxCart.addproducttocart_catalog('@addtowishlistlink');return false; " data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
+                                                        <i class="im im-heart"></i>
+                                                    </a>
+                                                    @*}*@
+                                                    <a class="btn-addToCompare btn btn-default" onclick="AjaxCart.addproducttocomparelist('@addtocomparelink');return false; " data-toggle="tooltip" data-placement="top" title="Add to Compare">
+                                                        <i class="glyphicon glyphicon-plus"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+                        }

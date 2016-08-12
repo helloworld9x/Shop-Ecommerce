@@ -2,13 +2,13 @@ using Nop.Core.Domain.Catalog;
 
 namespace Nop.Data.Mapping.Catalog
 {
-    public partial class ProductAttributeMap : NopEntityTypeConfiguration<ProductAttribute>
+    public class ProductAttributeMap : GoqEntityTypeConfiguration<ProductAttribute>
     {
         public ProductAttributeMap()
         {
-            this.ToTable("ProductAttribute");
-            this.HasKey(pa => pa.Id);
-            this.Property(pa => pa.Name).IsRequired();
+            ToTable("ProductAttribute");
+            HasKey(pa => pa.Id);
+            Property(pa => pa.Name).IsRequired();
         }
     }
 }

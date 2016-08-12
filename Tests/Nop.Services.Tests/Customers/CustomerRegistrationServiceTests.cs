@@ -4,7 +4,6 @@ using Nop.Core.Caching;
 using Nop.Core.Data;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Security;
 using Nop.Services.Common;
@@ -28,8 +27,6 @@ namespace Nop.Services.Tests.Customers
         private IRepository<CustomerRole> _customerRoleRepo;
         private IRepository<GenericAttribute> _genericAttributeRepo;
         private IRepository<Order> _orderRepo;
-        private IRepository<ForumPost> _forumPostRepo;
-        private IRepository<ForumTopic> _forumTopicRepo;
         private IGenericAttributeService _genericAttributeService;
         private IEncryptionService _encryptionService;
         private ICustomerService _customerService;
@@ -39,9 +36,7 @@ namespace Nop.Services.Tests.Customers
         private INewsLetterSubscriptionService _newsLetterSubscriptionService;
         private IEventPublisher _eventPublisher;
         private IStoreService _storeService;
-        private RewardPointsSettings _rewardPointsSettings;
         private SecuritySettings _securitySettings;
-        private IRewardPointService _rewardPointService;
 
         [SetUp]
         public new void SetUp()
@@ -51,10 +46,7 @@ namespace Nop.Services.Tests.Customers
             {
                 EncryptionKey = "273ece6f97dd844d"
             };
-            _rewardPointsSettings = new RewardPointsSettings
-            {
-                Enabled = false,
-            };
+            
 
             _encryptionService = new EncryptionService(_securitySettings);
             _customerRepo = MockRepository.GenerateMock<IRepository<Customer>>();
@@ -121,17 +113,14 @@ namespace Nop.Services.Tests.Customers
             _customerRoleRepo = MockRepository.GenerateMock<IRepository<CustomerRole>>();
             _genericAttributeRepo = MockRepository.GenerateMock<IRepository<GenericAttribute>>();
             _orderRepo = MockRepository.GenerateMock<IRepository<Order>>();
-            _forumPostRepo = MockRepository.GenerateMock<IRepository<ForumPost>>();
-            _forumTopicRepo = MockRepository.GenerateMock<IRepository<ForumTopic>>();
 
             _genericAttributeService = MockRepository.GenerateMock<IGenericAttributeService>();
             _newsLetterSubscriptionService = MockRepository.GenerateMock<INewsLetterSubscriptionService>();
-            _rewardPointService = MockRepository.GenerateMock<IRewardPointService>();
 
             _localizationService = MockRepository.GenerateMock<ILocalizationService>();
             _customerRegistrationService = new CustomerRegistrationService(_customerService,
                 _encryptionService, _newsLetterSubscriptionService, _localizationService,
-                _storeService, _rewardPointService, _rewardPointsSettings, _customerSettings);
+                _storeService, _customerSettings);
         }
 
         //[Test]

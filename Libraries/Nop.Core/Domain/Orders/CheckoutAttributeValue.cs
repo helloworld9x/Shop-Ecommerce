@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents a checkout attribute value
     /// </summary>
-    public partial class CheckoutAttributeValue : BaseEntity, ILocalizedEntity
+    public class CheckoutAttributeValue : BaseEntity, ILocalizedEntity
     {
         /// <summary>
         /// Gets or sets the checkout attribute mapping identifier

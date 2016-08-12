@@ -37,10 +37,11 @@ using Nop.Web.Framework.Security.Captcha;
 using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Catalog;
 using Nop.Web.Models.Media;
+using HtmlHelper = Nop.Core.Html.HtmlHelper;
 
 namespace Nop.Web.Controllers
 {
-    public partial class ProductController : BasePublicController
+    public class ProductController : BasePublicController
     {
 		#region Fields
 
@@ -70,7 +71,6 @@ namespace Nop.Web.Controllers
         private readonly IAclService _aclService;
         private readonly IStoreMappingService _storeMappingService;
         private readonly IPermissionService _permissionService;
-        private readonly IDownloadService _downloadService;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IShippingService _shippingService;
@@ -115,7 +115,6 @@ namespace Nop.Web.Controllers
             IAclService aclService,
             IStoreMappingService storeMappingService,
             IPermissionService permissionService,
-            IDownloadService downloadService,
             ICustomerActivityService customerActivityService,
             IProductAttributeParser productAttributeParser,
             IShippingService shippingService,
@@ -130,46 +129,45 @@ namespace Nop.Web.Controllers
             SeoSettings seoSettings,
             ICacheManager cacheManager)
         {
-            this._categoryService = categoryService;
-            this._manufacturerService = manufacturerService;
-            this._productService = productService;
-            this._vendorService = vendorService;
-            this._productTemplateService = productTemplateService;
-            this._productAttributeService = productAttributeService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._taxService = taxService;
-            this._currencyService = currencyService;
-            this._pictureService = pictureService;
-            this._localizationService = localizationService;
-            this._measureService = measureService;
-            this._priceCalculationService = priceCalculationService;
-            this._priceFormatter = priceFormatter;
-            this._webHelper = webHelper;
-            this._specificationAttributeService = specificationAttributeService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._recentlyViewedProductsService = recentlyViewedProductsService;
-            this._compareProductsService = compareProductsService;
-            this._workflowMessageService = workflowMessageService;
-            this._productTagService = productTagService;
-            this._orderReportService = orderReportService;
-            this._aclService = aclService;
-            this._storeMappingService = storeMappingService;
-            this._permissionService = permissionService;
-            this._downloadService = downloadService;
-            this._customerActivityService = customerActivityService;
-            this._productAttributeParser = productAttributeParser;
-            this._shippingService = shippingService;
-            this._eventPublisher = eventPublisher;
-            this._mediaSettings = mediaSettings;
-            this._catalogSettings = catalogSettings;
-            this._vendorSettings = vendorSettings;
-            this._shoppingCartSettings = shoppingCartSettings;
-            this._localizationSettings = localizationSettings;
-            this._customerSettings = customerSettings;
-            this._captchaSettings = captchaSettings;
-            this._seoSettings = seoSettings;
-            this._cacheManager = cacheManager;
+            _categoryService = categoryService;
+            _manufacturerService = manufacturerService;
+            _productService = productService;
+            _vendorService = vendorService;
+            _productTemplateService = productTemplateService;
+            _productAttributeService = productAttributeService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _taxService = taxService;
+            _currencyService = currencyService;
+            _pictureService = pictureService;
+            _localizationService = localizationService;
+            _measureService = measureService;
+            _priceCalculationService = priceCalculationService;
+            _priceFormatter = priceFormatter;
+            _webHelper = webHelper;
+            _specificationAttributeService = specificationAttributeService;
+            _dateTimeHelper = dateTimeHelper;
+            _recentlyViewedProductsService = recentlyViewedProductsService;
+            _compareProductsService = compareProductsService;
+            _workflowMessageService = workflowMessageService;
+            _productTagService = productTagService;
+            _orderReportService = orderReportService;
+            _aclService = aclService;
+            _storeMappingService = storeMappingService;
+            _permissionService = permissionService;
+            _customerActivityService = customerActivityService;
+            _productAttributeParser = productAttributeParser;
+            _shippingService = shippingService;
+            _eventPublisher = eventPublisher;
+            _mediaSettings = mediaSettings;
+            _catalogSettings = catalogSettings;
+            _vendorSettings = vendorSettings;
+            _shoppingCartSettings = shoppingCartSettings;
+            _localizationSettings = localizationSettings;
+            _customerSettings = customerSettings;
+            _captchaSettings = captchaSettings;
+            _seoSettings = seoSettings;
+            _cacheManager = cacheManager;
         }
 
         #endregion
@@ -208,9 +206,6 @@ namespace Nop.Web.Controllers
                 Name = product.GetLocalized(x => x.Name),
                 ShortDescription = product.GetLocalized(x => x.ShortDescription),
                 FullDescription = product.GetLocalized(x => x.FullDescription),
-                MetaKeywords = product.GetLocalized(x => x.MetaKeywords),
-                MetaDescription = product.GetLocalized(x => x.MetaDescription),
-                MetaTitle = product.GetLocalized(x => x.MetaTitle),
                 SeName = product.GetSeName(),
                 ShowSku = _catalogSettings.ShowProductSku,
                 Sku = product.Sku,
@@ -218,18 +213,9 @@ namespace Nop.Web.Controllers
                 FreeShippingNotificationEnabled = _catalogSettings.ShowFreeShippingNotification,
                 ManufacturerPartNumber = product.ManufacturerPartNumber,
                 ShowGtin = _catalogSettings.ShowGtin,
-                Gtin = product.Gtin,
                 StockAvailability = product.FormatStockMessage("", _localizationService, _productAttributeParser),
-                HasSampleDownload = product.IsDownload && product.HasSampleDownload,
                 DisplayDiscontinuedMessage = !product.Published && _catalogSettings.DisplayDiscontinuedMessageForUnpublishedProducts
             };
-
-            //automatically generate product description?
-            if (_seoSettings.GenerateProductMetaDescription && String.IsNullOrEmpty(model.MetaDescription))
-            {
-                //based on short description
-                model.MetaDescription = model.ShortDescription;
-            }
 
             //shipping info
             model.IsShipEnabled = product.IsShipEnabled;
@@ -265,7 +251,7 @@ namespace Nop.Web.Controllers
                     {
                         Id = vendor.Id,
                         Name = vendor.GetLocalized(x => x.Name),
-                        SeName = vendor.GetSeName(),
+                        SeName = vendor.GetSeName()
                     };
                 }
             }
@@ -398,7 +384,7 @@ namespace Nop.Web.Controllers
                     ImageUrl = _pictureService.GetPictureUrl(defaultPicture, defaultPictureSize, !isAssociatedProduct),
                     FullSizeImageUrl = _pictureService.GetPictureUrl(defaultPicture, 0, !isAssociatedProduct),
                     Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
-                    AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
+                    AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name)
                 };
                 //"title" attribute
                 defaultPictureModel.Title = (defaultPicture != null && !string.IsNullOrEmpty(defaultPicture.TitleAttribute)) ?
@@ -418,7 +404,7 @@ namespace Nop.Web.Controllers
                         ImageUrl = _pictureService.GetPictureUrl(picture, _mediaSettings.ProductThumbPictureSizeOnProductDetailsPage),
                         FullSizeImageUrl = _pictureService.GetPictureUrl(picture),
                         Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat.Details"), model.Name),
-                        AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name),
+                        AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat.Details"), model.Name)
                     };
                     //"title" attribute
                     pictureModel.Title = !string.IsNullOrEmpty(picture.TitleAttribute) ?
@@ -489,14 +475,6 @@ namespace Nop.Web.Controllers
 
                         //currency code
                         model.ProductPrice.CurrencyCode = _workContext.WorkingCurrency.CurrencyCode;
-
-                        //rental
-                        if (product.IsRental)
-                        {
-                            model.ProductPrice.IsRental = true;
-                            var priceStr = _priceFormatter.FormatPrice(finalPriceWithDiscount);
-                            model.ProductPrice.RentalPrice = _priceFormatter.FormatRentalProductPeriod(product, priceStr);
-                        }
                     }
                 }
             }
@@ -547,8 +525,6 @@ namespace Nop.Web.Controllers
                     product.PreOrderAvailabilityStartDateTimeUtc.Value >= DateTime.UtcNow;
                 model.AddToCart.PreOrderAvailabilityStartDateTimeUtc = product.PreOrderAvailabilityStartDateTimeUtc;
             }
-            //rental
-            model.AddToCart.IsRental = product.IsRental;
 
             //customer entered price
             model.AddToCart.CustomerEntersPrice = product.CustomerEntersPrice;
@@ -561,35 +537,6 @@ namespace Nop.Web.Controllers
                 model.AddToCart.CustomerEnteredPriceRange = string.Format(_localizationService.GetResource("Products.EnterProductPrice.Range"),
                     _priceFormatter.FormatPrice(minimumCustomerEnteredPrice, false, false),
                     _priceFormatter.FormatPrice(maximumCustomerEnteredPrice, false, false));
-            }
-
-            #endregion
-
-            #region Gift card
-
-            model.GiftCard.IsGiftCard = product.IsGiftCard;
-            if (model.GiftCard.IsGiftCard)
-            {
-                model.GiftCard.GiftCardType = product.GiftCardType;
-
-                if (updatecartitem == null)
-                {
-                    model.GiftCard.SenderName = _workContext.CurrentCustomer.GetFullName();
-                    model.GiftCard.SenderEmail = _workContext.CurrentCustomer.Email;
-                }
-                else
-                {
-                    string giftCardRecipientName, giftCardRecipientEmail, giftCardSenderName, giftCardSenderEmail, giftCardMessage;
-                    _productAttributeParser.GetGiftCardAttribute(updatecartitem.AttributesXml,
-                        out giftCardRecipientName, out giftCardRecipientEmail,
-                        out giftCardSenderName, out giftCardSenderEmail, out giftCardMessage);
-
-                    model.GiftCard.RecipientName = giftCardRecipientName;
-                    model.GiftCard.RecipientEmail = giftCardRecipientEmail;
-                    model.GiftCard.SenderName = giftCardSenderName;
-                    model.GiftCard.SenderEmail = giftCardSenderEmail;
-                    model.GiftCard.Message = giftCardMessage;
-                }
             }
 
             #endregion
@@ -763,9 +710,6 @@ namespace Nop.Web.Controllers
                                     var downloadGuidStr = _productAttributeParser.ParseValues(updatecartitem.AttributesXml, attribute.Id).FirstOrDefault();
                                     Guid downloadGuid;
                                     Guid.TryParse(downloadGuidStr, out downloadGuid);
-                                    var download = _downloadService.GetDownloadByGuid(downloadGuid);
-                                    if (download != null)
-                                        attributeModel.DefaultValue = download.DownloadGuid.ToString();
                                 }
                             }
                             break;
@@ -804,33 +748,6 @@ namespace Nop.Web.Controllers
 
             #endregion
 
-            #region Tier prices
-
-            if (product.HasTierPrices && _permissionService.Authorize(StandardPermissionProvider.DisplayPrices))
-            {
-                model.TierPrices = product.TierPrices
-                    .OrderBy(x => x.Quantity)
-                    .ToList()
-                    .FilterByStore(_storeContext.CurrentStore.Id)
-                    .FilterForCustomer(_workContext.CurrentCustomer)
-                    .RemoveDuplicatedQuantities()
-                    .Select(tierPrice =>
-                    {
-                        var m = new ProductDetailsModel.TierPriceModel
-                        {
-                            Quantity = tierPrice.Quantity,
-                        };
-                        decimal taxRate;
-                        decimal priceBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, decimal.Zero, _catalogSettings.DisplayTierPricesWithDiscounts, tierPrice.Quantity), out taxRate);
-                        decimal price = _currencyService.ConvertFromPrimaryStoreCurrency(priceBase, _workContext.WorkingCurrency);
-                        m.Price = _priceFormatter.FormatPrice(price, false, false);
-                        return m;
-                    })
-                    .ToList();
-            }
-
-            #endregion
-
             #region Manufacturers
             
             //do not prepare this model for the associated products. any it's not used
@@ -849,21 +766,6 @@ namespace Nop.Web.Controllers
             }
             #endregion
 
-            #region Rental products
-
-            if (product.IsRental)
-            {
-                model.IsRental = true;
-                //set already entered dates attributes (if we're going to update the existing shopping cart item)
-                if (updatecartitem != null)
-                {
-                    model.RentalStartDate = updatecartitem.RentalStartDateUtc;
-                    model.RentalEndDate = updatecartitem.RentalEndDateUtc;
-                }
-            }
-
-            #endregion
-            
             #region Associated products
 
             if (product.ProductType == ProductType.GroupedProduct)
@@ -912,9 +814,9 @@ namespace Nop.Web.Controllers
                     {
                         ProductReviewId = pr.Id,
                         HelpfulYesTotal = pr.HelpfulYesTotal,
-                        HelpfulNoTotal = pr.HelpfulNoTotal,
+                        HelpfulNoTotal = pr.HelpfulNoTotal
                     },
-                    WrittenOnStr = _dateTimeHelper.ConvertToUserTime(pr.CreatedOnUtc, DateTimeKind.Utc).ToString("g"),
+                    WrittenOnStr = _dateTimeHelper.ConvertToUserTime(pr.CreatedOnUtc, DateTimeKind.Utc).ToString("g")
                 });
             }
 
@@ -1295,7 +1197,7 @@ namespace Nop.Web.Controllers
                     HelpfulYesTotal = 0,
                     HelpfulNoTotal = 0,
                     IsApproved = isApproved,
-                    CreatedOnUtc = DateTime.UtcNow,
+                    CreatedOnUtc = DateTime.UtcNow
                 };
                 product.ProductReviews.Add(productReview);
                 _productService.UpdateProduct(product);
@@ -1375,7 +1277,7 @@ namespace Nop.Web.Controllers
                 {
                     ProductReviewId = productReview.Id,
                     CustomerId = _workContext.CurrentCustomer.Id,
-                    WasHelpful = washelpful,
+                    WasHelpful = washelpful
                 };
                 productReview.ProductReviewHelpfulnessEntries.Add(prh);
             }
@@ -1442,7 +1344,7 @@ namespace Nop.Web.Controllers
                 _workflowMessageService.SendProductEmailAFriendMessage(_workContext.CurrentCustomer,
                         _workContext.WorkingLanguage.Id, product,
                         model.YourEmailAddress, model.FriendEmail, 
-                        Core.Html.HtmlHelper.FormatText(model.PersonalMessage, false, true, false, false, false, false));
+                        HtmlHelper.FormatText(model.PersonalMessage, false, true, false, false, false, false));
 
                 model.ProductId = product.Id;
                 model.ProductName = product.GetLocalized(x => x.Name);
@@ -1521,7 +1423,7 @@ namespace Nop.Web.Controllers
             var model = new CompareProductsModel
             {
                 IncludeShortDescriptionInCompareProducts = _catalogSettings.IncludeShortDescriptionInCompareProducts,
-                IncludeFullDescriptionInCompareProducts = _catalogSettings.IncludeFullDescriptionInCompareProducts,
+                IncludeFullDescriptionInCompareProducts = _catalogSettings.IncludeFullDescriptionInCompareProducts
             };
 
             var products = _compareProductsService.GetComparedProducts();

@@ -46,7 +46,6 @@ namespace Nop.Services.Catalog
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<RelatedProduct> _relatedProductRepository;
         private readonly IRepository<CrossSellProduct> _crossSellProductRepository;
-        private readonly IRepository<TierPrice> _tierPriceRepository;
         private readonly IRepository<LocalizedProperty> _localizedPropertyRepository;
         private readonly IRepository<AclRecord> _aclRepository;
         private readonly IRepository<StoreMapping> _storeMappingRepository;
@@ -80,7 +79,6 @@ namespace Nop.Services.Catalog
         /// <param name="productRepository">Product repository</param>
         /// <param name="relatedProductRepository">Related product repository</param>
         /// <param name="crossSellProductRepository">Cross-sell product repository</param>
-        /// <param name="tierPriceRepository">Tier price repository</param>
         /// <param name="localizedPropertyRepository">Localized property repository</param>
         /// <param name="aclRepository">ACL record repository</param>
         /// <param name="storeMappingRepository">Store mapping repository</param>
@@ -105,7 +103,6 @@ namespace Nop.Services.Catalog
             IRepository<Product> productRepository,
             IRepository<RelatedProduct> relatedProductRepository,
             IRepository<CrossSellProduct> crossSellProductRepository,
-            IRepository<TierPrice> tierPriceRepository,
             IRepository<ProductPicture> productPictureRepository,
             IRepository<LocalizedProperty> localizedPropertyRepository,
             IRepository<AclRecord> aclRepository,
@@ -131,7 +128,6 @@ namespace Nop.Services.Catalog
             this._productRepository = productRepository;
             this._relatedProductRepository = relatedProductRepository;
             this._crossSellProductRepository = crossSellProductRepository;
-            this._tierPriceRepository = tierPriceRepository;
             this._productPictureRepository = productPictureRepository;
             this._localizedPropertyRepository = localizedPropertyRepository;
             this._aclRepository = aclRepository;
@@ -1140,19 +1136,6 @@ namespace Nop.Services.Catalog
         }
         
         /// <summary>
-        /// Update HasTierPrices property (used for performance optimization)
-        /// </summary>
-        /// <param name="product">Product</param>
-        public virtual void UpdateHasTierPricesProperty(Product product)
-        {
-            if (product == null)
-                throw new ArgumentNullException("product");
-
-            product.HasTierPrices = product.TierPrices.Count > 0;
-            UpdateProduct(product);
-        }
-
-        /// <summary>
         /// Update HasDiscountsApplied property (used for performance optimization)
         /// </summary>
         /// <param name="product">Product</param>
@@ -1674,74 +1657,6 @@ namespace Nop.Services.Catalog
         }
         #endregion
         
-        #region Tier prices
-        
-        /// <summary>
-        /// Deletes a tier price
-        /// </summary>
-        /// <param name="tierPrice">Tier price</param>
-        public virtual void DeleteTierPrice(TierPrice tierPrice)
-        {
-            if (tierPrice == null)
-                throw new ArgumentNullException("tierPrice");
-
-            _tierPriceRepository.Delete(tierPrice);
-
-            _cacheManager.RemoveByPattern(PRODUCTS_PATTERN_KEY);
-
-            //event notification
-            _eventPublisher.EntityDeleted(tierPrice);
-        }
-
-        /// <summary>
-        /// Gets a tier price
-        /// </summary>
-        /// <param name="tierPriceId">Tier price identifier</param>
-        /// <returns>Tier price</returns>
-        public virtual TierPrice GetTierPriceById(int tierPriceId)
-        {
-            if (tierPriceId == 0)
-                return null;
-            
-            return _tierPriceRepository.GetById(tierPriceId);
-        }
-
-        /// <summary>
-        /// Inserts a tier price
-        /// </summary>
-        /// <param name="tierPrice">Tier price</param>
-        public virtual void InsertTierPrice(TierPrice tierPrice)
-        {
-            if (tierPrice == null)
-                throw new ArgumentNullException("tierPrice");
-
-            _tierPriceRepository.Insert(tierPrice);
-
-            _cacheManager.RemoveByPattern(PRODUCTS_PATTERN_KEY);
-
-            //event notification
-            _eventPublisher.EntityInserted(tierPrice);
-        }
-
-        /// <summary>
-        /// Updates the tier price
-        /// </summary>
-        /// <param name="tierPrice">Tier price</param>
-        public virtual void UpdateTierPrice(TierPrice tierPrice)
-        {
-            if (tierPrice == null)
-                throw new ArgumentNullException("tierPrice");
-
-            _tierPriceRepository.Update(tierPrice);
-
-            _cacheManager.RemoveByPattern(PRODUCTS_PATTERN_KEY);
-
-            //event notification
-            _eventPublisher.EntityUpdated(tierPrice);
-        }
-
-        #endregion
-
         #region Product pictures
 
         /// <summary>

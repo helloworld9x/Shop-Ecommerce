@@ -21,7 +21,7 @@ using Nop.Web.Models.Order;
 
 namespace Nop.Web.Controllers
 {
-    public partial class ReturnRequestController : BasePublicController
+    public class ReturnRequestController : BasePublicController
     {
 		#region Fields
 
@@ -57,19 +57,19 @@ namespace Nop.Web.Controllers
             LocalizationSettings localizationSettings,
             ICacheManager cacheManager)
         {
-            this._returnRequestService = returnRequestService;
-            this._orderService = orderService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._currencyService = currencyService;
-            this._priceFormatter = priceFormatter;
-            this._orderProcessingService = orderProcessingService;
-            this._localizationService = localizationService;
-            this._customerService = customerService;
-            this._workflowMessageService = workflowMessageService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._localizationSettings = localizationSettings;
-            this._cacheManager = cacheManager;
+            _returnRequestService = returnRequestService;
+            _orderService = orderService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _currencyService = currencyService;
+            _priceFormatter = priceFormatter;
+            _orderProcessingService = orderProcessingService;
+            _localizationService = localizationService;
+            _customerService = customerService;
+            _workflowMessageService = workflowMessageService;
+            _dateTimeHelper = dateTimeHelper;
+            _localizationSettings = localizationSettings;
+            _cacheManager = cacheManager;
         }
 
         #endregion
@@ -93,7 +93,7 @@ namespace Nop.Web.Controllers
                 {
                     var reasons = new List<SubmitReturnRequestModel.ReturnRequestReasonModel>();
                     foreach (var rrr in _returnRequestService.GetAllReturnRequestReasons())
-                        reasons.Add(new SubmitReturnRequestModel.ReturnRequestReasonModel()
+                        reasons.Add(new SubmitReturnRequestModel.ReturnRequestReasonModel
                         {
                             Id = rrr.Id,
                             Name = rrr.GetLocalized(x => x.Name)
@@ -107,7 +107,7 @@ namespace Nop.Web.Controllers
                 {
                     var actions = new List<SubmitReturnRequestModel.ReturnRequestActionModel>();
                     foreach (var rra in _returnRequestService.GetAllReturnRequestActions())
-                        actions.Add(new SubmitReturnRequestModel.ReturnRequestActionModel()
+                        actions.Add(new SubmitReturnRequestModel.ReturnRequestActionModel
                         {
                             Id = rra.Id,
                             Name = rra.GetLocalized(x => x.Name)
@@ -180,7 +180,7 @@ namespace Nop.Web.Controllers
                         ReturnAction = returnRequest.RequestedAction,
                         ReturnReason = returnRequest.ReasonForReturn,
                         Comments = returnRequest.CustomerComments,
-                        CreatedOn = _dateTimeHelper.ConvertToUserTime(returnRequest.CreatedOnUtc, DateTimeKind.Utc),
+                        CreatedOn = _dateTimeHelper.ConvertToUserTime(returnRequest.CreatedOnUtc, DateTimeKind.Utc)
                     };
                     model.Items.Add(itemModel);
                 }

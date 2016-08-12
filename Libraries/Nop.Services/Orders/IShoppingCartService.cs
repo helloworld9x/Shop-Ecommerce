@@ -9,7 +9,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Shopping cart service
     /// </summary>
-    public partial interface IShoppingCartService
+    public interface IShoppingCartService
     {
         /// <summary>
         /// Delete shopping cart item
@@ -72,26 +72,6 @@ namespace Nop.Services.Orders
             bool ignoreNonCombinableAttributes = false);
         
         /// <summary>
-        /// Validates shopping cart item (gift card)
-        /// </summary>
-        /// <param name="shoppingCartType">Shopping cart type</param>
-        /// <param name="product">Product</param>
-        /// <param name="attributesXml">Attributes in XML format</param>
-        /// <returns>Warnings</returns>
-        IList<string> GetShoppingCartItemGiftCardWarnings(ShoppingCartType shoppingCartType,
-            Product product, string attributesXml);
-
-        /// <summary>
-        /// Validates shopping cart item for rental products
-        /// </summary>
-        /// <param name="product">Product</param>
-        /// <param name="rentalStartDate">Rental start date</param>
-        /// <param name="rentalEndDate">Rental end date</param>
-        /// <returns>Warnings</returns>
-        IList<string> GetRentalProductWarnings(Product product,
-            DateTime? rentalStartDate = null, DateTime? rentalEndDate = null);
-
-        /// <summary>
         /// Validates shopping cart item
         /// </summary>
         /// <param name="customer">Customer</param>
@@ -100,24 +80,19 @@ namespace Nop.Services.Orders
         /// <param name="storeId">Store identifier</param>
         /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="customerEnteredPrice">Customer entered price</param>
-        /// <param name="rentalStartDate">Rental start date</param>
-        /// <param name="rentalEndDate">Rental end date</param>
         /// <param name="quantity">Quantity</param>
         /// <param name="automaticallyAddRequiredProductsIfEnabled">Automatically add required products if enabled</param>
         /// <param name="getStandardWarnings">A value indicating whether we should validate a product for standard properties</param>
         /// <param name="getAttributesWarnings">A value indicating whether we should validate product attributes</param>
-        /// <param name="getGiftCardWarnings">A value indicating whether we should validate gift card properties</param>
         /// <param name="getRequiredProductWarnings">A value indicating whether we should validate required products (products which require other products to be added to the cart)</param>
-        /// <param name="getRentalWarnings">A value indicating whether we should validate rental properties</param>
         /// <returns>Warnings</returns>
         IList<string> GetShoppingCartItemWarnings(Customer customer, ShoppingCartType shoppingCartType,
             Product product, int storeId,
             string attributesXml, decimal customerEnteredPrice,
-            DateTime? rentalStartDate = null, DateTime? rentalEndDate = null,
             int quantity = 1, bool automaticallyAddRequiredProductsIfEnabled = true,
             bool getStandardWarnings = true, bool getAttributesWarnings = true,
-            bool getGiftCardWarnings = true, bool getRequiredProductWarnings = true,
-            bool getRentalWarnings = true);
+            bool getRequiredProductWarnings = true
+           );
 
         /// <summary>
         /// Validates whether this shopping cart is valid
@@ -137,16 +112,12 @@ namespace Nop.Services.Orders
         /// <param name="product">Product</param>
         /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="customerEnteredPrice">Price entered by a customer</param>
-        /// <param name="rentalStartDate">Rental start date</param>
-        /// <param name="rentalEndDate">Rental end date</param>
         /// <returns>Found shopping cart item</returns>
         ShoppingCartItem FindShoppingCartItemInTheCart(IList<ShoppingCartItem> shoppingCart,
             ShoppingCartType shoppingCartType,
             Product product,
             string attributesXml = "",
-            decimal customerEnteredPrice = decimal.Zero,
-            DateTime? rentalStartDate = null,
-            DateTime? rentalEndDate = null);
+            decimal customerEnteredPrice = decimal.Zero);
 
 
         /// <summary>
@@ -158,15 +129,13 @@ namespace Nop.Services.Orders
         /// <param name="storeId">Store identifier</param>
         /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="customerEnteredPrice">The price enter by a customer</param>
-        /// <param name="rentalStartDate">Rental start date</param>
-        /// <param name="rentalEndDate">Rental end date</param>
+       
         /// <param name="quantity">Quantity</param>
         /// <param name="automaticallyAddRequiredProductsIfEnabled">Automatically add required products if enabled</param>
         /// <returns>Warnings</returns>
         IList<string> AddToCart(Customer customer, Product product,
             ShoppingCartType shoppingCartType, int storeId, string attributesXml = null,
             decimal customerEnteredPrice = decimal.Zero, 
-            DateTime? rentalStartDate = null, DateTime? rentalEndDate = null,
             int quantity = 1, bool automaticallyAddRequiredProductsIfEnabled = true);
         
         /// <summary>
@@ -176,15 +145,12 @@ namespace Nop.Services.Orders
         /// <param name="shoppingCartItemId">Shopping cart item identifier</param>
         /// <param name="attributesXml">Attributes in XML format</param>
         /// <param name="customerEnteredPrice">New customer entered price</param>
-        /// <param name="rentalStartDate">Rental start date</param>
-        /// <param name="rentalEndDate">Rental end date</param>
         /// <param name="quantity">New shopping cart item quantity</param>
         /// <param name="resetCheckoutData">A value indicating whether to reset checkout data</param>
         /// <returns>Warnings</returns>
         IList<string> UpdateShoppingCartItem(Customer customer,
             int shoppingCartItemId, string attributesXml,
             decimal customerEnteredPrice,
-            DateTime? rentalStartDate = null, DateTime? rentalEndDate = null,
             int quantity = 1, bool resetCheckoutData = true);
         
         /// <summary>

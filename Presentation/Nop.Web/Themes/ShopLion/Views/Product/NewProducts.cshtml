@@ -1,0 +1,29 @@
+﻿@model IList<ProductOverviewModel>
+@using Nop.Core.Domain.Orders
+@using Nop.Web.Models.Catalog;
+@{
+    //Layout = "~/Views/Shared/_ColumnsTwo.cshtml";
+    //title
+    Html.AddTitleParts(T("PageTitle.NewProducts").Text);
+}
+
+@if (Model.Any())
+{
+    <div class="list-slider">
+        <div class="main-title1">
+            <h4>News Products</h4>
+        </div>
+        <div class="carousel fdi-Carousel slide" id="eventCarousel4" data-interval="0">
+            <div class="product-grid-slider product-grid">
+                @{
+                    foreach (var itemProduct in Model)
+                    {
+                        <div class="column">
+                            @Html.Partial("_ProductBox", itemProduct)
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+                        }

@@ -12,7 +12,6 @@ using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.News;
@@ -260,180 +259,6 @@ namespace Nop.Admin.Controllers
             SuccessNotification(_localizationService.GetResource("Admin.Configuration.Updated"));
             return RedirectToAction("Vendor");
         }
-
-
-
-
-        public ActionResult Forum()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
-                return AccessDeniedView();
-
-            //load settings for a chosen store scope
-            var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
-            var forumSettings = _settingService.LoadSetting<ForumSettings>(storeScope);
-            var model = forumSettings.ToModel();
-            model.ActiveStoreScopeConfiguration = storeScope;
-            if (storeScope > 0)
-            {
-                model.ForumsEnabled_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ForumsEnabled, storeScope);
-                model.RelativeDateTimeFormattingEnabled_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.RelativeDateTimeFormattingEnabled, storeScope);
-                model.ShowCustomersPostCount_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ShowCustomersPostCount, storeScope);
-                model.AllowGuestsToCreatePosts_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.AllowGuestsToCreatePosts, storeScope);
-                model.AllowGuestsToCreateTopics_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.AllowGuestsToCreateTopics, storeScope);
-                model.AllowCustomersToEditPosts_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.AllowCustomersToEditPosts, storeScope);
-                model.AllowCustomersToDeletePosts_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.AllowCustomersToDeletePosts, storeScope);
-                model.AllowCustomersToManageSubscriptions_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.AllowCustomersToManageSubscriptions, storeScope);
-                model.TopicsPageSize_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.TopicsPageSize, storeScope);
-                model.PostsPageSize_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.PostsPageSize, storeScope);
-                model.ForumEditor_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ForumEditor, storeScope);
-                model.SignaturesEnabled_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.SignaturesEnabled, storeScope);
-                model.AllowPrivateMessages_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.AllowPrivateMessages, storeScope);
-                model.ShowAlertForPM_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ShowAlertForPM, storeScope);
-                model.NotifyAboutPrivateMessages_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.NotifyAboutPrivateMessages, storeScope);
-                model.ActiveDiscussionsFeedEnabled_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ActiveDiscussionsFeedEnabled, storeScope);
-                model.ActiveDiscussionsFeedCount_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ActiveDiscussionsFeedCount, storeScope);
-                model.ForumFeedsEnabled_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ForumFeedsEnabled, storeScope);
-                model.ForumFeedCount_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ForumFeedCount, storeScope);
-                model.SearchResultsPageSize_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.SearchResultsPageSize, storeScope);
-                model.ActiveDiscussionsPageSize_OverrideForStore = _settingService.SettingExists(forumSettings, x => x.ActiveDiscussionsPageSize, storeScope);
-            }
-            model.ForumEditorValues = forumSettings.ForumEditor.ToSelectList();
-
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult Forum(ForumSettingsModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
-                return AccessDeniedView();
-
-
-            //load settings for a chosen store scope
-            var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
-            var forumSettings = _settingService.LoadSetting<ForumSettings>(storeScope);
-            forumSettings = model.ToEntity(forumSettings);
-
-            /* We do not clear cache after each setting update.
-             * This behavior can increase performance because cached settings will not be cleared 
-             * and loaded from database after each update */
-            if (model.ForumsEnabled_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ForumsEnabled, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ForumsEnabled, storeScope);
-            
-            if (model.RelativeDateTimeFormattingEnabled_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.RelativeDateTimeFormattingEnabled, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.RelativeDateTimeFormattingEnabled, storeScope);
-            
-            if (model.ShowCustomersPostCount_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ShowCustomersPostCount, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ShowCustomersPostCount, storeScope);
-            
-            if (model.AllowGuestsToCreatePosts_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.AllowGuestsToCreatePosts, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.AllowGuestsToCreatePosts, storeScope);
-            
-            if (model.AllowGuestsToCreateTopics_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.AllowGuestsToCreateTopics, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.AllowGuestsToCreateTopics, storeScope);
-            
-            if (model.AllowCustomersToEditPosts_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.AllowCustomersToEditPosts, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.AllowCustomersToEditPosts, storeScope);
-            
-            if (model.AllowCustomersToDeletePosts_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.AllowCustomersToDeletePosts, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.AllowCustomersToDeletePosts, storeScope);
-            
-            if (model.AllowCustomersToManageSubscriptions_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.AllowCustomersToManageSubscriptions, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.AllowCustomersToManageSubscriptions, storeScope);
-            
-            if (model.TopicsPageSize_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.TopicsPageSize, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.TopicsPageSize, storeScope);
-            
-            if (model.PostsPageSize_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.PostsPageSize, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.PostsPageSize, storeScope);
-            
-            if (model.ForumEditor_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ForumEditor, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ForumEditor, storeScope);
-            
-            if (model.SignaturesEnabled_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.SignaturesEnabled, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.SignaturesEnabled, storeScope);
-            
-            if (model.AllowPrivateMessages_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.AllowPrivateMessages, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.AllowPrivateMessages, storeScope);
-            
-            if (model.ShowAlertForPM_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ShowAlertForPM, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ShowAlertForPM, storeScope);
-            
-            if (model.NotifyAboutPrivateMessages_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.NotifyAboutPrivateMessages, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.NotifyAboutPrivateMessages, storeScope);
-            
-            if (model.ActiveDiscussionsFeedEnabled_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ActiveDiscussionsFeedEnabled, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ActiveDiscussionsFeedEnabled, storeScope);
-            
-            if (model.ActiveDiscussionsFeedCount_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ActiveDiscussionsFeedCount, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ActiveDiscussionsFeedCount, storeScope);
-            
-            if (model.ForumFeedsEnabled_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ForumFeedsEnabled, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ForumFeedsEnabled, storeScope);
-            
-            if (model.ForumFeedCount_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ForumFeedCount, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ForumFeedCount, storeScope);
-            
-            if (model.SearchResultsPageSize_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.SearchResultsPageSize, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.SearchResultsPageSize, storeScope);
-
-            if (model.ActiveDiscussionsPageSize_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(forumSettings, x => x.ActiveDiscussionsPageSize, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(forumSettings, x => x.ActiveDiscussionsPageSize, storeScope);
-            
-            //now clear settings cache
-            _settingService.ClearCache();
-
-            //activity log
-            _customerActivityService.InsertActivity("EditSettings", _localizationService.GetResource("ActivityLog.EditSettings"));
-
-            SuccessNotification(_localizationService.GetResource("Admin.Configuration.Updated"));
-            return RedirectToAction("Forum");
-        }
-
-
-
 
         public ActionResult News()
         {
@@ -713,12 +538,6 @@ namespace Nop.Admin.Controllers
                 model.PaymentMethodAdditionalFeeIsTaxable_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.PaymentMethodAdditionalFeeIsTaxable, storeScope);
                 model.PaymentMethodAdditionalFeeIncludesTax_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.PaymentMethodAdditionalFeeIncludesTax, storeScope);
                 model.PaymentMethodAdditionalFeeTaxClassId_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.PaymentMethodAdditionalFeeTaxClassId, storeScope);
-                model.EuVatEnabled_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.EuVatEnabled, storeScope);
-                model.EuVatShopCountryId_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.EuVatShopCountryId, storeScope);
-                model.EuVatAllowVatExemption_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.EuVatAllowVatExemption, storeScope);
-                model.EuVatUseWebService_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.EuVatUseWebService, storeScope);
-                model.EuVatAssumeValid_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.EuVatAssumeValid, storeScope);
-                model.EuVatEmailAdminWhenNewVatSubmitted_OverrideForStore = _settingService.SettingExists(taxSettings, x => x.EuVatEmailAdminWhenNewVatSubmitted, storeScope);
             }
 
             model.TaxBasedOnValues = taxSettings.TaxBasedOn.ToSelectList();
@@ -732,11 +551,6 @@ namespace Nop.Admin.Controllers
             model.PaymentMethodAdditionalFeeTaxCategories.Add(new SelectListItem { Text = "---", Value = "0" });
             foreach (var tc in taxCategories)
                 model.PaymentMethodAdditionalFeeTaxCategories.Add(new SelectListItem { Text = tc.Name, Value = tc.Id.ToString(), Selected = tc.Id == taxSettings.PaymentMethodAdditionalFeeTaxClassId });
-
-            //EU VAT countries
-            model.EuVatShopCountries.Add(new SelectListItem { Text = _localizationService.GetResource("Admin.Address.SelectCountry"), Value = "0" });
-            foreach (var c in _countryService.GetAllCountries(showHidden: true))
-                model.EuVatShopCountries.Add(new SelectListItem { Text = c.Name, Value = c.Id.ToString(), Selected = c.Id == taxSettings.EuVatShopCountryId });
 
             //default tax address
             var defaultAddress = taxSettings.DefaultTaxAddressId > 0
@@ -884,36 +698,6 @@ namespace Nop.Admin.Controllers
                 _settingService.SaveSetting(taxSettings, x => x.PaymentMethodAdditionalFeeTaxClassId, storeScope, false);
             else if (storeScope > 0)
                 _settingService.DeleteSetting(taxSettings, x => x.PaymentMethodAdditionalFeeTaxClassId, storeScope);
-            
-            if (model.EuVatEnabled_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(taxSettings, x => x.EuVatEnabled, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(taxSettings, x => x.EuVatEnabled, storeScope);
-            
-            if (model.EuVatShopCountryId_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(taxSettings, x => x.EuVatShopCountryId, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(taxSettings, x => x.EuVatShopCountryId, storeScope);
-            
-            if (model.EuVatAllowVatExemption_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(taxSettings, x => x.EuVatAllowVatExemption, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(taxSettings, x => x.EuVatAllowVatExemption, storeScope);
-
-            if (model.EuVatUseWebService_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(taxSettings, x => x.EuVatUseWebService, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(taxSettings, x => x.EuVatUseWebService, storeScope);
-
-            if (model.EuVatAssumeValid_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(taxSettings, x => x.EuVatAssumeValid, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(taxSettings, x => x.EuVatAssumeValid, storeScope);
-
-            if (model.EuVatEmailAdminWhenNewVatSubmitted_OverrideForStore || storeScope == 0)
-                _settingService.SaveSetting(taxSettings, x => x.EuVatEmailAdminWhenNewVatSubmitted, storeScope, false);
-            else if (storeScope > 0)
-                _settingService.DeleteSetting(taxSettings, x => x.EuVatEmailAdminWhenNewVatSubmitted, storeScope);
 
             //now clear settings cache
             _settingService.ClearCache();
@@ -1290,120 +1074,6 @@ namespace Nop.Admin.Controllers
 
             return RedirectToAction("Catalog");
         }
-
-
-
-        public ActionResult RewardPoints()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
-                return AccessDeniedView();
-
-
-            //load settings for a chosen store scope
-            var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
-            var rewardPointsSettings = _settingService.LoadSetting<RewardPointsSettings>(storeScope);
-            var model = rewardPointsSettings.ToModel();
-            model.ActiveStoreScopeConfiguration = storeScope;
-            if (storeScope > 0)
-            {
-                model.Enabled_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.Enabled, storeScope);
-                model.ExchangeRate_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.ExchangeRate, storeScope);
-                model.MinimumRewardPointsToUse_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.MinimumRewardPointsToUse, storeScope);
-                model.PointsForRegistration_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForRegistration, storeScope);
-                model.PointsForPurchases_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForPurchases_Amount, storeScope) ||
-                    _settingService.SettingExists(rewardPointsSettings, x => x.PointsForPurchases_Points, storeScope);
-                model.PointsForPurchases_Awarded_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForPurchases_Awarded, storeScope);
-                model.PointsForPurchases_Canceled_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForPurchases_Canceled, storeScope);
-                model.DisplayHowMuchWillBeEarned_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.DisplayHowMuchWillBeEarned, storeScope); model.PointsForRegistration_OverrideForStore = _settingService.SettingExists(rewardPointsSettings, x => x.PointsForRegistration, storeScope);
-            }
-            var currencySettings = _settingService.LoadSetting<CurrencySettings>(storeScope); 
-            model.PrimaryStoreCurrencyCode = _currencyService.GetCurrencyById(currencySettings.PrimaryStoreCurrencyId).CurrencyCode;
-
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult RewardPoints(RewardPointsSettingsModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageSettings))
-                return AccessDeniedView();
-
-            if (ModelState.IsValid)
-            {
-                //load settings for a chosen store scope
-                var storeScope = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
-                var rewardPointsSettings = _settingService.LoadSetting<RewardPointsSettings>(storeScope);
-                rewardPointsSettings = model.ToEntity(rewardPointsSettings);
-
-                /* We do not clear cache after each setting update.
-                 * This behavior can increase performance because cached settings will not be cleared 
-                 * and loaded from database after each update */
-                if (model.Enabled_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.Enabled, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.Enabled, storeScope);
-                
-                if (model.ExchangeRate_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.ExchangeRate, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.ExchangeRate, storeScope);
-                
-                if (model.MinimumRewardPointsToUse_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.MinimumRewardPointsToUse, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.MinimumRewardPointsToUse, storeScope);
-                
-                if (model.PointsForRegistration_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.PointsForRegistration, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.PointsForRegistration, storeScope);
-                
-                if (model.PointsForPurchases_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.PointsForPurchases_Amount, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.PointsForPurchases_Amount, storeScope);
-
-                if (model.PointsForPurchases_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.PointsForPurchases_Points, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.PointsForPurchases_Points, storeScope);
-                
-                if (model.PointsForPurchases_Awarded_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.PointsForPurchases_Awarded, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.PointsForPurchases_Awarded, storeScope);
-                
-                if (model.PointsForPurchases_Canceled_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.PointsForPurchases_Canceled, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.PointsForPurchases_Canceled, storeScope);
-                
-                if (model.DisplayHowMuchWillBeEarned_OverrideForStore || storeScope == 0)
-                    _settingService.SaveSetting(rewardPointsSettings, x => x.DisplayHowMuchWillBeEarned, storeScope, false);
-                else if (storeScope > 0)
-                    _settingService.DeleteSetting(rewardPointsSettings, x => x.DisplayHowMuchWillBeEarned, storeScope);
-
-                _settingService.SaveSetting(rewardPointsSettings, x => x.PointsAccumulatedForAllStores, 0, false);
-
-                //now clear settings cache
-                _settingService.ClearCache();
-
-                //activity log
-                _customerActivityService.InsertActivity("EditSettings", _localizationService.GetResource("ActivityLog.EditSettings"));
-
-                SuccessNotification(_localizationService.GetResource("Admin.Configuration.Updated"));
-            }
-            else
-            {
-                //If we got this far, something failed, redisplay form
-                foreach (var modelState in ModelState.Values)
-                    foreach (var error in modelState.Errors)
-                        ErrorNotification(error.ErrorMessage);
-            }
-            return RedirectToAction("RewardPoints");
-        }
-
-
-
 
         public ActionResult Order()
         {

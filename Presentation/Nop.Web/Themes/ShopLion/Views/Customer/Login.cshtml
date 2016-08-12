@@ -1,0 +1,133 @@
+﻿@model LoginModel
+@using Nop.Web.Models.Customer;
+@using Nop.Core;
+@using Nop.Core.Infrastructure;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.Login").Text);
+
+    //register URL with return URL (if specified)
+    var registerUrl = Url.RouteUrl("Register");
+    if (!String.IsNullOrEmpty(this.Context.Request.QueryString["returnUrl"]))
+    {
+        var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+        registerUrl = webHelper.ModifyQueryString(registerUrl, "returnurl=" + HttpUtility.UrlEncode(this.Context.Request.QueryString["returnUrl"]), null);
+    }
+}
+<div class="page login-page">
+    <div class="row">
+        <div class="col-xs-12">
+            <img src="~/Themes/ShopLion/Content/images/banner1.jpg" alt="" class="img-responsive">
+        </div>
+    </div>
+    <div class="row mt30">
+        <div class="col-xs-12 col-sm-7">
+            <div class="main-title"><h2>@T("Only the best for <strong>Lion Miles</strong>")</h2></div>
+            <p>
+                @T("Enrol now for instant membership and start earning miles today.")
+            </p>
+            <p>
+                @T("Malindo Miles offers a range of benefits designed to enhance your travel experience. Earn miles and redeem free flights whenever you fly with Malindo Air. Enjoy special offers and privileges specially catered for you.")
+            </p>
+        </div>
+        <div class="col-xs-12 col-sm-5">
+            <div class="greybg loginform">
+                <h4 class="login-title"><span>Member Login</span></h4>
+                <div class="loginforminner">
+                    @using (Html.BeginForm())
+                    {
+                        var validationSummary = Html.ValidationSummary(true, T("Account.Login.Unsuccessful").Text);
+
+                        if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                        {
+                            <div class="message-error">@validationSummary</div>
+                        }
+                        <div class="form-fields">
+                            @if (Model.UsernamesEnabled)
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Username, new { }, ":")
+                                    @Html.TextBoxFor(m => m.Username, new { @class = "username form-control", autofocus = "autofocus" })
+                                    @Html.ValidationMessageFor(m => m.Username)
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email, new { }, ":")
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "email form-control", autofocus = "autofocus" })
+                                    @Html.ValidationMessageFor(m => m.Email)
+                                </div>
+                            }
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password, new { }, ":")
+                                @Html.PasswordFor(m => m.Password, new { @class = "password form-control" })
+                                @Html.ValidationMessageFor(m => m.Password)
+                            </div>
+                            <div class="form-group reversed">
+                                <div class="checkbox">
+                                    <label>
+                                        @Html.CheckBoxFor(m => m.RememberMe)
+                                        <strong>@T("Remember me?")</strong>
+                                    </label>
+                                </div>
+                            </div>
+                            @if (Model.DisplayCaptcha)
+                            {
+                                <div class="captcha-box">
+                                    @Html.Raw(Html.GenerateCaptcha())
+                                </div>
+                            }
+                        </div>
+                        <hr>
+                        <div class="form-group nomargin-bottom">
+                            <div class="row">
+                                <div class="col-xxs-12 col-xs-6">
+                                    <a href="/PasswordRecovery" class="pass-recovery form-control-static pull-left " >
+                                            @T("Forgot Password ?")
+                                    </a>
+                                </div>
+                                <div class="col-xxs-12 col-xs-6 text-right">
+                                    <input type="submit" name="loginnow" value="@T("Account.Login.LoginButton")" tabindex="3" class="btn btn-primary">
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (Model.CheckoutAsGuest)
+                {
+                    <hr class="bordered">
+                    <div class="new-wrapper checkout-as-guest-or-register-block">
+                        @*<div class="text">
+                            @Html.Action("TopicBlock", "Topic", new {systemName = "CheckoutAsGuestOrRegister"})
+                        </div>*@
+                        <div class="row buttons">
+                            <div class="col-xxs-12 col-xs-6">
+                                <input type="button" class="button-1 checkout-as-guest-button btn btn-default " onclick="location.href = '@Url.RouteUrl("Checkout")'" value="@T("Account.Login.CheckoutAsGuest")" />
+                            </div>
+                            <div class="col-xxs-12 col-xs-6 text-right">
+                                <input type="button" class="button-1 register-button btn btn-danger " onclick="location.href = '@registerUrl'" value="@T("Account.Register")" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+            </div>
+            @if (!Model.CheckoutAsGuest)
+                {
+                    <div class="alert login-alert alert-info mt30" role="alert">
+                        <div class="row">
+                            <div class="col-md-7 col-xs-12">
+                                <h4><span>@T("Not a Member yet?")</span></h4>
+                            </div>
+                            <div class="col-md-5 col-xs-12 text-right">
+                                <input type="submit" name="" onclick="location.href = '@registerUrl'" value="@T("Account.Register")" class="btn btn-success">
+                            </div>
+                        </div>
+                    </div>
+                }
+        </div>
+    </div>
+</div>

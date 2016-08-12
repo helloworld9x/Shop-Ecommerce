@@ -7,13 +7,13 @@ namespace Nop.Services.Common
     /// <summary>
     /// Represents a task for keeping the site alive
     /// </summary>
-    public partial class KeepAliveTask : ITask
+    public class KeepAliveTask : ITask
     {
         private readonly IStoreContext _storeContext;
 
         public KeepAliveTask(IStoreContext storeContext)
         {
-            this._storeContext = storeContext;
+            _storeContext = storeContext;
         }
 
         /// <summary>

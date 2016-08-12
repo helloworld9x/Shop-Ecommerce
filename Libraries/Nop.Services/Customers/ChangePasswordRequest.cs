@@ -39,11 +39,11 @@ namespace Nop.Services.Customers
         public ChangePasswordRequest(string email, bool validateRequest, 
             PasswordFormat newPasswordFormat, string newPassword, string oldPassword = "")
         {
-            this.Email = email;
-            this.ValidateRequest = validateRequest;
-            this.NewPasswordFormat = newPasswordFormat;
-            this.NewPassword = newPassword;
-            this.OldPassword = oldPassword;
+            Email = email;
+            ValidateRequest = validateRequest;
+            NewPasswordFormat = newPasswordFormat;
+            NewPassword = newPassword;
+            OldPassword = oldPassword;
         }
     }
 }

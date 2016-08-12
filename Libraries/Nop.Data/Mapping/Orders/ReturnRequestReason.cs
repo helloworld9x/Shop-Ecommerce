@@ -2,7 +2,7 @@ using Nop.Core.Domain.Orders;
 
 namespace Nop.Data.Mapping.Orders
 {
-    public partial class ReturnRequestReasonMap : NopEntityTypeConfiguration<ReturnRequestReason>
+    public class ReturnRequestReasonMap : GoqEntityTypeConfiguration<ReturnRequestReason>
     {
         public ReturnRequestReasonMap()
         {

@@ -5,7 +5,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a specification attribute option
     /// </summary>
-    public partial class SpecificationAttributeOption : BaseEntity, ILocalizedEntity
+    public class SpecificationAttributeOption : BaseEntity, ILocalizedEntity
     {
         /// <summary>
         /// Gets or sets the specification attribute identifier

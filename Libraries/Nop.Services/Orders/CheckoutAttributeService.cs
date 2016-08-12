@@ -12,7 +12,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Checkout attribute service
     /// </summary>
-    public partial class CheckoutAttributeService : ICheckoutAttributeService
+    public class CheckoutAttributeService : ICheckoutAttributeService
     {
         #region Constants
 
@@ -81,11 +81,11 @@ namespace Nop.Services.Orders
             IStoreMappingService storeMappingService,
             IEventPublisher eventPublisher)
         {
-            this._cacheManager = cacheManager;
-            this._checkoutAttributeRepository = checkoutAttributeRepository;
-            this._checkoutAttributeValueRepository = checkoutAttributeValueRepository;
-            this._storeMappingService = storeMappingService;
-            this._eventPublisher = eventPublisher;
+            _cacheManager = cacheManager;
+            _checkoutAttributeRepository = checkoutAttributeRepository;
+            _checkoutAttributeValueRepository = checkoutAttributeValueRepository;
+            _storeMappingService = storeMappingService;
+            _eventPublisher = eventPublisher;
         }
 
         #endregion

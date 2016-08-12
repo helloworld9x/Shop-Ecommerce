@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product picture mapping
     /// </summary>
-    public partial class ProductPicture : BaseEntity
+    public class ProductPicture : BaseEntity
     {
         /// <summary>
         /// Gets or sets the product identifier

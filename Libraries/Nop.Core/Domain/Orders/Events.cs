@@ -7,7 +7,7 @@ namespace Nop.Core.Domain.Orders
     {
         public OrderPaidEvent(Order order)
         {
-            this.Order = order;
+            Order = order;
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Nop.Core.Domain.Orders
     {
         public OrderPlacedEvent(Order order)
         {
-            this.Order = order;
+            Order = order;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Nop.Core.Domain.Orders
     {
         public OrderCancelledEvent(Order order)
         {
-            this.Order = order;
+            Order = order;
         }
 
         /// <summary>
@@ -55,8 +55,8 @@ namespace Nop.Core.Domain.Orders
     {
         public OrderRefundedEvent(Order order, decimal amount)
         {
-            this.Order = order;
-            this.Amount = amount;
+            Order = order;
+            Amount = amount;
         }
 
         /// <summary>

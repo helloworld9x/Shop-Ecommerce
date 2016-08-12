@@ -2,7 +2,7 @@
 
 namespace Nop.Data.Mapping.Logging
 {
-    public partial class ActivityLogMap : NopEntityTypeConfiguration<ActivityLog>
+    public partial class ActivityLogMap : GoqEntityTypeConfiguration<ActivityLog>
     {
         public ActivityLogMap()
         {

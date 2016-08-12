@@ -2,7 +2,7 @@ using Nop.Core.Domain.Topics;
 
 namespace Nop.Data.Mapping.Topics
 {
-    public partial class TopicTemplateMap : NopEntityTypeConfiguration<TopicTemplate>
+    public partial class TopicTemplateMap : GoqEntityTypeConfiguration<TopicTemplate>
     {
         public TopicTemplateMap()
         {

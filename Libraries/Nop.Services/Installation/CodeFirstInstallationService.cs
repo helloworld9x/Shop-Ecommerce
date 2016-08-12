@@ -11,7 +11,6 @@ using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Logging;
 using Nop.Core.Domain.Media;
@@ -61,8 +60,6 @@ namespace Nop.Services.Installation
         private readonly IRepository<RelatedProduct> _relatedProductRepository;
         private readonly IRepository<EmailAccount> _emailAccountRepository;
         private readonly IRepository<MessageTemplate> _messageTemplateRepository;
-        private readonly IRepository<ForumGroup> _forumGroupRepository;
-        private readonly IRepository<Forum> _forumRepository;
         private readonly IRepository<Country> _countryRepository;
         private readonly IRepository<StateProvince> _stateProvinceRepository;
         private readonly IRepository<Discount> _discountRepository;
@@ -74,7 +71,6 @@ namespace Nop.Services.Installation
         private readonly IRepository<ActivityLogType> _activityLogTypeRepository;
         private readonly IRepository<ProductTag> _productTagRepository;
         private readonly IRepository<ProductTemplate> _productTemplateRepository;
-        private readonly IRepository<ManufacturerTemplate> _manufacturerTemplateRepository;
         private readonly IRepository<TopicTemplate> _topicTemplateRepository;
         private readonly IRepository<ScheduleTask> _scheduleTaskRepository;
         private readonly IRepository<ReturnRequestReason> _returnRequestReasonRepository;
@@ -107,8 +103,6 @@ namespace Nop.Services.Installation
             IRepository<RelatedProduct> relatedProductRepository,
             IRepository<EmailAccount> emailAccountRepository,
             IRepository<MessageTemplate> messageTemplateRepository,
-            IRepository<ForumGroup> forumGroupRepository,
-            IRepository<Forum> forumRepository,
             IRepository<Country> countryRepository,
             IRepository<StateProvince> stateProvinceRepository,
             IRepository<Discount> discountRepository,
@@ -120,7 +114,6 @@ namespace Nop.Services.Installation
             IRepository<ActivityLogType> activityLogTypeRepository,
             IRepository<ProductTag> productTagRepository,
             IRepository<ProductTemplate> productTemplateRepository,
-            IRepository<ManufacturerTemplate> manufacturerTemplateRepository,
             IRepository<TopicTemplate> topicTemplateRepository,
             IRepository<ScheduleTask> scheduleTaskRepository,
             IRepository<ReturnRequestReason> returnRequestReasonRepository,
@@ -149,8 +142,6 @@ namespace Nop.Services.Installation
             _relatedProductRepository = relatedProductRepository;
             _emailAccountRepository = emailAccountRepository;
             _messageTemplateRepository = messageTemplateRepository;
-            _forumGroupRepository = forumGroupRepository;
-            _forumRepository = forumRepository;
             _countryRepository = countryRepository;
             _stateProvinceRepository = stateProvinceRepository;
             _discountRepository = discountRepository;
@@ -162,7 +153,6 @@ namespace Nop.Services.Installation
             _activityLogTypeRepository = activityLogTypeRepository;
             _productTagRepository = productTagRepository;
             _productTemplateRepository = productTemplateRepository;
-            _manufacturerTemplateRepository = manufacturerTemplateRepository;
             _topicTemplateRepository = topicTemplateRepository;
             _scheduleTaskRepository = scheduleTaskRepository;
             _returnRequestReasonRepository = returnRequestReasonRepository;
@@ -4772,19 +4762,6 @@ namespace Nop.Services.Installation
                     RequireEmailValidation = false
                 });
 
-            settingService.SaveSetting(new RewardPointsSettings
-                {
-                    Enabled = true,
-                    ExchangeRate = 1,
-                    PointsForRegistration = 0,
-                    PointsForPurchases_Amount = 10,
-                    PointsForPurchases_Points = 1,
-                    PointsForPurchases_Awarded = OrderStatus.Complete,
-                    PointsForPurchases_Canceled = OrderStatus.Cancelled,
-                    DisplayHowMuchWillBeEarned = true,
-                    PointsAccumulatedForAllStores = true,
-                });
-
             settingService.SaveSetting(new CurrencySettings
                 {
                     DisplayCurrencyLabel = false,
@@ -4914,12 +4891,6 @@ namespace Nop.Services.Installation
                     PaymentMethodAdditionalFeeIsTaxable = false,
                     PaymentMethodAdditionalFeeIncludesTax = false,
                     PaymentMethodAdditionalFeeTaxClassId = 0,
-                    EuVatEnabled = false,
-                    EuVatShopCountryId = 0,
-                    EuVatAllowVatExemption = true,
-                    EuVatUseWebService = false,
-                    EuVatAssumeValid = false,
-                    EuVatEmailAdminWhenNewVatSubmitted = false
                 });
 
             settingService.SaveSetting(new DateTimeSettings
@@ -4938,41 +4909,6 @@ namespace Nop.Services.Installation
                     MainPageNewsCount = 3,
                     NewsArchivePageSize = 10,
                     ShowHeaderRssUrl = false,
-                });
-
-            settingService.SaveSetting(new ForumSettings
-                {
-                    ForumsEnabled = false,
-                    RelativeDateTimeFormattingEnabled = true,
-                    AllowCustomersToDeletePosts = false,
-                    AllowCustomersToEditPosts = false,
-                    AllowCustomersToManageSubscriptions = false,
-                    AllowGuestsToCreatePosts = false,
-                    AllowGuestsToCreateTopics = false,
-                    TopicSubjectMaxLength = 450,
-                    PostMaxLength = 4000,
-                    StrippedTopicMaxLength = 45,
-                    TopicsPageSize = 10,
-                    PostsPageSize = 10,
-                    SearchResultsPageSize = 10,
-                    ActiveDiscussionsPageSize = 50,
-                    LatestCustomerPostsPageSize = 10,
-                    ShowCustomersPostCount = true,
-                    ForumEditor = EditorType.BBCodeEditor,
-                    SignaturesEnabled = true,
-                    AllowPrivateMessages = false,
-                    ShowAlertForPM = false,
-                    PrivateMessagesPageSize = 10,
-                    ForumSubscriptionsPageSize = 10,
-                    NotifyAboutPrivateMessages = false,
-                    PMSubjectMaxLength = 450,
-                    PMTextMaxLength = 4000,
-                    HomePageActiveDiscussionsTopicCount = 5,
-                    ActiveDiscussionsFeedEnabled = false,
-                    ActiveDiscussionsFeedCount = 25,
-                    ForumFeedsEnabled = false,
-                    ForumFeedCount = 10,
-                    ForumSearchTermMinimumLength = 3,
                 });
 
             settingService.SaveSetting(new VendorSettings
@@ -5432,9 +5368,6 @@ namespace Nop.Services.Installation
             var categoryBooks = new Category
             {
                 Name = "Books",
-               
-                MetaKeywords = "Books, Dictionary, Textbooks",
-                MetaDescription = "Books category description",
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5506,16 +5439,10 @@ namespace Nop.Services.Installation
             var pictureService = EngineContext.Current.Resolve<IPictureService>();
             var sampleImagesPath = _webHelper.MapPath("~/content/samples/");
 
-            var manufacturerTemplateInGridAndLines =
-                _manufacturerTemplateRepository.Table.FirstOrDefault(pt => pt.Name == "Products in Grid or Lines");
-            if (manufacturerTemplateInGridAndLines == null)
-                throw new Exception("Manufacturer template cannot be loaded");
-
             var allManufacturers = new List<Manufacturer>();
             var manufacturerAsus = new Manufacturer
             {
                 Name = "Apple",
-                ManufacturerTemplateId = manufacturerTemplateInGridAndLines.Id,
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5532,7 +5459,6 @@ namespace Nop.Services.Installation
             var manufacturerHp = new Manufacturer
             {
                 Name = "HP",
-                ManufacturerTemplateId = manufacturerTemplateInGridAndLines.Id,
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5549,7 +5475,6 @@ namespace Nop.Services.Installation
             var manufacturerNike = new Manufacturer
             {
                 Name = "Nike",
-                ManufacturerTemplateId = manufacturerTemplateInGridAndLines.Id,
                 PageSize = 6,
                 AllowCustomersToSelectPageSize = true,
                 PageSizeOptions = "6, 3, 9",
@@ -5598,10 +5523,6 @@ namespace Nop.Services.Installation
             //pictures
             var pictureService = EngineContext.Current.Resolve<IPictureService>();
             var sampleImagesPath = _webHelper.MapPath("~/content/samples/");
-
-            //downloads
-            var downloadService = EngineContext.Current.Resolve<IDownloadService>();
-            var sampleDownloadsPath = _webHelper.MapPath("~/content/samples/");
 
             //products
             var allProducts = new List<Product>();
@@ -6979,8 +6900,6 @@ namespace Nop.Services.Installation
 
             #region Others
 
-
-
             var productBeatsPill = new Product
             {
                 ProductType = ProductType.SimpleProduct,
@@ -7012,25 +6931,6 @@ namespace Nop.Services.Installation
                 MarkAsNew = true,
                 CreatedOnUtc = DateTime.UtcNow,
                 UpdatedOnUtc = DateTime.UtcNow,
-                TierPrices =
-                {
-                    new TierPrice
-                    {
-                        Quantity = 2,
-                        Price = 19
-                    },
-                    new TierPrice
-                    {
-                        Quantity = 5,
-                        Price = 17
-                    },
-                    new TierPrice
-                    {
-                        Quantity = 10,
-                        Price = 15
-                    }
-                },
-                HasTierPrices = true,
                 ProductCategories =
                 {
                     new ProductCategory
@@ -7604,25 +7504,6 @@ namespace Nop.Services.Installation
                 Published = true,
                 CreatedOnUtc = DateTime.UtcNow,
                 UpdatedOnUtc = DateTime.UtcNow,
-                TierPrices =
-                {
-                    new TierPrice
-                    {
-                        Quantity = 3,
-                        Price = 21
-                    },
-                    new TierPrice
-                    {
-                        Quantity = 7,
-                        Price = 19
-                    },
-                    new TierPrice
-                    {
-                        Quantity = 10,
-                        Price = 16
-                    }
-                },
-                HasTierPrices = true,
                 ProductCategories =
                 {
                     new ProductCategory
@@ -7734,25 +7615,6 @@ namespace Nop.Services.Installation
                 Published = true,
                 CreatedOnUtc = DateTime.UtcNow,
                 UpdatedOnUtc = DateTime.UtcNow,
-                TierPrices =
-                {
-                    new TierPrice
-                    {
-                        Quantity = 3,
-                        Price = 40
-                    },
-                    new TierPrice
-                    {
-                        Quantity = 6,
-                        Price = 38
-                    },
-                    new TierPrice
-                    {
-                        Quantity = 10,
-                        Price = 35
-                    }
-                },
-                HasTierPrices = true,
                 ProductCategories =
                 {
                     new ProductCategory
@@ -7969,213 +7831,6 @@ namespace Nop.Services.Installation
 
             #endregion
 
-            #region Digital Downloads
-
-
-            var downloadNightVision1 = new Download
-            {
-                DownloadGuid = Guid.NewGuid(),
-                ContentType = "application/x-zip-co",
-                DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_NightVision_1.zip"),
-                Extension = ".zip",
-                Filename = "Night_Vision_1",
-                IsNew = true,
-            };
-            downloadService.InsertDownload(downloadNightVision1);
-            var downloadNightVision2 = new Download
-            {
-                DownloadGuid = Guid.NewGuid(),
-                ContentType = "text/plain",
-                DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_NightVision_2.txt"),
-                Extension = ".txt",
-                Filename = "Night_Vision_1",
-                IsNew = true,
-            };
-            downloadService.InsertDownload(downloadNightVision2);
-            var productNightVision = new Product
-            {
-                ProductType = ProductType.SimpleProduct,
-                VisibleIndividually = true,
-                Name = "Night Visions",
-                ShortDescription = "Night Visions is the debut studio album by American rock band Imagine Dragons.",
-                FullDescription = "<p>Original Release Date: September 4, 2012</p><p>Release Date: September 4, 2012</p><p>Genre - Alternative rock, indie rock, electronic rock</p><p>Label - Interscope/KIDinaKORNER</p><p>Copyright: (C) 2011 Interscope Records</p>",
-                ProductTemplateId = productTemplateSimple.Id,
-                //SeName = "poker-face",
-                AllowCustomerReviews = true,
-                Price = 2.8M,
-                TaxCategoryId = _taxCategoryRepository.Table.Single(tc => tc.Name == "Downloadable Products").Id,
-                ManageInventoryMethod = ManageInventoryMethod.DontManageStock,
-                StockQuantity = 10000,
-                NotifyAdminForQuantityBelow = 1,
-                AllowBackInStockSubscriptions = false,
-                DisplayStockAvailability = true,
-                LowStockActivity = LowStockActivity.DisableBuyButton,
-                BackorderMode = BackorderMode.NoBackorders,
-                OrderMinimumQuantity = 1,
-                OrderMaximumQuantity = 10000,
-                IsDownload = true,
-                DownloadId = downloadNightVision1.Id,
-                DownloadActivationType = DownloadActivationType.WhenOrderIsPaid,
-                UnlimitedDownloads = true,
-                HasUserAgreement = false,
-                HasSampleDownload = true,
-                SampleDownloadId = downloadNightVision2.Id,
-                Published = true,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-                ProductCategories =
-                {
-                    new ProductCategory
-                    {
-                        Category = _categoryRepository.Table.Single(c => c.Name == "Digital downloads"),
-                        DisplayOrder = 1,
-                    }
-                }
-            };
-            allProducts.Add(productNightVision);
-            productNightVision.ProductPictures.Add(new ProductPicture
-            {
-                Picture = pictureService.InsertPicture(File.ReadAllBytes(sampleImagesPath + "product_NightVisions.jpeg"), "image/jpeg", pictureService.GetPictureSeName(productNightVision.Name)),
-                DisplayOrder = 1,
-            });
-            _productRepository.Insert(productNightVision);
-
-
-
-
-
-            var downloadIfYouWait1 = new Download
-            {
-                DownloadGuid = Guid.NewGuid(),
-                ContentType = "application/x-zip-co",
-                DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_IfYouWait_1.zip"),
-                Extension = ".zip",
-                Filename = "If_You_Wait_1",
-                IsNew = true,
-            };
-            downloadService.InsertDownload(downloadIfYouWait1);
-            var downloadIfYouWait2 = new Download
-            {
-                DownloadGuid = Guid.NewGuid(),
-                ContentType = "text/plain",
-                DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_IfYouWait_2.txt"),
-                Extension = ".txt",
-                Filename = "If_You_Wait_1",
-                IsNew = true,
-            };
-            downloadService.InsertDownload(downloadIfYouWait2);
-            var productIfYouWait = new Product
-            {
-                ProductType = ProductType.SimpleProduct,
-                VisibleIndividually = true,
-                Name = "If You Wait",
-                ShortDescription = "If You Wait is the debut studio album by English indie pop band London Grammar",
-                FullDescription = "<p>Original Release Date: September 6, 2013</p><p>Genre - Electronica, dream pop downtempo, pop</p><p>Label - Metal & Dust/Ministry of Sound</p><p>Producer - Tim Bran, Roy Kerr London, Grammar</p><p>Length - 43:22</p>",
-                ProductTemplateId = productTemplateSimple.Id,
-                //SeName = "single-ladies-put-a-ring-on-it",
-                AllowCustomerReviews = true,
-                Price = 3M,
-                TaxCategoryId = _taxCategoryRepository.Table.Single(tc => tc.Name == "Downloadable Products").Id,
-                ManageInventoryMethod = ManageInventoryMethod.DontManageStock,
-                StockQuantity = 10000,
-                NotifyAdminForQuantityBelow = 1,
-                AllowBackInStockSubscriptions = false,
-                DisplayStockAvailability = true,
-                LowStockActivity = LowStockActivity.DisableBuyButton,
-                BackorderMode = BackorderMode.NoBackorders,
-                OrderMinimumQuantity = 1,
-                OrderMaximumQuantity = 10000,
-                IsDownload = true,
-                DownloadId = downloadIfYouWait1.Id,
-                DownloadActivationType = DownloadActivationType.WhenOrderIsPaid,
-                UnlimitedDownloads = true,
-                HasUserAgreement = false,
-                HasSampleDownload = true,
-                SampleDownloadId = downloadIfYouWait2.Id,
-                Published = true,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-                ProductCategories =
-                {
-                    new ProductCategory
-                    {
-                        Category = _categoryRepository.Table.Single(c => c.Name == "Digital downloads"),
-                        DisplayOrder = 1,
-                    }
-                }
-            };
-            allProducts.Add(productIfYouWait);
-
-            productIfYouWait.ProductPictures.Add(new ProductPicture
-            {
-                Picture = pictureService.InsertPicture(File.ReadAllBytes(sampleImagesPath + "product_IfYouWait.jpeg"), "image/jpeg", pictureService.GetPictureSeName(productIfYouWait.Name)),
-                DisplayOrder = 1,
-            });
-            _productRepository.Insert(productIfYouWait);
-
-
-
-
-
-            var downloadScienceAndFaith = new Download
-            {
-                DownloadGuid = Guid.NewGuid(),
-                ContentType = "application/x-zip-co",
-                DownloadBinary = File.ReadAllBytes(sampleDownloadsPath + "product_ScienceAndFaith_1.zip"),
-                Extension = ".zip",
-                Filename = "Science_And_Faith",
-                IsNew = true,
-            };
-            downloadService.InsertDownload(downloadScienceAndFaith);
-            var productScienceAndFaith = new Product
-            {
-                ProductType = ProductType.SimpleProduct,
-                VisibleIndividually = true,
-                Name = "Science & Faith",
-                ShortDescription = "Science & Faith is the second studio album by Irish pop rock band The Script.",
-                FullDescription = "<p># Original Release Date: September 10, 2010<br /># Label: RCA, Epic/Phonogenic(America)<br /># Copyright: 2010 RCA Records.</p>",
-                ProductTemplateId = productTemplateSimple.Id,
-                //SeName = "the-battle-of-los-angeles",
-                AllowCustomerReviews = true,
-                Price = 3M,
-                TaxCategoryId = _taxCategoryRepository.Table.Single(tc => tc.Name == "Downloadable Products").Id,
-                ManageInventoryMethod = ManageInventoryMethod.DontManageStock,
-                StockQuantity = 10000,
-                NotifyAdminForQuantityBelow = 1,
-                AllowBackInStockSubscriptions = false,
-                DisplayStockAvailability = true,
-                LowStockActivity = LowStockActivity.DisableBuyButton,
-                BackorderMode = BackorderMode.NoBackorders,
-                OrderMinimumQuantity = 1,
-                OrderMaximumQuantity = 10000,
-                IsDownload = true,
-                DownloadId = downloadScienceAndFaith.Id,
-                DownloadActivationType = DownloadActivationType.WhenOrderIsPaid,
-                UnlimitedDownloads = true,
-                HasUserAgreement = false,
-                Published = true,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-                ProductCategories =
-                {
-                    new ProductCategory
-                    {
-                        Category = _categoryRepository.Table.Single(c => c.Name == "Digital downloads"),
-                        DisplayOrder = 1,
-                    }
-                }
-            };
-            allProducts.Add(productScienceAndFaith);
-            productScienceAndFaith.ProductPictures.Add(new ProductPicture
-            {
-                Picture = pictureService.InsertPicture(File.ReadAllBytes(sampleImagesPath + "product_ScienceAndFaith.jpeg"), "image/jpeg", pictureService.GetPictureSeName(productScienceAndFaith.Name)),
-                DisplayOrder = 1,
-            });
-            _productRepository.Insert(productScienceAndFaith);
-
-
-
-            #endregion
 
             #region Books
 
@@ -8506,8 +8161,6 @@ namespace Nop.Services.Installation
                 //SeName = "25-virtual-gift-card",
                 AllowCustomerReviews = true,
                 Price = 25M,
-                IsGiftCard = true,
-                GiftCardType = GiftCardType.Virtual,
                 ManageInventoryMethod = ManageInventoryMethod.DontManageStock,
                 OrderMinimumQuantity = 1,
                 OrderMaximumQuantity = 10000,
@@ -8550,8 +8203,6 @@ namespace Nop.Services.Installation
                 //SeName = "50-physical-gift-card",
                 AllowCustomerReviews = true,
                 Price = 50M,
-                IsGiftCard = true,
-                GiftCardType = GiftCardType.Physical,
                 IsShipEnabled = true,
                 IsFreeShipping = true,
                 DeliveryDateId = deliveryDate.Id,
@@ -8601,8 +8252,6 @@ namespace Nop.Services.Installation
                 //SeName = "100-physical-gift-card",
                 AllowCustomerReviews = true,
                 Price = 100M,
-                IsGiftCard = true,
-                GiftCardType = GiftCardType.Physical,
                 IsShipEnabled = true,
                 DeliveryDateId = deliveryDate.Id,
                 Weight = 1,
@@ -8688,26 +8337,7 @@ namespace Nop.Services.Installation
                      ProductId1 = productElegantGemstoneNecklace.Id,
                      ProductId2 = productEngagementRing.Id,
                 },
-                new RelatedProduct
-                {
-                     ProductId1 = productIfYouWait.Id,
-                     ProductId2 = productNightVision.Id,
-                },
-                new RelatedProduct
-                {
-                     ProductId1 = productIfYouWait.Id,
-                     ProductId2 = productScienceAndFaith.Id,
-                },
-                new RelatedProduct
-                {
-                     ProductId1 = productNightVision.Id,
-                     ProductId2 = productIfYouWait.Id,
-                },
-                new RelatedProduct
-                {
-                     ProductId1 = productNightVision.Id,
-                     ProductId2 = productScienceAndFaith.Id,
-                },
+            
                 new RelatedProduct
                 {
                      ProductId1 = productPrideAndPrejudice.Id,
@@ -9117,20 +8747,14 @@ namespace Nop.Services.Installation
             AddProductTag(productSoundForge, "game");
             AddProductTag(productSoundForge, "computer");
             AddProductTag(productSoundForge, "cool");
-            AddProductTag(productNightVision, "awesome");
-            AddProductTag(productNightVision, "digital");
             AddProductTag(productSunglasses, "apparel");
             AddProductTag(productSunglasses, "cool");
             AddProductTag(productHtcOneMini, "awesome");
             AddProductTag(productHtcOneMini, "compact");
             AddProductTag(productHtcOneMini, "cell");
-            AddProductTag(productIfYouWait, "digital");
-            AddProductTag(productIfYouWait, "awesome");
             AddProductTag(productNokiaLumia, "awesome");
             AddProductTag(productNokiaLumia, "cool");
             AddProductTag(productNokiaLumia, "camera");
-            AddProductTag(productScienceAndFaith, "digital");
-            AddProductTag(productScienceAndFaith, "awesome");
             AddProductTag(productPrideAndPrejudice, "book");
             AddProductTag(productLenovoThinkpad, "awesome");
             AddProductTag(productLenovoThinkpad, "computer");
@@ -9175,63 +8799,6 @@ namespace Nop.Services.Installation
 
             }
             _productRepository.Update(allProducts);
-        }
-
-        protected virtual void InstallForums()
-        {
-            var forumGroup = new ForumGroup
-            {
-                Name = "General",
-                DisplayOrder = 5,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-            };
-
-            _forumGroupRepository.Insert(forumGroup);
-
-            var newProductsForum = new Forum
-            {
-                ForumGroup = forumGroup,
-                Name = "New Products",
-                Description = "Discuss new products and industry trends",
-                NumTopics = 0,
-                NumPosts = 0,
-                LastPostCustomerId = 0,
-                LastPostTime = null,
-                DisplayOrder = 1,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-            };
-            _forumRepository.Insert(newProductsForum);
-
-            var mobileDevicesForum = new Forum
-            {
-                ForumGroup = forumGroup,
-                Name = "Mobile Devices Forum",
-                Description = "Discuss the mobile phone market",
-                NumTopics = 0,
-                NumPosts = 0,
-                LastPostCustomerId = 0,
-                LastPostTime = null,
-                DisplayOrder = 10,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-            };
-            _forumRepository.Insert(mobileDevicesForum);
-
-            var packagingShippingForum = new Forum
-            {
-                ForumGroup = forumGroup,
-                Name = "Packaging & Shipping",
-                Description = "Discuss packaging & shipping",
-                NumTopics = 0,
-                NumPosts = 0,
-                LastPostTime = null,
-                DisplayOrder = 20,
-                CreatedOnUtc = DateTime.UtcNow,
-                UpdatedOnUtc = DateTime.UtcNow,
-            };
-            _forumRepository.Insert(packagingShippingForum);
         }
 
         protected virtual void InstallDiscounts()
@@ -9756,20 +9323,6 @@ namespace Nop.Services.Installation
             _productTemplateRepository.Insert(productTemplates);
         }
 
-        protected virtual void InstallManufacturerTemplates()
-        {
-            var manufacturerTemplates = new List<ManufacturerTemplate>
-                               {
-                                   new ManufacturerTemplate
-                                       {
-                                           Name = "Products in Grid or Lines",
-                                           ViewPath = "ManufacturerTemplate.ProductsInGridOrLines",
-                                           DisplayOrder = 1
-                                       },
-                               };
-            _manufacturerTemplateRepository.Insert(manufacturerTemplates);
-        }
-
         protected virtual void InstallTopicTemplates()
         {
             var topicTemplates = new List<TopicTemplate>
@@ -10020,7 +9573,6 @@ namespace Nop.Services.Installation
             InstallActivityLogTypes();
             HashDefaultCustomerPassword(defaultUserEmail, defaultUserPassword);
             InstallProductTemplates();
-            InstallManufacturerTemplates();
             InstallScheduleTasks();
             InstallReturnRequestReasons();
             InstallReturnRequestActions();
@@ -10033,7 +9585,6 @@ namespace Nop.Services.Installation
                 InstallCategories();
                 InstallManufacturers();
                 InstallProducts(defaultUserEmail);
-                InstallForums();
                 InstallDiscounts();
                 InstallNews(defaultUserEmail);
                 InstallPolls();

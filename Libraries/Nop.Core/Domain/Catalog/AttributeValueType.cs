@@ -12,6 +12,6 @@ namespace Nop.Core.Domain.Catalog
         /// <summary>
         /// Associated to a product (used when configuring bundled products)
         /// </summary>
-        AssociatedToProduct = 10,
+        AssociatedToProduct = 10
     }
 }

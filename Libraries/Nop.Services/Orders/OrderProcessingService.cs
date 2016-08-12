@@ -36,7 +36,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order processing service
     /// </summary>
-    public partial class OrderProcessingService : IOrderProcessingService
+    public class OrderProcessingService : IOrderProcessingService
     {
         #region Fields
         
@@ -52,7 +52,6 @@ namespace Nop.Services.Orders
         private readonly IPriceFormatter _priceFormatter;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IProductAttributeFormatter _productAttributeFormatter;
-        private readonly IGiftCardService _giftCardService;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICheckoutAttributeFormatter _checkoutAttributeFormatter;
         private readonly IShippingService _shippingService;
@@ -68,12 +67,10 @@ namespace Nop.Services.Orders
         private readonly ICurrencyService _currencyService;
         private readonly IEventPublisher _eventPublisher;
         private readonly IPdfService _pdfService;
-        private readonly IRewardPointService _rewardPointService;
         private readonly IGenericAttributeService _genericAttributeService;
 
         private readonly ShippingSettings _shippingSettings;
         private readonly PaymentSettings _paymentSettings;
-        private readonly RewardPointsSettings _rewardPointsSettings;
         private readonly OrderSettings _orderSettings;
         private readonly TaxSettings _taxSettings;
         private readonly LocalizationSettings _localizationSettings;
@@ -98,7 +95,6 @@ namespace Nop.Services.Orders
         /// <param name="priceFormatter">Price formatter</param>
         /// <param name="productAttributeParser">Product attribute parser</param>
         /// <param name="productAttributeFormatter">Product attribute formatter</param>
-        /// <param name="giftCardService">Gift card service</param>
         /// <param name="shoppingCartService">Shopping cart service</param>
         /// <param name="checkoutAttributeFormatter">Checkout attribute service</param>
         /// <param name="shippingService">Shipping service</param>
@@ -112,7 +108,6 @@ namespace Nop.Services.Orders
         /// <param name="vendorService">Vendor service</param>
         /// <param name="customerActivityService">Customer activity service</param>
         /// <param name="currencyService">Currency service</param>
-        /// <param name="affiliateService">Affiliate service</param>
         /// <param name="eventPublisher">Event published</param>
         /// <param name="pdfService">PDF service</param>
         /// <param name="rewardPointService">Reward point service</param>
@@ -136,7 +131,6 @@ namespace Nop.Services.Orders
             IPriceFormatter priceFormatter,
             IProductAttributeParser productAttributeParser,
             IProductAttributeFormatter productAttributeFormatter,
-            IGiftCardService giftCardService,
             IShoppingCartService shoppingCartService,
             ICheckoutAttributeFormatter checkoutAttributeFormatter,
             IShippingService shippingService,
@@ -152,54 +146,48 @@ namespace Nop.Services.Orders
             ICurrencyService currencyService,
             IEventPublisher eventPublisher,
             IPdfService pdfService,
-            IRewardPointService rewardPointService,
             IGenericAttributeService genericAttributeService,
             ShippingSettings shippingSettings,
             PaymentSettings paymentSettings,
-            RewardPointsSettings rewardPointsSettings,
             OrderSettings orderSettings,
             TaxSettings taxSettings,
             LocalizationSettings localizationSettings,
             CurrencySettings currencySettings)
         {
-            this._orderService = orderService;
-            this._webHelper = webHelper;
-            this._localizationService = localizationService;
-            this._languageService = languageService;
-            this._productService = productService;
-            this._paymentService = paymentService;
-            this._logger = logger;
-            this._orderTotalCalculationService = orderTotalCalculationService;
-            this._priceCalculationService = priceCalculationService;
-            this._priceFormatter = priceFormatter;
-            this._productAttributeParser = productAttributeParser;
-            this._productAttributeFormatter = productAttributeFormatter;
-            this._giftCardService = giftCardService;
-            this._shoppingCartService = shoppingCartService;
-            this._checkoutAttributeFormatter = checkoutAttributeFormatter;
-            this._workContext = workContext;
-            this._workflowMessageService = workflowMessageService;
-            this._vendorService = vendorService;
-            this._shippingService = shippingService;
-            this._shipmentService = shipmentService;
-            this._taxService = taxService;
-            this._customerService = customerService;
-            this._discountService = discountService;
-            this._encryptionService = encryptionService;
-            this._customerActivityService = customerActivityService;
-            this._currencyService = currencyService;
-            this._eventPublisher = eventPublisher;
-            this._pdfService = pdfService;
-            this._rewardPointService = rewardPointService;
-            this._genericAttributeService = genericAttributeService;
-
-            this._paymentSettings = paymentSettings;
-            this._shippingSettings = shippingSettings;
-            this._rewardPointsSettings = rewardPointsSettings;
-            this._orderSettings = orderSettings;
-            this._taxSettings = taxSettings;
-            this._localizationSettings = localizationSettings;
-            this._currencySettings = currencySettings;
+            _orderService = orderService;
+            _webHelper = webHelper;
+            _localizationService = localizationService;
+            _languageService = languageService;
+            _productService = productService;
+            _paymentService = paymentService;
+            _logger = logger;
+            _orderTotalCalculationService = orderTotalCalculationService;
+            _priceCalculationService = priceCalculationService;
+            _priceFormatter = priceFormatter;
+            _productAttributeParser = productAttributeParser;
+            _productAttributeFormatter = productAttributeFormatter;
+            _shoppingCartService = shoppingCartService;
+            _checkoutAttributeFormatter = checkoutAttributeFormatter;
+            _workContext = workContext;
+            _workflowMessageService = workflowMessageService;
+            _vendorService = vendorService;
+            _shippingService = shippingService;
+            _shipmentService = shipmentService;
+            _taxService = taxService;
+            _customerService = customerService;
+            _discountService = discountService;
+            _encryptionService = encryptionService;
+            _customerActivityService = customerActivityService;
+            _currencyService = currencyService;
+            _eventPublisher = eventPublisher;
+            _pdfService = pdfService;
+            _genericAttributeService = genericAttributeService;
+            _paymentSettings = paymentSettings;
+            _shippingSettings = shippingSettings;
+            _orderSettings = orderSettings;
+            _taxSettings = taxSettings;
+            _localizationSettings = localizationSettings;
+            _currencySettings = currencySettings;
         }
 
         #endregion
@@ -210,14 +198,12 @@ namespace Nop.Services.Orders
         {
             public PlaceOrderContainter()
             {
-                this.Cart = new List<ShoppingCartItem>();
-                this.AppliedDiscounts = new List<Discount>();
-                this.AppliedGiftCards = new List<AppliedGiftCard>();
+                Cart = new List<ShoppingCartItem>();
+                AppliedDiscounts = new List<Discount>();
             }
 
             public Customer Customer { get; set; }
             public Language CustomerLanguage { get; set; }
-            public int AffiliateId { get; set; }
             public TaxDisplayType CustomerTaxDisplayType {get; set; }
             public string CustomerCurrencyCode { get; set; }
             public decimal CustomerCurrencyRate { get; set; }
@@ -229,7 +215,6 @@ namespace Nop.Services.Orders
             public string ShippingRateComputationMethodSystemName { get; set; }
             public bool PickUpInStore { get; set; }
 
-            public bool IsRecurringShoppingCart { get; set; }
             //initial order (used with recurring payments)
             public Order InitialOrder { get; set; }
 
@@ -238,7 +223,6 @@ namespace Nop.Services.Orders
 
             public IList<ShoppingCartItem> Cart { get; set; }
             public List<Discount> AppliedDiscounts { get; set; }
-            public List<AppliedGiftCard> AppliedGiftCards { get; set; }
 
             public decimal OrderSubTotalInclTax { get; set; }
             public decimal OrderSubTotalExclTax { get; set; }
@@ -252,8 +236,6 @@ namespace Nop.Services.Orders
             public string VatNumber {get; set; }
             public string TaxRates {get; set; }
             public decimal OrderDiscountAmount { get; set; }
-            public int RedeemedRewardPoints { get; set; }
-            public decimal RedeemedRewardPointsAmount { get; set; }
             public decimal OrderTotal { get; set; }
         }
 
@@ -386,7 +368,7 @@ namespace Nop.Services.Orders
                 {
                     var sciWarnings = _shoppingCartService.GetShoppingCartItemWarnings(details.Customer, sci.ShoppingCartType,
                         sci.Product, processPaymentRequest.StoreId, sci.AttributesXml,
-                        sci.CustomerEnteredPrice, sci.RentalStartDateUtc, sci.RentalEndDateUtc,
+                        sci.CustomerEnteredPrice, 
                         sci.Quantity, false);
                     if (sciWarnings.Count > 0)
                     {
@@ -576,7 +558,7 @@ namespace Nop.Services.Orders
 
                 //VAT number
                 var customerVatStatus = (VatNumberStatus)details.Customer.GetAttribute<int>(SystemCustomerAttributeNames.VatNumberStatusId);
-                if (_taxSettings.EuVatEnabled && customerVatStatus == VatNumberStatus.Valid)
+                if (customerVatStatus == VatNumberStatus.Valid)
                     details.VatNumber = details.Customer.GetAttribute<string>(SystemCustomerAttributeNames.VatNumber);
 
                 //tax rates
@@ -598,22 +580,15 @@ namespace Nop.Services.Orders
             //order total (and applied discounts, gift cards, reward points)
             if (!processPaymentRequest.IsRecurringPayment)
             {
-                List<AppliedGiftCard> appliedGiftCards;
                 Discount orderAppliedDiscount;
                 decimal orderDiscountAmount;
-                int redeemedRewardPoints ;
-                decimal redeemedRewardPointsAmount;
 
                 var orderTotal = _orderTotalCalculationService.GetShoppingCartTotal(details.Cart,
-                    out orderDiscountAmount, out orderAppliedDiscount, out appliedGiftCards,
-                    out redeemedRewardPoints, out redeemedRewardPointsAmount);
+                    out orderDiscountAmount, out orderAppliedDiscount);
                 if (!orderTotal.HasValue)
                     throw new NopException("Order total couldn't be calculated");
 
                 details.OrderDiscountAmount = orderDiscountAmount;
-                details.RedeemedRewardPoints = redeemedRewardPoints;
-                details.RedeemedRewardPointsAmount = redeemedRewardPointsAmount;
-                details.AppliedGiftCards = appliedGiftCards;
                 details.OrderTotal = orderTotal.Value;
 
                 //discount history
@@ -628,132 +603,8 @@ namespace Nop.Services.Orders
             processPaymentRequest.OrderTotal = details.OrderTotal;
 
             //recurring or standard shopping cart?
-            if (!processPaymentRequest.IsRecurringPayment)
-            {
-                details.IsRecurringShoppingCart = details.Cart.IsRecurring();
-                if (details.IsRecurringShoppingCart)
-                {
-                    int recurringCycleLength;
-                    RecurringProductCyclePeriod recurringCyclePeriod;
-                    int recurringTotalCycles;
-                    string recurringCyclesError = details.Cart.GetRecurringCycleInfo(_localizationService,
-                        out recurringCycleLength, out recurringCyclePeriod, out recurringTotalCycles);
-                    if (!string.IsNullOrEmpty(recurringCyclesError))
-                        throw new NopException(recurringCyclesError);
-
-                    processPaymentRequest.RecurringCycleLength = recurringCycleLength;
-                    processPaymentRequest.RecurringCyclePeriod = recurringCyclePeriod;
-                    processPaymentRequest.RecurringTotalCycles = recurringTotalCycles;
-                }
-            }
-            else
-            {
-                details.IsRecurringShoppingCart = true;
-            }
-
+           
             return details;
-        }
-
-        /// <summary>
-        /// Award (earn) reward points (for placing a new order)
-        /// </summary>
-        /// <param name="order">Order</param>
-        protected virtual void AwardRewardPoints(Order order)
-        {
-            int points = _orderTotalCalculationService.CalculateRewardPoints(order.Customer, order.OrderTotal);
-            if (points == 0)
-                return;
-
-            //Ensure that reward points were not added (earned) before. We should not add reward points if they were already earned for this order
-            if (order.RewardPointsWereAdded)
-                return;
-
-            //add reward points
-            _rewardPointService.AddRewardPointsHistoryEntry(order.Customer, points, order.StoreId,
-                string.Format(_localizationService.GetResource("RewardPoints.Message.EarnedForOrder"), order.Id));
-            order.RewardPointsWereAdded = true;
-            _orderService.UpdateOrder(order);
-        }
-
-        /// <summary>
-        /// Reduce (cancel) reward points (previously awarded for placing an order)
-        /// </summary>
-        /// <param name="order">Order</param>
-        protected virtual void ReduceRewardPoints(Order order)
-        {
-            int points = _orderTotalCalculationService.CalculateRewardPoints(order.Customer, order.OrderTotal);
-            if (points == 0)
-                return;
-
-            //ensure that reward points were already earned for this order before
-            if (!order.RewardPointsWereAdded)
-                return;
-
-            //reduce reward points
-            _rewardPointService.AddRewardPointsHistoryEntry(order.Customer, -points, order.StoreId,
-                string.Format(_localizationService.GetResource("RewardPoints.Message.ReducedForOrder"), order.Id));
-            _orderService.UpdateOrder(order);
-        }
-
-        /// <summary>
-        /// Return back redeemded reward points to a customer (spent when placing an order)
-        /// </summary>
-        /// <param name="order">Order</param>
-        protected virtual void ReturnBackRedeemedRewardPoints(Order order)
-        {
-            //were some points redeemed when placing an order?
-            if (order.RedeemedRewardPointsEntry == null)
-                return;
-
-            //return back
-            _rewardPointService.AddRewardPointsHistoryEntry(order.Customer, -order.RedeemedRewardPointsEntry.Points, order.StoreId,
-                string.Format(_localizationService.GetResource("RewardPoints.Message.ReturnedForOrder"), order.Id));
-            _orderService.UpdateOrder(order);
-        }
-
-
-        /// <summary>
-        /// Set IsActivated value for purchase gift cards for particular order
-        /// </summary>
-        /// <param name="order">Order</param>
-        /// <param name="activate">A value indicating whether to activate gift cards; true - activate, false - deactivate</param>
-        protected virtual void SetActivatedValueForPurchasedGiftCards(Order order, bool activate)
-        {
-            var giftCards = _giftCardService.GetAllGiftCards(purchasedWithOrderId: order.Id, 
-                isGiftCardActivated: !activate);
-            foreach (var gc in giftCards)
-            {
-                if (activate)
-                {
-                    //activate
-                    bool isRecipientNotified = gc.IsRecipientNotified;
-                    if (gc.GiftCardType == GiftCardType.Virtual)
-                    {
-                        //send email for virtual gift card
-                        if (!String.IsNullOrEmpty(gc.RecipientEmail) &&
-                            !String.IsNullOrEmpty(gc.SenderEmail))
-                        {
-                            var customerLang = _languageService.GetLanguageById(order.CustomerLanguageId);
-                            if (customerLang == null)
-                                customerLang = _languageService.GetAllLanguages().FirstOrDefault();
-                            if (customerLang == null)
-                                throw new Exception("No languages could be loaded");
-                            int queuedEmailId = _workflowMessageService.SendGiftCardNotification(gc, customerLang.Id);
-                            if (queuedEmailId > 0)
-                                isRecipientNotified = true;
-                        }
-                    }
-                    gc.IsGiftCardActivated = true;
-                    gc.IsRecipientNotified = isRecipientNotified;
-                    _giftCardService.UpdateGiftCard(gc);
-                }
-                else
-                {
-                    //deactivate
-                    gc.IsGiftCardActivated = false;
-                    _giftCardService.UpdateGiftCard(gc);
-                }
-            }
         }
 
         /// <summary>
@@ -776,14 +627,7 @@ namespace Nop.Services.Orders
             _orderService.UpdateOrder(order);
 
             //order notes, notifications
-            order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Order status has been changed to {0}", os.ToString()),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
             _orderService.UpdateOrder(order);
-
 
             if (prevOrderStatus != OrderStatus.Complete &&
                 os == OrderStatus.Complete
@@ -799,12 +643,6 @@ namespace Nop.Services.Orders
                     orderCompletedAttachmentFileName);
                 if (orderCompletedCustomerNotificationQueuedEmailId > 0)
                 {
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = string.Format("\"Order completed\" email (to customer) has been queued. Queued email identifier: {0}.", orderCompletedCustomerNotificationQueuedEmailId),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
                     _orderService.UpdateOrder(order);
                 }
             }
@@ -817,38 +655,8 @@ namespace Nop.Services.Orders
                 int orderCancelledCustomerNotificationQueuedEmailId = _workflowMessageService.SendOrderCancelledCustomerNotification(order, order.CustomerLanguageId);
                 if (orderCancelledCustomerNotificationQueuedEmailId > 0)
                 {
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = string.Format("\"Order cancelled\" email (to customer) has been queued. Queued email identifier: {0}.", orderCancelledCustomerNotificationQueuedEmailId),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
                     _orderService.UpdateOrder(order);
                 }
-            }
-
-            //reward points
-            if (_rewardPointsSettings.PointsForPurchases_Awarded == order.OrderStatus)
-            {
-                AwardRewardPoints(order);
-            }
-            if (_rewardPointsSettings.PointsForPurchases_Canceled == order.OrderStatus)
-            {
-                ReduceRewardPoints(order);
-            }
-
-            //gift cards activation
-            if (_orderSettings.GiftCards_Activated_OrderStatusId > 0 &&
-               _orderSettings.GiftCards_Activated_OrderStatusId == (int)order.OrderStatus)
-            {
-                SetActivatedValueForPurchasedGiftCards(order, true);
-            }
-
-            //gift cards deactivation
-            if (_orderSettings.GiftCards_Deactivated_OrderStatusId > 0 &&
-               _orderSettings.GiftCards_Deactivated_OrderStatusId == (int)order.OrderStatus)
-            {
-                SetActivatedValueForPurchasedGiftCards(order, false);
             }
         }
 
@@ -1071,64 +879,29 @@ namespace Nop.Services.Orders
 
                     if (!processPaymentRequest.IsRecurringPayment)
                     {
-                        if (details.IsRecurringShoppingCart)
-                        {
-                            //recurring cart
-                            var recurringPaymentType = _paymentService.GetRecurringPaymentType(processPaymentRequest.PaymentMethodSystemName);
-                            switch (recurringPaymentType)
-                            {
-                                case RecurringPaymentType.NotSupported:
-                                    throw new NopException("Recurring payments are not supported by selected payment method");
-                                case RecurringPaymentType.Manual:
-                                case RecurringPaymentType.Automatic:
-                                    processPaymentResult = _paymentService.ProcessRecurringPayment(processPaymentRequest);
-                                    break;
-                                default:
-                                    throw new NopException("Not supported recurring payment type");
-                            }
-                        }
-                        else
-                        {
-                            //standard cart
-                            processPaymentResult = _paymentService.ProcessPayment(processPaymentRequest);
-                        }
-                    }
-                    else
-                    {
-                        if (details.IsRecurringShoppingCart)
-                        {
-                            //Old credit card info
-                            processPaymentRequest.CreditCardType = details.InitialOrder.AllowStoringCreditCardNumber ? _encryptionService.DecryptText(details.InitialOrder.CardType) : "";
-                            processPaymentRequest.CreditCardName = details.InitialOrder.AllowStoringCreditCardNumber ? _encryptionService.DecryptText(details.InitialOrder.CardName) : "";
-                            processPaymentRequest.CreditCardNumber = details.InitialOrder.AllowStoringCreditCardNumber ? _encryptionService.DecryptText(details.InitialOrder.CardNumber) : "";
-                            processPaymentRequest.CreditCardCvv2 = details.InitialOrder.AllowStoringCreditCardNumber ? _encryptionService.DecryptText(details.InitialOrder.CardCvv2) : "";
-                            try
-                            {
-                                processPaymentRequest.CreditCardExpireMonth = details.InitialOrder.AllowStoringCreditCardNumber ? Convert.ToInt32(_encryptionService.DecryptText(details.InitialOrder.CardExpirationMonth)) : 0;
-                                processPaymentRequest.CreditCardExpireYear = details.InitialOrder.AllowStoringCreditCardNumber ? Convert.ToInt32(_encryptionService.DecryptText(details.InitialOrder.CardExpirationYear)) : 0;
-                            }
-                            catch {}
+                        //standard cart
+                        processPaymentResult = _paymentService.ProcessPayment(processPaymentRequest);
 
-                            var recurringPaymentType = _paymentService.GetRecurringPaymentType(processPaymentRequest.PaymentMethodSystemName);
-                            switch (recurringPaymentType)
-                            {
-                                case RecurringPaymentType.NotSupported:
-                                    throw new NopException("Recurring payments are not supported by selected payment method");
-                                case RecurringPaymentType.Manual:
-                                    processPaymentResult = _paymentService.ProcessRecurringPayment(processPaymentRequest);
-                                    break;
-                                case RecurringPaymentType.Automatic:
-                                    //payment is processed on payment gateway site
-                                    processPaymentResult = new ProcessPaymentResult();
-                                    break;
-                                default:
-                                    throw new NopException("Not supported recurring payment type");
-                            }
-                        }
-                        else
-                        {
-                            throw new NopException("No recurring products");
-                        }
+                        //if (details.IsRecurringShoppingCart)
+                        //{
+                        //    //recurring cart
+                        //    var recurringPaymentType = _paymentService.GetRecurringPaymentType(processPaymentRequest.PaymentMethodSystemName);
+                        //    switch (recurringPaymentType)
+                        //    {
+                        //        case RecurringPaymentType.NotSupported:
+                        //            throw new NopException("Recurring payments are not supported by selected payment method");
+                        //        case RecurringPaymentType.Manual:
+                        //        case RecurringPaymentType.Automatic:
+                        //            processPaymentResult = _paymentService.ProcessRecurringPayment(processPaymentRequest);
+                        //            break;
+                        //        default:
+                        //            throw new NopException("Not supported recurring payment type");
+                        //    }
+                        //}
+                        //else
+                        //{
+
+                        //}
                     }
                 }
                 else
@@ -1173,7 +946,6 @@ namespace Nop.Services.Orders
                         CheckoutAttributesXml = details.CheckoutAttributesXml,
                         CustomerCurrencyCode = details.CustomerCurrencyCode,
                         CurrencyRate = details.CustomerCurrencyRate,
-                        AffiliateId = details.AffiliateId,
                         OrderStatus = OrderStatus.Pending,
                         AllowStoringCreditCardNumber = processPaymentResult.AllowStoringCreditCardNumber,
                         CardType = processPaymentResult.AllowStoringCreditCardNumber ? _encryptionService.EncryptText(processPaymentRequest.CreditCardType) : string.Empty,
@@ -1248,45 +1020,10 @@ namespace Nop.Services.Orders
                                 Quantity = sc.Quantity,
                                 DiscountAmountInclTax = discountAmountInclTax,
                                 DiscountAmountExclTax = discountAmountExclTax,
-                                DownloadCount = 0,
-                                IsDownloadActivated = false,
-                                LicenseDownloadId = 0,
                                 ItemWeight = itemWeight,
-                                RentalStartDateUtc = sc.RentalStartDateUtc,
-                                RentalEndDateUtc = sc.RentalEndDateUtc
                             };
                             order.OrderItems.Add(orderItem);
                             _orderService.UpdateOrder(order);
-
-                            //gift cards
-                            if (sc.Product.IsGiftCard)
-                            {
-                                string giftCardRecipientName, giftCardRecipientEmail,
-                                    giftCardSenderName, giftCardSenderEmail, giftCardMessage;
-                                _productAttributeParser.GetGiftCardAttribute(sc.AttributesXml,
-                                    out giftCardRecipientName, out giftCardRecipientEmail,
-                                    out giftCardSenderName, out giftCardSenderEmail, out giftCardMessage);
-
-                                for (int i = 0; i < sc.Quantity; i++)
-                                {
-                                    var gc = new GiftCard
-                                    {
-                                        GiftCardType = sc.Product.GiftCardType,
-                                        PurchasedWithOrderItem = orderItem,
-                                        Amount = sc.Product.OverriddenGiftCardAmount.HasValue ? sc.Product.OverriddenGiftCardAmount.Value : scUnitPriceExclTax,
-                                        IsGiftCardActivated = false,
-                                        GiftCardCouponCode = _giftCardService.GenerateGiftCardCode(),
-                                        RecipientName = giftCardRecipientName,
-                                        RecipientEmail = giftCardRecipientEmail,
-                                        SenderName = giftCardSenderName,
-                                        SenderEmail = giftCardSenderEmail,
-                                        Message = giftCardMessage,
-                                        IsRecipientNotified = false,
-                                        CreatedOnUtc = DateTime.UtcNow
-                                    };
-                                    _giftCardService.InsertGiftCard(gc);
-                                }
-                            }
 
                             //inventory
                             _productService.AdjustInventory(sc.Product, -sc.Quantity, sc.AttributesXml);
@@ -1317,45 +1054,12 @@ namespace Nop.Services.Orders
                                 Quantity = orderItem.Quantity,
                                 DiscountAmountInclTax = orderItem.DiscountAmountInclTax,
                                 DiscountAmountExclTax = orderItem.DiscountAmountExclTax,
-                                DownloadCount = 0,
-                                IsDownloadActivated = false,
-                                LicenseDownloadId = 0,
                                 ItemWeight = orderItem.ItemWeight,
                                 RentalStartDateUtc = orderItem.RentalStartDateUtc,
                                 RentalEndDateUtc = orderItem.RentalEndDateUtc
                             };
                             order.OrderItems.Add(newOrderItem);
                             _orderService.UpdateOrder(order);
-
-                            //gift cards
-                            if (orderItem.Product.IsGiftCard)
-                            {
-                                string giftCardRecipientName, giftCardRecipientEmail,
-                                    giftCardSenderName, giftCardSenderEmail, giftCardMessage;
-                                _productAttributeParser.GetGiftCardAttribute(orderItem.AttributesXml,
-                                    out giftCardRecipientName, out giftCardRecipientEmail,
-                                    out giftCardSenderName, out giftCardSenderEmail, out giftCardMessage);
-
-                                for (int i = 0; i < orderItem.Quantity; i++)
-                                {
-                                    var gc = new GiftCard
-                                    {
-                                        GiftCardType = orderItem.Product.GiftCardType,
-                                        PurchasedWithOrderItem = newOrderItem,
-                                        Amount = orderItem.UnitPriceExclTax,
-                                        IsGiftCardActivated = false,
-                                        GiftCardCouponCode = _giftCardService.GenerateGiftCardCode(),
-                                        RecipientName = giftCardRecipientName,
-                                        RecipientEmail = giftCardRecipientEmail,
-                                        SenderName = giftCardSenderName,
-                                        SenderEmail = giftCardSenderEmail,
-                                        Message = giftCardMessage,
-                                        IsRecipientNotified = false,
-                                        CreatedOnUtc = DateTime.UtcNow
-                                    };
-                                    _giftCardService.InsertGiftCard(gc);
-                                }
-                            }
 
                             //inventory
                             _productService.AdjustInventory(orderItem.Product, -orderItem.Quantity, orderItem.AttributesXml);
@@ -1375,122 +1079,15 @@ namespace Nop.Services.Orders
                             _discountService.InsertDiscountUsageHistory(duh);
                         }
 
-                    //gift card usage history
-                    if (!processPaymentRequest.IsRecurringPayment)
-                        if (details.AppliedGiftCards != null)
-                            foreach (var agc in details.AppliedGiftCards)
-                            {
-                                decimal amountUsed = agc.AmountCanBeUsed;
-                                var gcuh = new GiftCardUsageHistory
-                                {
-                                    GiftCard = agc.GiftCard,
-                                    UsedWithOrder = order,
-                                    UsedValue = amountUsed,
-                                    CreatedOnUtc = DateTime.UtcNow
-                                };
-                                agc.GiftCard.GiftCardUsageHistory.Add(gcuh);
-                                _giftCardService.UpdateGiftCard(agc.GiftCard);
-                            }
-
-                    //reward points history
-                    if (details.RedeemedRewardPointsAmount > decimal.Zero)
-                    {
-                        _rewardPointService.AddRewardPointsHistoryEntry(details.Customer,
-                            -details.RedeemedRewardPoints, order.StoreId,
-                            string.Format(_localizationService.GetResource("RewardPoints.Message.RedeemedForOrder", order.CustomerLanguageId), order.Id),
-                            order, details.RedeemedRewardPointsAmount);
-                        _customerService.UpdateCustomer(details.Customer);
-                    }
-
-                    //recurring orders
-                    if (!processPaymentRequest.IsRecurringPayment && details.IsRecurringShoppingCart)
-                    {
-                        //create recurring payment (the first payment)
-                        var rp = new RecurringPayment
-                        {
-                            CycleLength = processPaymentRequest.RecurringCycleLength,
-                            CyclePeriod = processPaymentRequest.RecurringCyclePeriod,
-                            TotalCycles = processPaymentRequest.RecurringTotalCycles,
-                            StartDateUtc = DateTime.UtcNow,
-                            IsActive = true,
-                            CreatedOnUtc = DateTime.UtcNow,
-                            InitialOrder = order,
-                        };
-                        _orderService.InsertRecurringPayment(rp);
-
-
-                        var recurringPaymentType = _paymentService.GetRecurringPaymentType(processPaymentRequest.PaymentMethodSystemName);
-                        switch (recurringPaymentType)
-                        {
-                            case RecurringPaymentType.NotSupported:
-                                {
-                                    //not supported
-                                }
-                                break;
-                            case RecurringPaymentType.Manual:
-                                {
-                                    //first payment
-                                    var rph = new RecurringPaymentHistory
-                                    {
-                                        RecurringPayment = rp,
-                                        CreatedOnUtc = DateTime.UtcNow,
-                                        OrderId = order.Id,
-                                    };
-                                    rp.RecurringPaymentHistory.Add(rph);
-                                    _orderService.UpdateRecurringPayment(rp);
-                                }
-                                break;
-                            case RecurringPaymentType.Automatic:
-                                {
-                                    //will be created later (process is automated)
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
                     #endregion
 
                     #region Notifications & notes
 
                     //notes, messages
-                    if (_workContext.OriginalCustomerIfImpersonated != null)
-                    {
-                        //this order is placed by a store administrator impersonating a customer
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = string.Format("Order placed by a store owner ('{0}'. ID = {1}) impersonating the customer.",
-                                _workContext.OriginalCustomerIfImpersonated.Email, _workContext.OriginalCustomerIfImpersonated.Id),
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
-                    else
-                    {
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = "Order placed",
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
+                    _orderService.UpdateOrder(order);
 
 
                     //send email notifications
-                    int orderPlacedStoreOwnerNotificationQueuedEmailId = _workflowMessageService.SendOrderPlacedStoreOwnerNotification(order, _localizationSettings.DefaultAdminLanguageId);
-                    if (orderPlacedStoreOwnerNotificationQueuedEmailId > 0)
-                    {
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = string.Format("\"Order placed\" email (to store owner) has been queued. Queued email identifier: {0}.", orderPlacedStoreOwnerNotificationQueuedEmailId),
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
 
                     var orderPlacedAttachmentFilePath = _orderSettings.AttachPdfInvoiceToOrderPlacedEmail ?
                         _pdfService.PrintOrderToPdf(order, order.CustomerLanguageId) : null;
@@ -1498,31 +1095,11 @@ namespace Nop.Services.Orders
                         "order.pdf" : null;
                     int orderPlacedCustomerNotificationQueuedEmailId = _workflowMessageService
                         .SendOrderPlacedCustomerNotification(order, order.CustomerLanguageId, orderPlacedAttachmentFilePath, orderPlacedAttachmentFileName);
-                    if (orderPlacedCustomerNotificationQueuedEmailId > 0)
-                    {
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = string.Format("\"Order placed\" email (to customer) has been queued. Queued email identifier: {0}.", orderPlacedCustomerNotificationQueuedEmailId),
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
 
                     var vendors = GetVendorsInOrder(order);
                     foreach (var vendor in vendors)
                     {
                         int orderPlacedVendorNotificationQueuedEmailId = _workflowMessageService.SendOrderPlacedVendorNotification(order, vendor, order.CustomerLanguageId);
-                        if (orderPlacedVendorNotificationQueuedEmailId > 0)
-                        {
-                            order.OrderNotes.Add(new OrderNote
-                            {
-                                Note = string.Format("\"Order placed\" email (to vendor) has been queued. Queued email identifier: {0}.", orderPlacedVendorNotificationQueuedEmailId),
-                                DisplayToCustomer = false,
-                                CreatedOnUtc = DateTime.UtcNow
-                            });
-                            _orderService.UpdateOrder(order);
-                        }
                     }
 
                     //check order status
@@ -1530,7 +1107,7 @@ namespace Nop.Services.Orders
 
                     //reset checkout data
                     if (!processPaymentRequest.IsRecurringPayment)
-                        _customerService.ResetCheckoutData(details.Customer, processPaymentRequest.StoreId, clearCouponCodes: true, clearCheckoutAttributes: true);
+                        _customerService.ResetCheckoutData(details.Customer, processPaymentRequest.StoreId, true, true);
 
                     if (!processPaymentRequest.IsRecurringPayment)
                     {
@@ -1599,11 +1176,6 @@ namespace Nop.Services.Orders
             //they already was done when cancelling the order
             if (order.OrderStatus != OrderStatus.Cancelled)
             {
-                //return (add) back redeemded reward points
-                ReturnBackRedeemedRewardPoints(order);
-                //reduce (cancel) back reward points (previously awarded for this order)
-                ReduceRewardPoints(order);
-
                 //cancel recurring payments
                 var recurringPayments = _orderService.SearchRecurringPayments(initialOrderId: order.Id);
                 foreach (var rp in recurringPayments)
@@ -1632,15 +1204,7 @@ namespace Nop.Services.Orders
                 }
 
             }
-
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Order has been deleted",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
+            //_orderService.UpdateOrder(order);
             
             //now delete an order
             _orderService.DeleteOrder(order);
@@ -1681,11 +1245,11 @@ namespace Nop.Services.Orders
                     InitialOrderId = initialOrder.Id,
                     RecurringCycleLength = recurringPayment.CycleLength,
                     RecurringCyclePeriod = recurringPayment.CyclePeriod,
-                    RecurringTotalCycles = recurringPayment.TotalCycles,
+                    RecurringTotalCycles = recurringPayment.TotalCycles
                 };
 
                 //place a new order
-                var result = this.PlaceOrder(paymentInfo);
+                var result = PlaceOrder(paymentInfo);
                 if (result.Success)
                 {
                     if (result.PlacedOrder == null)
@@ -1695,7 +1259,7 @@ namespace Nop.Services.Orders
                     {
                         RecurringPayment = recurringPayment,
                         CreatedOnUtc = DateTime.UtcNow,
-                        OrderId = result.PlacedOrder.Id,
+                        OrderId = result.PlacedOrder.Id
                     };
                     recurringPayment.RecurringPaymentHistory.Add(rph);
                     _orderService.UpdateRecurringPayment(recurringPayment);
@@ -1745,14 +1309,6 @@ namespace Nop.Services.Orders
                     recurringPayment.IsActive = false;
                     _orderService.UpdateRecurringPayment(recurringPayment);
 
-
-                    //add a note
-                    initialOrder.OrderNotes.Add(new OrderNote
-                    {
-                        Note = "Recurring payment has been cancelled",
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
                     _orderService.UpdateOrder(initialOrder);
 
                     //notify a store owner
@@ -1765,7 +1321,7 @@ namespace Nop.Services.Orders
             {
                 if (result == null)
                     result = new CancelRecurringPaymentResult();
-                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc.ToString()));
+                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc));
             }
 
 
@@ -1777,17 +1333,8 @@ namespace Nop.Services.Orders
                 if (i != result.Errors.Count - 1)
                     error += ". ";
             }
-            if (!String.IsNullOrEmpty(error))
+            if (!string.IsNullOrEmpty(error))
             {
-                //add a note
-                initialOrder.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Unable to cancel recurring payment. {0}", error),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(initialOrder);
-
                 //log it
                 string logError = string.Format("Error cancelling recurring payment. Order #{0}. Error: {1}", initialOrder.Id, error);
                 _logger.InsertLog(LogLevel.Error, logError, logError);
@@ -1868,31 +1415,6 @@ namespace Nop.Services.Orders
                 order.ShippingStatusId = (int)ShippingStatus.Shipped;
             _orderService.UpdateOrder(order);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Shipment# {0} has been sent", shipment.Id),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-            _orderService.UpdateOrder(order);
-
-            if (notifyCustomer)
-            {
-                //notify customer
-                int queuedEmailId = _workflowMessageService.SendShipmentSentCustomerNotification(shipment, order.CustomerLanguageId);
-                if (queuedEmailId > 0)
-                {
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = string.Format("\"Shipped\" email (to customer) has been queued. Queued email identifier: {0}.", queuedEmailId),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-                }
-            }
-
             //event
             _eventPublisher.PublishShipmentSent(shipment);
 
@@ -1925,32 +1447,8 @@ namespace Nop.Services.Orders
 
             if (!order.HasItemsToAddToShipment() && !order.HasItemsToShip() && !order.HasItemsToDeliver())
                 order.ShippingStatusId = (int)ShippingStatus.Delivered;
-            _orderService.UpdateOrder(order);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = string.Format("Shipment# {0} has been delivered", shipment.Id),
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
             _orderService.UpdateOrder(order);
-
-            if (notifyCustomer)
-            {
-                //send email notification
-                int queuedEmailId = _workflowMessageService.SendShipmentDeliveredCustomerNotification(shipment, order.CustomerLanguageId);
-                if (queuedEmailId > 0)
-                {
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = string.Format("\"Delivered\" email (to customer) has been queued. Queued email identifier: {0}.", queuedEmailId),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-                }
-            }
 
             //event
             _eventPublisher.PublishShipmentDelivered(shipment);
@@ -1993,17 +1491,7 @@ namespace Nop.Services.Orders
             //Cancel order
             SetOrderStatus(order, OrderStatus.Cancelled, notifyCustomer);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Order has been cancelled",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
             _orderService.UpdateOrder(order);
-
-            //return (add) back redeemded reward points
-            ReturnBackRedeemedRewardPoints(order);
 
             //cancel recurring payments
             var recurringPayments = _orderService.SearchRecurringPayments(initialOrderId: order.Id);
@@ -2065,15 +1553,7 @@ namespace Nop.Services.Orders
                 throw new ArgumentNullException("order");
 
             order.PaymentStatusId = (int)PaymentStatus.Authorized;
-            _orderService.UpdateOrder(order);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Order has been marked as authorized",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
             _orderService.UpdateOrder(order);
 
             //check order status
@@ -2136,15 +1616,6 @@ namespace Nop.Services.Orders
                     order.PaidDateUtc = paidDate;
                     _orderService.UpdateOrder(order);
 
-                    //add a note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = "Order has been captured",
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-
                     CheckOrderStatus(order);
      
                     if (order.PaymentStatus == PaymentStatus.Paid)
@@ -2157,7 +1628,7 @@ namespace Nop.Services.Orders
             {
                 if (result == null)
                     result = new CapturePaymentResult();
-                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc.ToString()));
+                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc));
             }
 
 
@@ -2171,15 +1642,6 @@ namespace Nop.Services.Orders
             }
             if (!String.IsNullOrEmpty(error))
             {
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Unable to capture order. {0}", error),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
                 //log it
                 string logError = string.Format("Error capturing order #{0}. Error: {1}", order.Id, error);
                 _logger.InsertLog(LogLevel.Error, logError, logError);
@@ -2222,15 +1684,6 @@ namespace Nop.Services.Orders
 
             order.PaymentStatusId = (int)PaymentStatus.Paid;
             order.PaidDateUtc = DateTime.UtcNow;
-            _orderService.UpdateOrder(order);
-
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Order has been marked as paid",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
             _orderService.UpdateOrder(order);
 
             CheckOrderStatus(order);
@@ -2298,41 +1751,8 @@ namespace Nop.Services.Orders
                     order.PaymentStatus = result.NewPaymentStatus;
                     _orderService.UpdateOrder(order);
 
-                    //add a note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = string.Format("Order has been refunded. Amount = {0}", request.AmountToRefund),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-
                     //check order status
                     CheckOrderStatus(order);
-
-                    //notifications
-                    var orderRefundedStoreOwnerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedStoreOwnerNotification(order, request.AmountToRefund, _localizationSettings.DefaultAdminLanguageId);
-                    if (orderRefundedStoreOwnerNotificationQueuedEmailId > 0)
-                    {
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = string.Format("\"Order refunded\" email (to store owner) has been queued. Queued email identifier: {0}.", orderRefundedStoreOwnerNotificationQueuedEmailId),
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
-                    var orderRefundedCustomerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedCustomerNotification(order, request.AmountToRefund, order.CustomerLanguageId);
-                    if (orderRefundedCustomerNotificationQueuedEmailId > 0)
-                    {
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = string.Format("\"Order refunded\" email (to customer) has been queued. Queued email identifier: {0}.", orderRefundedCustomerNotificationQueuedEmailId),
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
 
                     //raise event       
                     _eventPublisher.Publish(new OrderRefundedEvent(order, request.AmountToRefund));
@@ -2343,7 +1763,7 @@ namespace Nop.Services.Orders
             {
                 if (result == null)
                     result = new RefundPaymentResult();
-                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc.ToString()));
+                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc));
             }
 
             //process errors
@@ -2356,15 +1776,6 @@ namespace Nop.Services.Orders
             }
             if (!String.IsNullOrEmpty(error))
             {
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Unable to refund order. {0}", error),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
                 //log it
                 string logError = string.Format("Error refunding order #{0}. Error: {1}", order.Id, error);
                 _logger.InsertLog(LogLevel.Error, logError, logError);
@@ -2418,41 +1829,8 @@ namespace Nop.Services.Orders
             order.PaymentStatus = PaymentStatus.Refunded;
             _orderService.UpdateOrder(order);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = string.Format("Order has been marked as refunded. Amount = {0}", amountToRefund),
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
-
             //check order status
             CheckOrderStatus(order);
-
-            //notifications
-            var orderRefundedStoreOwnerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedStoreOwnerNotification(order, amountToRefund, _localizationSettings.DefaultAdminLanguageId);
-            if (orderRefundedStoreOwnerNotificationQueuedEmailId > 0)
-            {
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("\"Order refunded\" email (to store owner) has been queued. Queued email identifier: {0}.", orderRefundedStoreOwnerNotificationQueuedEmailId),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-            }
-            var orderRefundedCustomerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedCustomerNotification(order, amountToRefund, order.CustomerLanguageId);
-            if (orderRefundedCustomerNotificationQueuedEmailId > 0)
-            {
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("\"Order refunded\" email (to customer) has been queued. Queued email identifier: {0}.", orderRefundedCustomerNotificationQueuedEmailId),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-            }
 
             //raise event       
             _eventPublisher.Publish(new OrderRefundedEvent(order, amountToRefund));
@@ -2525,42 +1903,8 @@ namespace Nop.Services.Orders
                     order.PaymentStatus = result.NewPaymentStatus;
                     _orderService.UpdateOrder(order);
 
-
-                    //add a note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = string.Format("Order has been partially refunded. Amount = {0}", amountToRefund),
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-
                     //check order status
                     CheckOrderStatus(order);
-
-                    //notifications
-                    var orderRefundedStoreOwnerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedStoreOwnerNotification(order, amountToRefund, _localizationSettings.DefaultAdminLanguageId);
-                    if (orderRefundedStoreOwnerNotificationQueuedEmailId > 0)
-                    {
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = string.Format("\"Order refunded\" email (to store owner) has been queued. Queued email identifier: {0}.", orderRefundedStoreOwnerNotificationQueuedEmailId),
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
-                    var orderRefundedCustomerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedCustomerNotification(order, amountToRefund, order.CustomerLanguageId);
-                    if (orderRefundedCustomerNotificationQueuedEmailId > 0)
-                    {
-                        order.OrderNotes.Add(new OrderNote
-                        {
-                            Note = string.Format("\"Order refunded\" email (to customer) has been queued. Queued email identifier: {0}.", orderRefundedCustomerNotificationQueuedEmailId),
-                            DisplayToCustomer = false,
-                            CreatedOnUtc = DateTime.UtcNow
-                        });
-                        _orderService.UpdateOrder(order);
-                    }
 
                     //raise event       
                     _eventPublisher.Publish(new OrderRefundedEvent(order, amountToRefund));
@@ -2570,7 +1914,7 @@ namespace Nop.Services.Orders
             {
                 if (result == null)
                     result = new RefundPaymentResult();
-                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc.ToString()));
+                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc));
             }
 
             //process errors
@@ -2583,15 +1927,6 @@ namespace Nop.Services.Orders
             }
             if (!String.IsNullOrEmpty(error))
             {
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Unable to partially refund order. {0}", error),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
                 //log it
                 string logError = string.Format("Error refunding order #{0}. Error: {1}", order.Id, error);
                 _logger.InsertLog(LogLevel.Error, logError, logError);
@@ -2653,41 +1988,9 @@ namespace Nop.Services.Orders
             order.PaymentStatus = PaymentStatus.PartiallyRefunded;
             _orderService.UpdateOrder(order);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = string.Format("Order has been marked as partially refunded. Amount = {0}", amountToRefund),
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
-
             //check order status
             CheckOrderStatus(order);
 
-            //notifications
-            var orderRefundedStoreOwnerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedStoreOwnerNotification(order, amountToRefund, _localizationSettings.DefaultAdminLanguageId);
-            if (orderRefundedStoreOwnerNotificationQueuedEmailId > 0)
-            {
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("\"Order refunded\" email (to store owner) has been queued. Queued email identifier: {0}.", orderRefundedStoreOwnerNotificationQueuedEmailId),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-            }
-            var orderRefundedCustomerNotificationQueuedEmailId = _workflowMessageService.SendOrderRefundedCustomerNotification(order, amountToRefund, order.CustomerLanguageId);
-            if (orderRefundedCustomerNotificationQueuedEmailId > 0)
-            {
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("\"Order refunded\" email (to customer) has been queued. Queued email identifier: {0}.", orderRefundedCustomerNotificationQueuedEmailId),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-            }
             //raise event       
             _eventPublisher.Publish(new OrderRefundedEvent(order, amountToRefund));
         }
@@ -2744,15 +2047,6 @@ namespace Nop.Services.Orders
                     order.PaymentStatus = result.NewPaymentStatus;
                     _orderService.UpdateOrder(order);
 
-                    //add a note
-                    order.OrderNotes.Add(new OrderNote
-                    {
-                        Note = "Order has been voided",
-                        DisplayToCustomer = false,
-                        CreatedOnUtc = DateTime.UtcNow
-                    });
-                    _orderService.UpdateOrder(order);
-
                     //check order status
                     CheckOrderStatus(order);
                 }
@@ -2761,7 +2055,7 @@ namespace Nop.Services.Orders
             {
                 if (result == null)
                     result = new VoidPaymentResult();
-                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc.ToString()));
+                result.AddError(string.Format("Error: {0}. Full exception: {1}", exc.Message, exc));
             }
 
             //process errors
@@ -2774,15 +2068,6 @@ namespace Nop.Services.Orders
             }
             if (!String.IsNullOrEmpty(error))
             {
-                //add a note
-                order.OrderNotes.Add(new OrderNote
-                {
-                    Note = string.Format("Unable to voiding order. {0}", error),
-                    DisplayToCustomer = false,
-                    CreatedOnUtc = DateTime.UtcNow
-                });
-                _orderService.UpdateOrder(order);
-
                 //log it
                 string logError = string.Format("Error voiding order #{0}. Error: {1}", order.Id, error);
                 _logger.InsertLog(LogLevel.Error, logError, logError);
@@ -2828,15 +2113,6 @@ namespace Nop.Services.Orders
             order.PaymentStatusId = (int)PaymentStatus.Voided;
             _orderService.UpdateOrder(order);
 
-            //add a note
-            order.OrderNotes.Add(new OrderNote
-            {
-                Note = "Order has been marked as voided",
-                DisplayToCustomer = false,
-                CreatedOnUtc = DateTime.UtcNow
-            });
-            _orderService.UpdateOrder(order);
-
             //check orer status
             CheckOrderStatus(order);
         }
@@ -2858,7 +2134,6 @@ namespace Nop.Services.Orders
                 _shoppingCartService.AddToCart(order.Customer, orderItem.Product,
                     ShoppingCartType.ShoppingCart, order.StoreId, 
                     orderItem.AttributesXml, orderItem.UnitPriceExclTax,
-                    orderItem.RentalStartDateUtc, orderItem.RentalEndDateUtc,
                     orderItem.Quantity, false);
             }
 

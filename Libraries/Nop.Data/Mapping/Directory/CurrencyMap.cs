@@ -2,7 +2,7 @@ using Nop.Core.Domain.Directory;
 
 namespace Nop.Data.Mapping.Directory
 {
-    public partial class CurrencyMap : NopEntityTypeConfiguration<Currency>
+    public class CurrencyMap : GoqEntityTypeConfiguration<Currency>
     {
         public CurrencyMap()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -40,10 +41,11 @@ using Nop.Web.Framework.Security.Captcha;
 using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Media;
 using Nop.Web.Models.ShoppingCart;
+using HtmlHelper = Nop.Core.Html.HtmlHelper;
 
 namespace Nop.Web.Controllers
 {
-    public partial class ShoppingCartController : BasePublicController
+    public class ShoppingCartController : BasePublicController
     {
 		#region Fields
 
@@ -65,7 +67,6 @@ namespace Nop.Web.Controllers
         private readonly IOrderProcessingService _orderProcessingService;
         private readonly IDiscountService _discountService;
         private readonly ICustomerService _customerService;
-        private readonly IGiftCardService _giftCardService;
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
         private readonly IShippingService _shippingService;
@@ -74,12 +75,10 @@ namespace Nop.Web.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IWorkflowMessageService _workflowMessageService;
         private readonly IPermissionService _permissionService;
-        private readonly IDownloadService _downloadService;
         private readonly ICacheManager _cacheManager;
         private readonly IWebHelper _webHelper;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly IGenericAttributeService _genericAttributeService;
-        private readonly IAddressAttributeFormatter _addressAttributeFormatter;
         private readonly HttpContextBase _httpContext;
 
         private readonly MediaSettings _mediaSettings;
@@ -90,7 +89,6 @@ namespace Nop.Web.Controllers
         private readonly TaxSettings _taxSettings;
         private readonly CaptchaSettings _captchaSettings;
         private readonly AddressSettings _addressSettings;
-        private readonly RewardPointsSettings _rewardPointsSettings;
 
         #endregion
 
@@ -113,7 +111,6 @@ namespace Nop.Web.Controllers
             IOrderProcessingService orderProcessingService,
             IDiscountService discountService,
             ICustomerService customerService, 
-            IGiftCardService giftCardService,
             ICountryService countryService,
             IStateProvinceService stateProvinceService,
             IShippingService shippingService, 
@@ -122,12 +119,10 @@ namespace Nop.Web.Controllers
             IPaymentService paymentService,
             IWorkflowMessageService workflowMessageService,
             IPermissionService permissionService, 
-            IDownloadService downloadService,
             ICacheManager cacheManager,
             IWebHelper webHelper, 
             ICustomerActivityService customerActivityService,
             IGenericAttributeService genericAttributeService,
-            IAddressAttributeFormatter addressAttributeFormatter,
             HttpContextBase httpContext,
             MediaSettings mediaSettings,
             ShoppingCartSettings shoppingCartSettings,
@@ -136,53 +131,48 @@ namespace Nop.Web.Controllers
             ShippingSettings shippingSettings, 
             TaxSettings taxSettings,
             CaptchaSettings captchaSettings, 
-            AddressSettings addressSettings,
-            RewardPointsSettings rewardPointsSettings)
+            AddressSettings addressSettings)
         {
-            this._productService = productService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._shoppingCartService = shoppingCartService;
-            this._pictureService = pictureService;
-            this._localizationService = localizationService;
-            this._productAttributeService = productAttributeService;
-            this._productAttributeFormatter = productAttributeFormatter;
-            this._productAttributeParser = productAttributeParser;
-            this._taxService = taxService;
-            this._currencyService = currencyService;
-            this._priceCalculationService = priceCalculationService;
-            this._priceFormatter = priceFormatter;
-            this._checkoutAttributeParser = checkoutAttributeParser;
-            this._checkoutAttributeFormatter = checkoutAttributeFormatter;
-            this._orderProcessingService = orderProcessingService;
-            this._discountService = discountService;
-            this._customerService = customerService;
-            this._giftCardService = giftCardService;
-            this._countryService = countryService;
-            this._stateProvinceService = stateProvinceService;
-            this._shippingService = shippingService;
-            this._orderTotalCalculationService = orderTotalCalculationService;
-            this._checkoutAttributeService = checkoutAttributeService;
-            this._paymentService = paymentService;
-            this._workflowMessageService = workflowMessageService;
-            this._permissionService = permissionService;
-            this._downloadService = downloadService;
-            this._cacheManager = cacheManager;
-            this._webHelper = webHelper;
-            this._customerActivityService = customerActivityService;
-            this._genericAttributeService = genericAttributeService;
-            this._addressAttributeFormatter = addressAttributeFormatter;
-            this._httpContext = httpContext;
+            _productService = productService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _shoppingCartService = shoppingCartService;
+            _pictureService = pictureService;
+            _localizationService = localizationService;
+            _productAttributeService = productAttributeService;
+            _productAttributeFormatter = productAttributeFormatter;
+            _productAttributeParser = productAttributeParser;
+            _taxService = taxService;
+            _currencyService = currencyService;
+            _priceCalculationService = priceCalculationService;
+            _priceFormatter = priceFormatter;
+            _checkoutAttributeParser = checkoutAttributeParser;
+            _checkoutAttributeFormatter = checkoutAttributeFormatter;
+            _orderProcessingService = orderProcessingService;
+            _discountService = discountService;
+            _customerService = customerService;
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
+            _shippingService = shippingService;
+            _orderTotalCalculationService = orderTotalCalculationService;
+            _checkoutAttributeService = checkoutAttributeService;
+            _paymentService = paymentService;
+            _workflowMessageService = workflowMessageService;
+            _permissionService = permissionService;
+            _cacheManager = cacheManager;
+            _webHelper = webHelper;
+            _customerActivityService = customerActivityService;
+            _genericAttributeService = genericAttributeService;
+            _httpContext = httpContext;
 
-            this._mediaSettings = mediaSettings;
-            this._shoppingCartSettings = shoppingCartSettings;
-            this._catalogSettings = catalogSettings;
-            this._orderSettings = orderSettings;
-            this._shippingSettings = shippingSettings;
-            this._taxSettings = taxSettings;
-            this._captchaSettings = captchaSettings;
-            this._addressSettings = addressSettings;
-            this._rewardPointsSettings = rewardPointsSettings;
+            _mediaSettings = mediaSettings;
+            _shoppingCartSettings = shoppingCartSettings;
+            _catalogSettings = catalogSettings;
+            _orderSettings = orderSettings;
+            _shippingSettings = shippingSettings;
+            _taxSettings = taxSettings;
+            _captchaSettings = captchaSettings;
+            _addressSettings = addressSettings;
         }
 
         #endregion
@@ -205,7 +195,7 @@ namespace Nop.Web.Controllers
                 {
                     ImageUrl = _pictureService.GetPictureUrl(sciPicture, pictureSize, showDefaultPicture),
                     Title = string.Format(_localizationService.GetResource("Media.Product.ImageLinkTitleFormat"), productName),
-                    AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), productName),
+                    AlternateText = string.Format(_localizationService.GetResource("Media.Product.ImageAlternateTextFormat"), productName)
                 };
             });
             return model;
@@ -306,7 +296,7 @@ namespace Nop.Web.Controllers
                             Id = attributeValue.Id,
                             Name = attributeValue.GetLocalized(x => x.Name),
                             ColorSquaresRgb = attributeValue.ColorSquaresRgb,
-                            IsPreSelected = attributeValue.IsPreSelected,
+                            IsPreSelected = attributeValue.IsPreSelected
                         };
                         attributeModel.Values.Add(attributeValueModel);
 
@@ -392,9 +382,6 @@ namespace Nop.Web.Controllers
                                 var downloadGuidStr = _checkoutAttributeParser.ParseValues(selectedCheckoutAttributes, attribute.Id).FirstOrDefault();
                                 Guid downloadGuid;
                                 Guid.TryParse(downloadGuidStr, out downloadGuid);
-                                var download = _downloadService.GetDownloadByGuid(downloadGuid);
-                                if (download != null)
-                                    attributeModel.DefaultValue = download.DownloadGuid.ToString();
                             }
                         }
                         break;
@@ -457,7 +444,7 @@ namespace Nop.Web.Controllers
                     ProductName = sci.Product.GetLocalized(x => x.Name),
                     ProductSeName = sci.Product.GetSeName(),
                     Quantity = sci.Quantity,
-                    AttributeInfo = _productAttributeFormatter.FormatAttributes(sci.Product, sci.AttributesXml),
+                    AttributeInfo = _productAttributeFormatter.FormatAttributes(sci.Product, sci.AttributesXml)
                 };
 
                 //allow editing?
@@ -467,7 +454,7 @@ namespace Nop.Web.Controllers
                 //4. visible individually?
                 cartItemModel.AllowItemEditing = _shoppingCartSettings.AllowCartItemEditing && 
                     sci.Product.ProductType == ProductType.SimpleProduct &&
-                    (!String.IsNullOrEmpty(cartItemModel.AttributeInfo) || sci.Product.IsGiftCard) &&
+                    (!string.IsNullOrEmpty(cartItemModel.AttributeInfo)) &&
                     sci.Product.VisibleIndividually;
 
                 //allowed quantities
@@ -482,19 +469,6 @@ namespace Nop.Web.Controllers
                     });
                 }
                 
-                //recurring info
-                if (sci.Product.IsRecurring)
-                    cartItemModel.RecurringInfo = string.Format(_localizationService.GetResource("ShoppingCart.RecurringPeriod"), sci.Product.RecurringCycleLength, sci.Product.RecurringCyclePeriod.GetLocalizedEnum(_localizationService, _workContext));
-
-                //rental info
-                if (sci.Product.IsRental)
-                {
-                    var rentalStartDate = sci.RentalStartDateUtc.HasValue ? sci.Product.FormatRentalDate(sci.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = sci.RentalEndDateUtc.HasValue ? sci.Product.FormatRentalDate(sci.RentalEndDateUtc.Value) : "";
-                    cartItemModel.RentalInfo = string.Format(_localizationService.GetResource("ShoppingCart.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                }
-
                 //unit prices
                 if (sci.Product.CallForPrice)
                 {
@@ -549,8 +523,6 @@ namespace Nop.Web.Controllers
                     sci.StoreId,
                     sci.AttributesXml,
                     sci.CustomerEnteredPrice,
-                    sci.RentalStartDateUtc,
-                    sci.RentalEndDateUtc,
                     sci.Quantity,
                     false);
                 foreach (var warning in itemWarnings)
@@ -570,9 +542,6 @@ namespace Nop.Web.Controllers
                 .ToList();
             foreach (var pm in paymentMethods)
             {
-                if (cart.IsRecurring() && pm.RecurringPaymentType == RecurringPaymentType.NotSupported)
-                    continue;
-
                 string actionName;
                 string controllerName;
                 RouteValueDictionary routeValues;
@@ -594,11 +563,7 @@ namespace Nop.Web.Controllers
                 //billing info
                 var billingAddress = _workContext.CurrentCustomer.BillingAddress;
                 if (billingAddress != null)
-                    model.OrderReviewData.BillingAddress.PrepareModel(
-                        address: billingAddress, 
-                        excludeProperties: false,
-                        addressSettings: _addressSettings,
-                        addressAttributeFormatter: _addressAttributeFormatter);
+                    model.OrderReviewData.BillingAddress.PrepareModel(billingAddress, false, _addressSettings);
                
                 //shipping info
                 if (cart.RequiresShipping())
@@ -615,11 +580,7 @@ namespace Nop.Web.Controllers
                         var shippingAddress = _workContext.CurrentCustomer.ShippingAddress;
                         if (shippingAddress != null)
                         {
-                            model.OrderReviewData.ShippingAddress.PrepareModel(
-                                address: shippingAddress, 
-                                excludeProperties: false,
-                                addressSettings: _addressSettings,
-                                addressAttributeFormatter: _addressAttributeFormatter);
+                            model.OrderReviewData.ShippingAddress.PrepareModel(shippingAddress, false, _addressSettings);
                         }
                     }
                     
@@ -690,7 +651,7 @@ namespace Nop.Web.Controllers
                     ProductName = sci.Product.GetLocalized(x => x.Name),
                     ProductSeName = sci.Product.GetSeName(),
                     Quantity = sci.Quantity,
-                    AttributeInfo = _productAttributeFormatter.FormatAttributes(sci.Product, sci.AttributesXml),
+                    AttributeInfo = _productAttributeFormatter.FormatAttributes(sci.Product, sci.AttributesXml)
                 };
 
                 //allowed quantities
@@ -705,20 +666,6 @@ namespace Nop.Web.Controllers
                     });
                 }
                 
-
-                //recurring info
-                if (sci.Product.IsRecurring)
-                    cartItemModel.RecurringInfo = string.Format(_localizationService.GetResource("ShoppingCart.RecurringPeriod"), sci.Product.RecurringCycleLength, sci.Product.RecurringCyclePeriod.GetLocalizedEnum(_localizationService, _workContext));
-
-                //rental info
-                if (sci.Product.IsRental)
-                {
-                    var rentalStartDate = sci.RentalStartDateUtc.HasValue ? sci.Product.FormatRentalDate(sci.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = sci.RentalEndDateUtc.HasValue ? sci.Product.FormatRentalDate(sci.RentalEndDateUtc.Value) : "";
-                    cartItemModel.RentalInfo = string.Format(_localizationService.GetResource("ShoppingCart.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                }
-
                 //unit prices
                 if (sci.Product.CallForPrice)
                 {
@@ -773,8 +720,6 @@ namespace Nop.Web.Controllers
                     sci.StoreId,
                     sci.AttributesXml,
                     sci.CustomerEnteredPrice,
-                    sci.RentalStartDateUtc,
-                    sci.RentalEndDateUtc,
                     sci.Quantity,
                     false);
                 foreach (var warning in itemWarnings)
@@ -795,7 +740,7 @@ namespace Nop.Web.Controllers
                 //let's always display it
                 DisplayShoppingCartButton = true,
                 CurrentCustomerIsGuest = _workContext.CurrentCustomer.IsGuest(),
-                AnonymousCheckoutAllowed = _orderSettings.AnonymousCheckoutAllowed,
+                AnonymousCheckoutAllowed = _orderSettings.AnonymousCheckoutAllowed
             };
 
 
@@ -975,7 +920,7 @@ namespace Nop.Web.Controllers
                             model.TaxRates.Add(new OrderTotalsModel.TaxRate
                             {
                                 Rate = _priceFormatter.FormatTaxRate(tr.Key),
-                                Value = _priceFormatter.FormatPrice(_currencyService.ConvertFromPrimaryStoreCurrency(tr.Value, _workContext.WorkingCurrency), true, false),
+                                Value = _priceFormatter.FormatPrice(_currencyService.ConvertFromPrimaryStoreCurrency(tr.Value, _workContext.WorkingCurrency), true, false)
                             });
                         }
                     }
@@ -986,12 +931,10 @@ namespace Nop.Web.Controllers
                 //total
                 decimal orderTotalDiscountAmountBase;
                 Discount orderTotalAppliedDiscount;
-                List<AppliedGiftCard> appliedGiftCards;
                 int redeemedRewardPoints;
-                decimal redeemedRewardPointsAmount;
                 decimal? shoppingCartTotalBase = _orderTotalCalculationService.GetShoppingCartTotal(cart,
-                    out orderTotalDiscountAmountBase, out orderTotalAppliedDiscount,
-                    out appliedGiftCards, out redeemedRewardPoints, out redeemedRewardPointsAmount);
+                    out orderTotalDiscountAmountBase, out orderTotalAppliedDiscount
+                 );
                 if (shoppingCartTotalBase.HasValue)
                 {
                     decimal shoppingCartTotal = _currencyService.ConvertFromPrimaryStoreCurrency(shoppingCartTotalBase.Value, _workContext.WorkingCurrency);
@@ -1009,43 +952,6 @@ namespace Nop.Web.Controllers
                         model.IsEditable;
                 }
 
-                //gift cards
-                if (appliedGiftCards != null && appliedGiftCards.Count > 0)
-                {
-                    foreach (var appliedGiftCard in appliedGiftCards)
-                    {
-                        var gcModel = new OrderTotalsModel.GiftCard
-                        {
-                            Id = appliedGiftCard.GiftCard.Id,
-                            CouponCode = appliedGiftCard.GiftCard.GiftCardCouponCode,
-                        };
-                        decimal amountCanBeUsed = _currencyService.ConvertFromPrimaryStoreCurrency(appliedGiftCard.AmountCanBeUsed, _workContext.WorkingCurrency);
-                        gcModel.Amount = _priceFormatter.FormatPrice(-amountCanBeUsed, true, false);
-
-                        decimal remainingAmountBase = appliedGiftCard.GiftCard.GetGiftCardRemainingAmount() - appliedGiftCard.AmountCanBeUsed;
-                        decimal remainingAmount = _currencyService.ConvertFromPrimaryStoreCurrency(remainingAmountBase, _workContext.WorkingCurrency);
-                        gcModel.Remaining = _priceFormatter.FormatPrice(remainingAmount, true, false);
-
-                        model.GiftCards.Add(gcModel);
-                    }
-                }
-
-                //reward points to be spent (redeemed)
-                if (redeemedRewardPointsAmount > decimal.Zero)
-                {
-                    decimal redeemedRewardPointsAmountInCustomerCurrency = _currencyService.ConvertFromPrimaryStoreCurrency(redeemedRewardPointsAmount, _workContext.WorkingCurrency);
-                    model.RedeemedRewardPoints = redeemedRewardPoints;
-                    model.RedeemedRewardPointsAmount = _priceFormatter.FormatPrice(-redeemedRewardPointsAmountInCustomerCurrency, true, false);
-                }
-
-                //reward points to be earned
-                if (_rewardPointsSettings.Enabled &&
-                    _rewardPointsSettings.DisplayHowMuchWillBeEarned &&
-                    shoppingCartTotalBase.HasValue)
-                {
-                    model.WillEarnRewardPoints = _orderTotalCalculationService
-                        .CalculateRewardPoints(_workContext.CurrentCustomer, shoppingCartTotalBase.Value);
-                }
 
             }
 
@@ -1145,12 +1051,6 @@ namespace Nop.Web.Controllers
                         {
                             Guid downloadGuid;
                             Guid.TryParse(form[controlId], out downloadGuid);
-                            var download = _downloadService.GetDownloadByGuid(downloadGuid);
-                            if (download != null)
-                            {
-                                attributesXml = _checkoutAttributeParser.AddCheckoutAttribute(attributesXml,
-                                           attribute, download.DownloadGuid.ToString());
-                            }
                         }
                         break;
                     default:
@@ -1258,12 +1158,7 @@ namespace Nop.Web.Controllers
                         {
                             Guid downloadGuid;
                             Guid.TryParse(form[controlId], out downloadGuid);
-                            var download = _downloadService.GetDownloadByGuid(downloadGuid);
-                            if (download != null)
-                            {
-                                attributesXml = _productAttributeParser.AddProductAttribute(attributesXml,
-                                        attribute, download.DownloadGuid.ToString());
-                            }
+                          
                         }
                         break;
                     default:
@@ -1278,50 +1173,6 @@ namespace Nop.Web.Controllers
                 {
                     attributesXml = _productAttributeParser.RemoveProductAttribute(attributesXml, attribute);
                 }
-            }
-
-            #endregion
-
-            #region Gift cards
-
-            if (product.IsGiftCard)
-            {
-                string recipientName = "";
-                string recipientEmail = "";
-                string senderName = "";
-                string senderEmail = "";
-                string giftCardMessage = "";
-                foreach (string formKey in form.AllKeys)
-                {
-                    if (formKey.Equals(string.Format("giftcard_{0}.RecipientName", product.Id), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        recipientName = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals(string.Format("giftcard_{0}.RecipientEmail", product.Id), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        recipientEmail = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals(string.Format("giftcard_{0}.SenderName", product.Id), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        senderName = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals(string.Format("giftcard_{0}.SenderEmail", product.Id), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        senderEmail = form[formKey];
-                        continue;
-                    }
-                    if (formKey.Equals(string.Format("giftcard_{0}.Message", product.Id), StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        giftCardMessage = form[formKey];
-                        continue;
-                    }
-                }
-
-                attributesXml = _productAttributeParser.AddGiftCardAttribute(attributesXml,
-                    recipientName, recipientEmail, senderName, senderEmail, giftCardMessage);
             }
 
             #endregion
@@ -1385,7 +1236,7 @@ namespace Nop.Web.Controllers
             {
                 return Json(new
                 {
-                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
+                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() })
                 });
             }
 
@@ -1396,7 +1247,7 @@ namespace Nop.Web.Controllers
                 //it can confuse customers. That's why we redirect customers to the product details page
                 return Json(new
                 {
-                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
+                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() })
                 });
             }
 
@@ -1405,16 +1256,7 @@ namespace Nop.Web.Controllers
                 //cannot be added to the cart (requires a customer to enter price)
                 return Json(new
                 {
-                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
-                });
-            }
-
-            if (product.IsRental)
-            {
-                //rental products require start/end dates to be entered
-                return Json(new
-                {
-                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
+                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() })
                 });
             }
 
@@ -1424,7 +1266,7 @@ namespace Nop.Web.Controllers
                 //cannot be added to the cart (requires a customer to select a quantity from dropdownlist)
                 return Json(new
                 {
-                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
+                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() })
                 });
             }
 
@@ -1433,7 +1275,7 @@ namespace Nop.Web.Controllers
                 //product has some attributes. let a customer see them
                 return Json(new
                 {
-                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
+                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() })
                 });
             }
 
@@ -1449,7 +1291,7 @@ namespace Nop.Web.Controllers
             var addToCartWarnings = _shoppingCartService
                 .GetShoppingCartItemWarnings(_workContext.CurrentCustomer, cartType,
                 product, _storeContext.CurrentStore.Id, string.Empty, 
-                decimal.Zero, null, null, quantityToValidate, false, true, false, false, false);
+                decimal.Zero, quantityToValidate, false, true, false, false);
             if (addToCartWarnings.Count > 0)
             {
                 //cannot be added to the cart
@@ -1462,10 +1304,7 @@ namespace Nop.Web.Controllers
             }
 
             //now let's try adding product to the cart (now including product attribute validation, etc)
-            addToCartWarnings = _shoppingCartService.AddToCart(customer: _workContext.CurrentCustomer,
-                product: product,
-                shoppingCartType: cartType,
-                storeId: _storeContext.CurrentStore.Id,
+            addToCartWarnings = _shoppingCartService.AddToCart(_workContext.CurrentCustomer, product, cartType, _storeContext.CurrentStore.Id,
                 quantity: quantity);
             if (addToCartWarnings.Count > 0)
             {
@@ -1473,7 +1312,7 @@ namespace Nop.Web.Controllers
                 //but we do not display attribute and gift card warnings here. let's do it on the product details page
                 return Json(new
                 {
-                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() }),
+                    redirect = Url.RouteUrl("Product", new { SeName = product.GetSeName() })
                 });
             }
 
@@ -1490,7 +1329,7 @@ namespace Nop.Web.Controllers
                             //redirect to the wishlist page
                             return Json(new
                             {
-                                redirect = Url.RouteUrl("Wishlist"),
+                                redirect = Url.RouteUrl("Wishlist")
                             });
                         }
                         
@@ -1504,8 +1343,7 @@ namespace Nop.Web.Controllers
                         return Json(new
                         {
                             success = true,
-                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheWishlist.Link"), Url.RouteUrl("Wishlist")),
-                            updatetopwishlistsectionhtml = updatetopwishlistsectionhtml,
+                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheWishlist.Link"), Url.RouteUrl("Wishlist")), updatetopwishlistsectionhtml
                         });
                     }
                 case ShoppingCartType.ShoppingCart:
@@ -1519,7 +1357,7 @@ namespace Nop.Web.Controllers
                             //redirect to the shopping cart page
                             return Json(new
                             {
-                                redirect = Url.RouteUrl("ShoppingCart"),
+                                redirect = Url.RouteUrl("ShoppingCart")
                             });
                         }
                         
@@ -1532,15 +1370,13 @@ namespace Nop.Web.Controllers
                         .GetTotalProducts());
                         
                         var updateflyoutcartsectionhtml = _shoppingCartSettings.MiniShoppingCartEnabled
-                            ? this.RenderPartialViewToString("FlyoutShoppingCart", PrepareMiniShoppingCartModel())
+                            ? RenderPartialViewToString("FlyoutShoppingCart", PrepareMiniShoppingCartModel())
                             : "";
 
                         return Json(new
                         {
                             success = true,
-                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheCart.Link"), Url.RouteUrl("ShoppingCart")),
-                            updatetopcartsectionhtml = updatetopcartsectionhtml,
-                            updateflyoutcartsectionhtml = updateflyoutcartsectionhtml
+                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheCart.Link"), Url.RouteUrl("ShoppingCart")), updatetopcartsectionhtml, updateflyoutcartsectionhtml
                         });
                     }
             }
@@ -1557,7 +1393,7 @@ namespace Nop.Web.Controllers
             {
                 return Json(new
                 {
-                    redirect = Url.RouteUrl("HomePage"),
+                    redirect = Url.RouteUrl("HomePage")
                 });
             }
 
@@ -1643,10 +1479,7 @@ namespace Nop.Web.Controllers
             //rental attributes
             DateTime? rentalStartDate = null;
             DateTime? rentalEndDate = null;
-            if (product.IsRental)
-            {
-                ParseRentalDates(product, form, out rentalStartDate, out rentalEndDate);
-            }
+           
 
             //save item
             var addToCartWarnings = new List<string>();
@@ -1657,7 +1490,7 @@ namespace Nop.Web.Controllers
                 addToCartWarnings.AddRange(_shoppingCartService.AddToCart(_workContext.CurrentCustomer,
                     product, cartType, _storeContext.CurrentStore.Id,
                     attributes, customerEnteredPriceConverted,
-                    rentalStartDate, rentalEndDate, quantity, true));
+                   quantity, true));
             }
             else
             {
@@ -1666,8 +1499,8 @@ namespace Nop.Web.Controllers
                     .LimitPerStore(_storeContext.CurrentStore.Id)
                     .ToList();
                 var otherCartItemWithSameParameters = _shoppingCartService.FindShoppingCartItemInTheCart(
-                    cart, cartType, product, attributes, customerEnteredPriceConverted,
-                    rentalStartDate, rentalEndDate);
+                    cart, cartType, product, attributes, customerEnteredPriceConverted
+                   );
                 if (otherCartItemWithSameParameters != null &&
                     otherCartItemWithSameParameters.Id == updatecartitem.Id)
                 {
@@ -1677,7 +1510,7 @@ namespace Nop.Web.Controllers
                 //update existing item
                 addToCartWarnings.AddRange(_shoppingCartService.UpdateShoppingCartItem(_workContext.CurrentCustomer,
                     updatecartitem.Id, attributes, customerEnteredPriceConverted,
-                    rentalStartDate, rentalEndDate, quantity, true));
+                   quantity, true));
                 if (otherCartItemWithSameParameters != null && addToCartWarnings.Count == 0)
                 {
                     //delete the same shopping cart item (the other one)
@@ -1711,7 +1544,7 @@ namespace Nop.Web.Controllers
                             //redirect to the wishlist page
                             return Json(new
                             {
-                                redirect = Url.RouteUrl("Wishlist"),
+                                redirect = Url.RouteUrl("Wishlist")
                             });
                         }
                         
@@ -1726,8 +1559,7 @@ namespace Nop.Web.Controllers
                         return Json(new
                         {
                             success = true,
-                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheWishlist.Link"), Url.RouteUrl("Wishlist")),
-                            updatetopwishlistsectionhtml = updatetopwishlistsectionhtml,
+                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheWishlist.Link"), Url.RouteUrl("Wishlist")), updatetopwishlistsectionhtml
                         });
                     }
                 case ShoppingCartType.ShoppingCart:
@@ -1741,7 +1573,7 @@ namespace Nop.Web.Controllers
                             //redirect to the shopping cart page
                             return Json(new
                             {
-                                redirect = Url.RouteUrl("ShoppingCart"),
+                                redirect = Url.RouteUrl("ShoppingCart")
                             });
                         }
                         
@@ -1754,15 +1586,13 @@ namespace Nop.Web.Controllers
                         .GetTotalProducts());
                         
                         var updateflyoutcartsectionhtml = _shoppingCartSettings.MiniShoppingCartEnabled
-                            ? this.RenderPartialViewToString("FlyoutShoppingCart", PrepareMiniShoppingCartModel())
+                            ? RenderPartialViewToString("FlyoutShoppingCart", PrepareMiniShoppingCartModel())
                             : "";
 
                         return Json(new
                         {
                             success = true,
-                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheCart.Link"), Url.RouteUrl("ShoppingCart")),
-                            updatetopcartsectionhtml = updatetopcartsectionhtml,
-                            updateflyoutcartsectionhtml = updateflyoutcartsectionhtml
+                            message = string.Format(_localizationService.GetResource("Products.ProductHasBeenAddedToTheCart.Link"), Url.RouteUrl("ShoppingCart")), updatetopcartsectionhtml, updateflyoutcartsectionhtml
                         });
                     }
             }
@@ -1783,14 +1613,6 @@ namespace Nop.Web.Controllers
 
             string attributeXml = ParseProductAttributes(product, form);
 
-            //rental attributes
-            DateTime? rentalStartDate = null;
-            DateTime? rentalEndDate = null;
-            if (product.IsRental)
-            {
-                ParseRentalDates(product, form, out rentalStartDate, out rentalEndDate);
-            }
-
             //sku, mpn, gtin
             string sku = product.FormatSku(attributeXml, _productAttributeParser);
             string mpn = product.FormatMpn(attributeXml, _productAttributeParser);
@@ -1807,7 +1629,6 @@ namespace Nop.Web.Controllers
                     _workContext.CurrentCustomer,
                     ShoppingCartType.ShoppingCart,
                     1, attributeXml, 0,
-                    rentalStartDate, rentalEndDate,
                     true, out discountAmount, out scDiscount);
                 decimal taxRate;
                 decimal finalPriceWithDiscountBase = _taxService.GetProductPrice(product, finalPrice, out taxRate);
@@ -1839,11 +1660,7 @@ namespace Nop.Web.Controllers
 
             return Json(new
             {
-                gtin = gtin,
-                mpn = mpn,
-                sku = sku,
-                price = price,
-                stockAvailability = stockAvailability,
+                gtin, mpn, sku, price, stockAvailability,
                 enabledattributemappingids = enabledAttributeMappingIds.ToArray(),
                 disabledattributemappingids = disabledAttributeMappingIds.ToArray()
             });
@@ -1858,7 +1675,7 @@ namespace Nop.Web.Controllers
                 return Json(new
                 {
                     success = false,
-                    downloadGuid = Guid.Empty,
+                    downloadGuid = Guid.Empty
                 }, "text/plain");
             }
 
@@ -1903,34 +1720,35 @@ namespace Nop.Web.Controllers
                     {
                         success = false,
                         message = string.Format(_localizationService.GetResource("ShoppingCart.MaximumUploadedFileSize"), attribute.ValidationFileMaximumSize.Value),
-                        downloadGuid = Guid.Empty,
+                        downloadGuid = Guid.Empty
                     }, "text/plain");
                 }
             }
 
-            var download = new Download
-            {
-                DownloadGuid = Guid.NewGuid(),
-                UseDownloadUrl = false,
-                DownloadUrl = "",
-                DownloadBinary = fileBinary,
-                ContentType = contentType,
-                //we store filename without extension for downloads
-                Filename = Path.GetFileNameWithoutExtension(fileName),
-                Extension = fileExtension,
-                IsNew = true
-            };
-            _downloadService.InsertDownload(download);
+            //var download = new Download
+            //{
+            //    DownloadGuid = Guid.NewGuid(),
+            //    UseDownloadUrl = false,
+            //    DownloadUrl = "",
+            //    DownloadBinary = fileBinary,
+            //    ContentType = contentType,
+            //    //we store filename without extension for downloads
+            //    Filename = Path.GetFileNameWithoutExtension(fileName),
+            //    Extension = fileExtension,
+            //    IsNew = true
+            //};
+            //_downloadService.InsertDownload(download);
 
             //when returning JSON the mime-type must be set to text/plain
             //otherwise some browsers will pop-up a "Save As" dialog.
-            return Json(new
-            {
-                success = true,
-                message = _localizationService.GetResource("ShoppingCart.FileUploaded"),
-                downloadUrl = Url.Action("GetFileUpload", "Download", new { downloadId = download.DownloadGuid }),
-                downloadGuid = download.DownloadGuid,
-            }, "text/plain");
+            //return Json(new
+            //{
+            //    success = true,
+            //    message = _localizationService.GetResource("ShoppingCart.FileUploaded"),
+            //    downloadUrl = Url.Action("GetFileUpload", "Download", new { downloadId = download.DownloadGuid }),
+            //    downloadGuid = download.DownloadGuid
+            //}, "text/plain");
+            return new NullJsonResult();
         }
 
         [HttpPost]
@@ -1942,7 +1760,7 @@ namespace Nop.Web.Controllers
                 return Json(new
                 {
                     success = false,
-                    downloadGuid = Guid.Empty,
+                    downloadGuid = Guid.Empty
                 }, "text/plain");
             }
 
@@ -1987,34 +1805,22 @@ namespace Nop.Web.Controllers
                     {
                         success = false,
                         message = string.Format(_localizationService.GetResource("ShoppingCart.MaximumUploadedFileSize"), attribute.ValidationFileMaximumSize.Value),
-                        downloadGuid = Guid.Empty,
+                        downloadGuid = Guid.Empty
                     }, "text/plain");
                 }
             }
 
-            var download = new Download
-            {
-                DownloadGuid = Guid.NewGuid(),
-                UseDownloadUrl = false,
-                DownloadUrl = "",
-                DownloadBinary = fileBinary,
-                ContentType = contentType,
-                //we store filename without extension for downloads
-                Filename = Path.GetFileNameWithoutExtension(fileName),
-                Extension = fileExtension,
-                IsNew = true
-            };
-            _downloadService.InsertDownload(download);
 
             //when returning JSON the mime-type must be set to text/plain
             //otherwise some browsers will pop-up a "Save As" dialog.
-            return Json(new
-            {
-                success = true,
-                message = _localizationService.GetResource("ShoppingCart.FileUploaded"),
-                downloadUrl = Url.Action("GetFileUpload", "Download", new { downloadId = download.DownloadGuid }),
-                downloadGuid = download.DownloadGuid,
-            }, "text/plain");
+            //return Json(new
+            //{
+            //    success = true,
+            //    message = _localizationService.GetResource("ShoppingCart.FileUploaded"),
+            //    downloadUrl = Url.Action("GetFileUpload", "Download", new { downloadId = download.DownloadGuid }),
+            //    downloadGuid = download.DownloadGuid
+            //}, "text/plain");
+            return new NullJsonResult();
         }
 
 
@@ -2041,8 +1847,7 @@ namespace Nop.Web.Controllers
                 .LimitPerStore(_storeContext.CurrentStore.Id)
                 .ToList();
             var model = new ShoppingCartModel();
-            PrepareShoppingCartModel(model, cart, 
-                isEditable: false, 
+            PrepareShoppingCartModel(model, cart, false, 
                 prepareEstimateShippingIfEnabled: false,
                 prepareAndDisplayOrderReviewData: prepareAndDisplayOrderReviewData.GetValueOrDefault());
             return PartialView(model);
@@ -2080,7 +1885,6 @@ namespace Nop.Web.Controllers
                             {
                                 var currSciWarnings = _shoppingCartService.UpdateShoppingCartItem(_workContext.CurrentCustomer,
                                     sci.Id, sci.AttributesXml, sci.CustomerEnteredPrice,
-                                    sci.RentalStartDateUtc, sci.RentalEndDateUtc,
                                     newQuantity, true);
                                 innerWarnings.Add(sci.Id, currSciWarnings);
                             }
@@ -2125,10 +1929,7 @@ namespace Nop.Web.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToRoute("HomePage");
-            }
+            return RedirectToRoute("HomePage");
         }
         
         [ValidateInput(false)]
@@ -2253,36 +2054,6 @@ namespace Nop.Web.Controllers
             ParseAndSaveCheckoutAttributes(cart, form);
             
             var model = new ShoppingCartModel();
-            if (!cart.IsRecurring())
-            {
-                if (!String.IsNullOrWhiteSpace(giftcardcouponcode))
-                {
-                    var giftCard = _giftCardService.GetAllGiftCards(giftCardCouponCode: giftcardcouponcode).FirstOrDefault();
-                    bool isGiftCardValid = giftCard != null && giftCard.IsGiftCardValid();
-                    if (isGiftCardValid)
-                    {
-                        _workContext.CurrentCustomer.ApplyGiftCardCouponCode(giftcardcouponcode);
-                        _customerService.UpdateCustomer(_workContext.CurrentCustomer);
-                        model.GiftCardBox.Message = _localizationService.GetResource("ShoppingCart.GiftCardCouponCode.Applied");
-                        model.GiftCardBox.IsApplied = true;
-                    }
-                    else
-                    {
-                        model.GiftCardBox.Message = _localizationService.GetResource("ShoppingCart.GiftCardCouponCode.WrongGiftCard");
-                        model.GiftCardBox.IsApplied = false;
-                    }
-                }
-                else
-                {
-                    model.GiftCardBox.Message = _localizationService.GetResource("ShoppingCart.GiftCardCouponCode.WrongGiftCard");
-                    model.GiftCardBox.IsApplied = false;
-                }
-            }
-            else
-            {
-                model.GiftCardBox.Message = _localizationService.GetResource("ShoppingCart.GiftCardCouponCode.DontWorkWithAutoshipProducts");
-                model.GiftCardBox.IsApplied = false;
-            }
 
             PrepareShoppingCartModel(model, cart);
             return View(model);
@@ -2316,7 +2087,7 @@ namespace Nop.Web.Controllers
                     Country = shippingModel.CountryId.HasValue ? _countryService.GetCountryById(shippingModel.CountryId.Value) : null,
                     StateProvinceId  = shippingModel.StateProvinceId,
                     StateProvince = shippingModel.StateProvinceId.HasValue ? _stateProvinceService.GetStateProvinceById(shippingModel.StateProvinceId.Value) : null,
-                    ZipPostalCode = shippingModel.ZipPostalCode,
+                    ZipPostalCode = shippingModel.ZipPostalCode
                 };
                 GetShippingOptionResponse getShippingOptionResponse = _shippingService
                     .GetShippingOptions(cart, address, "", _storeContext.CurrentStore.Id);
@@ -2334,7 +2105,7 @@ namespace Nop.Web.Controllers
                             var soModel = new EstimateShippingModel.ShippingOptionModel
                             {
                                 Name = shippingOption.Name,
-                                Description = shippingOption.Description,
+                                Description = shippingOption.Description
 
                             };
                             //calculate discounted and taxed rate
@@ -2354,7 +2125,7 @@ namespace Nop.Web.Controllers
                             var soModel = new EstimateShippingModel.ShippingOptionModel
                             {
                                 Name = _localizationService.GetResource("Checkout.PickUpInStore"),
-                                Description = _localizationService.GetResource("Checkout.PickUpInStore.Description"),
+                                Description = _localizationService.GetResource("Checkout.PickUpInStore.Description")
                             };
                             decimal shippingTotal = _shippingSettings.PickUpInStoreFee;
                             decimal rateBase = _taxService.GetShippingPrice(shippingTotal, _workContext.CurrentCustomer);
@@ -2398,33 +2169,6 @@ namespace Nop.Web.Controllers
             _genericAttributeService.SaveAttribute<string>(_workContext.CurrentCustomer,
                 SystemCustomerAttributeNames.DiscountCouponCode, null);
 
-            PrepareShoppingCartModel(model, cart);
-            return View(model);
-        }
-
-        [ValidateInput(false)]
-        [HttpPost, ActionName("Cart")]
-        [FormValueRequired(FormValueRequirement.StartsWith, "removegiftcard-")]
-        public ActionResult RemoveGiftCardCode(FormCollection form)
-        {
-            var model = new ShoppingCartModel();
-
-            //get gift card identifier
-            int giftCardId = 0;
-            foreach (var formValue in form.AllKeys)
-                if (formValue.StartsWith("removegiftcard-", StringComparison.InvariantCultureIgnoreCase))
-                    giftCardId = Convert.ToInt32(formValue.Substring("removegiftcard-".Length));
-            var gc = _giftCardService.GetGiftCardById(giftCardId);
-            if (gc != null)
-            {
-                _workContext.CurrentCustomer.RemoveGiftCardCouponCode(gc.GiftCardCouponCode);
-                _customerService.UpdateCustomer(_workContext.CurrentCustomer);
-            }
-
-            var cart = _workContext.CurrentCustomer.ShoppingCartItems
-                .Where(sci => sci.ShoppingCartType == ShoppingCartType.ShoppingCart)
-                .LimitPerStore(_storeContext.CurrentStore.Id)
-                .ToList();
             PrepareShoppingCartModel(model, cart);
             return View(model);
         }
@@ -2502,7 +2246,6 @@ namespace Nop.Web.Controllers
                             {
                                 var currSciWarnings = _shoppingCartService.UpdateShoppingCartItem(_workContext.CurrentCustomer,
                                     sci.Id, sci.AttributesXml, sci.CustomerEnteredPrice,
-                                    sci.RentalStartDateUtc, sci.RentalEndDateUtc,
                                     newQuantity, true);
                                 innerWarnings.Add(sci.Id, currSciWarnings);
                             }
@@ -2571,7 +2314,7 @@ namespace Nop.Web.Controllers
                         sci.Product, ShoppingCartType.ShoppingCart,
                         _storeContext.CurrentStore.Id,
                         sci.AttributesXml, sci.CustomerEnteredPrice,
-                        sci.RentalStartDateUtc, sci.RentalEndDateUtc, sci.Quantity, true);
+                        sci.Quantity, true);
                     if (warnings.Count == 0)
                         numberOfAddedItems++;
                     if (_shoppingCartSettings.MoveItemsFromWishlistToCart && //settings enabled
@@ -2596,23 +2339,20 @@ namespace Nop.Web.Controllers
 
                 return RedirectToRoute("ShoppingCart");
             }
-            else
+            //no items added. redisplay the wishlist page
+
+            if (allWarnings.Count > 0)
             {
-                //no items added. redisplay the wishlist page
-
-                if (allWarnings.Count > 0)
-                {
-                    ErrorNotification(_localizationService.GetResource("Wishlist.AddToCart.Error"), false);
-                }
-
-                var cart = pageCustomer.ShoppingCartItems
-                    .Where(sci => sci.ShoppingCartType == ShoppingCartType.Wishlist)
-                    .LimitPerStore(_storeContext.CurrentStore.Id)
-                    .ToList();
-                var model = new WishlistModel();
-                PrepareWishlistModel(model, cart, !customerGuid.HasValue);
-                return View(model);
+                ErrorNotification(_localizationService.GetResource("Wishlist.AddToCart.Error"), false);
             }
+
+            var cart = pageCustomer.ShoppingCartItems
+                .Where(sci => sci.ShoppingCartType == ShoppingCartType.Wishlist)
+                .LimitPerStore(_storeContext.CurrentStore.Id)
+                .ToList();
+            var model = new WishlistModel();
+            PrepareWishlistModel(model, cart, !customerGuid.HasValue);
+            return View(model);
         }
 
         [NopHttpsRequirement(SslRequirement.Yes)]
@@ -2670,7 +2410,7 @@ namespace Nop.Web.Controllers
                 //email
                 _workflowMessageService.SendWishlistEmailAFriendMessage(_workContext.CurrentCustomer,
                         _workContext.WorkingLanguage.Id, model.YourEmailAddress,
-                        model.FriendEmail, Core.Html.HtmlHelper.FormatText(model.PersonalMessage, false, true, false, false, false, false));
+                        model.FriendEmail, HtmlHelper.FormatText(model.PersonalMessage, false, true, false, false, false, false));
 
                 model.SuccessfullySent = true;
                 model.Result = _localizationService.GetResource("Wishlist.EmailAFriend.SuccessfullySent");

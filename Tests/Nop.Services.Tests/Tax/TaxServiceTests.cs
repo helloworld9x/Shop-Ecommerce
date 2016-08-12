@@ -173,15 +173,15 @@ namespace Nop.Services.Tests.Tax
             exception.ShouldBeNull();
         }
 
-        [Test]
-        public void Should_assume_valid_VAT_number_if_EuVatAssumeValid_setting_is_true()
-        {
-            _taxSettings.EuVatAssumeValid = true;
-            string name, address;
+        //[Test]
+        //public void Should_assume_valid_VAT_number_if_EuVatAssumeValid_setting_is_true()
+        //{
+        //    _taxSettings.EuVatAssumeValid = true;
+        //    string name, address;
 
-            VatNumberStatus vatNumberStatus = _taxService.GetVatNumberStatus("GB", "000 0000 00",
-                out name, out address);
-            vatNumberStatus.ShouldEqual(VatNumberStatus.Valid);
-        }
+        //    VatNumberStatus vatNumberStatus = _taxService.GetVatNumberStatus("GB", "000 0000 00",
+        //        out name, out address);
+        //    vatNumberStatus.ShouldEqual(VatNumberStatus.Valid);
+        //}
     }
 }

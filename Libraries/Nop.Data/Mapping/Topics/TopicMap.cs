@@ -2,7 +2,7 @@
 
 namespace Nop.Data.Mapping.Topics
 {
-    public class TopicMap : NopEntityTypeConfiguration<Topic>
+    public class TopicMap : GoqEntityTypeConfiguration<Topic>
     {
         public TopicMap()
         {

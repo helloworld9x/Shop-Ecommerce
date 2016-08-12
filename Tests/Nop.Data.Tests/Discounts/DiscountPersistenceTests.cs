@@ -66,20 +66,10 @@ namespace Nop.Data.Tests.Discounts
                 DiscountLimitation = DiscountLimitationType.Unlimited,
                 LimitationTimes = 3
             };
-            discount.DiscountRequirements.Add
-                (
-                     new DiscountRequirement
-                     {
-                         DiscountRequirementRuleSystemName = "BillingCountryIs"
-                     }
-                );
+       
             var fromDb = SaveAndLoadEntity(discount);
             fromDb.ShouldNotBeNull();
             fromDb.Name.ShouldEqual("Discount 1");
-            
-            fromDb.DiscountRequirements.ShouldNotBeNull();
-            (fromDb.DiscountRequirements.Count == 1).ShouldBeTrue();
-            fromDb.DiscountRequirements.First().DiscountRequirementRuleSystemName.ShouldEqual("BillingCountryIs");
         }
 
         [Test]
@@ -154,9 +144,6 @@ namespace Nop.Data.Tests.Discounts
             {
                 Name = "Books",
                 Description = "Description 1",
-                MetaKeywords = "Meta keywords",
-                MetaDescription = "Meta description",
-                MetaTitle = "Meta title",
                 ParentCategoryId = 2,
                 PictureId = 3,
                 PageSize = 4,

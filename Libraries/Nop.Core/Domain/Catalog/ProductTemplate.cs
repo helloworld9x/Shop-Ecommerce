@@ -4,7 +4,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product template
     /// </summary>
-    public partial class ProductTemplate : BaseEntity
+    public class ProductTemplate : BaseEntity
     {
         /// <summary>
         /// Gets or sets the template name

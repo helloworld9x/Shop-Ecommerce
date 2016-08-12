@@ -33,7 +33,6 @@ namespace Nop.Services.Tests.Orders
         private ICurrencyService _currencyService;
         private ITaxService _taxService;
         private IPriceFormatter _priceFormatter;
-        private IDownloadService _downloadService;
         private IWebHelper _webHelper;
         private ICheckoutAttributeFormatter _checkoutAttributeFormatter;
 
@@ -153,7 +152,6 @@ namespace Nop.Services.Tests.Orders
             _currencyService = MockRepository.GenerateMock<ICurrencyService>();
             _taxService = MockRepository.GenerateMock<ITaxService>();
             _priceFormatter = MockRepository.GenerateMock<IPriceFormatter>();
-            _downloadService = MockRepository.GenerateMock<IDownloadService>();
             _webHelper = MockRepository.GenerateMock<IWebHelper>();
 
             _checkoutAttributeFormatter = new CheckoutAttributeFormatter(_workContext,
@@ -162,7 +160,6 @@ namespace Nop.Services.Tests.Orders
                 _currencyService,
                 _taxService,
                 _priceFormatter,
-                _downloadService,
                 _webHelper);
         }
         

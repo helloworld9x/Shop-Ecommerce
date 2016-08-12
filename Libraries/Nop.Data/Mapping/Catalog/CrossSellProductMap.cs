@@ -2,12 +2,12 @@ using Nop.Core.Domain.Catalog;
 
 namespace Nop.Data.Mapping.Catalog
 {
-    public partial class CrossSellProductMap : NopEntityTypeConfiguration<CrossSellProduct>
+    public class CrossSellProductMap : GoqEntityTypeConfiguration<CrossSellProduct>
     {
         public CrossSellProductMap()
         {
-            this.ToTable("CrossSellProduct");
-            this.HasKey(c => c.Id);
+            ToTable("CrossSellProduct");
+            HasKey(c => c.Id);
         }
     }
 }

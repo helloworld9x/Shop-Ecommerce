@@ -2,7 +2,7 @@ using Nop.Core.Domain.Localization;
 
 namespace Nop.Data.Mapping.Localization
 {
-    public partial class LanguageMap : NopEntityTypeConfiguration<Language>
+    public partial class LanguageMap : GoqEntityTypeConfiguration<Language>
     {
         public LanguageMap()
         {

@@ -13,7 +13,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Generic attribute service
     /// </summary>
-    public partial class GenericAttributeService : IGenericAttributeService
+    public class GenericAttributeService : IGenericAttributeService
     {
         #region Constants
 
@@ -51,9 +51,9 @@ namespace Nop.Services.Common
             IRepository<GenericAttribute> genericAttributeRepository,
             IEventPublisher eventPublisher)
         {
-            this._cacheManager = cacheManager;
-            this._genericAttributeRepository = genericAttributeRepository;
-            this._eventPublisher = eventPublisher;
+            _cacheManager = cacheManager;
+            _genericAttributeRepository = genericAttributeRepository;
+            _eventPublisher = eventPublisher;
         }
 
         #endregion
@@ -198,7 +198,7 @@ namespace Nop.Services.Common
                         Key = key,
                         KeyGroup = keyGroup,
                         Value = valueStr,
-                        StoreId = storeId,
+                        StoreId = storeId
                         
                     };
                     InsertAttribute(prop);

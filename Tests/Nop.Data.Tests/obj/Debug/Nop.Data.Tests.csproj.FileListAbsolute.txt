@@ -1,3 +1,4 @@
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\obj\Debug\Nop.Data.Tests.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\bin\Debug\Nop.Data.Tests.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\bin\Debug\Nop.Data.Tests.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\bin\Debug\Nop.Data.Tests.pdb
@@ -38,6 +39,5 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\bin\Debug\Sy
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\bin\Debug\System.Web.WebPages.Razor.xml
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\bin\Debug\System.Web.WebPages.xml
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\bin\Debug\System.Web.WebPages.Deployment.xml
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\obj\Debug\Nop.Data.Tests.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\obj\Debug\Nop.Data.Tests.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Data.Tests\obj\Debug\Nop.Data.Tests.pdb

@@ -8,7 +8,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order service interface
     /// </summary>
-    public partial interface IOrderTotalCalculationService
+    public interface IOrderTotalCalculationService
     {
         /// <summary>
         /// Gets shopping cart subtotal
@@ -144,51 +144,13 @@ namespace Nop.Services.Orders
         /// Gets shopping cart total
         /// </summary>
         /// <param name="cart">Cart</param>
-        /// <param name="appliedGiftCards">Applied gift cards</param>
         /// <param name="discountAmount">Applied discount amount</param>
         /// <param name="appliedDiscount">Applied discount</param>
-        /// <param name="redeemedRewardPoints">Reward points to redeem</param>
-        /// <param name="redeemedRewardPointsAmount">Reward points amount in primary store currency to redeem</param>
         /// <param name="ignoreRewardPonts">A value indicating whether we should ignore reward points (if enabled and a customer is going to use them)</param>
         /// <param name="usePaymentMethodAdditionalFee">A value indicating whether we should use payment method additional fee when calculating order total</param>
         /// <returns>Shopping cart total;Null if shopping cart total couldn't be calculated now</returns>
         decimal? GetShoppingCartTotal(IList<ShoppingCartItem> cart,
             out decimal discountAmount, out Discount appliedDiscount,
-            out List<AppliedGiftCard> appliedGiftCards,
-            out int redeemedRewardPoints, out decimal redeemedRewardPointsAmount,
             bool ignoreRewardPonts = false, bool usePaymentMethodAdditionalFee = true);
-
-
-
-
-
-        /// <summary>
-        /// Converts existing reward points to amount
-        /// </summary>
-        /// <param name="rewardPoints">Reward points</param>
-        /// <returns>Converted value</returns>
-        decimal ConvertRewardPointsToAmount(int rewardPoints);
-
-        /// <summary>
-        /// Converts an amount to reward points
-        /// </summary>
-        /// <param name="amount">Amount</param>
-        /// <returns>Converted value</returns>
-        int ConvertAmountToRewardPoints(decimal amount);
-
-        /// <summary>
-        /// Gets a value indicating whether a customer has minimum amount of reward points to use (if enabled)
-        /// </summary>
-        /// <param name="rewardPoints">Reward points to check</param>
-        /// <returns>true - reward points could use; false - cannot be used.</returns>
-        bool CheckMinimumRewardPointsToUseRequirement(int rewardPoints);
-
-        /// <summary>
-        /// Calculate how much reward points will be earned/reduced based on certain amount spent
-        /// </summary>
-        /// <param name="customer">Customer</param>
-        /// <param name="amount">Amount (in primary store currency)</param>
-        /// <returns>umber of reward points</returns>
-        int CalculateRewardPoints(Customer customer, decimal amount);
     }
 }

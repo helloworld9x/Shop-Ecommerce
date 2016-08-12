@@ -3,7 +3,7 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents an "order by country" report line
     /// </summary>
-    public partial class OrderByCountryReportLine
+    public class OrderByCountryReportLine
     {
         /// <summary>
         /// Country identifier; null for unknow country

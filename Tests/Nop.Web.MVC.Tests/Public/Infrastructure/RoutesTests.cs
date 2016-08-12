@@ -14,35 +14,6 @@ namespace Nop.Web.MVC.Tests.Public.Infrastructure
         }
 
         [Test]
-        public void Boards_routes()
-        {
-            "~/boards/".ShouldMapTo<BoardsController>(c => c.Index());
-            //TODO add support for optional parameters in 'ShouldMapTo' method (such as in ~/boards/activediscussions/ or ~/boards/topic/11/). The same is about issue is in the other route test methods
-            //"~/boards/activediscussions/".ShouldMapTo<BoardsController>(c => c.ActiveDiscussions(0));
-            //"~/boards/activediscussionsrss/".ShouldMapTo<BoardsController>(c => c.ActiveDiscussionsRss(0));
-            "~/boards/postedit/1".ShouldMapTo<BoardsController>(c => c.PostEdit(1));
-            "~/boards/postdelete/2".ShouldMapTo<BoardsController>(c => c.PostDelete(2));
-            "~/boards/postcreate/3".ShouldMapTo<BoardsController>(c => c.PostCreate(3, null));
-            "~/boards/postcreate/4/5".ShouldMapTo<BoardsController>(c => c.PostCreate(4, 5));
-            "~/boards/topicedit/6".ShouldMapTo<BoardsController>(c => c.TopicEdit(6));
-            "~/boards/topicdelete/7".ShouldMapTo<BoardsController>(c => c.TopicDelete(7));
-            "~/boards/topiccreate/8".ShouldMapTo<BoardsController>(c => c.TopicCreate(8));
-            "~/boards/topicmove/9".ShouldMapTo<BoardsController>(c => c.TopicMove(9));
-            "~/boards/topicwatch/10".ShouldMapTo<BoardsController>(c => c.TopicWatch(10));
-            //"~/boards/topic/11/".ShouldMapTo<BoardsController>(c => c.Topic(11, 1));
-            //"~/boards/topic/11/test-topic-slug".ShouldMapTo<BoardsController>(c => c.Topic(11, 1));
-            "~/boards/topic/11/test-topic-slug/page/2".ShouldMapTo<BoardsController>(c => c.Topic(11, 2));
-            "~/boards/forumwatch/12".ShouldMapTo<BoardsController>(c => c.ForumWatch(12));
-            "~/boards/forumrss/13".ShouldMapTo<BoardsController>(c => c.ForumRss(13));
-            //"~/boards/forum/14/".ShouldMapTo<BoardsController>(c => c.Forum(14, 1));
-            //"~/boards/forum/14/test-forum-slug".ShouldMapTo<BoardsController>(c => c.Forum(14, 1));
-            "~/boards/forum/14/test-forum-slug/page/2".ShouldMapTo<BoardsController>(c => c.Forum(14, 2));
-            "~/boards/forumgroup/15/".ShouldMapTo<BoardsController>(c => c.ForumGroup(15));
-            "~/boards/forumgroup/15/test-forumgroup-slug/".ShouldMapTo<BoardsController>(c => c.ForumGroup(15));
-            //"~/boards/search/".ShouldMapTo<BoardsController>(c => c.Search(null, null, null, null, null, 1));
-        }
-
-        [Test]
         public void Catalog_routes()
         {
             //"~/p/some-se-name/".ShouldMapTo<CatalogController>(c => c.Product("some-se-name"));
@@ -86,16 +57,12 @@ namespace Nop.Web.MVC.Tests.Public.Infrastructure
             "~/customer/addresses/".ShouldMapTo<CustomerController>(c => c.Addresses());
             "~/order/history/".ShouldMapTo<OrderController>(c => c.CustomerOrders());
             "~/returnrequest/history/".ShouldMapTo<ReturnRequestController>(c => c.CustomerReturnRequests());
-            "~/customer/downloadableproducts/".ShouldMapTo<CustomerController>(c => c.DownloadableProducts());
             "~/backinstocksubscriptions/manage/".ShouldMapTo<BackInStockSubscriptionController>(c => c.CustomerSubscriptions(null));
             "~/backinstocksubscriptions/manage/3".ShouldMapTo<BackInStockSubscriptionController>(c => c.CustomerSubscriptions(3));
 
-            "~/rewardpoints/history/".ShouldMapTo<OrderController>(c => c.CustomerRewardPoints());
             "~/customer/changepassword/".ShouldMapTo<CustomerController>(c => c.ChangePassword());
             "~/customer/avatar/".ShouldMapTo<CustomerController>(c => c.Avatar());
             //"~/customer/activation?token=cc74c80f-1edd-43f7-85df-a3cccc1b47b9&email=test@test.com".ShouldMapTo<CustomerController>(c => c.AccountActivation("cc74c80f-1edd-43f7-85df-a3cccc1b47b9", "test@test.com"));
-            "~/boards/forumsubscriptions".ShouldMapTo<BoardsController>(c => c.CustomerForumSubscriptions(null));
-            "~/boards/forumsubscriptions/4".ShouldMapTo<BoardsController>(c => c.CustomerForumSubscriptions(4));
             "~/customer/addressdelete/6".ShouldMapTo<CustomerController>(c => c.AddressDelete(6));
             "~/customer/addressedit/7".ShouldMapTo<CustomerController>(c => c.AddressEdit(7));
             "~/customer/addressadd".ShouldMapTo<CustomerController>(c => c.AddressAdd());
@@ -161,18 +128,6 @@ namespace Nop.Web.MVC.Tests.Public.Infrastructure
         {
             //TODO cannot validate true parameter
             //"~/newsletter/subscriptionactivation/bb74c80f-1edd-43f7-85df-a3cccc1b47b9/true".ShouldMapTo<NewsletterController>(c => c.SubscriptionActivation(new Guid("bb74c80f-1edd-43f7-85df-a3cccc1b47b9"), true));
-        }
-
-        [Test]
-        public void PrivateMessages_routes()
-        {
-            "~/privatemessages/".ShouldMapTo<PrivateMessagesController>(c => c.Index(null, null));
-            "~/privatemessages/sent".ShouldMapTo<PrivateMessagesController>(c => c.Index(null, "sent"));
-            "~/privatemessages/sent/page/2/".ShouldMapTo<PrivateMessagesController>(c => c.Index(2, "sent"));
-            "~/sendpm/3".ShouldMapTo<PrivateMessagesController>(c => c.SendPM(3, null));
-            "~/sendpm/4/5".ShouldMapTo<PrivateMessagesController>(c => c.SendPM(4, 5));
-            "~/viewpm/6".ShouldMapTo<PrivateMessagesController>(c => c.ViewPM(6));
-            "~/deletepm/7".ShouldMapTo<PrivateMessagesController>(c => c.DeletePM(7));
         }
 
         [Test]

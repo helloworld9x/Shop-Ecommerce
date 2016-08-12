@@ -2,7 +2,7 @@ using Nop.Core.Domain.Directory;
 
 namespace Nop.Data.Mapping.Directory
 {
-    public partial class StateProvinceMap : NopEntityTypeConfiguration<StateProvince>
+    public class StateProvinceMap : GoqEntityTypeConfiguration<StateProvince>
     {
         public StateProvinceMap()
         {

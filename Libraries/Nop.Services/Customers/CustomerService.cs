@@ -10,7 +10,6 @@ using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.News;
 using Nop.Core.Domain.Orders;
 using Nop.Core.Domain.Polls;
@@ -24,7 +23,7 @@ namespace Nop.Services.Customers
     /// <summary>
     /// Customer service
     /// </summary>
-    public partial class CustomerService : ICustomerService
+    public class CustomerService : ICustomerService
     {
         #region Constants
 
@@ -55,8 +54,6 @@ namespace Nop.Services.Customers
         private readonly IRepository<CustomerRole> _customerRoleRepository;
         private readonly IRepository<GenericAttribute> _gaRepository;
         private readonly IRepository<Order> _orderRepository;
-        private readonly IRepository<ForumPost> _forumPostRepository;
-        private readonly IRepository<ForumTopic> _forumTopicRepository;
         private readonly IRepository<NewsComment> _newsCommentRepository;
         private readonly IRepository<PollVotingRecord> _pollVotingRecordRepository;
         private readonly IRepository<ProductReview> _productReviewRepository;
@@ -78,8 +75,6 @@ namespace Nop.Services.Customers
             IRepository<CustomerRole> customerRoleRepository,
             IRepository<GenericAttribute> gaRepository,
             IRepository<Order> orderRepository,
-            IRepository<ForumPost> forumPostRepository,
-            IRepository<ForumTopic> forumTopicRepository,
             IRepository<NewsComment> newsCommentRepository,
             IRepository<PollVotingRecord> pollVotingRecordRepository,
             IRepository<ProductReview> productReviewRepository,
@@ -91,23 +86,21 @@ namespace Nop.Services.Customers
             CustomerSettings customerSettings,
             CommonSettings commonSettings)
         {
-            this._cacheManager = cacheManager;
-            this._customerRepository = customerRepository;
-            this._customerRoleRepository = customerRoleRepository;
-            this._gaRepository = gaRepository;
-            this._orderRepository = orderRepository;
-            this._forumPostRepository = forumPostRepository;
-            this._forumTopicRepository = forumTopicRepository;
-            this._newsCommentRepository = newsCommentRepository;
-            this._pollVotingRecordRepository = pollVotingRecordRepository;
-            this._productReviewRepository = productReviewRepository;
-            this._productReviewHelpfulnessRepository = productReviewHelpfulnessRepository;
-            this._genericAttributeService = genericAttributeService;
-            this._dataProvider = dataProvider;
-            this._dbContext = dbContext;
-            this._eventPublisher = eventPublisher;
-            this._customerSettings = customerSettings;
-            this._commonSettings = commonSettings;
+            _cacheManager = cacheManager;
+            _customerRepository = customerRepository;
+            _customerRoleRepository = customerRoleRepository;
+            _gaRepository = gaRepository;
+            _orderRepository = orderRepository;
+            _newsCommentRepository = newsCommentRepository;
+            _pollVotingRecordRepository = pollVotingRecordRepository;
+            _productReviewRepository = productReviewRepository;
+            _productReviewHelpfulnessRepository = productReviewHelpfulnessRepository;
+            _genericAttributeService = genericAttributeService;
+            _dataProvider = dataProvider;
+            _dbContext = dbContext;
+            _eventPublisher = eventPublisher;
+            _customerSettings = customerSettings;
+            _commonSettings = commonSettings;
         }
 
         #endregion
@@ -461,7 +454,7 @@ namespace Nop.Services.Customers
                 CustomerGuid = Guid.NewGuid(),
                 Active = true,
                 CreatedOnUtc = DateTime.UtcNow,
-                LastActivityDateUtc = DateTime.UtcNow,
+                LastActivityDateUtc = DateTime.UtcNow
             };
 
             //add to 'Guests' role
@@ -659,18 +652,7 @@ namespace Nop.Services.Customers
                         from pvr in c_pvr.DefaultIfEmpty()
                         where !c_pvr.Any()
                         select c;
-                //no forum posts 
-                query = from c in query
-                        join fp in _forumPostRepository.Table on c.Id equals fp.CustomerId into c_fp
-                        from fp in c_fp.DefaultIfEmpty()
-                        where !c_fp.Any()
-                        select c;
-                //no forum topics
-                query = from c in query
-                        join ft in _forumTopicRepository.Table on c.Id equals ft.CustomerId into c_ft
-                        from ft in c_ft.DefaultIfEmpty()
-                        where !c_ft.Any()
-                        select c;
+         
                 //don't delete system accounts
                 query = query.Where(c => !c.IsSystemAccount);
 

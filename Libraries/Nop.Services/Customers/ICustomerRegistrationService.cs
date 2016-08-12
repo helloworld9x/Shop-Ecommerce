@@ -5,7 +5,7 @@ namespace Nop.Services.Customers
     /// <summary>
     /// Customer registration interface
     /// </summary>
-    public partial interface ICustomerRegistrationService
+    public interface ICustomerRegistrationService
     {
         /// <summary>
         /// Validate customer

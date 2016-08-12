@@ -7,7 +7,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Generic attribute service interface
     /// </summary>
-    public partial interface IGenericAttributeService
+    public interface IGenericAttributeService
     {
         /// <summary>
         /// Deletes an attribute

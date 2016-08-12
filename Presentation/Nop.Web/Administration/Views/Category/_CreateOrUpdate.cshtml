@@ -141,15 +141,6 @@
     <table class="adminContent">
         <tr>
             <td class="adminTitle">
-                @Html.NopLabelFor(model => model.CategoryTemplateId):
-            </td>
-            <td class="adminData">
-                @Html.DropDownListFor(model => model.CategoryTemplateId, Model.AvailableCategoryTemplates)
-                @Html.ValidationMessageFor(model => model.CategoryTemplateId)
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
                 @Html.NopLabelFor(model => model.PictureId)
             </td>
             <td class="adminData">
@@ -288,33 +279,6 @@
                </table>
                ,
                @<table class="adminContent">
-                   <tr>
-                       <td class="adminTitle">
-                           @Html.NopLabelFor(model => model.MetaKeywords):
-                       </td>
-                       <td class="adminData">
-                           @Html.EditorFor(x => x.MetaKeywords)
-                           @Html.ValidationMessageFor(model => model.MetaKeywords)
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="adminTitle">
-                           @Html.NopLabelFor(model => model.MetaDescription):
-                       </td>
-                       <td class="adminData">
-                           @Html.TextAreaFor(x => x.MetaDescription)
-                           @Html.ValidationMessageFor(model => model.MetaDescription)
-                       </td>
-                   </tr>
-                   <tr>
-                       <td class="adminTitle">
-                           @Html.NopLabelFor(model => model.MetaTitle):
-                       </td>
-                       <td class="adminData">
-                           @Html.EditorFor(x => x.MetaTitle)
-                           @Html.ValidationMessageFor(model => model.MetaTitle)
-                       </td>
-                   </tr>
                    <tr>
                        <td class="adminTitle">
                            @Html.NopLabelFor(model => model.SeName):

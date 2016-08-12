@@ -84,7 +84,6 @@ namespace Nop.Admin.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IProductAttributeFormatter _productAttributeFormatter;
         private readonly IProductAttributeParser _productAttributeParser;
-        private readonly IDownloadService _downloadService;
 
         #endregion
 
@@ -128,8 +127,7 @@ namespace Nop.Admin.Controllers
             IBackInStockSubscriptionService backInStockSubscriptionService,
             IShoppingCartService shoppingCartService,
             IProductAttributeFormatter productAttributeFormatter,
-            IProductAttributeParser productAttributeParser,
-            IDownloadService downloadService)
+            IProductAttributeParser productAttributeParser)
         {
             this._productService = productService;
             this._productTemplateService = productTemplateService;
@@ -170,7 +168,6 @@ namespace Nop.Admin.Controllers
             this._shoppingCartService = shoppingCartService;
             this._productAttributeFormatter = productAttributeFormatter;
             this._productAttributeParser = productAttributeParser;
-            this._downloadService = downloadService;
         }
 
         #endregion 
@@ -193,18 +190,6 @@ namespace Nop.Admin.Controllers
                 _localizedEntityService.SaveLocalizedValue(product,
                                                                x => x.FullDescription,
                                                                localized.FullDescription,
-                                                               localized.LanguageId);
-                _localizedEntityService.SaveLocalizedValue(product,
-                                                               x => x.MetaKeywords,
-                                                               localized.MetaKeywords,
-                                                               localized.LanguageId);
-                _localizedEntityService.SaveLocalizedValue(product,
-                                                               x => x.MetaDescription,
-                                                               localized.MetaDescription,
-                                                               localized.LanguageId);
-                _localizedEntityService.SaveLocalizedValue(product,
-                                                               x => x.MetaTitle,
-                                                               localized.MetaTitle,
                                                                localized.LanguageId);
 
                 //search engine name
@@ -548,17 +533,6 @@ namespace Nop.Admin.Controllers
                 model.CopyProductModel.CopyImages = true;
             }
 
-            //templates
-            var templates = _productTemplateService.GetAllProductTemplates();
-            foreach (var template in templates)
-            {
-                model.AvailableProductTemplates.Add(new SelectListItem
-                {
-                    Text = template.Name,
-                    Value = template.Id.ToString()
-                });
-            }
-
             //vendors
             model.IsLoggedInAsVendor = _workContext.CurrentVendor != null;
             model.AvailableVendors.Add(new SelectListItem
@@ -671,16 +645,13 @@ namespace Nop.Admin.Controllers
             if (setPredefinedValues)
             {
                 model.MaximumCustomerEnteredPrice = 1000;
-                model.MaxNumberOfDownloads = 10;
                 model.RecurringCycleLength = 100;
                 model.RecurringTotalCycles = 10;
-                model.RentalPriceLength = 1;
                 model.StockQuantity = 10000;
                 model.NotifyAdminForQuantityBelow = 1;
                 model.OrderMinimumQuantity = 1;
                 model.OrderMaximumQuantity = 10000;
 
-                model.UnlimitedDownloads = true;
                 model.IsShipEnabled = true;
                 model.AllowCustomerReviews = true;
                 model.Published = true;
@@ -1030,9 +1001,6 @@ namespace Nop.Admin.Controllers
                     locale.Name = product.GetLocalized(x => x.Name, languageId, false, false);
                     locale.ShortDescription = product.GetLocalized(x => x.ShortDescription, languageId, false, false);
                     locale.FullDescription = product.GetLocalized(x => x.FullDescription, languageId, false, false);
-                    locale.MetaKeywords = product.GetLocalized(x => x.MetaKeywords, languageId, false, false);
-                    locale.MetaDescription = product.GetLocalized(x => x.MetaDescription, languageId, false, false);
-                    locale.MetaTitle = product.GetLocalized(x => x.MetaTitle, languageId, false, false);
                     locale.SeName = product.GetSeName(languageId, false, false);
                 });
 
@@ -1070,9 +1038,7 @@ namespace Nop.Admin.Controllers
                 }
                 //some previously used values
                 var prevStockQuantity = product.GetTotalStockQuantity();
-                int prevDownloadId = product.DownloadId;
-                int prevSampleDownloadId = product.SampleDownloadId;
-
+             
                 //product
                 product = model.ToEntity(product);
                 product.UpdatedOnUtc = DateTime.UtcNow;
@@ -1121,20 +1087,6 @@ namespace Nop.Admin.Controllers
                     !product.Deleted)
                 {
                     _backInStockSubscriptionService.SendNotificationsToSubscribers(product);
-                }
-                //delete an old "download" file (if deleted or updated)
-                if (prevDownloadId > 0 && prevDownloadId != product.DownloadId)
-                {
-                    var prevDownload = _downloadService.GetDownloadById(prevDownloadId);
-                    if (prevDownload != null)
-                        _downloadService.DeleteDownload(prevDownload);
-                }
-                //delete an old "sample download" file (if deleted or updated)
-                if (prevSampleDownloadId > 0 && prevSampleDownloadId != product.SampleDownloadId)
-                {
-                    var prevSampleDownload = _downloadService.GetDownloadById(prevSampleDownloadId);
-                    if (prevSampleDownload != null)
-                        _downloadService.DeleteDownload(prevSampleDownload);
                 }
 
                 //activity log
@@ -3147,147 +3099,6 @@ namespace Nop.Admin.Controllers
 
         #endregion
 
-        #region Tier prices
-
-        [HttpPost]
-        public ActionResult TierPriceList(DataSourceRequest command, int productId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-                return AccessDeniedView();
-
-            var product = _productService.GetProductById(productId);
-            if (product == null)
-                throw new ArgumentException("No product found with the specified id");
-
-            //a vendor should have access only to his products
-            if (_workContext.CurrentVendor != null && product.VendorId != _workContext.CurrentVendor.Id)
-                return Content("This is not your product");
-
-            var tierPricesModel = product.TierPrices
-                .OrderBy(x => x.StoreId)
-                .ThenBy(x => x.Quantity)
-                .ThenBy(x => x.CustomerRoleId)
-                .Select(x =>
-                {
-                    string storeName;
-                    if (x.StoreId > 0)
-                    {
-                        var store = _storeService.GetStoreById(x.StoreId);
-                        storeName = store != null ? store.Name : "Deleted";
-                    }
-                    else
-                    {
-                        storeName = _localizationService.GetResource("Admin.Catalog.Products.TierPrices.Fields.Store.All");
-                    }
-                    return new ProductModel.TierPriceModel
-                    {
-                        Id = x.Id,
-                        StoreId = x.StoreId,
-                        Store = storeName,
-                        CustomerRole = x.CustomerRoleId.HasValue ? _customerService.GetCustomerRoleById(x.CustomerRoleId.Value).Name : _localizationService.GetResource("Admin.Catalog.Products.TierPrices.Fields.CustomerRole.All"),
-                        ProductId = x.ProductId,
-                        CustomerRoleId = x.CustomerRoleId.HasValue ? x.CustomerRoleId.Value : 0,
-                        Quantity = x.Quantity,
-                        Price = x.Price
-                    };
-                })
-                .ToList();
-
-            var gridModel = new DataSourceResult
-            {
-                Data = tierPricesModel,
-                Total = tierPricesModel.Count
-            };
-
-            return Json(gridModel);
-        }
-
-        [HttpPost]
-        public ActionResult TierPriceInsert(ProductModel.TierPriceModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-                return AccessDeniedView();
-
-            var product = _productService.GetProductById(model.ProductId);
-            if (product == null)
-                throw new ArgumentException("No product found with the specified id");
-
-            //a vendor should have access only to his products
-            if (_workContext.CurrentVendor != null && product.VendorId != _workContext.CurrentVendor.Id)
-                return Content("This is not your product");
-
-            var tierPrice = new TierPrice
-            {
-                ProductId = model.ProductId,
-                StoreId = model.StoreId,
-                CustomerRoleId = model.CustomerRoleId > 0 ? model.CustomerRoleId : (int?)null,
-                Quantity = model.Quantity,
-                Price = model.Price
-            };
-            _productService.InsertTierPrice(tierPrice);
-
-            //update "HasTierPrices" property
-            _productService.UpdateHasTierPricesProperty(product);
-
-            return new NullJsonResult();
-        }
-
-        [HttpPost]
-        public ActionResult TierPriceUpdate(ProductModel.TierPriceModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-                return AccessDeniedView();
-
-            var tierPrice = _productService.GetTierPriceById(model.Id);
-            if (tierPrice == null)
-                throw new ArgumentException("No tier price found with the specified id");
-
-            var product = _productService.GetProductById(tierPrice.ProductId);
-            if (product == null)
-                throw new ArgumentException("No product found with the specified id");
-
-            //a vendor should have access only to his products
-            if (_workContext.CurrentVendor != null && product.VendorId != _workContext.CurrentVendor.Id)
-                return Content("This is not your product");
-
-            tierPrice.StoreId = model.StoreId;
-            tierPrice.CustomerRoleId = model.CustomerRoleId > 0 ? model.CustomerRoleId : (int?) null;
-            tierPrice.Quantity = model.Quantity;
-            tierPrice.Price = model.Price;
-            _productService.UpdateTierPrice(tierPrice);
-
-            return new NullJsonResult();
-        }
-
-        [HttpPost]
-        public ActionResult TierPriceDelete(int id)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageProducts))
-                return AccessDeniedView();
-
-            var tierPrice = _productService.GetTierPriceById(id);
-            if (tierPrice == null)
-                throw new ArgumentException("No tier price found with the specified id");
-
-            var productId = tierPrice.ProductId;
-            var product = _productService.GetProductById(productId);
-            if (product == null)
-                throw new ArgumentException("No product found with the specified id");
-
-            //a vendor should have access only to his products
-            if (_workContext.CurrentVendor != null && product.VendorId != _workContext.CurrentVendor.Id)
-                return Content("This is not your product");
-
-            _productService.DeleteTierPrice(tierPrice);
-
-            //update "HasTierPrices" property
-            _productService.UpdateHasTierPricesProperty(product);
-
-            return new NullJsonResult();
-        }
-
-        #endregion
-
         #region Product attributes
 
         [HttpPost]
@@ -4503,25 +4314,6 @@ namespace Nop.Admin.Controllers
                                         warnings.Add(string.Format(_localizationService.GetResource("ShoppingCart.MaximumUploadedFileSize"), attribute.ValidationFileMaximumSize.Value));
                                         fileSizeOk = false;
                                     }
-                                }
-                                if (fileSizeOk)
-                                {
-                                    //save an uploaded file
-                                    var download = new Download
-                                    {
-                                        DownloadGuid = Guid.NewGuid(),
-                                        UseDownloadUrl = false,
-                                        DownloadUrl = "",
-                                        DownloadBinary = httpPostedFile.GetDownloadBits(),
-                                        ContentType = httpPostedFile.ContentType,
-                                        Filename = Path.GetFileNameWithoutExtension(httpPostedFile.FileName),
-                                        Extension = Path.GetExtension(httpPostedFile.FileName),
-                                        IsNew = true
-                                    };
-                                    _downloadService.InsertDownload(download);
-                                    //save attribute
-                                    attributesXml = _productAttributeParser.AddProductAttribute(attributesXml,
-                                        attribute, download.DownloadGuid.ToString());
                                 }
                             }
                         }

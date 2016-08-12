@@ -8,7 +8,6 @@ using Nop.Core;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.News;
 using Nop.Core.Domain.Orders;
@@ -23,7 +22,6 @@ using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Directory;
 using Nop.Services.Events;
-using Nop.Services.Forums;
 using Nop.Services.Helpers;
 using Nop.Services.Localization;
 using Nop.Services.Media;
@@ -35,7 +33,7 @@ using Nop.Services.Stores;
 
 namespace Nop.Services.Messages
 {
-    public partial class MessageTokenProvider : IMessageTokenProvider
+    public class MessageTokenProvider : IMessageTokenProvider
     {
         #region Fields
 
@@ -45,11 +43,9 @@ namespace Nop.Services.Messages
         private readonly IPriceFormatter _priceFormatter;
         private readonly ICurrencyService _currencyService;
         private readonly IWorkContext _workContext;
-        private readonly IDownloadService _downloadService;
         private readonly IOrderService _orderService;
         private readonly IPaymentService _paymentService;
         private readonly IProductAttributeParser _productAttributeParser;
-        private readonly IAddressAttributeFormatter _addressAttributeFormatter;
         private readonly IStoreService _storeService;
         private readonly IStoreContext _storeContext;
 
@@ -71,13 +67,11 @@ namespace Nop.Services.Messages
             IPriceFormatter priceFormatter, 
             ICurrencyService currencyService,
             IWorkContext workContext,
-            IDownloadService downloadService,
             IOrderService orderService,
             IPaymentService paymentService,
             IStoreService storeService,
             IStoreContext storeContext,
             IProductAttributeParser productAttributeParser,
-            IAddressAttributeFormatter addressAttributeFormatter,
             MessageTemplatesSettings templatesSettings,
             CatalogSettings catalogSettings,
             TaxSettings taxSettings,
@@ -85,26 +79,24 @@ namespace Nop.Services.Messages
             ShippingSettings shippingSettings,
             IEventPublisher eventPublisher)
         {
-            this._languageService = languageService;
-            this._localizationService = localizationService;
-            this._dateTimeHelper = dateTimeHelper;
-            this._priceFormatter = priceFormatter;
-            this._currencyService = currencyService;
-            this._workContext = workContext;
-            this._downloadService = downloadService;
-            this._orderService = orderService;
-            this._paymentService = paymentService;
-            this._productAttributeParser = productAttributeParser;
-            this._addressAttributeFormatter = addressAttributeFormatter;
-            this._storeService = storeService;
-            this._storeContext = storeContext;
+            _languageService = languageService;
+            _localizationService = localizationService;
+            _dateTimeHelper = dateTimeHelper;
+            _priceFormatter = priceFormatter;
+            _currencyService = currencyService;
+            _workContext = workContext;
+            _orderService = orderService;
+            _paymentService = paymentService;
+            _productAttributeParser = productAttributeParser;
+            _storeService = storeService;
+            _storeContext = storeContext;
 
-            this._templatesSettings = templatesSettings;
-            this._catalogSettings = catalogSettings;
-            this._taxSettings = taxSettings;
-            this._currencySettings = currencySettings;
-            this._shippingSettings = shippingSettings;
-            this._eventPublisher = eventPublisher;
+            _templatesSettings = templatesSettings;
+            _catalogSettings = catalogSettings;
+            _taxSettings = taxSettings;
+            _currencySettings = currencySettings;
+            _shippingSettings = shippingSettings;
+            _eventPublisher = eventPublisher;
         }
 
         #endregion
@@ -151,40 +143,14 @@ namespace Nop.Services.Messages
                 string productName = product.GetLocalized(x => x.Name, languageId);
 
                 sb.AppendLine("<td style=\"padding: 0.6em 0.4em;text-align: left;\">" + HttpUtility.HtmlEncode(productName));
-                //add download link
-                if (_downloadService.IsDownloadAllowed(orderItem))
-                {
-                    //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
-                    string downloadUrl = string.Format("{0}download/getdownload/{1}", GetStoreUrl(order.StoreId), orderItem.OrderItemGuid);
-                    string downloadLink = string.Format("<a class=\"link\" href=\"{0}\">{1}</a>", downloadUrl, _localizationService.GetResource("Messages.Order.Product(s).Download", languageId));
-                    sb.AppendLine("<br />");
-                    sb.AppendLine(downloadLink);
-                }
-                //add download link
-                if (_downloadService.IsLicenseDownloadAllowed(orderItem))
-                {
-                    //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
-                    string licenseUrl = string.Format("{0}download/getlicense/{1}", GetStoreUrl(order.StoreId), orderItem.OrderItemGuid);
-                    string licenseLink = string.Format("<a class=\"link\" href=\"{0}\">{1}</a>", licenseUrl, _localizationService.GetResource("Messages.Order.Product(s).License", languageId));
-                    sb.AppendLine("<br />");
-                    sb.AppendLine(licenseLink);
-                }
+              
                 //attributes
                 if (!String.IsNullOrEmpty(orderItem.AttributeDescription))
                 {
                     sb.AppendLine("<br />");
                     sb.AppendLine(orderItem.AttributeDescription);
                 }
-                //rental info
-                if (orderItem.Product.IsRental)
-                {
-                    var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                    var rentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                    sb.AppendLine("<br />");
-                    sb.AppendLine(rentalInfo);
-                }
+                
                 //sku
                 if (_catalogSettings.ShowProductSku)
                 {
@@ -411,23 +377,6 @@ namespace Nop.Services.Messages
                     sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.TotalDiscount", languageId), cusDiscount));
                 }
 
-                //gift cards
-                var gcuhC = order.GiftCardUsageHistory;
-                foreach (var gcuh in gcuhC)
-                {
-                    string giftCardText = String.Format(_localizationService.GetResource("Messages.Order.GiftCardInfo", languageId), HttpUtility.HtmlEncode(gcuh.GiftCard.GiftCardCouponCode));
-                    string giftCardAmount = _priceFormatter.FormatPrice(-(_currencyService.ConvertCurrency(gcuh.UsedValue, order.CurrencyRate)), true, order.CustomerCurrencyCode, false, language);
-                    sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, giftCardText, giftCardAmount));
-                }
-
-                //reward points
-                if (order.RedeemedRewardPointsEntry != null)
-                {
-                    string rpTitle = string.Format(_localizationService.GetResource("Messages.Order.RewardPoints", languageId), -order.RedeemedRewardPointsEntry.Points);
-                    string rpAmount = _priceFormatter.FormatPrice(-(_currencyService.ConvertCurrency(order.RedeemedRewardPointsEntry.UsedAmount, order.CurrencyRate)), true, order.CustomerCurrencyCode, false, language);
-                    sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, rpTitle, rpAmount));
-                }
-
                 //total
                 sb.AppendLine(string.Format("<tr style=\"text-align:right;\"><td>&nbsp;</td><td colspan=\"2\" style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{1}</strong></td> <td style=\"background-color: {0};padding:0.6em 0.4 em;\"><strong>{2}</strong></td></tr>", _templatesSettings.Color3, _localizationService.GetResource("Messages.Order.OrderTotal", languageId), cusTotal));
                 #endregion
@@ -481,16 +430,7 @@ namespace Nop.Services.Messages
                     sb.AppendLine("<br />");
                     sb.AppendLine(orderItem.AttributeDescription);
                 }
-                //rental info
-                if (orderItem.Product.IsRental)
-                {
-                    var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-                    var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-                    var rentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-                        rentalStartDate, rentalEndDate);
-                    sb.AppendLine("<br />");
-                    sb.AppendLine(rentalInfo);
-                }
+                
                 //sku
                 if (_catalogSettings.ShowProductSku)
                 {
@@ -571,7 +511,6 @@ namespace Nop.Services.Messages
             tokens.Add(new Token("Order.BillingStateProvince", order.BillingAddress.StateProvince != null ? order.BillingAddress.StateProvince.GetLocalized(x => x.Name) : ""));
             tokens.Add(new Token("Order.BillingZipPostalCode", order.BillingAddress.ZipPostalCode));
             tokens.Add(new Token("Order.BillingCountry", order.BillingAddress.Country != null ? order.BillingAddress.Country.GetLocalized(x => x.Name) : ""));
-            tokens.Add(new Token("Order.BillingCustomAttributes", _addressAttributeFormatter.FormatAttributes(order.BillingAddress.CustomAttributes), true));
 
             tokens.Add(new Token("Order.ShippingMethod", order.ShippingMethod));
             tokens.Add(new Token("Order.ShippingFirstName", order.ShippingAddress != null ? order.ShippingAddress.FirstName : ""));
@@ -586,7 +525,6 @@ namespace Nop.Services.Messages
             tokens.Add(new Token("Order.ShippingStateProvince", order.ShippingAddress != null && order.ShippingAddress.StateProvince != null ? order.ShippingAddress.StateProvince.GetLocalized(x => x.Name) : ""));
             tokens.Add(new Token("Order.ShippingZipPostalCode", order.ShippingAddress != null ? order.ShippingAddress.ZipPostalCode : ""));
             tokens.Add(new Token("Order.ShippingCountry", order.ShippingAddress != null && order.ShippingAddress.Country != null ? order.ShippingAddress.Country.GetLocalized(x => x.Name) : ""));
-            tokens.Add(new Token("Order.ShippingCustomAttributes", _addressAttributeFormatter.FormatAttributes(order.ShippingAddress != null ? order.ShippingAddress.CustomAttributes : ""), true));
 
             var paymentMethod = _paymentService.LoadPaymentMethodBySystemName(order.PaymentMethodSystemName);
             var paymentMethodName = paymentMethod != null ? paymentMethod.GetLocalizedFriendlyName(_localizationService, _workContext.WorkingLanguage.Id) : order.PaymentMethodSystemName;
@@ -671,15 +609,6 @@ namespace Nop.Services.Messages
             //event notification
             _eventPublisher.EntityTokensAdded(shipment, tokens);
         }
-
-        public virtual void AddOrderNoteTokens(IList<Token> tokens, OrderNote orderNote)
-        {
-            tokens.Add(new Token("Order.NewNoteText", orderNote.FormatOrderNoteText(), true));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(orderNote, tokens);
-        }
-
         public virtual void AddRecurringPaymentTokens(IList<Token> tokens, RecurringPayment recurringPayment)
         {
             tokens.Add(new Token("RecurringPayment.ID", recurringPayment.Id.ToString()));
@@ -702,24 +631,6 @@ namespace Nop.Services.Messages
 
             //event notification
             _eventPublisher.EntityTokensAdded(returnRequest, tokens);
-        }
-
-        public virtual void AddGiftCardTokens(IList<Token> tokens, GiftCard giftCard)
-        {
-            tokens.Add(new Token("GiftCard.SenderName", giftCard.SenderName));
-            tokens.Add(new Token("GiftCard.SenderEmail",giftCard.SenderEmail));
-            tokens.Add(new Token("GiftCard.RecipientName", giftCard.RecipientName));
-            tokens.Add(new Token("GiftCard.RecipientEmail", giftCard.RecipientEmail));
-            tokens.Add(new Token("GiftCard.Amount", _priceFormatter.FormatPrice(giftCard.Amount, true, false)));
-            tokens.Add(new Token("GiftCard.CouponCode", giftCard.GiftCardCouponCode));
-
-            var giftCardMesage = !String.IsNullOrWhiteSpace(giftCard.Message) ? 
-                HtmlHelper.FormatText(giftCard.Message, false, true, false, false, false, false) : "";
-
-            tokens.Add(new Token("GiftCard.Message", giftCardMesage, true));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(giftCard, tokens);
         }
 
         public virtual void AddCustomerTokens(IList<Token> tokens, Customer customer)
@@ -824,53 +735,6 @@ namespace Nop.Services.Messages
             
             //event notification
             _eventPublisher.EntityTokensAdded(combination, tokens);
-        }
-
-        public virtual void AddForumTopicTokens(IList<Token> tokens, ForumTopic forumTopic, 
-            int? friendlyForumTopicPageIndex = null, int? appendedPostIdentifierAnchor = null)
-        {
-            //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
-            string topicUrl;
-            if (friendlyForumTopicPageIndex.HasValue && friendlyForumTopicPageIndex.Value > 1)
-                topicUrl = string.Format("{0}boards/topic/{1}/{2}/page/{3}", GetStoreUrl(), forumTopic.Id, forumTopic.GetSeName(), friendlyForumTopicPageIndex.Value);
-            else
-                topicUrl = string.Format("{0}boards/topic/{1}/{2}", GetStoreUrl(), forumTopic.Id, forumTopic.GetSeName());
-            if (appendedPostIdentifierAnchor.HasValue && appendedPostIdentifierAnchor.Value > 0)
-                topicUrl = string.Format("{0}#{1}", topicUrl, appendedPostIdentifierAnchor.Value);
-            tokens.Add(new Token("Forums.TopicURL", topicUrl, true));
-            tokens.Add(new Token("Forums.TopicName", forumTopic.Subject));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(forumTopic, tokens);
-        }
-
-        public virtual void AddForumPostTokens(IList<Token> tokens, ForumPost forumPost)
-        {
-            tokens.Add(new Token("Forums.PostAuthor", forumPost.Customer.FormatUserName()));
-            tokens.Add(new Token("Forums.PostBody", forumPost.FormatPostText(), true));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(forumPost, tokens);
-        }
-
-        public virtual void AddForumTokens(IList<Token> tokens, Forum forum)
-        {
-            //TODO add a method for getting URL (use routing because it handles all SEO friendly URLs)
-            var forumUrl = string.Format("{0}boards/forum/{1}/{2}", GetStoreUrl(), forum.Id, forum.GetSeName());
-            tokens.Add(new Token("Forums.ForumURL", forumUrl, true));
-            tokens.Add(new Token("Forums.ForumName", forum.Name));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(forum, tokens);
-        }
-
-        public virtual void AddPrivateMessageTokens(IList<Token> tokens, PrivateMessage privateMessage)
-        {
-            tokens.Add(new Token("PrivateMessage.Subject", privateMessage.Subject));
-            tokens.Add(new Token("PrivateMessage.Text",  privateMessage.FormatPrivateMessageText(), true));
-
-            //event notification
-            _eventPublisher.EntityTokensAdded(privateMessage, tokens);
         }
 
         public virtual void AddBackInStockTokens(IList<Token> tokens, BackInStockSubscription subscription)

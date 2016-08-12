@@ -7,7 +7,6 @@ using Nop.Core.Caching;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Vendors;
 using Nop.Services.Catalog;
@@ -33,7 +32,7 @@ using Nop.Web.Models.Media;
 
 namespace Nop.Web.Controllers
 {
-    public partial class CatalogController : BasePublicController
+    public class CatalogController : BasePublicController
     {
 		#region Fields
 
@@ -41,7 +40,6 @@ namespace Nop.Web.Controllers
         private readonly IManufacturerService _manufacturerService;
         private readonly IProductService _productService;
         private readonly IVendorService _vendorService;
-        private readonly IManufacturerTemplateService _manufacturerTemplateService;
         private readonly IWorkContext _workContext;
         private readonly IStoreContext _storeContext;
         private readonly ITaxService _taxService;
@@ -64,7 +62,6 @@ namespace Nop.Web.Controllers
         private readonly MediaSettings _mediaSettings;
         private readonly CatalogSettings _catalogSettings;
         private readonly VendorSettings _vendorSettings;
-        private readonly ForumSettings _forumSettings;
         private readonly ICacheManager _cacheManager;
         
         #endregion
@@ -75,7 +72,6 @@ namespace Nop.Web.Controllers
             IManufacturerService manufacturerService,
             IProductService productService, 
             IVendorService vendorService,
-            IManufacturerTemplateService manufacturerTemplateService,
             IWorkContext workContext, 
             IStoreContext storeContext,
             ITaxService taxService, 
@@ -98,38 +94,35 @@ namespace Nop.Web.Controllers
             MediaSettings mediaSettings,
             CatalogSettings catalogSettings,
             VendorSettings vendorSettings,
-            ForumSettings  forumSettings,
             ICacheManager cacheManager)
         {
-            this._categoryService = categoryService;
-            this._manufacturerService = manufacturerService;
-            this._productService = productService;
-            this._vendorService = vendorService;
-            this._manufacturerTemplateService = manufacturerTemplateService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._taxService = taxService;
-            this._currencyService = currencyService;
-            this._pictureService = pictureService;
-            this._localizationService = localizationService;
-            this._priceCalculationService = priceCalculationService;
-            this._priceFormatter = priceFormatter;
-            this._webHelper = webHelper;
-            this._specificationAttributeService = specificationAttributeService;
-            this._productTagService = productTagService;
-            this._genericAttributeService = genericAttributeService;
-            this._aclService = aclService;
-            this._storeMappingService = storeMappingService;
-            this._permissionService = permissionService;
-            this._customerActivityService = customerActivityService;
-            this._topicService = topicService;
-            this._eventPublisher = eventPublisher;
-            this._searchTermService = searchTermService;
-            this._mediaSettings = mediaSettings;
-            this._catalogSettings = catalogSettings;
-            this._vendorSettings = vendorSettings;
-            this._forumSettings = forumSettings;
-            this._cacheManager = cacheManager;
+            _categoryService = categoryService;
+            _manufacturerService = manufacturerService;
+            _productService = productService;
+            _vendorService = vendorService;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _taxService = taxService;
+            _currencyService = currencyService;
+            _pictureService = pictureService;
+            _localizationService = localizationService;
+            _priceCalculationService = priceCalculationService;
+            _priceFormatter = priceFormatter;
+            _webHelper = webHelper;
+            _specificationAttributeService = specificationAttributeService;
+            _productTagService = productTagService;
+            _genericAttributeService = genericAttributeService;
+            _aclService = aclService;
+            _storeMappingService = storeMappingService;
+            _permissionService = permissionService;
+            _customerActivityService = customerActivityService;
+            _topicService = topicService;
+            _eventPublisher = eventPublisher;
+            _searchTermService = searchTermService;
+            _mediaSettings = mediaSettings;
+            _catalogSettings = catalogSettings;
+            _vendorSettings = vendorSettings;
+            _cacheManager = cacheManager;
         }
 
         #endregion
@@ -151,7 +144,7 @@ namespace Nop.Web.Controllers
                 foreach (ProductSortingEnum enumValue in Enum.GetValues(typeof(ProductSortingEnum)))
                 {
                     var currentPageUrl = _webHelper.GetThisPageUrl(true);
-                    var sortUrl = _webHelper.ModifyQueryString(currentPageUrl, "orderby=" + ((int)enumValue).ToString(), null);
+                    var sortUrl = _webHelper.ModifyQueryString(currentPageUrl, "orderby=" + ((int)enumValue), null);
 
                     var sortValue = enumValue.GetLocalizedEnum(_localizationService, _workContext);
                     pagingFilteringModel.AvailableSortOptions.Add(new SelectListItem
@@ -605,7 +598,7 @@ namespace Nop.Web.Controllers
             _customerActivityService.InsertActivity("PublicStore.ViewCategory", _localizationService.GetResource("ActivityLog.PublicStore.ViewCategory"), category.Name);
 
             //return View(templateViewPath, model);
-            return View(model);
+            return View("CategoryTemplate.ProductsInGridOrLines", model);
         }
 
         [ChildActionOnly]
@@ -671,8 +664,7 @@ namespace Nop.Web.Controllers
             {
                 Categories = cachedCategoriesModel,
                 Topics = cachedTopicModel,
-                NewProductsEnabled = _catalogSettings.NewProductsEnabled,
-                ForumEnabled = _forumSettings.ForumsEnabled
+                NewProductsEnabled = _catalogSettings.NewProductsEnabled
             };
             return PartialView(model);
         }
@@ -820,8 +812,6 @@ namespace Nop.Web.Controllers
                 }
             }
 
-
-
             //products
             IList<int> filterableSpecificationAttributeOptionIds;
             var products = _productService.SearchProducts(out filterableSpecificationAttributeOptionIds, true,
@@ -838,23 +828,11 @@ namespace Nop.Web.Controllers
 
             model.PagingFilteringContext.LoadPagedList(products);
 
-
-            //template
-            var templateCacheKey = string.Format(ModelCacheEventConsumer.MANUFACTURER_TEMPLATE_MODEL_KEY, manufacturer.ManufacturerTemplateId);
-            var templateViewPath = _cacheManager.Get(templateCacheKey, () =>
-            {
-                var template = _manufacturerTemplateService.GetManufacturerTemplateById(manufacturer.ManufacturerTemplateId);
-                if (template == null)
-                    template = _manufacturerTemplateService.GetAllManufacturerTemplates().FirstOrDefault();
-                if (template == null)
-                    throw new Exception("No default template could be loaded");
-                return template.ViewPath;
-            });
-
             //activity log
             _customerActivityService.InsertActivity("PublicStore.ViewManufacturer", _localizationService.GetResource("ActivityLog.PublicStore.ViewManufacturer"), manufacturer.Name);
 
-            return View(templateViewPath, model);
+            //return View(templateViewPath, model);
+            return View(model);
         }
 
         [NopHttpsRequirement(SslRequirement.No)]
@@ -915,7 +893,7 @@ namespace Nop.Web.Controllers
                             Id = manufacturer.Id,
                             Name = manufacturer.GetLocalized(x => x.Name),
                             SeName = manufacturer.GetSeName(),
-                            IsActive = currentManufacturer != null && currentManufacturer.Id == manufacturer.Id,
+                            IsActive = currentManufacturer != null && currentManufacturer.Id == manufacturer.Id
                         };
                         model.Manufacturers.Add(modelMan);
                     }
@@ -1053,7 +1031,7 @@ namespace Nop.Web.Controllers
                     {
                         Id = vendor.Id,
                         Name = vendor.GetLocalized(x => x.Name),
-                        SeName = vendor.GetSeName(),
+                        SeName = vendor.GetSeName()
                     });
                 }
                 return model;
@@ -1420,7 +1398,7 @@ namespace Nop.Web.Controllers
                           select new
                           {
                               label = p.Name,
-                              producturl = Url.RouteUrl("Product", new { SeName = p.SeName }),
+                              producturl = Url.RouteUrl("Product", new {p.SeName }),
                               productpictureurl = p.DefaultPictureModel.ImageUrl
                           })
                           .ToList();

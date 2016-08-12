@@ -25,7 +25,7 @@ using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Controllers
 {
-    public partial class DiscountController : BaseAdminController
+    public  class DiscountController : BaseAdminController
     {
         #region Fields
 
@@ -113,24 +113,6 @@ namespace Nop.Admin.Controllers
             var discountRules = _discountService.LoadAllDiscountRequirementRules();
             foreach (var discountRule in discountRules)
                 model.AvailableDiscountRequirementRules.Add(new SelectListItem { Text = discountRule.PluginDescriptor.FriendlyName, Value = discountRule.PluginDescriptor.SystemName });
-
-            if (discount != null)
-            {
-                //requirements
-                foreach (var dr in discount.DiscountRequirements.OrderBy(dr=>dr.Id))
-                {
-                    var drr = _discountService.LoadDiscountRequirementRuleBySystemName(dr.DiscountRequirementRuleSystemName);
-                    if (drr != null)
-                    {
-                        model.DiscountRequirementMetaInfos.Add(new DiscountModel.DiscountRequirementMetaInfo
-                        {
-                            DiscountRequirementId = dr.Id,
-                            RuleName = drr.PluginDescriptor.FriendlyName,
-                            ConfigurationUrl = GetRequirementUrlInternal(drr, discount, dr.Id)
-                        });
-                    }
-                }
-            }
         }
 
         #endregion
@@ -262,13 +244,7 @@ namespace Nop.Admin.Controllers
                     discount.AppliedToCategories.Clear();
                     _discountService.UpdateDiscount(discount);
                 }
-                if (prevDiscountType == DiscountType.AssignedToManufacturers
-                    && discount.DiscountType != DiscountType.AssignedToManufacturers)
-                {
-                    //applied to manufacturers
-                    discount.AppliedToManufacturers.Clear();
-                    _discountService.UpdateDiscount(discount);
-                }
+         
                 if (prevDiscountType == DiscountType.AssignedToSkus
                     && discount.DiscountType != DiscountType.AssignedToSkus)
                 {
@@ -331,75 +307,9 @@ namespace Nop.Admin.Controllers
 
         #endregion
 
-        #region Discount requirements
-
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult GetDiscountRequirementConfigurationUrl(string systemName, int discountId, int? discountRequirementId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            if (String.IsNullOrEmpty(systemName))
-                throw new ArgumentNullException("systemName");
-            
-            var discountRequirementRule = _discountService.LoadDiscountRequirementRuleBySystemName(systemName);
-            if (discountRequirementRule == null)
-                throw new ArgumentException("Discount requirement rule could not be loaded");
-
-            var discount = _discountService.GetDiscountById(discountId);
-            if (discount == null)
-                throw new ArgumentException("Discount could not be loaded");
-
-            string url = GetRequirementUrlInternal(discountRequirementRule, discount, discountRequirementId);
-            return Json(new { url = url }, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetDiscountRequirementMetaInfo(int discountRequirementId, int discountId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            var discount = _discountService.GetDiscountById(discountId);
-            if (discount == null)
-                throw new ArgumentException("Discount could not be loaded");
-
-            var discountRequirement = discount.DiscountRequirements.FirstOrDefault(dr => dr.Id == discountRequirementId);
-            if (discountRequirement == null)
-                throw new ArgumentException("Discount requirement could not be loaded");
-
-            var discountRequirementRule = _discountService.LoadDiscountRequirementRuleBySystemName(discountRequirement.DiscountRequirementRuleSystemName);
-            if (discountRequirementRule == null)
-                throw new ArgumentException("Discount requirement rule could not be loaded");
-
-            string url = GetRequirementUrlInternal(discountRequirementRule, discount, discountRequirementId);
-            string ruleName = discountRequirementRule.PluginDescriptor.FriendlyName;
-            return Json(new { url = url, ruleName = ruleName }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public ActionResult DeleteDiscountRequirement(int discountRequirementId, int discountId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            var discount = _discountService.GetDiscountById(discountId);
-            if (discount == null)
-                throw new ArgumentException("Discount could not be loaded");
-
-            var discountRequirement = discount.DiscountRequirements.FirstOrDefault(dr => dr.Id == discountRequirementId);
-            if (discountRequirement == null)
-                throw new ArgumentException("Discount requirement could not be loaded");
-
-            _discountService.DeleteDiscountRequirement(discountRequirement);
-
-            return Json(new { Result = true }, JsonRequestBehavior.AllowGet);
-        }
-
-        #endregion
-
         #region Applied to products
 
-        [HttpPost]
+                [HttpPost]
         public ActionResult ProductList(DataSourceRequest command, int discountId)
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
@@ -646,117 +556,6 @@ namespace Nop.Admin.Controllers
                             category.AppliedDiscounts.Add(discount);
 
                         _categoryService.UpdateCategory(category);
-                    }
-                }
-            }
-
-            ViewBag.RefreshPage = true;
-            ViewBag.btnId = btnId;
-            ViewBag.formId = formId;
-            return View(model);
-        }
-
-        #endregion
-
-        #region Applied to manufacturers
-
-        [HttpPost]
-        public ActionResult ManufacturerList(DataSourceRequest command, int discountId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            var discount = _discountService.GetDiscountById(discountId);
-            if (discount == null)
-                throw new Exception("No discount found with the specified id");
-
-            var manufacturers = discount
-                .AppliedToManufacturers
-                .Where(x => !x.Deleted)
-                .ToList();
-            var gridModel = new DataSourceResult
-            {
-                Data = manufacturers.Select(x => new DiscountModel.AppliedToManufacturerModel
-                {
-                    ManufacturerId = x.Id,
-                    ManufacturerName = x.Name
-                }),
-                Total = manufacturers.Count
-            };
-
-            return Json(gridModel);
-        }
-
-        public ActionResult ManufacturerDelete(int discountId, int manufacturerId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            var discount = _discountService.GetDiscountById(discountId);
-            if (discount == null)
-                throw new Exception("No discount found with the specified id");
-
-            var manufacturer = _manufacturerService.GetManufacturerById(manufacturerId);
-            if (manufacturer == null)
-                throw new Exception("No manufacturer found with the specified id");
-
-            //remove discount
-            if (manufacturer.AppliedDiscounts.Count(d => d.Id == discount.Id) > 0)
-                manufacturer.AppliedDiscounts.Remove(discount);
-
-            _manufacturerService.UpdateManufacturer(manufacturer);
-
-            return new NullJsonResult();
-        }
-
-        public ActionResult ManufacturerAddPopup(int discountId)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            var model = new DiscountModel.AddManufacturerToDiscountModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult ManufacturerAddPopupList(DataSourceRequest command, DiscountModel.AddManufacturerToDiscountModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            var manufacturers = _manufacturerService.GetAllManufacturers(model.SearchManufacturerName,
-                command.Page - 1, command.PageSize, true);
-            var gridModel = new DataSourceResult
-            {
-                Data = manufacturers.Select(x => x.ToModel()),
-                Total = manufacturers.TotalCount
-            };
-
-            return Json(gridModel);
-        }
-
-        [HttpPost]
-        [FormValueRequired("save")]
-        public ActionResult ManufacturerAddPopup(string btnId, string formId, DiscountModel.AddManufacturerToDiscountModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageDiscounts))
-                return AccessDeniedView();
-
-            var discount = _discountService.GetDiscountById(model.DiscountId);
-            if (discount == null)
-                throw new Exception("No discount found with the specified id");
-
-            if (model.SelectedManufacturerIds != null)
-            {
-                foreach (int id in model.SelectedManufacturerIds)
-                {
-                    var manufacturer = _manufacturerService.GetManufacturerById(id);
-                    if (manufacturer != null)
-                    {
-                        if (manufacturer.AppliedDiscounts.Count(d => d.Id == discount.Id) == 0)
-                            manufacturer.AppliedDiscounts.Add(discount);
-
-                        _manufacturerService.UpdateManufacturer(manufacturer);
                     }
                 }
             }

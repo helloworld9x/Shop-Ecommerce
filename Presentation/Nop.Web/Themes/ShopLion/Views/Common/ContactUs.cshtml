@@ -1,0 +1,138 @@
+﻿@model ContactUsModel
+@using Nop.Web.Models.Common;
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.ContactUs").Text);
+}
+<div class="page contact-page">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7">
+            <div class="main-title">
+                <h2>Contact us</h2>
+                <small>Feel free to contact us</small>
+            </div>
+            @if (Model.SuccessfullySent)
+            {
+                <div class="result">
+                    @Model.Result
+                </div>
+            }
+            else
+            {
+                using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    var validationSummary = Html.ValidationSummary(true);
+                    if (!MvcHtmlString.IsNullOrEmpty(validationSummary))
+                    {
+                        <div class="message-error">@validationSummary</div>
+                    }
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FullName)
+                                    @Html.TextBoxFor(model => model.FullName, new {@class = "form-control", placeholder = T("ContactUs.FullName.Hint")})
+                                    @*@Html.RequiredHint()*@
+                                    @Html.ValidationMessageFor(model => model.FullName)
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Email)
+                                    @Html.TextBoxFor(model => model.Email, new {@class = "form-control", placeholder = T("ContactUs.Email.Hint")})
+                                    @*@Html.RequiredHint()*@
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                                @if (Model.SubjectEnabled)
+                                {
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Subject)
+                                        @Html.TextBoxFor(model => model.Subject, new {@class = "form-control", placeholder = T("ContactUs.Subject.Hint")})
+                                        @*@Html.RequiredHint()*@
+                                        @Html.ValidationMessageFor(model => model.Subject)
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.Enquiry)
+                                @Html.TextAreaFor(model => model.Enquiry, new {@class = "form-control", placeholder = T("ContactUs.Enquiry.Hint"),cols="24", rows = "8" })
+                                @*@Html.RequiredHint()*@
+                                @Html.ValidationMessageFor(model => model.Enquiry)
+                            </div>
+                            @if (Model.DisplayCaptcha)
+                            {
+                                <div class="captcha-box">
+                                    @Html.Raw(Html.GenerateCaptcha())
+                                </div>
+                            }
+                        </div>
+                        <div class="buttons mg-5">
+                            <input type="submit" name="send-email" class="btn btn-danger pull-right" value="@T("ContactUs.Button")"/>
+                        </div>
+                    </form>
+                }
+            }
+        </div>
+        <div class="col-xs-12 col-sm-5">
+            <img src="~/Themes/ShopLion/Content/images/contactus.png" class="img-responsive" alt="contact us">
+        </div>
+    </div>
+
+</div>
+<section>
+    <div class="container-fluid">
+        <div id="map-row" class="">
+            <div class="col-xs-12 no-padding">
+                <iframe src="http://mapbuildr.com/frame/8i8sek" frameborder="0" height="400" width="100%"></iframe>
+                <!-- /IFRAME -->
+
+                <div id="map-overlay" class="col-xs-5 col-xs-offset-6 map-overlay">
+                    <div class="row">
+                        <h4>General Enquiries:</h4>
+                        <p>Email:<span class="im im-earth"></span> <a href="#"> info@shopatlion.com</a> <span class="im im-phone"></span>Phone:  T: +603 2035 6699, Ext: 1313</p>
+                    </div>
+                    <div class="row">
+                        <h4>Our Regional Offices</h4>
+                        <div class="col-sm-4 col-xs-12 no-padding">
+                            <address>
+                                <strong>Malaysia</strong><br>
+                                General Enquiries <br>
+                                Address: Block C, Oasis Ara Damansara, <br>
+                                2 Jalan PJU 1A/7A, <br>
+                                47301 Petaling Jaya, Selangor, Malaysia <br>
+                                <span class="im im-phone no-padding"></span> <abbr title="Phone">Tel:</abbr> +603 2035 6699 <br>
+                                Ext: 1313  <br>
+                                Operating Hours: 8am-6pm  <br>
+                                Monday to Friday
+                            </address>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <address>
+                                <strong>Indonesia</strong><br>
+                                Address: Lion Air Tower<br>Jl. Gajah Mada No.7, <br>Jakarta Barat  <br>
+                                <span class="im im-phone no-padding"></span> <abbr title="Phone">Tel:</abbr> (+6280) 4177 8899 <br>
+                                <span class="im im-phone no-padding"></span> <abbr title="Phone">Tel:</abbr> (+6221) 6379 8000 <br>
+                            </address>
+                        </div>
+                        <div class="col-sm-4 col-xs-12 no-padding">
+                            <address>
+                                <strong>Thailand</strong><br>
+                                Address: 89/46 Vibhavadi Rangsit Road,<br>Sanambin Sub-District,<br>Don Mueang District<br>
+                                <span class="im im-phone no-padding"></span> <abbr title="Phone">Tel:</abbr> (+66) 2-529-9999 <br>
+                            </address>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gap gap-top clearfix"></div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    $(function() {
+        $('body').addClass('body-contact-page');
+    });
+</script>

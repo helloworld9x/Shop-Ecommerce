@@ -2,7 +2,7 @@
 
 namespace Nop.Data.Mapping.Shipping
 {
-    public class WarehouseMap : NopEntityTypeConfiguration<Warehouse>
+    public class WarehouseMap : GoqEntityTypeConfiguration<Warehouse>
     {
         public WarehouseMap()
         {

@@ -30,9 +30,6 @@ namespace Nop.Web.Extensions
                 Id = entity.Id,
                 Name = entity.GetLocalized(x => x.Name),
                 Description = entity.GetLocalized(x => x.Description),
-                MetaKeywords = entity.GetLocalized(x => x.MetaKeywords),
-                MetaDescription = entity.GetLocalized(x => x.MetaDescription),
-                MetaTitle = entity.GetLocalized(x => x.MetaTitle),
                 SeName = entity.GetSeName(),
             };
             return model;
@@ -49,9 +46,6 @@ namespace Nop.Web.Extensions
                 Id = entity.Id,
                 Name = entity.GetLocalized(x => x.Name),
                 Description = entity.GetLocalized(x => x.Description),
-                MetaKeywords = entity.GetLocalized(x => x.MetaKeywords),
-                MetaDescription = entity.GetLocalized(x => x.MetaDescription),
-                MetaTitle = entity.GetLocalized(x => x.MetaTitle),
                 SeName = entity.GetSeName(),
             };
             return model;
@@ -80,9 +74,6 @@ namespace Nop.Web.Extensions
             AddressSettings addressSettings,
             ILocalizationService localizationService = null,
             IStateProvinceService stateProvinceService = null,
-            IAddressAttributeService addressAttributeService = null,
-            IAddressAttributeParser addressAttributeParser = null,
-            IAddressAttributeFormatter addressAttributeFormatter = null,
             Func<IList<Country>> loadCountries = null,
             bool prePopulateWithCustomerFields = false,
             Customer customer = null,
@@ -207,108 +198,8 @@ namespace Nop.Web.Extensions
             model.FaxEnabled = addressSettings.FaxEnabled;
             model.FaxRequired = addressSettings.FaxRequired;
 
-            //customer attribute services
-            if (addressAttributeService != null && addressAttributeParser != null)
-            {
-                PrepareCustomAddressAttributes(model, address, addressAttributeService, addressAttributeParser, overrideAttributesXml);
-            }
-            if (addressAttributeFormatter != null && address != null)
-            {
-                model.FormattedCustomAddressAttributes = addressAttributeFormatter.FormatAttributes(address.CustomAttributes);
-            }
         }
-        private static void PrepareCustomAddressAttributes(this AddressModel model, 
-            Address address,
-            IAddressAttributeService addressAttributeService,
-            IAddressAttributeParser addressAttributeParser,
-            string overrideAttributesXml = "")
-        {
-            if (addressAttributeService == null)
-                throw new ArgumentNullException("addressAttributeService");
-
-            if (addressAttributeParser == null)
-                throw new ArgumentNullException("addressAttributeParser");
-
-            var attributes = addressAttributeService.GetAllAddressAttributes();
-            foreach (var attribute in attributes)
-            {
-                var attributeModel = new AddressAttributeModel
-                {
-                    Id = attribute.Id,
-                    Name = attribute.GetLocalized(x => x.Name),
-                    IsRequired = attribute.IsRequired,
-                    AttributeControlType = attribute.AttributeControlType,
-                };
-
-                if (attribute.ShouldHaveValues())
-                {
-                    //values
-                    var attributeValues = addressAttributeService.GetAddressAttributeValues(attribute.Id);
-                    foreach (var attributeValue in attributeValues)
-                    {
-                        var attributeValueModel = new AddressAttributeValueModel
-                        {
-                            Id = attributeValue.Id,
-                            Name = attributeValue.GetLocalized(x => x.Name),
-                            IsPreSelected = attributeValue.IsPreSelected
-                        };
-                        attributeModel.Values.Add(attributeValueModel);
-                    }
-                }
-
-                //set already selected attributes
-                var selectedAddressAttributes = !String.IsNullOrEmpty(overrideAttributesXml) ?
-                    overrideAttributesXml :
-                    (address != null ? address.CustomAttributes : null);
-                switch (attribute.AttributeControlType)
-                {
-                    case AttributeControlType.DropdownList:
-                    case AttributeControlType.RadioList:
-                    case AttributeControlType.Checkboxes:
-                        {
-                            if (!String.IsNullOrEmpty(selectedAddressAttributes))
-                            {
-                                //clear default selection
-                                foreach (var item in attributeModel.Values)
-                                    item.IsPreSelected = false;
-
-                                //select new values
-                                var selectedValues = addressAttributeParser.ParseAddressAttributeValues(selectedAddressAttributes);
-                                foreach (var attributeValue in selectedValues)
-                                    foreach (var item in attributeModel.Values)
-                                        if (attributeValue.Id == item.Id)
-                                            item.IsPreSelected = true;
-                            }
-                        }
-                        break;
-                    case AttributeControlType.ReadonlyCheckboxes:
-                        {
-                            //do nothing
-                            //values are already pre-set
-                        }
-                        break;
-                    case AttributeControlType.TextBox:
-                    case AttributeControlType.MultilineTextbox:
-                        {
-                            if (!String.IsNullOrEmpty(selectedAddressAttributes))
-                            {
-                                var enteredText = addressAttributeParser.ParseValues(selectedAddressAttributes, attribute.Id);
-                                if (enteredText.Count > 0)
-                                    attributeModel.DefaultValue = enteredText[0];
-                            }
-                        }
-                        break;
-                    case AttributeControlType.ColorSquares:
-                    case AttributeControlType.Datepicker:
-                    case AttributeControlType.FileUpload:
-                    default:
-                        //not supported attribute control types
-                        break;
-                }
-
-                model.CustomAddressAttributes.Add(attributeModel);
-            }
-        }
+   
         public static Address ToEntity(this AddressModel model, bool trimFields = true)
         {
             if (model == null)

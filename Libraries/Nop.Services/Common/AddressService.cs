@@ -11,7 +11,7 @@ namespace Nop.Services.Common
     /// <summary>
     /// Address service
     /// </summary>
-    public partial class AddressService : IAddressService
+    public class AddressService : IAddressService
     {
         #region Constants
         /// <summary>
@@ -33,7 +33,6 @@ namespace Nop.Services.Common
         private readonly IRepository<Address> _addressRepository;
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
-        private readonly IAddressAttributeService _addressAttributeService;
         private readonly IEventPublisher _eventPublisher;
         private readonly AddressSettings _addressSettings;
         private readonly ICacheManager _cacheManager;
@@ -56,17 +55,15 @@ namespace Nop.Services.Common
             IRepository<Address> addressRepository,
             ICountryService countryService, 
             IStateProvinceService stateProvinceService,
-            IAddressAttributeService addressAttributeService,
             IEventPublisher eventPublisher, 
             AddressSettings addressSettings)
         {
-            this._cacheManager = cacheManager;
-            this._addressRepository = addressRepository;
-            this._countryService = countryService;
-            this._stateProvinceService = stateProvinceService;
-            this._addressAttributeService = addressAttributeService;
-            this._eventPublisher = eventPublisher;
-            this._addressSettings = addressSettings;
+            _cacheManager = cacheManager;
+            _addressRepository = addressRepository;
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
+            _eventPublisher = eventPublisher;
+            _addressSettings = addressSettings;
         }
 
         #endregion
@@ -264,10 +261,6 @@ namespace Nop.Services.Common
             if (_addressSettings.FaxEnabled &&
                 _addressSettings.FaxRequired &&
                 String.IsNullOrWhiteSpace(address.FaxNumber))
-                return false;
-
-            var attributes = _addressAttributeService.GetAllAddressAttributes();
-            if (attributes.Any(x => x.IsRequired))
                 return false;
 
             return true;

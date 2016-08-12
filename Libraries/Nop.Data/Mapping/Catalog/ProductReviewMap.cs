@@ -2,18 +2,18 @@ using Nop.Core.Domain.Catalog;
 
 namespace Nop.Data.Mapping.Catalog
 {
-    public partial class ProductReviewMap : NopEntityTypeConfiguration<ProductReview>
+    public class ProductReviewMap : GoqEntityTypeConfiguration<ProductReview>
     {
         public ProductReviewMap()
         {
-            this.ToTable("ProductReview");
-            this.HasKey(pr => pr.Id);
+            ToTable("ProductReview");
+            HasKey(pr => pr.Id);
 
-            this.HasRequired(pr => pr.Product)
+            HasRequired(pr => pr.Product)
                 .WithMany(p => p.ProductReviews)
                 .HasForeignKey(pr => pr.ProductId);
 
-            this.HasRequired(pr => pr.Customer)
+            HasRequired(pr => pr.Customer)
                 .WithMany()
                 .HasForeignKey(pr => pr.CustomerId);
         }

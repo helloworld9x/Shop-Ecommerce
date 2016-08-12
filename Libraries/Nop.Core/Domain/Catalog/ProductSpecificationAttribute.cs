@@ -3,7 +3,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product specification attribute
     /// </summary>
-    public partial class ProductSpecificationAttribute : BaseEntity
+    public class ProductSpecificationAttribute : BaseEntity
     {
         /// <summary>
         /// Gets or sets the product identifier
@@ -57,11 +57,11 @@ namespace Nop.Core.Domain.Catalog
         {
             get
             {
-                return (SpecificationAttributeType)this.AttributeTypeId;
+                return (SpecificationAttributeType)AttributeTypeId;
             }
             set
             {
-                this.AttributeTypeId = (int)value;
+                AttributeTypeId = (int)value;
             }
         }
     }

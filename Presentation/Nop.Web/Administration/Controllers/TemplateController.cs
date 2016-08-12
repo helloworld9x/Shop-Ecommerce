@@ -17,7 +17,6 @@ namespace Nop.Admin.Controllers
     {
         #region Fields
 
-        private readonly IManufacturerTemplateService _manufacturerTemplateService;
         private readonly IProductTemplateService _productTemplateService;
         private readonly ITopicTemplateService _topicTemplateService;
         private readonly IPermissionService _permissionService;
@@ -27,98 +26,13 @@ namespace Nop.Admin.Controllers
         #region Constructors
 
         public TemplateController(
-            IManufacturerTemplateService manufacturerTemplateService,
             IProductTemplateService productTemplateService,
             ITopicTemplateService topicTemplateService,
             IPermissionService permissionService)
         {
-            _manufacturerTemplateService = manufacturerTemplateService;
             _productTemplateService = productTemplateService;
             _topicTemplateService = topicTemplateService;
             _permissionService = permissionService;
-        }
-
-        #endregion
-
-        #region Manufacturer templates
-
-        public ActionResult ManufacturerTemplates()
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult ManufacturerTemplates(DataSourceRequest command)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            var templatesModel = _manufacturerTemplateService.GetAllManufacturerTemplates()
-                .Select(x => x.ToModel())
-                .ToList();
-            var gridModel = new DataSourceResult
-            {
-                Data = templatesModel,
-                Total = templatesModel.Count
-            };
-
-            return Json(gridModel);
-        }
-
-        [HttpPost]
-        public ActionResult ManufacturerTemplateUpdate(ManufacturerTemplateModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            if (!ModelState.IsValid)
-            {
-                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
-            }
-
-            var template = _manufacturerTemplateService.GetManufacturerTemplateById(model.Id);
-            if (template == null)
-                throw new ArgumentException("No template found with the specified id");
-            template = model.ToEntity(template);
-            _manufacturerTemplateService.UpdateManufacturerTemplate(template);
-
-            return new NullJsonResult();
-        }
-
-        [HttpPost]
-        public ActionResult ManufacturerTemplateAdd([Bind(Exclude = "Id")] ManufacturerTemplateModel model)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            if (!ModelState.IsValid)
-            {
-                return Json(new DataSourceResult { Errors = ModelState.SerializeErrors() });
-            }
-
-            var template = new ManufacturerTemplate();
-            template = model.ToEntity(template);
-            _manufacturerTemplateService.InsertManufacturerTemplate(template);
-
-            return new NullJsonResult();
-        }
-
-        [HttpPost]
-        public ActionResult ManufacturerTemplateDelete(int id)
-        {
-            if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
-                return AccessDeniedView();
-
-            var template = _manufacturerTemplateService.GetManufacturerTemplateById(id);
-            if (template == null)
-                throw new ArgumentException("No template found with the specified id");
-
-            _manufacturerTemplateService.DeleteManufacturerTemplate(template);
-
-            return new NullJsonResult();
         }
 
         #endregion

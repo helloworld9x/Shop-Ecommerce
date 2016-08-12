@@ -3,7 +3,7 @@ using Nop.Web.Framework.Security;
 
 namespace Nop.Web.Controllers
 {
-    public partial class HomeController : BasePublicController
+    public class HomeController : BasePublicController
     {
         [NopHttpsRequirement(SslRequirement.No)]
         public ActionResult Index()

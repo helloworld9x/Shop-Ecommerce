@@ -6,7 +6,7 @@ namespace Nop.Core.Domain.Catalog
     /// <summary>
     /// Represents a product attribute mapping
     /// </summary>
-    public partial class ProductAttributeMapping : BaseEntity, ILocalizedEntity
+    public class ProductAttributeMapping : BaseEntity, ILocalizedEntity
     {
         private ICollection<ProductAttributeValue> _productAttributeValues;
 
@@ -86,11 +86,11 @@ namespace Nop.Core.Domain.Catalog
         {
             get
             {
-                return (AttributeControlType)this.AttributeControlTypeId;
+                return (AttributeControlType)AttributeControlTypeId;
             }
             set
             {
-                this.AttributeControlTypeId = (int)value; 
+                AttributeControlTypeId = (int)value; 
             }
         }
 

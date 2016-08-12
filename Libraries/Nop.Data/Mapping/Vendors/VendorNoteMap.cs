@@ -2,15 +2,15 @@ using Nop.Core.Domain.Vendors;
 
 namespace Nop.Data.Mapping.Vendors
 {
-    public partial class VendorNoteMap : NopEntityTypeConfiguration<VendorNote>
+    public class VendorNoteMap : GoqEntityTypeConfiguration<VendorNote>
     {
         public VendorNoteMap()
         {
-            this.ToTable("VendorNote");
-            this.HasKey(vn => vn.Id);
-            this.Property(vn => vn.Note).IsRequired();
+            ToTable("VendorNote");
+            HasKey(vn => vn.Id);
+            Property(vn => vn.Note).IsRequired();
 
-            this.HasRequired(vn => vn.Vendor)
+            HasRequired(vn => vn.Vendor)
                 .WithMany(v => v.VendorNotes)
                 .HasForeignKey(vn => vn.VendorId);
         }

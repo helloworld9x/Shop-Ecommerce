@@ -1,3 +1,4 @@
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\obj\Debug\Nop.Core.Tests.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\bin\Debug\Nop.Core.Tests.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\bin\Debug\Nop.Core.Tests.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\bin\Debug\Nop.Core.Tests.pdb
@@ -31,6 +32,5 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\bin\Debug\St
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\bin\Debug\StackExchange.Redis.StrongName.xml
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\bin\Debug\Autofac.Integration.Mvc.xml
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\bin\Debug\Newtonsoft.Json.xml
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\obj\Debug\Nop.Core.Tests.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\obj\Debug\Nop.Core.Tests.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Tests\Nop.Core.Tests\obj\Debug\Nop.Core.Tests.pdb

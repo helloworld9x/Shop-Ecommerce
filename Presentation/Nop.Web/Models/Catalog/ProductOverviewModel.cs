@@ -46,8 +46,6 @@ namespace Nop.Web.Models.Catalog
             public bool AvailableForPreOrder { get; set; }
             public DateTime? PreOrderAvailabilityStartDateTimeUtc { get; set; }
 
-            public bool IsRental { get; set; }
-
             public bool ForceRedirectionAfterAddingToCart { get; set; }
 
             /// <summary>

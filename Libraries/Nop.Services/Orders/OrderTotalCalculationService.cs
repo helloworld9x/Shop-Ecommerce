@@ -21,7 +21,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order service
     /// </summary>
-    public partial class OrderTotalCalculationService : IOrderTotalCalculationService
+    public class OrderTotalCalculationService : IOrderTotalCalculationService
     {
         #region Fields
 
@@ -33,11 +33,8 @@ namespace Nop.Services.Orders
         private readonly IPaymentService _paymentService;
         private readonly ICheckoutAttributeParser _checkoutAttributeParser;
         private readonly IDiscountService _discountService;
-        private readonly IGiftCardService _giftCardService;
         private readonly IGenericAttributeService _genericAttributeService;
-        private readonly IRewardPointService _rewardPointService;
         private readonly TaxSettings _taxSettings;
-        private readonly RewardPointsSettings _rewardPointsSettings;
         private readonly ShippingSettings _shippingSettings;
         private readonly ShoppingCartSettings _shoppingCartSettings;
         private readonly CatalogSettings _catalogSettings;
@@ -56,11 +53,8 @@ namespace Nop.Services.Orders
         /// <param name="paymentService">Payment service</param>
         /// <param name="checkoutAttributeParser">Checkout attribute parser</param>
         /// <param name="discountService">Discount service</param>
-        /// <param name="giftCardService">Gift card service</param>
         /// <param name="genericAttributeService">Generic attribute service</param>
-        /// <param name="rewardPointService">Reward point service</param>
         /// <param name="taxSettings">Tax settings</param>
-        /// <param name="rewardPointsSettings">Reward points settings</param>
         /// <param name="shippingSettings">Shipping settings</param>
         /// <param name="shoppingCartSettings">Shopping cart settings</param>
         /// <param name="catalogSettings">Catalog settings</param>
@@ -72,108 +66,30 @@ namespace Nop.Services.Orders
             IPaymentService paymentService,
             ICheckoutAttributeParser checkoutAttributeParser,
             IDiscountService discountService,
-            IGiftCardService giftCardService,
             IGenericAttributeService genericAttributeService,
-            IRewardPointService rewardPointService,
             TaxSettings taxSettings,
-            RewardPointsSettings rewardPointsSettings,
             ShippingSettings shippingSettings,
             ShoppingCartSettings shoppingCartSettings,
             CatalogSettings catalogSettings)
         {
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._priceCalculationService = priceCalculationService;
-            this._taxService = taxService;
-            this._shippingService = shippingService;
-            this._paymentService = paymentService;
-            this._checkoutAttributeParser = checkoutAttributeParser;
-            this._discountService = discountService;
-            this._giftCardService = giftCardService;
-            this._genericAttributeService = genericAttributeService;
-            this._rewardPointService = rewardPointService;
-            this._taxSettings = taxSettings;
-            this._rewardPointsSettings = rewardPointsSettings;
-            this._shippingSettings = shippingSettings;
-            this._shoppingCartSettings = shoppingCartSettings;
-            this._catalogSettings = catalogSettings;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _priceCalculationService = priceCalculationService;
+            _taxService = taxService;
+            _shippingService = shippingService;
+            _paymentService = paymentService;
+            _checkoutAttributeParser = checkoutAttributeParser;
+            _discountService = discountService;
+            _genericAttributeService = genericAttributeService;
+            _taxSettings = taxSettings;
+            _shippingSettings = shippingSettings;
+            _shoppingCartSettings = shoppingCartSettings;
+            _catalogSettings = catalogSettings;
         }
 
         #endregion
 
         #region Utilities
-
-        /// <summary>
-        /// Gets an order discount (applied to order subtotal)
-        /// </summary>
-        /// <param name="customer">Customer</param>
-        /// <param name="orderSubTotal">Order subtotal</param>
-        /// <param name="appliedDiscount">Applied discount</param>
-        /// <returns>Order discount</returns>
-        protected virtual decimal GetOrderSubtotalDiscount(Customer customer,
-            decimal orderSubTotal, out Discount appliedDiscount)
-        {
-            appliedDiscount = null;
-            decimal discountAmount = decimal.Zero;
-            if (_catalogSettings.IgnoreDiscounts)
-                return discountAmount;
-
-            var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToOrderSubTotal);
-            var allowedDiscounts = new List<Discount>();
-            if (allDiscounts != null)
-                foreach (var discount in allDiscounts)
-                    if (_discountService.ValidateDiscount(discount, customer).IsValid &&
-                               discount.DiscountType == DiscountType.AssignedToOrderSubTotal &&
-                               !allowedDiscounts.ContainsDiscount(discount))
-                        allowedDiscounts.Add(discount);
-
-            appliedDiscount = allowedDiscounts.GetPreferredDiscount(orderSubTotal);
-            if (appliedDiscount != null)
-                discountAmount = appliedDiscount.GetDiscountAmount(orderSubTotal);
-
-            if (discountAmount < decimal.Zero)
-                discountAmount = decimal.Zero;
-
-            return discountAmount;
-        }
-
-        /// <summary>
-        /// Gets a shipping discount
-        /// </summary>
-        /// <param name="customer">Customer</param>
-        /// <param name="shippingTotal">Shipping total</param>
-        /// <param name="appliedDiscount">Applied discount</param>
-        /// <returns>Shipping discount</returns>
-        protected virtual decimal GetShippingDiscount(Customer customer, decimal shippingTotal, out Discount appliedDiscount)
-        {
-            appliedDiscount = null;
-            decimal shippingDiscountAmount = decimal.Zero;
-            if (_catalogSettings.IgnoreDiscounts)
-                return shippingDiscountAmount;
-
-            var allDiscounts = _discountService.GetAllDiscounts(DiscountType.AssignedToShipping);
-            var allowedDiscounts = new List<Discount>();
-            if (allDiscounts != null)
-                foreach (var discount in allDiscounts)
-                    if (_discountService.ValidateDiscount(discount, customer).IsValid &&
-                               discount.DiscountType == DiscountType.AssignedToShipping &&
-                               !allowedDiscounts.ContainsDiscount(discount))
-                        allowedDiscounts.Add(discount);
-
-            appliedDiscount = allowedDiscounts.GetPreferredDiscount(shippingTotal);
-            if (appliedDiscount != null)
-            {
-                shippingDiscountAmount = appliedDiscount.GetDiscountAmount(shippingTotal);
-            }
-
-            if (shippingDiscountAmount < decimal.Zero)
-                shippingDiscountAmount = decimal.Zero;
-
-            if (_shoppingCartSettings.RoundPricesDuringCalculation)
-                shippingDiscountAmount = RoundingHelper.RoundPrice(shippingDiscountAmount);
-
-            return shippingDiscountAmount;
-        }
 
         /// <summary>
         /// Gets an order discount (applied to order total)
@@ -210,7 +126,7 @@ namespace Nop.Services.Orders
 
             return discountAmount;
         }
-        
+
         #endregion
 
         #region Methods
@@ -224,13 +140,13 @@ namespace Nop.Services.Orders
         /// <param name="appliedDiscount">Applied discount</param>
         /// <param name="subTotalWithoutDiscount">Sub total (without discount)</param>
         /// <param name="subTotalWithDiscount">Sub total (with discount)</param>
-        public virtual void GetShoppingCartSubTotal(IList<ShoppingCartItem> cart, 
+        public virtual void GetShoppingCartSubTotal(IList<ShoppingCartItem> cart,
             bool includingTax,
             out decimal discountAmount, out Discount appliedDiscount,
             out decimal subTotalWithoutDiscount, out decimal subTotalWithDiscount)
         {
             SortedDictionary<decimal, decimal> taxRates;
-            GetShoppingCartSubTotal(cart, includingTax, 
+            GetShoppingCartSubTotal(cart, includingTax,
                 out discountAmount, out appliedDiscount,
                 out subTotalWithoutDiscount, out subTotalWithDiscount, out taxRates);
         }
@@ -262,7 +178,7 @@ namespace Nop.Services.Orders
 
             //get the customer 
             Customer customer = cart.GetCustomer();
-            
+
             //sub totals
             decimal subTotalExclTaxWithoutDiscount = decimal.Zero;
             decimal subTotalInclTaxWithoutDiscount = decimal.Zero;
@@ -275,7 +191,7 @@ namespace Nop.Services.Orders
                 decimal sciInclTax = _taxService.GetProductPrice(shoppingCartItem.Product, sciSubTotal, true, customer, out taxRate);
                 subTotalExclTaxWithoutDiscount += sciExclTax;
                 subTotalInclTaxWithoutDiscount += sciInclTax;
-                
+
                 //tax rates
                 decimal sciTax = sciInclTax - sciExclTax;
                 if (taxRate > decimal.Zero && sciTax > decimal.Zero)
@@ -334,9 +250,7 @@ namespace Nop.Services.Orders
 
             //We calculate discount amount on order subtotal excl tax (discount first)
             //calculate discount amount ('Applied to order subtotal' discount)
-            decimal discountAmountExclTax = GetOrderSubtotalDiscount(customer, subTotalExclTaxWithoutDiscount, out appliedDiscount);
-            if (subTotalExclTaxWithoutDiscount < discountAmountExclTax)
-                discountAmountExclTax = subTotalExclTaxWithoutDiscount;
+            decimal discountAmountExclTax = subTotalExclTaxWithoutDiscount;
             decimal discountAmountInclTax = discountAmountExclTax;
             //subtotal with discount (excl tax)
             decimal subTotalExclTaxWithDiscount = subTotalExclTaxWithoutDiscount - discountAmountExclTax;
@@ -483,16 +397,12 @@ namespace Nop.Services.Orders
             //free shipping
             if (IsFreeShipping(cart))
                 return decimal.Zero;
-            
+
             //additional shipping charges
             decimal additionalShippingCharge = GetShoppingCartAdditionalShippingCharge(cart);
             var adjustedRate = shippingRate + additionalShippingCharge;
 
             //discount
-            var customer = cart.GetCustomer();
-            decimal discountAmount = GetShippingDiscount(customer, adjustedRate, out appliedDiscount);
-            adjustedRate = adjustedRate - discountAmount;
-
             if (adjustedRate < decimal.Zero)
                 adjustedRate = decimal.Zero;
 
@@ -569,9 +479,9 @@ namespace Nop.Services.Orders
             {
                 //use last shipping option (get from cache)
 
-                var pickUpInStore = _shippingSettings.AllowPickUpInStore && 
+                var pickUpInStore = _shippingSettings.AllowPickUpInStore &&
                     customer.GetAttribute<bool>(SystemCustomerAttributeNames.SelectedPickUpInStore, _storeContext.CurrentStore.Id);
-                shippingTotal =  pickUpInStore ?
+                shippingTotal = pickUpInStore ?
                     //"pick up in store" fee
                     //we do not adjust shipping rate ("AdjustShippingRate" method) for pickup in store
                     _shippingSettings.PickUpInStoreFee :
@@ -594,9 +504,9 @@ namespace Nop.Services.Orders
                     var shippingRateComputationMethod = shippingRateComputationMethods[0];
 
                     bool shippingFromMultipleLocations;
-                    var shippingOptionRequests = _shippingService.CreateShippingOptionRequests(cart, 
-                        shippingAddress, 
-                        _storeContext.CurrentStore.Id, 
+                    var shippingOptionRequests = _shippingService.CreateShippingOptionRequests(cart,
+                        shippingAddress,
+                        _storeContext.CurrentStore.Id,
                         out shippingFromMultipleLocations);
                     decimal? fixedRate = null;
                     foreach (var shippingOptionRequest in shippingOptionRequests)
@@ -611,7 +521,7 @@ namespace Nop.Services.Orders
                             fixedRate += fixedRateTmp.Value;
                         }
                     }
-                    
+
                     if (fixedRate.HasValue)
                     {
                         //adjust shipping rate
@@ -633,7 +543,7 @@ namespace Nop.Services.Orders
                     includingTax,
                     customer,
                     out taxRate);
-                
+
                 //round
                 if (_shoppingCartSettings.RoundPricesDuringCalculation)
                     shippingTotalTaxed = RoundingHelper.RoundPrice(shippingTotalTaxed.Value);
@@ -693,7 +603,7 @@ namespace Nop.Services.Orders
             decimal subTotalWithoutDiscountBase;
             decimal subTotalWithDiscountBase;
             SortedDictionary<decimal, decimal> orderSubTotalTaxRates;
-            GetShoppingCartSubTotal(cart, false, 
+            GetShoppingCartSubTotal(cart, false,
                 out orderSubTotalDiscountAmount, out orderSubTotalAppliedDiscount,
                 out subTotalWithoutDiscountBase, out subTotalWithDiscountBase,
                 out orderSubTotalTaxRates);
@@ -792,15 +702,9 @@ namespace Nop.Services.Orders
         {
             decimal discountAmount;
             Discount appliedDiscount;
-            int redeemedRewardPoints;
-            decimal redeemedRewardPointsAmount;
-            List<AppliedGiftCard> appliedGiftCards;
-            return GetShoppingCartTotal(cart, 
+            return GetShoppingCartTotal(cart,
                 out discountAmount,
                 out appliedDiscount,
-                out appliedGiftCards,
-                out redeemedRewardPoints, 
-                out redeemedRewardPointsAmount, 
                 ignoreRewardPonts,
                 usePaymentMethodAdditionalFee);
         }
@@ -809,22 +713,15 @@ namespace Nop.Services.Orders
         /// Gets shopping cart total
         /// </summary>
         /// <param name="cart">Cart</param>
-        /// <param name="appliedGiftCards">Applied gift cards</param>
         /// <param name="discountAmount">Applied discount amount</param>
         /// <param name="appliedDiscount">Applied discount</param>
-        /// <param name="redeemedRewardPoints">Reward points to redeem</param>
-        /// <param name="redeemedRewardPointsAmount">Reward points amount in primary store currency to redeem</param>
         /// <param name="ignoreRewardPonts">A value indicating whether we should ignore reward points (if enabled and a customer is going to use them)</param>
         /// <param name="usePaymentMethodAdditionalFee">A value indicating whether we should use payment method additional fee when calculating order total</param>
         /// <returns>Shopping cart total;Null if shopping cart total couldn't be calculated now</returns>
         public virtual decimal? GetShoppingCartTotal(IList<ShoppingCartItem> cart,
             out decimal discountAmount, out Discount appliedDiscount,
-            out List<AppliedGiftCard> appliedGiftCards,
-            out int redeemedRewardPoints, out decimal redeemedRewardPointsAmount,
             bool ignoreRewardPonts = false, bool usePaymentMethodAdditionalFee = true)
         {
-            redeemedRewardPoints = 0;
-            redeemedRewardPointsAmount = decimal.Zero;
 
             var customer = cart.GetCustomer();
             string paymentMethodSystemName = "";
@@ -866,14 +763,8 @@ namespace Nop.Services.Orders
                         false, customer);
             }
 
-
-
-
             //tax
             decimal shoppingCartTax = GetTaxTotal(cart, usePaymentMethodAdditionalFee);
-
-
-
 
             //order total
             decimal resultTemp = decimal.Zero;
@@ -905,35 +796,6 @@ namespace Nop.Services.Orders
 
             #endregion
 
-            #region Applied gift cards
-
-            //let's apply gift cards now (gift cards that can be used)
-            appliedGiftCards = new List<AppliedGiftCard>();
-            if (!cart.IsRecurring())
-            {
-                //we don't apply gift cards for recurring products
-                var giftCards = _giftCardService.GetActiveGiftCardsAppliedByCustomer(customer);
-                if (giftCards != null)
-                    foreach (var gc in giftCards)
-                        if (resultTemp > decimal.Zero)
-                        {
-                            decimal remainingAmount = gc.GetGiftCardRemainingAmount();
-                            decimal amountCanBeUsed = resultTemp > remainingAmount ? 
-                                remainingAmount : 
-                                resultTemp;
-
-                            //reduce subtotal
-                            resultTemp -= amountCanBeUsed;
-
-                            var appliedGiftCard = new AppliedGiftCard();
-                            appliedGiftCard.GiftCard = gc;
-                            appliedGiftCard.AmountCanBeUsed = amountCanBeUsed;
-                            appliedGiftCards.Add(appliedGiftCard);
-                        }
-            }
-
-            #endregion
-
             if (resultTemp < decimal.Zero)
                 resultTemp = decimal.Zero;
             if (_shoppingCartSettings.RoundPricesDuringCalculation)
@@ -947,112 +809,10 @@ namespace Nop.Services.Orders
 
             decimal orderTotal = resultTemp;
 
-            #region Reward points
-
-            if (_rewardPointsSettings.Enabled &&
-                !ignoreRewardPonts &&
-                customer.GetAttribute<bool>(SystemCustomerAttributeNames.UseRewardPointsDuringCheckout,
-                    _genericAttributeService, _storeContext.CurrentStore.Id))
-            {
-                int rewardPointsBalance = _rewardPointService.GetRewardPointsBalance(customer.Id, _storeContext.CurrentStore.Id);
-                if (CheckMinimumRewardPointsToUseRequirement(rewardPointsBalance))
-                {
-                    decimal rewardPointsBalanceAmount = ConvertRewardPointsToAmount(rewardPointsBalance);
-                    if (orderTotal > decimal.Zero)
-                    {
-                        if (orderTotal > rewardPointsBalanceAmount)
-                        {
-                            redeemedRewardPoints = rewardPointsBalance;
-                            redeemedRewardPointsAmount = rewardPointsBalanceAmount;
-                        }
-                        else
-                        {
-                            redeemedRewardPointsAmount = orderTotal;
-                            redeemedRewardPoints = ConvertAmountToRewardPoints(redeemedRewardPointsAmount);
-                        }
-                    }
-                }
-            }
-
-            #endregion
-
-            orderTotal = orderTotal - redeemedRewardPointsAmount;
             if (_shoppingCartSettings.RoundPricesDuringCalculation)
                 orderTotal = RoundingHelper.RoundPrice(orderTotal);
             return orderTotal;
         }
-
-
-
-
-
-        /// <summary>
-        /// Converts existing reward points to amount
-        /// </summary>
-        /// <param name="rewardPoints">Reward points</param>
-        /// <returns>Converted value</returns>
-        public virtual decimal ConvertRewardPointsToAmount(int rewardPoints)
-        {
-            if (rewardPoints <= 0)
-                return decimal.Zero;
-
-            var result = rewardPoints * _rewardPointsSettings.ExchangeRate;
-            if (_shoppingCartSettings.RoundPricesDuringCalculation)
-                result = RoundingHelper.RoundPrice(result);
-            return result;
-        }
-
-        /// <summary>
-        /// Converts an amount to reward points
-        /// </summary>
-        /// <param name="amount">Amount</param>
-        /// <returns>Converted value</returns>
-        public virtual int ConvertAmountToRewardPoints(decimal amount)
-        {
-            int result = 0;
-            if (amount <= 0)
-                return 0;
-
-            if (_rewardPointsSettings.ExchangeRate > 0)
-                result = (int)Math.Ceiling(amount / _rewardPointsSettings.ExchangeRate);
-            return result;
-        }
- 
-        /// <summary>
-        /// Gets a value indicating whether a customer has minimum amount of reward points to use (if enabled)
-        /// </summary>
-        /// <param name="rewardPoints">Reward points to check</param>
-        /// <returns>true - reward points could use; false - cannot be used.</returns>
-        public virtual bool CheckMinimumRewardPointsToUseRequirement(int rewardPoints)
-        {
-            if (_rewardPointsSettings.MinimumRewardPointsToUse <= 0)
-                return true;
-
-            return rewardPoints >= _rewardPointsSettings.MinimumRewardPointsToUse;
-        }
-
-        /// <summary>
-        /// Calculate how much reward points will be earned/reduced based on certain amount spent
-        /// </summary>
-        /// <param name="customer">Customer</param>
-        /// <param name="amount">Amount (in primary store currency)</param>
-        /// <returns>umber of reward points</returns>
-        public virtual int CalculateRewardPoints(Customer customer, decimal amount)
-        {
-            if (!_rewardPointsSettings.Enabled)
-                return 0;
-
-            if (_rewardPointsSettings.PointsForPurchases_Amount <= decimal.Zero)
-                return 0;
-
-            //Ensure that reward points are applied only to registered users
-            if (customer == null || customer.IsGuest())
-                return 0;
-
-            var points = (int)Math.Truncate(amount / _rewardPointsSettings.PointsForPurchases_Amount * _rewardPointsSettings.PointsForPurchases_Points);
-            return points;
-        }
-
         #endregion
     }
 }

@@ -114,9 +114,6 @@ namespace Nop.Web.Infrastructure.Cache
         IConsumer<EntityUpdated<ReturnRequestReason>>,
         IConsumer<EntityDeleted<ReturnRequestReason>>,
         //templates
-        IConsumer<EntityInserted<ManufacturerTemplate>>,
-        IConsumer<EntityUpdated<ManufacturerTemplate>>,
-        IConsumer<EntityDeleted<ManufacturerTemplate>>,
         IConsumer<EntityInserted<ProductTemplate>>,
         IConsumer<EntityUpdated<ProductTemplate>>,
         IConsumer<EntityDeleted<ProductTemplate>>,
@@ -1167,20 +1164,6 @@ namespace Nop.Web.Infrastructure.Cache
             _cacheManager.RemoveByPattern(RETURNREQUESTREASONS_PATTERN_KEY);
         }
 
-        //templates
-     
-        public void HandleEvent(EntityInserted<ManufacturerTemplate> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(MANUFACTURER_TEMPLATE_PATTERN_KEY);
-        }
-        public void HandleEvent(EntityUpdated<ManufacturerTemplate> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(MANUFACTURER_TEMPLATE_PATTERN_KEY);
-        }
-        public void HandleEvent(EntityDeleted<ManufacturerTemplate> eventMessage)
-        {
-            _cacheManager.RemoveByPattern(MANUFACTURER_TEMPLATE_PATTERN_KEY);
-        }
         public void HandleEvent(EntityInserted<ProductTemplate> eventMessage)
         {
             _cacheManager.RemoveByPattern(PRODUCT_TEMPLATE_PATTERN_KEY);

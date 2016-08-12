@@ -1,43 +1,43 @@
 
-namespace Nop.Core.Domain.Orders
-{
-    /// <summary>
-    /// Extensions
-    /// </summary>
-    public static class GiftCardExtensions
-    {
-        /// <summary>
-        /// Gets a gift card remaining amount
-        /// </summary>
-        /// <returns>Gift card remaining amount</returns>
-        public static decimal GetGiftCardRemainingAmount(this GiftCard giftCard)
-        {
-            decimal result = giftCard.Amount;
+//namespace Nop.Core.Domain.Orders
+//{
+//    /// <summary>
+//    /// Extensions
+//    /// </summary>
+//    public static class GiftCardExtensions
+//    {
+//        /// <summary>
+//        /// Gets a gift card remaining amount
+//        /// </summary>
+//        /// <returns>Gift card remaining amount</returns>
+//        public static decimal GetGiftCardRemainingAmount(this GiftCard giftCard)
+//        {
+//            decimal result = giftCard.Amount;
 
-            foreach (var gcuh in giftCard.GiftCardUsageHistory)
-                result -= gcuh.UsedValue;
+//            foreach (var gcuh in giftCard.GiftCardUsageHistory)
+//                result -= gcuh.UsedValue;
 
-            if (result < decimal.Zero)
-                result = decimal.Zero;
+//            if (result < decimal.Zero)
+//                result = decimal.Zero;
 
-            return result;
-        }
+//            return result;
+//        }
 
-        /// <summary>
-        /// Is gift card valid
-        /// </summary>
-        /// <param name="giftCard">Gift card</param>
-        /// <returns>Result</returns>
-        public static bool IsGiftCardValid(this GiftCard giftCard)
-        {
-            if (!giftCard.IsGiftCardActivated)
-                return false;
+//        /// <summary>
+//        /// Is gift card valid
+//        /// </summary>
+//        /// <param name="giftCard">Gift card</param>
+//        /// <returns>Result</returns>
+//        public static bool IsGiftCardValid(this GiftCard giftCard)
+//        {
+//            if (!giftCard.IsGiftCardActivated)
+//                return false;
 
-            decimal remainingAmount = giftCard.GetGiftCardRemainingAmount();
-            if (remainingAmount > decimal.Zero)
-                return true;
+//            decimal remainingAmount = giftCard.GetGiftCardRemainingAmount();
+//            if (remainingAmount > decimal.Zero)
+//                return true;
 
-            return false;
-        }
-    }
-}
+//            return false;
+//        }
+//    }
+//}

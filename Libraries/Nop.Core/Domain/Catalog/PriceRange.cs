@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a price range
     /// </summary>
-    public partial class PriceRange
+    public class PriceRange
     {
         /// <summary>
         /// From

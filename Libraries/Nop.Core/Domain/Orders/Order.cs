@@ -14,12 +14,11 @@ namespace Nop.Core.Domain.Orders
     /// <summary>
     /// Represents an order
     /// </summary>
-    public partial class Order : BaseEntity
+    public class Order : BaseEntity
     {
 
         private ICollection<DiscountUsageHistory> _discountUsageHistory;
         private ICollection<GiftCardUsageHistory> _giftCardUsageHistory;
-        private ICollection<OrderNote> _orderNotes;
         private ICollection<OrderItem> _orderItems;
         private ICollection<Shipment> _shipments;
 
@@ -37,7 +36,7 @@ namespace Nop.Core.Domain.Orders
                 if (String.IsNullOrEmpty(line.Trim()))
                     continue;
 
-                string[] taxes = line.Split(new [] { ':' });
+                string[] taxes = line.Split(':');
                 if (taxes.Length == 2)
                 {
                     try
@@ -348,11 +347,7 @@ namespace Nop.Core.Domain.Orders
         /// </summary>
         public virtual Address ShippingAddress { get; set; }
         
-        /// <summary>
-        /// Gets or sets the reward points history record (spent by a customer when placing this order)
-        /// </summary>
-        public virtual RewardPointsHistory RedeemedRewardPointsEntry { get; set; }
-
+     
         /// <summary>
         /// Gets or sets discount usage history
         /// </summary>
@@ -360,24 +355,6 @@ namespace Nop.Core.Domain.Orders
         {
             get { return _discountUsageHistory ?? (_discountUsageHistory = new List<DiscountUsageHistory>()); }
             protected set { _discountUsageHistory = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets gift card usage history (gift card that were used with this order)
-        /// </summary>
-        public virtual ICollection<GiftCardUsageHistory> GiftCardUsageHistory
-        {
-            get { return _giftCardUsageHistory ?? (_giftCardUsageHistory = new List<GiftCardUsageHistory>()); }
-            protected set { _giftCardUsageHistory = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets order notes
-        /// </summary>
-        public virtual ICollection<OrderNote> OrderNotes
-        {
-            get { return _orderNotes ?? (_orderNotes = new List<OrderNote>()); }
-            protected set { _orderNotes = value; }
         }
 
         /// <summary>
@@ -409,11 +386,11 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return (OrderStatus)this.OrderStatusId;
+                return (OrderStatus)OrderStatusId;
             }
             set
             {
-                this.OrderStatusId = (int)value;
+                OrderStatusId = (int)value;
             }
         }
 
@@ -424,11 +401,11 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return (PaymentStatus)this.PaymentStatusId;
+                return (PaymentStatus)PaymentStatusId;
             }
             set
             {
-                this.PaymentStatusId = (int)value;
+                PaymentStatusId = (int)value;
             }
         }
 
@@ -439,11 +416,11 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return (ShippingStatus)this.ShippingStatusId;
+                return (ShippingStatus)ShippingStatusId;
             }
             set
             {
-                this.ShippingStatusId = (int)value;
+                ShippingStatusId = (int)value;
             }
         }
 
@@ -454,11 +431,11 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return (TaxDisplayType)this.CustomerTaxDisplayTypeId;
+                return (TaxDisplayType)CustomerTaxDisplayTypeId;
             }
             set
             {
-                this.CustomerTaxDisplayTypeId = (int)value;
+                CustomerTaxDisplayTypeId = (int)value;
             }
         }
 
@@ -469,7 +446,7 @@ namespace Nop.Core.Domain.Orders
         {
             get
             {
-                return ParseTaxRates(this.TaxRates);
+                return ParseTaxRates(TaxRates);
             }
         }
         

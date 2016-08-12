@@ -15,17 +15,16 @@ namespace Nop.Admin.Models.Customers
     {
         public CustomerModel()
         {
-            this.AvailableTimeZones = new List<SelectListItem>();
-            this.SendEmail = new SendEmailModel();
-            this.SendPm = new SendPmModel();
-            this.AvailableCustomerRoles = new List<CustomerRoleModel>();
-            this.AssociatedExternalAuthRecords = new List<AssociatedExternalAuthModel>();
-            this.AvailableCountries = new List<SelectListItem>();
-            this.AvailableStates = new List<SelectListItem>();
-            this.AvailableVendors = new List<SelectListItem>();
-            this.CustomerAttributes = new List<CustomerAttributeModel>();
-            this.AvailableNewsletterSubscriptionStores = new List<StoreModel>();
-            this.RewardPointsAvailableStores = new List<SelectListItem>();
+            AvailableTimeZones = new List<SelectListItem>();
+            SendEmail = new SendEmailModel();
+            SendPm = new SendPmModel();
+            AvailableCustomerRoles = new List<CustomerRoleModel>();
+            AssociatedExternalAuthRecords = new List<AssociatedExternalAuthModel>();
+            AvailableCountries = new List<SelectListItem>();
+            AvailableStates = new List<SelectListItem>();
+            AvailableVendors = new List<SelectListItem>();
+            AvailableNewsletterSubscriptionStores = new List<StoreModel>();
+            RewardPointsAvailableStores = new List<SelectListItem>();
         }
 
         public bool AllowUsersToChangeUsernames { get; set; }
@@ -111,8 +110,6 @@ namespace Nop.Admin.Models.Customers
         [AllowHtml]
         public string Fax { get; set; }
 
-        public List<CustomerAttributeModel> CustomerAttributes { get; set; }
-
 
 
 
@@ -126,11 +123,6 @@ namespace Nop.Admin.Models.Customers
 
         [NopResourceDisplayName("Admin.Customers.Customers.Fields.Active")]
         public bool Active { get; set; }
-
-        [NopResourceDisplayName("Admin.Customers.Customers.Fields.Affiliate")]
-        public int AffiliateId { get; set; }
-        [NopResourceDisplayName("Admin.Customers.Customers.Fields.Affiliate")]
-        public string AffiliateName { get; set; }
 
 
 

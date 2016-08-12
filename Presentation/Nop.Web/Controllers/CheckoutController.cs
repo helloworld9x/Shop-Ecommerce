@@ -32,7 +32,7 @@ using Nop.Web.Models.Common;
 namespace Nop.Web.Controllers
 {
     [NopHttpsRequirement(SslRequirement.Yes)]
-    public partial class CheckoutController : BasePublicController
+    public class CheckoutController : BasePublicController
     {
 		#region Fields
 
@@ -53,19 +53,11 @@ namespace Nop.Web.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IPluginFinder _pluginFinder;
         private readonly IOrderTotalCalculationService _orderTotalCalculationService;
-        private readonly IRewardPointService _rewardPointService;
         private readonly ILogger _logger;
         private readonly IOrderService _orderService;
         private readonly IWebHelper _webHelper;
         private readonly HttpContextBase _httpContext; 
-        private readonly IAddressAttributeParser _addressAttributeParser;
-        private readonly IAddressAttributeService _addressAttributeService;
-        private readonly IAddressAttributeFormatter _addressAttributeFormatter;
-
-        
-
         private readonly OrderSettings _orderSettings;
-        private readonly RewardPointsSettings _rewardPointsSettings;
         private readonly PaymentSettings _paymentSettings;
         private readonly ShippingSettings _shippingSettings;
         private readonly AddressSettings _addressSettings;
@@ -91,51 +83,41 @@ namespace Nop.Web.Controllers
             IPaymentService paymentService,
             IPluginFinder pluginFinder,
             IOrderTotalCalculationService orderTotalCalculationService,
-            IRewardPointService rewardPointService,
             ILogger logger,
             IOrderService orderService,
             IWebHelper webHelper,
             HttpContextBase httpContext,
-            IAddressAttributeParser addressAttributeParser,
-            IAddressAttributeService addressAttributeService,
-            IAddressAttributeFormatter addressAttributeFormatter,
             OrderSettings orderSettings, 
-            RewardPointsSettings rewardPointsSettings,
             PaymentSettings paymentSettings,
             ShippingSettings shippingSettings,
             AddressSettings addressSettings)
         {
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._storeMappingService = storeMappingService;
-            this._shoppingCartService = shoppingCartService;
-            this._localizationService = localizationService;
-            this._taxService = taxService;
-            this._currencyService = currencyService;
-            this._priceFormatter = priceFormatter;
-            this._orderProcessingService = orderProcessingService;
-            this._customerService = customerService;
-            this._genericAttributeService = genericAttributeService;
-            this._countryService = countryService;
-            this._stateProvinceService = stateProvinceService;
-            this._shippingService = shippingService;
-            this._paymentService = paymentService;
-            this._pluginFinder = pluginFinder;
-            this._orderTotalCalculationService = orderTotalCalculationService;
-            this._rewardPointService = rewardPointService;
-            this._logger = logger;
-            this._orderService = orderService;
-            this._webHelper = webHelper;
-            this._httpContext = httpContext;
-            this._addressAttributeParser = addressAttributeParser;
-            this._addressAttributeService = addressAttributeService;
-            this._addressAttributeFormatter = addressAttributeFormatter;
+            _workContext = workContext;
+            _storeContext = storeContext;
+            _storeMappingService = storeMappingService;
+            _shoppingCartService = shoppingCartService;
+            _localizationService = localizationService;
+            _taxService = taxService;
+            _currencyService = currencyService;
+            _priceFormatter = priceFormatter;
+            _orderProcessingService = orderProcessingService;
+            _customerService = customerService;
+            _genericAttributeService = genericAttributeService;
+            _countryService = countryService;
+            _stateProvinceService = stateProvinceService;
+            _shippingService = shippingService;
+            _paymentService = paymentService;
+            _pluginFinder = pluginFinder;
+            _orderTotalCalculationService = orderTotalCalculationService;
+            _logger = logger;
+            _orderService = orderService;
+            _webHelper = webHelper;
+            _httpContext = httpContext;
 
-            this._orderSettings = orderSettings;
-            this._rewardPointsSettings = rewardPointsSettings;
-            this._paymentSettings = paymentSettings;
-            this._shippingSettings = shippingSettings;
-            this._addressSettings = addressSettings;
+            _orderSettings = orderSettings;
+            _paymentSettings = paymentSettings;
+            _shippingSettings = shippingSettings;
+            _addressSettings = addressSettings;
         }
 
         #endregion
@@ -172,24 +154,13 @@ namespace Nop.Web.Controllers
             foreach (var address in addresses)
             {
                 var addressModel = new AddressModel();
-                addressModel.PrepareModel(
-                    address: address, 
-                    excludeProperties: false, 
-                    addressSettings: _addressSettings,
-                    addressAttributeFormatter: _addressAttributeFormatter);
+                addressModel.PrepareModel(address, false, _addressSettings);
                 model.ExistingAddresses.Add(addressModel);
             }
 
             //new address
             model.NewAddress.CountryId = selectedCountryId;
-            model.NewAddress.PrepareModel(address: 
-                null,
-                excludeProperties: false,
-                addressSettings: _addressSettings,
-                localizationService: _localizationService,
-                stateProvinceService: _stateProvinceService,
-                addressAttributeService: _addressAttributeService,
-                addressAttributeParser: _addressAttributeParser,
+            model.NewAddress.PrepareModel(null, false, _addressSettings, _localizationService, _stateProvinceService,
                 loadCountries: () => _countryService.GetAllCountriesForBilling(_workContext.WorkingLanguage.Id),
                 prePopulateWithCustomerFields: prePopulateNewAddressWithCustomerFields,
                 customer: _workContext.CurrentCustomer,
@@ -224,24 +195,13 @@ namespace Nop.Web.Controllers
             foreach (var address in addresses)
             {
                 var addressModel = new AddressModel();
-                addressModel.PrepareModel(
-                    address: address,
-                    excludeProperties: false,
-                    addressSettings: _addressSettings,
-                    addressAttributeFormatter: _addressAttributeFormatter);
+                addressModel.PrepareModel(address, false, _addressSettings);
                 model.ExistingAddresses.Add(addressModel);
             }
 
             //new address
             model.NewAddress.CountryId = selectedCountryId;
-            model.NewAddress.PrepareModel(
-                address: null,
-                excludeProperties: false,
-                addressSettings: _addressSettings,
-                localizationService: _localizationService,
-                stateProvinceService: _stateProvinceService,
-                addressAttributeService: _addressAttributeService,
-                addressAttributeParser: _addressAttributeParser,
+            model.NewAddress.PrepareModel(null, false, _addressSettings, _localizationService, _stateProvinceService, 
                 loadCountries: () => _countryService.GetAllCountriesForShipping(_workContext.WorkingLanguage.Id),
                 prePopulateWithCustomerFields: prePopulateNewAddressWithCustomerFields,
                 customer: _workContext.CurrentCustomer,
@@ -273,7 +233,7 @@ namespace Nop.Web.Controllers
                                           Name = shippingOption.Name,
                                           Description = shippingOption.Description,
                                           ShippingRateComputationMethodSystemName = shippingOption.ShippingRateComputationMethodSystemName,
-                                          ShippingOption = shippingOption,
+                                          ShippingOption = shippingOption
                                       };
 
                     //adjust rate
@@ -335,21 +295,6 @@ namespace Nop.Web.Controllers
         {
             var model = new CheckoutPaymentMethodModel();
 
-            //reward points
-            if (_rewardPointsSettings.Enabled && !cart.IsRecurring())
-            {
-                int rewardPointsBalance = _rewardPointService.GetRewardPointsBalance(_workContext.CurrentCustomer.Id, _storeContext.CurrentStore.Id);
-                decimal rewardPointsAmountBase = _orderTotalCalculationService.ConvertRewardPointsToAmount(rewardPointsBalance);
-                decimal rewardPointsAmount = _currencyService.ConvertFromPrimaryStoreCurrency(rewardPointsAmountBase, _workContext.WorkingCurrency);
-                if (rewardPointsAmount > decimal.Zero && 
-                    _orderTotalCalculationService.CheckMinimumRewardPointsToUseRequirement(rewardPointsBalance))
-                {
-                    model.DisplayRewardPoints = true;
-                    model.RewardPointsAmount = _priceFormatter.FormatPrice(rewardPointsAmount, true, false);
-                    model.RewardPointsBalance = rewardPointsBalance;
-                }
-            }
-
             //filter by country
             var paymentMethods = _paymentService
                 .LoadActivePaymentMethods(_workContext.CurrentCustomer.Id, _storeContext.CurrentStore.Id, filterByCountryId)
@@ -358,9 +303,6 @@ namespace Nop.Web.Controllers
                 .ToList();
             foreach (var pm in paymentMethods)
             {
-                if (cart.IsRecurring() && pm.RecurringPaymentType == RecurringPaymentType.NotSupported)
-                    continue;
-
                 var pmModel = new CheckoutPaymentMethodModel.PaymentMethodModel
                 {
                     Name = pm.GetLocalizedFriendlyName(_localizationService, _workContext.WorkingLanguage.Id),
@@ -437,7 +379,7 @@ namespace Nop.Web.Controllers
             if (_orderSettings.MinimumOrderPlacementInterval == 0)
                 return true;
 
-            var lastOrder = _orderService.SearchOrders(storeId: _storeContext.CurrentStore.Id,
+            var lastOrder = _orderService.SearchOrders(_storeContext.CurrentStore.Id,
                 customerId: _workContext.CurrentCustomer.Id, pageSize: 1)
                 .FirstOrDefault();
             if (lastOrder == null)
@@ -480,8 +422,6 @@ namespace Nop.Web.Controllers
                     sci.StoreId,
                     sci.AttributesXml,
                     sci.CustomerEnteredPrice,
-                    sci.RentalStartDateUtc,
-                    sci.RentalEndDateUtc,
                     sci.Quantity,
                     false);
                 if (sciWarnings.Count > 0)
@@ -508,7 +448,7 @@ namespace Nop.Web.Controllers
             }
             if (order == null)
             {
-                order = _orderService.SearchOrders(storeId: _storeContext.CurrentStore.Id,
+                order = _orderService.SearchOrders(_storeContext.CurrentStore.Id,
                 customerId: _workContext.CurrentCustomer.Id, pageSize: 1)
                     .FirstOrDefault();
             }
@@ -602,14 +542,6 @@ namespace Nop.Web.Controllers
             if ((_workContext.CurrentCustomer.IsGuest() && !_orderSettings.AnonymousCheckoutAllowed))
                 return new HttpUnauthorizedResult();
 
-            //custom address attributes
-            var customAttributes = form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
-            var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
-            foreach (var error in customAttributeWarnings)
-            {
-                ModelState.AddModelError("", error);
-            }
-
             if (ModelState.IsValid)
             {
                 //try to find an address with the same values (don't duplicate records)
@@ -618,12 +550,11 @@ namespace Nop.Web.Controllers
                     model.NewAddress.Email, model.NewAddress.FaxNumber, model.NewAddress.Company,
                     model.NewAddress.Address1, model.NewAddress.Address2, model.NewAddress.City,
                     model.NewAddress.StateProvinceId, model.NewAddress.ZipPostalCode,
-                    model.NewAddress.CountryId, customAttributes);
+                    model.NewAddress.CountryId);
                 if (address == null)
                 {
                     //address is not found. let's create a new one
                     address = model.NewAddress.ToEntity();
-                    address.CustomAttributes = customAttributes;
                     address.CreatedOnUtc = DateTime.UtcNow;
                     //some validation
                     if (address.CountryId == 0)
@@ -640,9 +571,7 @@ namespace Nop.Web.Controllers
 
 
             //If we got this far, something failed, redisplay form
-            model = PrepareBillingAddressModel(
-                selectedCountryId: model.NewAddress.CountryId,
-                overrideAttributesXml: customAttributes);
+            model = PrepareBillingAddressModel(model.NewAddress.CountryId);
             return View(model);
         }
 
@@ -752,14 +681,6 @@ namespace Nop.Web.Controllers
                 _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer, SystemCustomerAttributeNames.SelectedPickUpInStore, false, _storeContext.CurrentStore.Id);
             }
 
-            //custom address attributes
-            var customAttributes = form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
-            var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
-            foreach (var error in customAttributeWarnings)
-            {
-                ModelState.AddModelError("", error);
-            }
-
             if (ModelState.IsValid)
             {
                 //try to find an address with the same values (don't duplicate records)
@@ -768,11 +689,10 @@ namespace Nop.Web.Controllers
                     model.NewAddress.Email, model.NewAddress.FaxNumber, model.NewAddress.Company,
                     model.NewAddress.Address1, model.NewAddress.Address2, model.NewAddress.City,
                     model.NewAddress.StateProvinceId, model.NewAddress.ZipPostalCode,
-                    model.NewAddress.CountryId, customAttributes);
+                    model.NewAddress.CountryId);
                 if (address == null)
                 {
                     address = model.NewAddress.ToEntity();
-                    address.CustomAttributes = customAttributes;
                     address.CreatedOnUtc = DateTime.UtcNow;
                     //some validation
                     if (address.CountryId == 0)
@@ -789,9 +709,7 @@ namespace Nop.Web.Controllers
 
 
             //If we got this far, something failed, redisplay form
-            model = PrepareShippingAddressModel(
-                selectedCountryId: model.NewAddress.CountryId,
-                overrideAttributesXml: customAttributes);
+            model = PrepareShippingAddressModel(model.NewAddress.CountryId);
             return View(model);
         }
         
@@ -982,14 +900,6 @@ namespace Nop.Web.Controllers
 
             if ((_workContext.CurrentCustomer.IsGuest() && !_orderSettings.AnonymousCheckoutAllowed))
                 return new HttpUnauthorizedResult();
-
-            //reward points
-            if (_rewardPointsSettings.Enabled)
-            {
-                _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
-                    SystemCustomerAttributeNames.UseRewardPointsDuringCheckout, model.UseRewardPoints,
-                    _storeContext.CurrentStore.Id);
-            }
 
             //Check whether payment workflow is required
             bool isPaymentWorkflowRequired = IsPaymentWorkflowRequired(cart);
@@ -1274,7 +1184,7 @@ namespace Nop.Web.Controllers
                     update_section = new UpdateSectionJsonModel
                     {
                         name = "payment-method",
-                        html = this.RenderPartialViewToString("OpcPaymentMethods", paymentMethodModel)
+                        html = RenderPartialViewToString("OpcPaymentMethods", paymentMethodModel)
                     },
                     goto_section = "payment_method"
                 });
@@ -1290,7 +1200,7 @@ namespace Nop.Web.Controllers
                 update_section = new UpdateSectionJsonModel
                 {
                     name = "confirm-order",
-                    html = this.RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
+                    html = RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
                 },
                 goto_section = "confirm_order"
             });
@@ -1312,7 +1222,7 @@ namespace Nop.Web.Controllers
                     update_section = new UpdateSectionJsonModel
                     {
                         name = "confirm-order",
-                        html = this.RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
+                        html = RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
                     },
                     goto_section = "confirm_order"
                 });
@@ -1326,7 +1236,7 @@ namespace Nop.Web.Controllers
                 update_section = new UpdateSectionJsonModel
                 {
                     name = "payment-info",
-                    html = this.RenderPartialViewToString("OpcPaymentInfo", paymenInfoModel)
+                    html = RenderPartialViewToString("OpcPaymentInfo", paymenInfoModel)
                 },
                 goto_section = "payment_info"
             });
@@ -1401,31 +1311,22 @@ namespace Nop.Web.Controllers
                     var model = new CheckoutBillingAddressModel();
                     TryUpdateModel(model.NewAddress, "BillingNewAddress");
 
-                    //custom address attributes
-                    var customAttributes = form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
-                    var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
-                    foreach (var error in customAttributeWarnings)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-
                     //validate model
                     TryValidateModel(model.NewAddress);
                     if (!ModelState.IsValid)
                     {
                         //model is not valid. redisplay the form with errors
-                        var billingAddressModel = PrepareBillingAddressModel(
-                            selectedCountryId: model.NewAddress.CountryId,
-                            overrideAttributesXml: customAttributes);
+                        var billingAddressModel = PrepareBillingAddressModel(model.NewAddress.CountryId
+                           );
                         billingAddressModel.NewAddressPreselected = true;
                         return Json(new
                         {
                             update_section = new UpdateSectionJsonModel
                             {
                                 name = "billing",
-                                html = this.RenderPartialViewToString("OpcBillingAddress", billingAddressModel)
+                                html = RenderPartialViewToString("OpcBillingAddress", billingAddressModel)
                             },
-                            wrong_billing_address = true,
+                            wrong_billing_address = true
                         });
                     }
 
@@ -1435,12 +1336,11 @@ namespace Nop.Web.Controllers
                         model.NewAddress.Email, model.NewAddress.FaxNumber, model.NewAddress.Company,
                         model.NewAddress.Address1, model.NewAddress.Address2, model.NewAddress.City,
                         model.NewAddress.StateProvinceId, model.NewAddress.ZipPostalCode,
-                        model.NewAddress.CountryId, customAttributes);
+                        model.NewAddress.CountryId);
                     if (address == null)
                     {
                         //address is not found. let's create a new one
                         address = model.NewAddress.ToEntity();
-                        address.CustomAttributes = customAttributes;
                         address.CreatedOnUtc = DateTime.UtcNow;
                         //some validation
                         if (address.CountryId == 0)
@@ -1466,7 +1366,7 @@ namespace Nop.Web.Controllers
                         update_section = new UpdateSectionJsonModel
                         {
                             name = "shipping",
-                            html = this.RenderPartialViewToString("OpcShippingAddress", shippingAddressModel)
+                            html = RenderPartialViewToString("OpcShippingAddress", shippingAddressModel)
                         },
                         goto_section = "shipping"
                     });
@@ -1564,29 +1464,19 @@ namespace Nop.Web.Controllers
                     var model = new CheckoutShippingAddressModel();
                     TryUpdateModel(model.NewAddress, "ShippingNewAddress");
 
-                    //custom address attributes
-                    var customAttributes = form.ParseCustomAddressAttributes(_addressAttributeParser, _addressAttributeService);
-                    var customAttributeWarnings = _addressAttributeParser.GetAttributeWarnings(customAttributes);
-                    foreach (var error in customAttributeWarnings)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-
                     //validate model
                     TryValidateModel(model.NewAddress);
                     if (!ModelState.IsValid)
                     {
                         //model is not valid. redisplay the form with errors
-                        var shippingAddressModel = PrepareShippingAddressModel(
-                            selectedCountryId: model.NewAddress.CountryId,
-                            overrideAttributesXml: customAttributes);
+                        var shippingAddressModel = PrepareShippingAddressModel(model.NewAddress.CountryId);
                         shippingAddressModel.NewAddressPreselected = true;
                         return Json(new
                         {
                             update_section = new UpdateSectionJsonModel
                             {
                                 name = "shipping",
-                                html = this.RenderPartialViewToString("OpcShippingAddress", shippingAddressModel)
+                                html = RenderPartialViewToString("OpcShippingAddress", shippingAddressModel)
                             }
                         });
                     }
@@ -1597,11 +1487,10 @@ namespace Nop.Web.Controllers
                         model.NewAddress.Email, model.NewAddress.FaxNumber, model.NewAddress.Company,
                         model.NewAddress.Address1, model.NewAddress.Address2, model.NewAddress.City,
                         model.NewAddress.StateProvinceId, model.NewAddress.ZipPostalCode,
-                        model.NewAddress.CountryId, customAttributes);
+                        model.NewAddress.CountryId);
                     if (address == null)
                     {
                         address = model.NewAddress.ToEntity();
-                        address.CustomAttributes = customAttributes;
                         address.CreatedOnUtc = DateTime.UtcNow;
                         //little hack here (TODO: find a better solution)
                         //EF does not load navigation properties for newly created entities (such as this "Address").
@@ -1644,7 +1533,7 @@ namespace Nop.Web.Controllers
                     update_section = new UpdateSectionJsonModel
                     {
                         name = "shipping-method",
-                        html = this.RenderPartialViewToString("OpcShippingMethods", shippingMethodModel)
+                        html = RenderPartialViewToString("OpcShippingMethods", shippingMethodModel)
                     },
                     goto_section = "shipping_method"
                 });
@@ -1752,14 +1641,6 @@ namespace Nop.Web.Controllers
                 var model = new CheckoutPaymentMethodModel();
                 TryUpdateModel(model);
 
-                //reward points
-                if (_rewardPointsSettings.Enabled)
-                {
-                    _genericAttributeService.SaveAttribute(_workContext.CurrentCustomer,
-                        SystemCustomerAttributeNames.UseRewardPointsDuringCheckout, model.UseRewardPoints,
-                        _storeContext.CurrentStore.Id);
-                }
-
                 //Check whether payment workflow is required
                 bool isPaymentWorkflowRequired = IsPaymentWorkflowRequired(cart);
                 if (!isPaymentWorkflowRequired)
@@ -1774,7 +1655,7 @@ namespace Nop.Web.Controllers
                         update_section = new UpdateSectionJsonModel
                         {
                             name = "confirm-order",
-                            html = this.RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
+                            html = RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
                         },
                         goto_section = "confirm_order"
                     });
@@ -1846,7 +1727,7 @@ namespace Nop.Web.Controllers
                         update_section = new UpdateSectionJsonModel
                         {
                             name = "confirm-order",
-                            html = this.RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
+                            html = RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
                         },
                         goto_section = "confirm_order"
                     });
@@ -1859,7 +1740,7 @@ namespace Nop.Web.Controllers
                     update_section = new UpdateSectionJsonModel
                     {
                         name = "payment-info",
-                        html = this.RenderPartialViewToString("OpcPaymentInfo", paymenInfoModel)
+                        html = RenderPartialViewToString("OpcPaymentInfo", paymenInfoModel)
                     }
                 });
             }
@@ -1902,8 +1783,7 @@ namespace Nop.Web.Controllers
                     {
                         throw new Exception("Payment information is not entered");
                     }
-                    else
-                        processPaymentRequest = new ProcessPaymentRequest();
+                    processPaymentRequest = new ProcessPaymentRequest();
                 }
 
                 processPaymentRequest.StoreId = _storeContext.CurrentStore.Id;
@@ -1954,7 +1834,7 @@ namespace Nop.Web.Controllers
                     update_section = new UpdateSectionJsonModel
                     {
                         name = "confirm-order",
-                        html = this.RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
+                        html = RenderPartialViewToString("OpcConfirmOrder", confirmOrderModel)
                     },
                     goto_section = "confirm_order"
                 });
@@ -1978,7 +1858,7 @@ namespace Nop.Web.Controllers
                     return new HttpUnauthorizedResult();
 
                 //get the order
-                var order = _orderService.SearchOrders(storeId: _storeContext.CurrentStore.Id,
+                var order = _orderService.SearchOrders(_storeContext.CurrentStore.Id,
                 customerId: _workContext.CurrentCustomer.Id, pageSize: 1)
                     .FirstOrDefault();
                 if (order == null)

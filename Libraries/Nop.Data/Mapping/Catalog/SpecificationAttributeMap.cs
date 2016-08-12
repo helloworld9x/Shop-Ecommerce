@@ -2,13 +2,13 @@ using Nop.Core.Domain.Catalog;
 
 namespace Nop.Data.Mapping.Catalog
 {
-    public partial class SpecificationAttributeMap : NopEntityTypeConfiguration<SpecificationAttribute>
+    public class SpecificationAttributeMap : GoqEntityTypeConfiguration<SpecificationAttribute>
     {
         public SpecificationAttributeMap()
         {
-            this.ToTable("SpecificationAttribute");
-            this.HasKey(sa => sa.Id);
-            this.Property(sa => sa.Name).IsRequired();
+            ToTable("SpecificationAttribute");
+            HasKey(sa => sa.Id);
+            Property(sa => sa.Name).IsRequired();
         }
     }
 }

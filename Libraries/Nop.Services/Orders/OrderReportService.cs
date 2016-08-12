@@ -15,7 +15,7 @@ namespace Nop.Services.Orders
     /// <summary>
     /// Order report service
     /// </summary>
-    public partial class OrderReportService : IOrderReportService
+    public class OrderReportService : IOrderReportService
     {
         #region Fields
 
@@ -40,10 +40,10 @@ namespace Nop.Services.Orders
             IRepository<Product> productRepository,
             IDateTimeHelper dateTimeHelper)
         {
-            this._orderRepository = orderRepository;
-            this._orderItemRepository = orderItemRepository;
-            this._productRepository = productRepository;
-            this._dateTimeHelper = dateTimeHelper;
+            _orderRepository = orderRepository;
+            _orderItemRepository = orderItemRepository;
+            _productRepository = productRepository;
+            _dateTimeHelper = dateTimeHelper;
         }
 
         #endregion
@@ -185,9 +185,7 @@ namespace Nop.Services.Orders
                 query = query.Where(o => o.BillingAddress != null && !String.IsNullOrEmpty(o.BillingAddress.Email) && o.BillingAddress.Email.Contains(billingEmail));
             if (!String.IsNullOrEmpty(billingLastName))
                 query = query.Where(o => o.BillingAddress != null && !String.IsNullOrEmpty(o.BillingAddress.LastName) && o.BillingAddress.LastName.Contains(billingLastName));
-            if (!String.IsNullOrEmpty(orderNotes))
-                query = query.Where(o => o.OrderNotes.Any(on => on.Note.Contains(orderNotes)));
-            
+           
 			var item = (from oq in query
 						group oq by 1 into result
 						select new
@@ -211,7 +209,7 @@ namespace Nop.Services.Orders
                                    CountOrders = 0,
                                    SumShippingExclTax = decimal.Zero,
                                    SumTax = decimal.Zero,
-                                   SumOrders = decimal.Zero, 
+                                   SumOrders = decimal.Zero 
 			                   };
             return item;
         }
@@ -235,7 +233,7 @@ namespace Nop.Services.Orders
             if (!timeZone.IsInvalidTime(t1))
             {
                 DateTime? startTime1 = _dateTimeHelper.ConvertToUtcTime(t1, timeZone);
-                var todayResult = GetOrderAverageReportLine(storeId: storeId,
+                var todayResult = GetOrderAverageReportLine(storeId,
                     os: os, 
                     startTimeUtc: startTime1);
                 item.SumTodayOrders = todayResult.SumOrders;
@@ -248,7 +246,7 @@ namespace Nop.Services.Orders
             if (!timeZone.IsInvalidTime(t2))
             {
                 DateTime? startTime2 = _dateTimeHelper.ConvertToUtcTime(t2, timeZone);
-                var weekResult = GetOrderAverageReportLine(storeId: storeId,
+                var weekResult = GetOrderAverageReportLine(storeId,
                     os: os,
                     startTimeUtc: startTime2);
                 item.SumThisWeekOrders = weekResult.SumOrders;
@@ -259,7 +257,7 @@ namespace Nop.Services.Orders
             if (!timeZone.IsInvalidTime(t3))
             {
                 DateTime? startTime3 = _dateTimeHelper.ConvertToUtcTime(t3, timeZone);
-                var monthResult = GetOrderAverageReportLine(storeId: storeId,
+                var monthResult = GetOrderAverageReportLine(storeId,
                     os: os,
                     startTimeUtc: startTime3);
                 item.SumThisMonthOrders = monthResult.SumOrders;
@@ -270,14 +268,14 @@ namespace Nop.Services.Orders
             if (!timeZone.IsInvalidTime(t4))
             {
                 DateTime? startTime4 = _dateTimeHelper.ConvertToUtcTime(t4, timeZone);
-                var yearResult = GetOrderAverageReportLine(storeId: storeId,
+                var yearResult = GetOrderAverageReportLine(storeId,
                     os: os,
                     startTimeUtc: startTime4);
                 item.SumThisYearOrders = yearResult.SumOrders;
                 item.CountThisYearOrders = yearResult.CountOrders;
             }
             //all time
-            var allTimeResult = GetOrderAverageReportLine(storeId: storeId, os: os);
+            var allTimeResult = GetOrderAverageReportLine(storeId, os: os);
             item.SumAllTimeOrders = allTimeResult.SumOrders;
             item.CountAllTimeOrders = allTimeResult.CountOrders;
 
@@ -354,7 +352,7 @@ namespace Nop.Services.Orders
                 {
                     ProductId = g.Key,
                     TotalAmount = g.Sum(x => x.PriceExclTax),
-                    TotalQuantity = g.Sum(x => x.Quantity),
+                    TotalQuantity = g.Sum(x => x.Quantity)
                 }
                 ;
 
@@ -413,7 +411,7 @@ namespace Nop.Services.Orders
                          select new
                          {
                              ProductId = g.Key,
-                             ProductsPurchased = g.Sum(x => x.orderItem.Quantity),
+                             ProductsPurchased = g.Sum(x => x.orderItem.Quantity)
                          };
             query3 = query3.OrderByDescending(x => x.ProductsPurchased);
 
@@ -502,7 +500,7 @@ namespace Nop.Services.Orders
             if (ss.HasValue)
                 shippingStatusId = (int)ss.Value;
             //We cannot use String.IsNullOrEmpty() in SQL Compact
-            bool dontSearchEmail = String.IsNullOrEmpty(billingEmail);
+            bool dontSearchEmail = string.IsNullOrEmpty(billingEmail);
             //We cannot use String.IsNullOrEmpty() in SQL Compact
             bool dontSearchLastName = String.IsNullOrEmpty(billingLastName);
             //We cannot use String.IsNullOrEmpty() in SQL Compact
@@ -525,25 +523,12 @@ namespace Nop.Services.Orders
                               //we do not ignore deleted products when calculating order reports
                               //(!p.Deleted)
                               (dontSearchEmail || (o.BillingAddress != null && !String.IsNullOrEmpty(o.BillingAddress.Email) && o.BillingAddress.Email.Contains(billingEmail))) &&
-                              (dontSearchLastName || (o.BillingAddress != null && !String.IsNullOrEmpty(o.BillingAddress.LastName) && o.BillingAddress.LastName.Contains(billingLastName))) &&
-                              (dontSearchOrderNotes || o.OrderNotes.Any(oNote => oNote.Note.Contains(orderNotes)))
+                              (dontSearchLastName || (o.BillingAddress != null && !String.IsNullOrEmpty(o.BillingAddress.LastName) && o.BillingAddress.LastName.Contains(billingLastName))) 
                         select orderItem;
 
             var productCost = Convert.ToDecimal(query.Sum(orderItem => (decimal?)orderItem.OriginalProductCost * orderItem.Quantity));
 
-            var reportSummary = GetOrderAverageReportLine(
-                storeId: storeId,
-                vendorId: vendorId,
-                billingCountryId: billingCountryId,
-                orderId: orderId,
-                paymentMethodSystemName: paymentMethodSystemName,
-                os: os, 
-                ps: ps, 
-                ss: ss,
-                startTimeUtc: startTimeUtc,
-                endTimeUtc: endTimeUtc,
-                billingEmail: billingEmail,
-                billingLastName: billingLastName,
+            var reportSummary = GetOrderAverageReportLine(storeId, vendorId, billingCountryId, orderId, paymentMethodSystemName, os, ps, ss, startTimeUtc, endTimeUtc, billingEmail, billingLastName,
                 orderNotes: orderNotes);
             var profit = reportSummary.SumOrders - reportSummary.SumShippingExclTax - reportSummary.SumTax - productCost;
             return profit;

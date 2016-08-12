@@ -11,7 +11,7 @@ using Nop.Services.Seo;
 
 namespace Nop.Web.Framework.UI
 {
-    public partial class PageHeadBuilder : IPageHeadBuilder
+    public class PageHeadBuilder : IPageHeadBuilder
     {
         #region Fields
 

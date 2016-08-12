@@ -96,23 +96,6 @@ namespace Nop.Services.Tests.Catalog
                 CustomerEntersPrice = false,
                 Published = true,
             };
-
-            //add tier prices
-            product.TierPrices.Add(new TierPrice
-                {
-                    Price = 10,
-                    Quantity = 2,
-                    Product = product
-                });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 8,
-                Quantity = 5,
-                Product = product
-            });
-            //set HasTierPrices property
-            product.HasTierPrices = true;
-
             //customer
             var customer = new Customer();
 
@@ -147,38 +130,6 @@ namespace Nop.Services.Tests.Catalog
                 Name = "Some role 2",
                 Active = true,
             };
-
-            //add tier prices
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 10,
-                Quantity = 2,
-                Product= product,
-                CustomerRole = customerRole1
-            });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 9,
-                Quantity = 2,
-                Product = product,
-                CustomerRole = customerRole2
-            });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 8,
-                Quantity = 5,
-                Product= product,
-                CustomerRole = customerRole1
-            });
-            product.TierPrices.Add(new TierPrice
-            {
-                Price = 5,
-                Quantity = 10,
-                Product = product,
-                CustomerRole = customerRole2
-            });
-            //set HasTierPrices property
-            product.HasTierPrices = true;
 
             //customer
             var customer = new Customer();
@@ -239,8 +190,6 @@ namespace Nop.Services.Tests.Catalog
             product.HasDiscountsApplied = true;
             _discountService.Expect(ds => ds.ValidateDiscount(discount1, customer)).Return(new DiscountValidationResult() {IsValid = true});
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
-
             _priceCalcService.GetFinalPrice(product, customer, 0, true, 1).ShouldEqual(9.34M);
         }
 
@@ -260,7 +209,6 @@ namespace Nop.Services.Tests.Catalog
             };
 
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
 
             //customer
             var customer = new Customer();
@@ -302,7 +250,6 @@ namespace Nop.Services.Tests.Catalog
             };
 
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
 
             _priceCalcService.GetUnitPrice(sci1).ShouldEqual(12.34);
 
@@ -333,7 +280,6 @@ namespace Nop.Services.Tests.Catalog
             };
 
             _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToCategories)).Return(new List<Discount>());
-            _discountService.Expect(ds => ds.GetAllDiscounts(DiscountType.AssignedToManufacturers)).Return(new List<Discount>());
 
             _priceCalcService.GetSubTotal(sci1).ShouldEqual(24.68);
 

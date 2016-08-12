@@ -2,7 +2,7 @@ using Nop.Core.Domain.Vendors;
 
 namespace Nop.Data.Mapping.Vendors
 {
-    public partial class VendorMap : NopEntityTypeConfiguration<Vendor>
+    public class VendorMap : GoqEntityTypeConfiguration<Vendor>
     {
         public VendorMap()
         {

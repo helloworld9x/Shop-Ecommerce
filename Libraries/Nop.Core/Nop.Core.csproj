@@ -149,7 +149,6 @@
     <Compile Include="Data\DataSettingsManager.cs" />
     <Compile Include="Domain\Catalog\ProductExtensions.cs" />
     <Compile Include="Domain\Catalog\ManufacturerTemplate.cs" />
-    <Compile Include="Domain\Catalog\CategoryTemplate.cs" />
     <Compile Include="Domain\Catalog\ProductTemplate.cs" />
     <Compile Include="Domain\Common\AdminAreaSettings.cs" />
     <Compile Include="Domain\Seo\SeoSettings.cs" />
@@ -179,7 +178,6 @@
     <Compile Include="ComponentModel\GenericListTypeConverter.cs" />
     <Compile Include="Configuration\ISettings.cs" />
     <Compile Include="Configuration\NopConfig.cs" />
-    <Compile Include="Domain\Affiliates\Affiliate.cs" />
     <Compile Include="Domain\Catalog\CatalogSettings.cs" />
     <Compile Include="Domain\Catalog\ProductTag.cs" />
     <Compile Include="Domain\Catalog\ProductReviewHelpfulness.cs" />
@@ -203,16 +201,6 @@
     <Compile Include="Domain\Customers\CustomerNameFormat.cs" />
     <Compile Include="Domain\Customers\SystemCustomerAttributeNames.cs" />
     <Compile Include="Domain\Directory\ExchangeRate.cs" />
-    <Compile Include="Domain\Forums\EditorType.cs" />
-    <Compile Include="Domain\Forums\Forum.cs" />
-    <Compile Include="Domain\Forums\ForumGroup.cs" />
-    <Compile Include="Domain\Forums\ForumPost.cs" />
-    <Compile Include="Domain\Forums\ForumSearchType.cs" />
-    <Compile Include="Domain\Forums\ForumSettings.cs" />
-    <Compile Include="Domain\Forums\ForumSubscription.cs" />
-    <Compile Include="Domain\Forums\ForumTopic.cs" />
-    <Compile Include="Domain\Forums\ForumTopicType.cs" />
-    <Compile Include="Domain\Forums\PrivateMessage.cs" />
     <Compile Include="Domain\Localization\LocalizationSettings.cs" />
     <Compile Include="Domain\Media\Download.cs" />
     <Compile Include="Domain\Media\PictureType.cs" />
@@ -321,7 +309,6 @@
     <Compile Include="Domain\Catalog\Category.cs" />
     <Compile Include="Domain\Catalog\CrossSellProduct.cs" />
     <Compile Include="Domain\Catalog\DownloadActivationType.cs" />
-    <Compile Include="Domain\Catalog\GiftCardType.cs" />
     <Compile Include="Domain\Catalog\LowStockActivity.cs" />
     <Compile Include="Domain\Catalog\ManageInventoryMethod.cs" />
     <Compile Include="Domain\Catalog\Manufacturer.cs" />

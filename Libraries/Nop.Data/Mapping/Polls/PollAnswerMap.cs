@@ -2,7 +2,7 @@ using Nop.Core.Domain.Polls;
 
 namespace Nop.Data.Mapping.Polls
 {
-    public partial class PollAnswerMap : NopEntityTypeConfiguration<PollAnswer>
+    public partial class PollAnswerMap : GoqEntityTypeConfiguration<PollAnswer>
     {
         public PollAnswerMap()
         {

@@ -3,14 +3,13 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Nop.Services.Catalog;
 using Nop.Services.Customers;
-using Nop.Services.Forums;
 using Nop.Services.News;
 using Nop.Services.Seo;
 using Nop.Services.Topics;
 
 namespace Nop.Web.Controllers
 {
-    public partial class BackwardCompatibility1XController : BasePublicController
+    public class BackwardCompatibility1XController : BasePublicController
     {
 		#region Fields
 
@@ -20,7 +19,6 @@ namespace Nop.Web.Controllers
         private readonly IProductTagService _productTagService;
         private readonly INewsService _newsService;
         private readonly ITopicService _topicService;
-        private readonly IForumService _forumService;
         private readonly ICustomerService _customerService;
         #endregion
 
@@ -30,16 +28,15 @@ namespace Nop.Web.Controllers
             ICategoryService categoryService, IManufacturerService manufacturerService,
             IProductTagService productTagService, INewsService newsService,
              ITopicService topicService,
-            IForumService forumService, ICustomerService customerService)
+             ICustomerService customerService)
         {
-            this._productService = productService;
-            this._categoryService = categoryService;
-            this._manufacturerService = manufacturerService;
-            this._productTagService = productTagService;
-            this._newsService = newsService;
-            this._topicService = topicService;
-            this._forumService = forumService;
-            this._customerService = customerService;
+            _productService = productService;
+            _categoryService = categoryService;
+            _manufacturerService = manufacturerService;
+            _productTagService = productTagService;
+            _newsService = newsService;
+            _topicService = topicService;
+            _customerService = customerService;
         }
 
 		#endregion
@@ -141,7 +138,7 @@ namespace Nop.Web.Controllers
         public ActionResult RedirectProduct(string id, bool idIncludesSename = true)
         {
             //we can't use dash in MVC
-            var productId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
+            var productId = idIncludesSename ? Convert.ToInt32(id.Split('-')[0]) : Convert.ToInt32(id);
             var product = _productService.GetProductById(productId);
             if (product == null)
                 return RedirectToRoutePermanent("HomePage");
@@ -152,7 +149,7 @@ namespace Nop.Web.Controllers
         public ActionResult RedirectCategory(string id, bool idIncludesSename = true)
         {
             //we can't use dash in MVC
-            var categoryid = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
+            var categoryid = idIncludesSename ? Convert.ToInt32(id.Split('-')[0]) : Convert.ToInt32(id);
             var category = _categoryService.GetCategoryById(categoryid);
             if (category == null)
                 return RedirectToRoutePermanent("HomePage");
@@ -163,7 +160,7 @@ namespace Nop.Web.Controllers
         public ActionResult RedirectManufacturer(string id, bool idIncludesSename = true)
         {
             //we can't use dash in MVC
-            var manufacturerId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
+            var manufacturerId = idIncludesSename ? Convert.ToInt32(id.Split('-')[0]) : Convert.ToInt32(id);
             var manufacturer = _manufacturerService.GetManufacturerById(manufacturerId);
             if (manufacturer == null)
                 return RedirectToRoutePermanent("HomePage");
@@ -174,7 +171,7 @@ namespace Nop.Web.Controllers
         public ActionResult RedirectProductTag(string id, bool idIncludesSename = true)
         {
             //we can't use dash in MVC
-            var tagId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
+            var tagId = idIncludesSename ? Convert.ToInt32(id.Split('-')[0]) : Convert.ToInt32(id);
             var tag = _productTagService.GetProductTagById(tagId);
             if (tag == null)
                 return RedirectToRoutePermanent("HomePage");
@@ -185,7 +182,7 @@ namespace Nop.Web.Controllers
         public ActionResult RedirectNewsItem(string id, bool idIncludesSename = true)
         {
             //we can't use dash in MVC
-            var newsId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
+            var newsId = idIncludesSename ? Convert.ToInt32(id.Split('-')[0]) : Convert.ToInt32(id);
             var newsItem = _newsService.GetNewsById(newsId);
             if (newsItem == null)
                 return RedirectToRoutePermanent("HomePage");
@@ -196,45 +193,12 @@ namespace Nop.Web.Controllers
         public ActionResult RedirectTopic(string id, bool idIncludesSename = true)
         {
             //we can't use dash in MVC
-            var topicid = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
+            var topicid = idIncludesSename ? Convert.ToInt32(id.Split('-')[0]) : Convert.ToInt32(id);
             var topic = _topicService.GetTopicById(topicid);
             if (topic == null)
                 return RedirectToRoutePermanent("HomePage");
 
             return RedirectToRoutePermanent("Topic", new { SeName = topic.GetSeName() });
-        }
-
-        public ActionResult RedirectForumGroup(string id, bool idIncludesSename = true)
-        {
-            //we can't use dash in MVC
-            var forumGroupId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
-            var forumGroup = _forumService.GetForumGroupById(forumGroupId);
-            if (forumGroup == null)
-                return RedirectToRoutePermanent("HomePage");
-
-            return RedirectToRoutePermanent("ForumGroupSlug", new { id = forumGroup.Id, slug = forumGroup.GetSeName() });
-        }
-
-        public ActionResult RedirectForum(string id, bool idIncludesSename = true)
-        {
-            //we can't use dash in MVC
-            var forumId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
-            var forum = _forumService.GetForumById(forumId);
-            if (forum == null)
-                return RedirectToRoutePermanent("HomePage");
-
-            return RedirectToRoutePermanent("ForumSlug", new { id = forum.Id, slug = forum.GetSeName() });
-        }
-
-        public ActionResult RedirectForumTopic(string id, bool idIncludesSename = true)
-        {
-            //we can't use dash in MVC
-            var forumTopicId = idIncludesSename ? Convert.ToInt32(id.Split(new [] { '-' })[0]) : Convert.ToInt32(id);
-            var topic = _forumService.GetTopicById(forumTopicId);
-            if (topic == null)
-                return RedirectToRoutePermanent("HomePage");
-
-            return RedirectToRoutePermanent("TopicSlug", new { id = topic.Id, slug = topic.GetSeName() });
         }
 
         public ActionResult RedirectUserProfile(string id)

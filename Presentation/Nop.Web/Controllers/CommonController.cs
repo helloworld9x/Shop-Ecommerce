@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -10,7 +11,6 @@ using Nop.Core.Domain;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Messages;
 using Nop.Core.Domain.News;
@@ -21,7 +21,6 @@ using Nop.Services.Catalog;
 using Nop.Services.Common;
 using Nop.Services.Customers;
 using Nop.Services.Directory;
-using Nop.Services.Forums;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
 using Nop.Services.Messages;
@@ -40,10 +39,11 @@ using Nop.Web.Infrastructure.Cache;
 using Nop.Web.Models.Catalog;
 using Nop.Web.Models.Common;
 using Nop.Web.Models.Topics;
+using HtmlHelper = Nop.Core.Html.HtmlHelper;
 
 namespace Nop.Web.Controllers
 {
-    public partial class CommonController : BasePublicController
+    public class CommonController : BasePublicController
     {
         #region Fields
 
@@ -61,7 +61,6 @@ namespace Nop.Web.Controllers
         private readonly ISitemapGenerator _sitemapGenerator;
         private readonly IThemeContext _themeContext;
         private readonly IThemeProvider _themeProvider;
-        private readonly IForumService _forumservice;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IWebHelper _webHelper;
         private readonly IPermissionService _permissionService;
@@ -76,7 +75,6 @@ namespace Nop.Web.Controllers
         private readonly EmailAccountSettings _emailAccountSettings;
         private readonly CommonSettings _commonSettings;
         private readonly NewsSettings _newsSettings;
-        private readonly ForumSettings _forumSettings;
         private readonly LocalizationSettings _localizationSettings;
         private readonly CaptchaSettings _captchaSettings;
         private readonly VendorSettings _vendorSettings;
@@ -99,7 +97,6 @@ namespace Nop.Web.Controllers
             ISitemapGenerator sitemapGenerator,
             IThemeContext themeContext,
             IThemeProvider themeProvider,
-            IForumService forumService,
             IGenericAttributeService genericAttributeService, 
             IWebHelper webHelper,
             IPermissionService permissionService,
@@ -113,7 +110,6 @@ namespace Nop.Web.Controllers
             EmailAccountSettings emailAccountSettings,
             CommonSettings commonSettings, 
             NewsSettings newsSettings,
-            ForumSettings forumSettings,
             LocalizationSettings localizationSettings, 
             CaptchaSettings captchaSettings,
             VendorSettings vendorSettings)
@@ -132,14 +128,12 @@ namespace Nop.Web.Controllers
             _sitemapGenerator = sitemapGenerator;
             _themeContext = themeContext;
             _themeProvider = themeProvider;
-            _forumservice = forumService;
             _genericAttributeService = genericAttributeService;
             _webHelper = webHelper;
             _permissionService = permissionService;
             _cacheManager = cacheManager;
             _customerActivityService = customerActivityService;
             _vendorService = vendorService;
-
             _customerSettings = customerSettings;
             _taxSettings = taxSettings;
             _catalogSettings = catalogSettings;
@@ -147,7 +141,6 @@ namespace Nop.Web.Controllers
             _emailAccountSettings = emailAccountSettings;
             _commonSettings = commonSettings;
             _newsSettings = newsSettings;
-            _forumSettings = forumSettings;
             _localizationSettings = localizationSettings;
             _captchaSettings = captchaSettings;
             _vendorSettings = vendorSettings;
@@ -162,17 +155,6 @@ namespace Nop.Web.Controllers
         {
             var result = 0;
             var customer = _workContext.CurrentCustomer;
-            if (_forumSettings.AllowPrivateMessages && !customer.IsGuest())
-            {
-                var privateMessages = _forumservice.GetAllPrivateMessages(_storeContext.CurrentStore.Id,
-                    0, customer.Id, false, null, false, string.Empty, 0, 1);
-
-                if (privateMessages.TotalCount > 0)
-                {
-                    result = privateMessages.TotalCount;
-                }
-            }
-
             return result;
         }
 
@@ -201,7 +183,7 @@ namespace Nop.Web.Controllers
                     {
                         Id = x.Id,
                         Name = x.Name,
-                        FlagImageFileName = x.FlagImageFileName,
+                        FlagImageFileName = x.FlagImageFileName
                     })
                     .ToList();
                 return result;
@@ -360,31 +342,15 @@ namespace Nop.Web.Controllers
         {
             var customer = _workContext.CurrentCustomer;
 
-            var unreadMessageCount = GetUnreadPrivateMessages();
-            var unreadMessage = string.Empty;
-            var alertMessage = string.Empty;
-            if (unreadMessageCount > 0)
-            {
-                unreadMessage = string.Format(_localizationService.GetResource("PrivateMessages.TotalUnread"), unreadMessageCount);
-
-                //notifications here
-                if (_forumSettings.ShowAlertForPM &&
-                    !customer.GetAttribute<bool>(SystemCustomerAttributeNames.NotifiedAboutNewPrivateMessages, _storeContext.CurrentStore.Id))
-                {
-                    _genericAttributeService.SaveAttribute(customer, SystemCustomerAttributeNames.NotifiedAboutNewPrivateMessages, true, _storeContext.CurrentStore.Id);
-                    alertMessage = string.Format(_localizationService.GetResource("PrivateMessages.YouHaveUnreadPM"), unreadMessageCount);
-                }
-            }
-
             var model = new HeaderLinksModel
             {
                 IsAuthenticated = customer.IsRegistered(),
                 CustomerEmailUsername = customer.IsRegistered() ? (_customerSettings.UsernamesEnabled ? customer.Username : customer.Email) : "",
                 ShoppingCartEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableShoppingCart),
                 WishlistEnabled = _permissionService.Authorize(StandardPermissionProvider.EnableWishlist),
-                AllowPrivateMessages = customer.IsRegistered() && _forumSettings.AllowPrivateMessages,
-                UnreadPrivateMessages = unreadMessage,
-                AlertMessage = alertMessage,
+                AllowPrivateMessages = customer.IsRegistered(),
+                UnreadPrivateMessages = string.Empty,
+                AlertMessage = string.Empty
             };
             //performance optimization (use "HasShoppingCartItems" property)
             if (customer.HasShoppingCartItems)
@@ -412,7 +378,7 @@ namespace Nop.Web.Controllers
             {
                 ImpersonatedCustomerEmailUsername = customer.IsRegistered() ? (_customerSettings.UsernamesEnabled ? customer.Username : customer.Email) : "",
                 IsCustomerImpersonated = _workContext.OriginalCustomerIfImpersonated != null,
-                DisplayAdminLink = _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel),
+                DisplayAdminLink = _permissionService.Authorize(StandardPermissionProvider.AccessAdminPanel)
             };
 
             return PartialView(model);
@@ -455,7 +421,6 @@ namespace Nop.Web.Controllers
                 YoutubeLink = _storeInformationSettings.YoutubeLink,
                 GooglePlusLink = _storeInformationSettings.GooglePlusLink,
                 CompareProductsEnabled = _catalogSettings.CompareProductsEnabled,
-                ForumEnabled = _forumSettings.ForumsEnabled,
                 NewsEnabled = _newsSettings.Enabled,
                 RecentlyViewedProductsEnabled = _catalogSettings.RecentlyViewedProductsEnabled,
                 NewProductsEnabled = _catalogSettings.NewProductsEnabled,
@@ -513,7 +478,7 @@ namespace Nop.Web.Controllers
 
                 string from;
                 string fromName;
-                string body = Core.Html.HtmlHelper.FormatText(model.Enquiry, false, true, false, false, false, false);
+                string body = HtmlHelper.FormatText(model.Enquiry, false, true, false, false, false, false);
                 //required for some SMTP servers
                 if (_commonSettings.UseSystemEmailForContactUsForm)
                 {
@@ -615,7 +580,7 @@ namespace Nop.Web.Controllers
 
                 string from;
                 string fromName;
-                string body = Core.Html.HtmlHelper.FormatText(model.Enquiry, false, true, false, false, false, false);
+                string body = HtmlHelper.FormatText(model.Enquiry, false, true, false, false, false, false);
                 //required for some SMTP servers
                 if (_commonSettings.UseSystemEmailForContactUsForm)
                 {
@@ -670,8 +635,7 @@ namespace Nop.Web.Controllers
             {
                 var model = new SitemapModel
                 {
-                    ForumEnabled = _forumSettings.ForumsEnabled,
-                    NewsEnabled = _newsSettings.Enabled,
+                    NewsEnabled = _newsSettings.Enabled
                 };
                 //categories
                 if (_commonSettings.SitemapIncludeCategories)
@@ -698,7 +662,7 @@ namespace Nop.Web.Controllers
                         Name = product.GetLocalized(x => x.Name),
                         ShortDescription = product.GetLocalized(x => x.ShortDescription),
                         FullDescription = product.GetLocalized(x => x.FullDescription),
-                        SeName = product.GetSeName(),
+                        SeName = product.GetSeName()
                     }).ToList();
                 }
 
@@ -712,7 +676,7 @@ namespace Nop.Web.Controllers
                     SystemName = topic.SystemName,
                     IncludeInSitemap = topic.IncludeInSitemap,
                     IsPasswordProtected = topic.IsPasswordProtected,
-                    Title = topic.GetLocalized(x => x.Title),
+                    Title = topic.GetLocalized(x => x.Title)
                 })
                 .ToList();
                 return model;
@@ -782,12 +746,12 @@ namespace Nop.Web.Controllers
         {
             //try loading a store specific favicon
             var faviconFileName = string.Format("favicon-{0}.ico", _storeContext.CurrentStore.Id);
-            var localFaviconPath = System.IO.Path.Combine(Request.PhysicalApplicationPath, faviconFileName);
+            var localFaviconPath = Path.Combine(Request.PhysicalApplicationPath, faviconFileName);
             if (!System.IO.File.Exists(localFaviconPath))
             {
                 //try loading a generic favicon
                 faviconFileName = "favicon.ico";
-                localFaviconPath = System.IO.Path.Combine(Request.PhysicalApplicationPath, faviconFileName);
+                localFaviconPath = Path.Combine(Request.PhysicalApplicationPath, faviconFileName);
                 if (!System.IO.File.Exists(localFaviconPath))
                 {
                     return Content("");
@@ -850,7 +814,7 @@ namespace Nop.Web.Controllers
             var sb = new StringBuilder();
 
             //if robots.txt exists, let's use it
-            string robotsFile = System.IO.Path.Combine(_webHelper.MapPath("~/"), "robots.custom.txt");
+            string robotsFile = Path.Combine(_webHelper.MapPath("~/"), "robots.custom.txt");
             if (System.IO.File.Exists(robotsFile))
             {
                 //the robots.txt file exists
@@ -868,7 +832,7 @@ namespace Nop.Web.Controllers
                     "/content/files/exportimport/",
                     "/country/getstatesbycountryid",
                     "/install",
-                    "/setproductreviewhelpfulness",
+                    "/setproductreviewhelpfulness"
                 };
                 var localizableDisallowPaths = new List<string>
                 {
@@ -925,7 +889,7 @@ namespace Nop.Web.Controllers
                     "/viewpm",
                     "/uploadfileproductattribute",
                     "/uploadfilecheckoutattribute",
-                    "/wishlist",
+                    "/wishlist"
                 };
 
 
@@ -975,7 +939,7 @@ namespace Nop.Web.Controllers
                 }
 
                 //load and add robots.txt additions to the end of file.
-                string robotsAdditionsFile = System.IO.Path.Combine(_webHelper.MapPath("~/"), "robots.additions.txt");
+                string robotsAdditionsFile = Path.Combine(_webHelper.MapPath("~/"), "robots.additions.txt");
                 if (System.IO.File.Exists(robotsAdditionsFile))
                 {
                     string robotsFileContent = System.IO.File.ReadAllText(robotsAdditionsFile);

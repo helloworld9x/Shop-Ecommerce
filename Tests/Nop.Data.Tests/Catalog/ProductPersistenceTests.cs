@@ -26,9 +26,6 @@ namespace Nop.Data.Tests.Catalog
                 VendorId = 1,
                 ProductTemplateId = 2,
                 ShowOnHomePage = false,
-                MetaKeywords = "Meta keywords",
-                MetaDescription = "Meta description",
-                MetaTitle = "Meta title",
                 AllowCustomerReviews = true,
                 ApprovedRatingSum = 2,
                 NotApprovedRatingSum = 3,
@@ -38,27 +35,9 @@ namespace Nop.Data.Tests.Catalog
                 LimitedToStores = true,
                 Sku = "sku 1",
                 ManufacturerPartNumber = "manufacturerPartNumber",
-                Gtin = "gtin 1",
-                IsGiftCard = true,
-                GiftCardTypeId = 1,
                 OverriddenGiftCardAmount = 1,
-                IsDownload = true,
-                DownloadId = 2,
-                UnlimitedDownloads = true,
-                MaxNumberOfDownloads = 3,
-                DownloadExpirationDays = 4,
-                DownloadActivationTypeId = 5,
-                HasSampleDownload = true,
-                SampleDownloadId = 6,
                 HasUserAgreement = true,
                 UserAgreementText = "userAgreementText",
-                IsRecurring = true,
-                RecurringCycleLength = 7,
-                RecurringCyclePeriodId = 8,
-                RecurringTotalCycles = 9,
-                IsRental = true,
-                RentalPriceLength = 9,
-                RentalPricePeriodId = 10,
                 IsShipEnabled = true,
                 IsFreeShipping = true,
                 ShipSeparately = true,
@@ -66,7 +45,6 @@ namespace Nop.Data.Tests.Catalog
                 DeliveryDateId = 5,
                 IsTaxExempt = true,
                 TaxCategoryId = 11,
-                IsTelecommunicationsOrBroadcastingOrElectronicServices = true,
                 ManageInventoryMethodId = 12,
                 UseMultipleWarehouses = true,
                 WarehouseId = 6,
@@ -104,7 +82,6 @@ namespace Nop.Data.Tests.Catalog
                 MarkAsNew = true,
                 MarkAsNewStartDateTimeUtc = new DateTime(2010, 01, 07),
                 MarkAsNewEndDateTimeUtc = new DateTime(2010, 01, 08),
-                HasTierPrices = true,
                 HasDiscountsApplied = true,
                 Weight = 26.1M,
                 Length = 27.1M,
@@ -134,8 +111,6 @@ namespace Nop.Data.Tests.Catalog
             fromDb.VendorId.ShouldEqual(1);
             fromDb.ProductTemplateId.ShouldEqual(2);
             fromDb.ShowOnHomePage.ShouldEqual(false);
-            fromDb.MetaKeywords.ShouldEqual("Meta keywords");
-            fromDb.MetaDescription.ShouldEqual("Meta description");
             fromDb.AllowCustomerReviews.ShouldEqual(true);
             fromDb.ApprovedRatingSum.ShouldEqual(2);
             fromDb.NotApprovedRatingSum.ShouldEqual(3);
@@ -146,27 +121,9 @@ namespace Nop.Data.Tests.Catalog
             fromDb.ShouldNotBeNull();
             fromDb.Sku.ShouldEqual("sku 1");
             fromDb.ManufacturerPartNumber.ShouldEqual("manufacturerPartNumber");
-            fromDb.Gtin.ShouldEqual("gtin 1");
-            fromDb.IsGiftCard.ShouldEqual(true);
-            fromDb.GiftCardTypeId.ShouldEqual(1);
             fromDb.OverriddenGiftCardAmount.ShouldEqual(1);
-            fromDb.IsDownload.ShouldEqual(true);
-            fromDb.DownloadId.ShouldEqual(2);
-            fromDb.UnlimitedDownloads.ShouldEqual(true);
-            fromDb.MaxNumberOfDownloads.ShouldEqual(3);
-            fromDb.DownloadExpirationDays.ShouldEqual(4);
-            fromDb.DownloadActivationTypeId.ShouldEqual(5);
-            fromDb.HasSampleDownload.ShouldEqual(true);
-            fromDb.SampleDownloadId.ShouldEqual(6);
             fromDb.HasUserAgreement.ShouldEqual(true);
             fromDb.UserAgreementText.ShouldEqual("userAgreementText");
-            fromDb.IsRecurring.ShouldEqual(true);
-            fromDb.RecurringCycleLength.ShouldEqual(7);
-            fromDb.RecurringCyclePeriodId.ShouldEqual(8);
-            fromDb.RecurringTotalCycles.ShouldEqual(9);
-            fromDb.IsRental.ShouldEqual(true);
-            fromDb.RentalPriceLength.ShouldEqual(9);
-            fromDb.RentalPricePeriodId.ShouldEqual(10);
             fromDb.IsShipEnabled.ShouldEqual(true);
             fromDb.IsFreeShipping.ShouldEqual(true);
             fromDb.ShipSeparately.ShouldEqual(true);
@@ -174,7 +131,6 @@ namespace Nop.Data.Tests.Catalog
             fromDb.DeliveryDateId.ShouldEqual(5);
             fromDb.IsTaxExempt.ShouldEqual(true);
             fromDb.TaxCategoryId.ShouldEqual(11);
-            fromDb.IsTelecommunicationsOrBroadcastingOrElectronicServices.ShouldEqual(true);
             fromDb.ManageInventoryMethodId.ShouldEqual(12);
             fromDb.UseMultipleWarehouses.ShouldEqual(true);
             fromDb.WarehouseId.ShouldEqual(6);
@@ -212,7 +168,6 @@ namespace Nop.Data.Tests.Catalog
             fromDb.MarkAsNew.ShouldEqual(true);
             fromDb.MarkAsNewStartDateTimeUtc.ShouldEqual(new DateTime(2010, 01, 07));
             fromDb.MarkAsNewEndDateTimeUtc.ShouldEqual(new DateTime(2010, 01, 08));
-            fromDb.HasTierPrices.ShouldEqual(true);
             fromDb.HasDiscountsApplied.ShouldEqual(true);
             fromDb.Weight.ShouldEqual(26.1M);
             fromDb.Length.ShouldEqual(27.1M);
@@ -251,9 +206,6 @@ namespace Nop.Data.Tests.Catalog
                         {
                             Name = "Books",
                             Description = "Description 1",
-                            MetaKeywords = "Meta keywords",
-                            MetaDescription = "Meta description",
-                            MetaTitle = "Meta title",
                             ParentCategoryId = 2,
                             PictureId = 3,
                             PageSize = 4,
@@ -300,9 +252,6 @@ namespace Nop.Data.Tests.Catalog
                         {
                             Name = "Name",
                             Description = "Description 1",
-                            MetaKeywords = "Meta keywords",
-                            MetaDescription = "Meta description",
-                            MetaTitle = "Meta title",
                             PictureId = 3,
                             PageSize = 4,
                             PriceRanges = "1-3;",
@@ -390,32 +339,6 @@ namespace Nop.Data.Tests.Catalog
             fromDb.ProductTags.ShouldNotBeNull();
             (fromDb.ProductTags.Count == 1).ShouldBeTrue();
             fromDb.ProductTags.First().Name.ShouldEqual("Tag name 1");
-        }
-
-        [Test]
-        public void Can_save_and_load_product_with_tierPrices()
-        {
-            var product = new Product
-            {
-                Name = "Product name 1",
-                CreatedOnUtc = new DateTime(2010, 01, 03),
-                UpdatedOnUtc = new DateTime(2010, 01, 04),
-            };
-            product.TierPrices.Add
-                (
-                    new TierPrice
-                    {
-                        Quantity = 1,
-                        Price = 2,
-                    }
-                );
-            var fromDb = SaveAndLoadEntity(product);
-            fromDb.ShouldNotBeNull();
-            fromDb.Name.ShouldEqual("Product name 1");
-
-            fromDb.TierPrices.ShouldNotBeNull();
-            (fromDb.TierPrices.Count == 1).ShouldBeTrue();
-            fromDb.TierPrices.First().Quantity.ShouldEqual(1);
         }
 
         [Test]
