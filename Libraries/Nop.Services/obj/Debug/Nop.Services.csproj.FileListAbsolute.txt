@@ -1,4 +1,3 @@
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\obj\Debug\Nop.Services.csproj.App.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\bin\Debug\Nop.Services.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\bin\Debug\Nop.Services.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\bin\Debug\Nop.Services.pdb
@@ -104,6 +103,7 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\bin\Debug\
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\bin\Debug\ru\System.Spatial.resources.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\bin\Debug\zh-Hans\System.Spatial.resources.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\bin\Debug\zh-Hant\System.Spatial.resources.dll
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\obj\Debug\Nop.Services.csproj.App.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\obj\Debug\Nop.Services.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\obj\Debug\Nop.Services.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Services\obj\Debug\Nop.Services.pdb

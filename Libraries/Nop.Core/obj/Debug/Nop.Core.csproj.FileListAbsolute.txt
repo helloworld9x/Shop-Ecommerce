@@ -25,4 +25,3 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Core\bin\Debug\Syst
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Core\bin\Debug\System.Web.WebPages.Razor.xml
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Core\obj\Debug\Nop.Core.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Core\obj\Debug\Nop.Core.pdb
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Libraries\Nop.Core\obj\Debug\Nop.Core.csprojResolveAssemblyReference.cache

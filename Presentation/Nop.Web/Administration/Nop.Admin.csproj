@@ -132,7 +132,9 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CheckoutAttributeController.cs" />
     <Compile Include="Controllers\CampaignController.cs" />
+    <Compile Include="Controllers\FlightStatusController.cs" />
     <Compile Include="Controllers\JbimagesController.cs" />
+    <Compile Include="Controllers\MealController.cs" />
     <Compile Include="Controllers\RoxyFilemanController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
@@ -203,6 +205,11 @@
     <Compile Include="Models\Customers\CustomerAttributeModel.cs" />
     <Compile Include="Models\Customers\CustomerAttributeValueModel.cs" />
     <Compile Include="Models\Discounts\DiscountListModel.cs" />
+    <Compile Include="Models\Flights\Addon\MealListModel.cs" />
+    <Compile Include="Models\Flights\FlightProductModel.cs" />
+    <Compile Include="Models\Flights\Addon\MealModel.cs" />
+    <Compile Include="Models\Flights\FlightStatusListModel.cs" />
+    <Compile Include="Models\Flights\FlightStatusModel.cs" />
     <Compile Include="Models\Home\DashboardModel.cs" />
     <Compile Include="Models\Messages\TestMessageTemplateModel.cs" />
     <Compile Include="Models\Orders\CountryReportLineModel.cs" />
@@ -321,6 +328,7 @@
     <Compile Include="Validators\Common\AddressAttributeValueValidator.cs" />
     <Compile Include="Validators\Customers\CustomerAttributeValidator.cs" />
     <Compile Include="Validators\Customers\CustomerAttributeValueValidator.cs" />
+    <Compile Include="Validators\Flights\FlightStatusValidator.cs" />
     <Compile Include="Validators\Messages\TestMessageTemplateValidator.cs" />
     <Compile Include="Validators\Orders\ReturnRequestValidator.cs" />
     <Compile Include="Validators\Settings\ReturnRequestActionValidator.cs" />
@@ -444,8 +452,42 @@
     <Content Include="Content\farbtastic\wheel.png" />
     <Content Include="Content\fontAwesome\css\font-awesome-4.6.3.css" />
     <Content Include="Content\fontAwesome\css\font-awesome-4.6.3.min.css" />
+    <Content Include="Content\images\1pix.gif" />
+    <Content Include="Content\images\active-false.gif" />
+    <Content Include="Content\images\active-true.gif" />
+    <Content Include="Content\images\admin-gvw-bg.gif" />
+    <Content Include="Content\images\admin-header-bg.gif" />
+    <Content Include="Content\images\admin-menu-bg.gif" />
+    <Content Include="Content\images\ajax-loading.gif" />
     <Content Include="Content\images\ajax_loader_small.gif" />
+    <Content Include="Content\images\blue_button_bg.gif" />
+    <Content Include="Content\images\error-message.gif" />
+    <Content Include="Content\images\google-maps.gif" />
+    <Content Include="Content\images\grey_button_bg.gif" />
+    <Content Include="Content\images\ico-blacklist.png" />
+    <Content Include="Content\images\ico-catalog.png" />
+    <Content Include="Content\images\ico-configuration.png" />
+    <Content Include="Content\images\ico-content.png" />
+    <Content Include="Content\images\ico-customers.png" />
+    <Content Include="Content\images\ico-dashboard.png" />
+    <Content Include="Content\images\ico-help.gif" />
+    <Content Include="Content\images\ico-help.png" />
+    <Content Include="Content\images\ico-news.gif" />
+    <Content Include="Content\images\ico-promotions.png" />
+    <Content Include="Content\images\ico-sales.png" />
+    <Content Include="Content\images\ico-stat1.gif" />
+    <Content Include="Content\images\ico-system.png" />
+    <Content Include="Content\images\ico-warnings.gif" />
+    <Content Include="Content\images\logo-mini.png" />
     <Content Include="Content\images\logo.gif" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\search-icon.png" />
+    <Content Include="Content\images\success-message.gif" />
+    <Content Include="Content\images\throbber-synchronizing.gif" />
+    <Content Include="Content\images\warnings-ajax-loader.gif" />
+    <Content Include="Content\images\warnings-cross.png" />
+    <Content Include="Content\images\warnings-tick.png" />
+    <Content Include="Content\images\warnings-warning.png" />
     <Content Include="Content\ionicons\css\ionicons-2.0.1.css" />
     <Content Include="Content\ionicons\css\ionicons-2.0.1.min.css" />
     <Content Include="Content\jquery-ui-themes\smoothness\images\animated-overlay.gif" />
@@ -902,39 +944,8 @@
     <Content Include="Content\Roxy_Fileman\js\utils.js" />
     <Content Include="Content\Roxy_Fileman\LICENSE.txt" />
     <Content Include="Content\Roxy_Fileman\third-party.txt" />
-    <Content Include="Content\styles.rtl.css" />
-    <Content Include="Content\images\1pix.gif" />
-    <Content Include="Content\images\admin-gvw-bg.gif" />
-    <Content Include="Content\images\admin-header-bg.gif" />
-    <Content Include="Content\images\admin-menu-bg.gif" />
-    <Content Include="Content\images\ajax-loading.gif" />
-    <Content Include="Content\images\blue_button_bg.gif" />
-    <Content Include="Content\images\active-true.gif" />
-    <Content Include="Content\images\error-message.gif" />
-    <Content Include="Content\images\google-maps.gif" />
-    <Content Include="Content\images\grey_button_bg.gif" />
-    <Content Include="Content\images\ico-blacklist.png" />
-    <Content Include="Content\images\ico-catalog.png" />
-    <Content Include="Content\images\ico-configuration.png" />
-    <Content Include="Content\images\ico-content.png" />
-    <Content Include="Content\images\ico-customers.png" />
-    <Content Include="Content\images\ico-dashboard.png" />
-    <Content Include="Content\images\ico-help.gif" />
-    <Content Include="Content\images\ico-help.png" />
-    <Content Include="Content\images\ico-news.gif" />
-    <Content Include="Content\images\ico-promotions.png" />
-    <Content Include="Content\images\ico-sales.png" />
-    <Content Include="Content\images\ico-stat1.gif" />
-    <Content Include="Content\images\ico-system.png" />
-    <Content Include="Content\images\ico-warnings.gif" />
-    <Content Include="Content\images\throbber-synchronizing.gif" />
-    <Content Include="Content\images\success-message.gif" />
-    <Content Include="Content\images\active-false.gif" />
-    <Content Include="Content\images\warnings-ajax-loader.gif" />
-    <Content Include="Content\images\warnings-cross.png" />
-    <Content Include="Content\images\warnings-tick.png" />
-    <Content Include="Content\images\warnings-warning.png" />
     <Content Include="Content\styles.css" />
+    <Content Include="Content\styles.rtl.css" />
     <Content Include="Content\tagEditor\jquery.tag-editor.css" />
     <Content Include="Content\tinymce\license.txt" />
     <Content Include="Content\tinymce\plugins\advlist\plugin.min.js" />
@@ -1028,30 +1039,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Category\Create.cshtml" />
-    <Content Include="Views\Category\Edit.cshtml" />
-    <Content Include="Views\Category\List.cshtml" />
-    <Content Include="Views\Category\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\EmailAccount\Create.cshtml" />
-    <Content Include="Views\EmailAccount\List.cshtml" />
-    <Content Include="Views\EmailAccount\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Language\Create.cshtml" />
-    <Content Include="Views\Language\Edit.cshtml" />
-    <Content Include="Views\Language\List.cshtml" />
-    <Content Include="Views\Language\Resources.cshtml" />
-    <Content Include="Views\Language\_CreateOrUpdate.cshtml" />
-    <Content Include="Views\Log\List.cshtml" />
-    <Content Include="Views\Shared\Delete.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Picture.cshtml" />
-    <Content Include="Views\Shared\Menu.cshtml" />
-    <Content Include="Views\Shared\_AdminLayout.cshtml" />
-    <Content Include="Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Views\_ViewStart.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\Nop.Core\Nop.Core.csproj">
       <Project>{6BDA8332-939F-45B7-A25E-7A797260AE59}</Project>
       <Name>Nop.Core</Name>
@@ -1070,18 +1057,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Currency\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Currency\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Currency\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Currency\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1090,408 +1065,305 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Product\Create.cshtml" />
+    <Folder Include="Content\Roxy_Fileman\tmp\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\QueuedEmail\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\QueuedEmail\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\QueuedEmail\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\EmailAccount\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Measure\Weights.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Measure\Dimensions.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Tax\Providers.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Tax\ConfigureProvider.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Tax\Categories.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Tax.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\Methods.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\Providers.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\ConfigureProvider.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Address.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\NewsLetterSubscription\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Forum.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Shipping.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Payment\ConfigureMethod.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Payment\Methods.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerRole\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Views\ActivityLog\ListLogs.cshtml" />
+    <Content Include="Views\ActivityLog\ListTypes.cshtml" />
+    <Content Include="Views\AddressAttribute\Create.cshtml" />
+    <Content Include="Views\AddressAttribute\Edit.cshtml" />
+    <Content Include="Views\AddressAttribute\ListBlock.cshtml" />
+    <Content Include="Views\AddressAttribute\ValueCreatePopup.cshtml" />
+    <Content Include="Views\AddressAttribute\ValueEditPopup.cshtml" />
+    <Content Include="Views\AddressAttribute\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\AddressAttribute\_CreateOrUpdateValue.cshtml" />
+    <Content Include="Views\Campaign\Create.cshtml" />
+    <Content Include="Views\Campaign\Edit.cshtml" />
+    <Content Include="Views\Campaign\List.cshtml" />
+    <Content Include="Views\Campaign\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Category\List.cshtml" />
+    <Content Include="Views\Category\ProductAddPopup.cshtml" />
+    <Content Include="Views\Category\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\CheckoutAttribute\Create.cshtml" />
+    <Content Include="Views\CheckoutAttribute\Edit.cshtml" />
+    <Content Include="Views\CheckoutAttribute\List.cshtml" />
+    <Content Include="Views\CheckoutAttribute\ValueCreatePopup.cshtml" />
+    <Content Include="Views\CheckoutAttribute\ValueEditPopup.cshtml" />
+    <Content Include="Views\CheckoutAttribute\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\CheckoutAttribute\_CreateOrUpdateValue.cshtml" />
+    <Content Include="Views\Common\AclDisabledWarning.cshtml" />
+    <Content Include="Views\Common\LanguageSelector.cshtml" />
+    <Content Include="Views\Common\Maintenance.cshtml" />
+    <Content Include="Views\Common\MultistoreDisabledWarning.cshtml" />
+    <Content Include="Views\Common\PopularSearchTermsReport.cshtml" />
+    <Content Include="Views\Common\SeNames.cshtml" />
+    <Content Include="Views\Common\SystemInfo.cshtml" />
+    <Content Include="Views\Common\Warnings.cshtml" />
+    <Content Include="Views\Country\Create.cshtml" />
+    <Content Include="Views\Country\Edit.cshtml" />
+    <Content Include="Views\Country\List.cshtml" />
+    <Content Include="Views\Country\StateCreatePopup.cshtml" />
+    <Content Include="Views\Country\StateEditPopup.cshtml" />
+    <Content Include="Views\Country\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Country\_CreateOrUpdateState.cshtml" />
+    <Content Include="Views\Currency\Create.cshtml" />
+    <Content Include="Views\Currency\Edit.cshtml" />
+    <Content Include="Views\Currency\List.cshtml" />
+    <Content Include="Views\Currency\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\CustomerAttribute\Create.cshtml" />
+    <Content Include="Views\CustomerAttribute\Edit.cshtml" />
+    <Content Include="Views\CustomerAttribute\ListBlock.cshtml" />
+    <Content Include="Views\CustomerAttribute\ValueCreatePopup.cshtml" />
+    <Content Include="Views\CustomerAttribute\ValueEditPopup.cshtml" />
+    <Content Include="Views\CustomerAttribute\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\CustomerAttribute\_CreateOrUpdateValue.cshtml" />
+    <Content Include="Views\CustomerRole\AssociateProductToCustomerRolePopup.cshtml" />
     <Content Include="Views\CustomerRole\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerRole\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\CustomerRole\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Int32.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Views\CustomerRole\List.cshtml" />
+    <Content Include="Views\CustomerRole\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Customer\AddressCreate.cshtml" />
     <Content Include="Views\Customer\AddressEdit.cshtml" />
     <Content Include="Views\Customer\Create.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
     <Content Include="Views\Customer\List.cshtml" />
+    <Content Include="Views\Customer\ReportRegisteredCustomers.cshtml" />
+    <Content Include="Views\Customer\Reports.cshtml" />
     <Content Include="Views\Customer\_CreateOrUpdate.cshtml" />
     <Content Include="Views\Customer\_CreateOrUpdateAddress.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Security\AccessDenied.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductAttribute\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductAttribute\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductAttribute\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductAttribute\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SpecificationAttribute\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SpecificationAttribute\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SpecificationAttribute\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SpecificationAttribute\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SpecificationAttribute\OptionCreatePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SpecificationAttribute\_CreateOrUpdateOption.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\SpecificationAttribute\OptionEditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_AdminPopupLayout.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\RelatedProductAddPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\CrossSellProductAddPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Category\ProductAddPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\EditAttributeValues.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\ProductAttributeValueCreatePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\ProductAttributeValueEditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdateProductAttributeValue.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Download.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Double.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\DateNullable.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\DateTimeNullable.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CheckoutAttribute\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CheckoutAttribute\_CreateOrUpdateValue.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CheckoutAttribute\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CheckoutAttribute\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CheckoutAttribute\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CheckoutAttribute\ValueCreatePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CheckoutAttribute\ValueEditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Discount\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Views\Customer\_CustomerAttributes.cshtml" />
+    <Content Include="Views\Customer\_ReportBestCustomersByNumberOfOrders.cshtml" />
+    <Content Include="Views\Customer\_ReportBestCustomersByOrderTotal.cshtml" />
+    <Content Include="Views\Discount\CategoryAddPopup.cshtml" />
     <Content Include="Views\Discount\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Discount\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Discount\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\GiftCard\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\GiftCard\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\GiftCard\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\GiftCard\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ActivityLog\ListTypes.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ActivityLog\ListLogs.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\UploadLicenseFilePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\RecurringPayment\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\RecurringPayment\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\RecurringPayment\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ReturnRequest\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ReturnRequest\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ReturnRequest\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductReview\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductReview\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductReview\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Country\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Country\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Country\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Country\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\RichEditor.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\MessageTemplate\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Views\Discount\ManufacturerAddPopup.cshtml" />
+    <Content Include="Views\Discount\ProductAddPopup.cshtml" />
+    <Content Include="Views\Discount\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\EmailAccount\Create.cshtml" />
+    <Content Include="Views\EmailAccount\Edit.cshtml" />
+    <Content Include="Views\EmailAccount\List.cshtml" />
+    <Content Include="Views\EmailAccount\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ExternalAuthentication\ConfigureMethod.cshtml" />
+    <Content Include="Views\ExternalAuthentication\Methods.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\NopCommerceNews.cshtml" />
+    <Content Include="Views\Jbimages\Upload.cshtml" />
+    <Content Include="Views\Language\Create.cshtml" />
+    <Content Include="Views\Language\Edit.cshtml" />
+    <Content Include="Views\Language\List.cshtml" />
+    <Content Include="Views\Language\Resources.cshtml" />
+    <Content Include="Views\Language\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Log\List.cshtml" />
+    <Content Include="Views\Log\View.cshtml" />
+    <Content Include="Views\Manufacturer\Create.cshtml" />
+    <Content Include="Views\Manufacturer\Edit.cshtml" />
+    <Content Include="Views\Manufacturer\List.cshtml" />
+    <Content Include="Views\Manufacturer\ProductAddPopup.cshtml" />
+    <Content Include="Views\Manufacturer\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Measure\Dimensions.cshtml" />
+    <Content Include="Views\Measure\Weights.cshtml" />
     <Content Include="Views\MessageTemplate\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\MessageTemplate\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Campaign\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Campaign\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Campaign\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Campaign\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Views\MessageTemplate\TestTemplate.cshtml" />
+    <Content Include="Views\MessageTemplate\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\NewsLetterSubscription\List.cshtml" />
+    <Content Include="Views\News\Comments.cshtml" />
+    <Content Include="Views\News\Create.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\News\List.cshtml" />
+    <Content Include="Views\News\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\OnlineCustomer\List.cshtml" />
+    <Content Include="Views\Order\AddProductToOrder.cshtml" />
+    <Content Include="Views\Order\AddProductToOrderDetails.cshtml" />
     <Content Include="Views\Order\AddressEdit.cshtml" />
+    <Content Include="Views\Order\AddShipment.cshtml" />
+    <Content Include="Views\Order\BestsellersBriefReportByAmount.cshtml" />
+    <Content Include="Views\Order\BestsellersBriefReportByQuantity.cshtml" />
+    <Content Include="Views\Order\BestsellersReport.cshtml" />
+    <Content Include="Views\Order\CountryReport.cshtml" />
     <Content Include="Views\Order\Edit.cshtml" />
     <Content Include="Views\Order\List.cshtml" />
-    <Content Include="Views\Order\PartiallyRefundOrderPopup.cshtml" />
-    <Content Include="Views\Order\_CreateOrUpdateAddress.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Blog.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\News.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\News\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\News\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\News\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\News\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\News\Comments.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\Restrictions.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Topic\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Topic\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Topic\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Topic\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Catalog.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\RewardPoints.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Order.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\ShoppingCart.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Media.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\CustomerUser.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\AllSettings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\ProductTags.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\LowStockReport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\BestsellersReport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Customer\Reports.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Customer\_ReportBestCustomersByOrderTotal.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Customer\_ReportBestCustomersByNumberOfOrders.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Customer\ReportRegisteredCustomers.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\SystemInfo.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\Warnings.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Views\Order\NeverSoldReport.cshtml" />
     <Content Include="Views\Order\OrderAverageReport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Order\OrderIncompleteReport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\Maintenance.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\BestsellersBriefReportByQuantity.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\BestsellersBriefReportByAmount.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Notifications.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Views\Order\PartiallyRefundOrderPopup.cshtml" />
+    <Content Include="Views\Order\ShipmentDetails.cshtml" />
+    <Content Include="Views\Order\ShipmentList.cshtml" />
+    <Content Include="Views\Order\UploadLicenseFilePopup.cshtml" />
+    <Content Include="Views\Order\_CreateOrUpdateAddress.cshtml" />
+    <Content Include="Views\Order\_OrderDetails.Billing.cshtml" />
+    <Content Include="Views\Order\_OrderDetails.Info.cshtml" />
+    <Content Include="Views\Order\_OrderDetails.Notes.cshtml" />
+    <Content Include="Views\Order\_OrderDetails.Products.cshtml" />
+    <Content Include="Views\Order\_OrderDetails.Shipping.cshtml" />
+    <Content Include="Views\Order\_ProductAddAttributes.cshtml" />
+    <Content Include="Views\Order\_ProductAddGiftCardInfo.cshtml" />
+    <Content Include="Views\Order\_ProductAddRentalInfo.cshtml" />
+    <Content Include="Views\Payment\ConfigureMethod.cshtml" />
+    <Content Include="Views\Payment\MethodRestrictions.cshtml" />
+    <Content Include="Views\Payment\Methods.cshtml" />
+    <Content Include="Views\Plugin\ConfigureMiscPlugin.cshtml" />
+    <Content Include="Views\Plugin\EditPopup.cshtml" />
+    <Content Include="Views\Plugin\List.cshtml" />
+    <Content Include="Views\Plugin\OfficialFeed.cshtml" />
+    <Content Include="Views\Plugin\_CreateOrUpdatePlugin.cshtml" />
+    <Content Include="Views\Poll\Create.cshtml" />
+    <Content Include="Views\Poll\Edit.cshtml" />
+    <Content Include="Views\Poll\List.cshtml" />
+    <Content Include="Views\Poll\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ProductAttribute\Create.cshtml" />
+    <Content Include="Views\ProductAttribute\Edit.cshtml" />
+    <Content Include="Views\ProductAttribute\List.cshtml" />
+    <Content Include="Views\ProductAttribute\PredefinedProductAttributeValueCreatePopup.cshtml" />
+    <Content Include="Views\ProductAttribute\PredefinedProductAttributeValueEditPopup.cshtml" />
+    <Content Include="Views\ProductAttribute\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ProductAttribute\_CreateOrUpdatePredefinedProductAttributeValue.cshtml" />
+    <Content Include="Views\ProductReview\Edit.cshtml" />
+    <Content Include="Views\ProductReview\List.cshtml" />
+    <Content Include="Views\ProductReview\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Product\AddAttributeCombinationPopup.cshtml" />
+    <Content Include="Views\Product\AssociatedProductAddPopup.cshtml" />
+    <Content Include="Views\Product\AssociateProductToAttributeValuePopup.cshtml" />
+    <Content Include="Views\Product\BulkEdit.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\CrossSellProductAddPopup.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\EditAttributeValues.cshtml" />
+    <Content Include="Views\Product\EditProductTag.cshtml" />
+    <Content Include="Views\Product\List.cshtml" />
+    <Content Include="Views\Product\LowStockReport.cshtml" />
+    <Content Include="Views\Product\ProductAttributeConditionPopup.cshtml" />
+    <Content Include="Views\Product\ProductAttributeValidationRulesPopup.cshtml" />
+    <Content Include="Views\Product\ProductAttributeValueCreatePopup.cshtml" />
+    <Content Include="Views\Product\ProductAttributeValueEditPopup.cshtml" />
+    <Content Include="Views\Product\ProductTags.cshtml" />
+    <Content Include="Views\Product\RelatedProductAddPopup.cshtml" />
+    <Content Include="Views\Product\RequiredProductAddPopup.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.Acl.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.AssociatedProducts.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.Categories.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.CrossSells.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.Discounts.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.Info.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.Manufacturers.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.Pictures.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.ProductAttributes.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.PurchasedWithOrders.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.RelatedProducts.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.SEO.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.SpecificationAttributes.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdate.Stores.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdateProductAttributeValue.cshtml" />
+    <Content Include="Views\Product\_CreateOrUpdateProductTag.cshtml" />
+    <Content Include="Views\Product\_ProductAttributes.cshtml" />
+    <Content Include="Views\QueuedEmail\Edit.cshtml" />
+    <Content Include="Views\QueuedEmail\List.cshtml" />
+    <Content Include="Views\QueuedEmail\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\RecurringPayment\Edit.cshtml" />
+    <Content Include="Views\RecurringPayment\List.cshtml" />
+    <Content Include="Views\RecurringPayment\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ReturnRequest\Edit.cshtml" />
+    <Content Include="Views\ReturnRequest\List.cshtml" />
+    <Content Include="Views\ReturnRequest\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\ScheduleTask\List.cshtml" />
+    <Content Include="Views\Security\AccessDenied.cshtml" />
+    <Content Include="Views\Security\Permissions.cshtml" />
+    <Content Include="Views\Setting\AllSettings.cshtml" />
+    <Content Include="Views\Setting\Blog.cshtml" />
+    <Content Include="Views\Setting\Catalog.cshtml" />
+    <Content Include="Views\Setting\CustomerUser.cshtml" />
+    <Content Include="Views\Setting\Forum.cshtml" />
     <Content Include="Views\Setting\GeneralCommon.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\LanguageSelector.cshtml" />
+    <Content Include="Views\Setting\Media.cshtml" />
+    <Content Include="Views\Setting\News.cshtml" />
+    <Content Include="Views\Setting\Order.cshtml" />
+    <Content Include="Views\Setting\ReturnRequestActionCreate.cshtml" />
+    <Content Include="Views\Setting\ReturnRequestActionEdit.cshtml" />
+    <Content Include="Views\Setting\ReturnRequestReasonCreate.cshtml" />
+    <Content Include="Views\Setting\ReturnRequestReasonEdit.cshtml" />
+    <Content Include="Views\Setting\RewardPoints.cshtml" />
+    <Content Include="Views\Setting\Shipping.cshtml" />
+    <Content Include="Views\Setting\ShoppingCart.cshtml" />
+    <Content Include="Views\Setting\StoreScopeConfiguration.cshtml" />
+    <Content Include="Views\Setting\Tax.cshtml" />
+    <Content Include="Views\Setting\Vendor.cshtml" />
+    <Content Include="Views\Setting\_CreateOrUpdate.ReturnRequestAction.cshtml" />
+    <Content Include="Views\Setting\_CreateOrUpdate.ReturnRequestReason.cshtml" />
+    <Content Include="Views\Setting\_ReturnRequestActions.cshtml" />
+    <Content Include="Views\Setting\_ReturnRequestReasons.cshtml" />
+    <Content Include="Views\Shared\Delete.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Address.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateNullable.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTimeNullable.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Decimal.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DecimalNullable.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Double.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Download.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Int32.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Int32Nullable.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Picture.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\RichEditor.cshtml" />
+    <Content Include="Views\Shared\Menu.cshtml" />
+    <Content Include="Views\Shared\Notifications.cshtml" />
+    <Content Include="Views\Shared\_AddressAttributes.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Shared\_AdminPopupLayout.cshtml" />
+    <Content Include="Views\Shipping\ConfigureProvider.cshtml" />
+    <Content Include="Views\Shipping\CreateDeliveryDate.cshtml" />
+    <Content Include="Views\Shipping\CreateMethod.cshtml" />
+    <Content Include="Views\Shipping\CreateWarehouse.cshtml" />
+    <Content Include="Views\Shipping\DeliveryDates.cshtml" />
+    <Content Include="Views\Shipping\EditDeliveryDate.cshtml" />
+    <Content Include="Views\Shipping\EditMethod.cshtml" />
+    <Content Include="Views\Shipping\EditWarehouse.cshtml" />
+    <Content Include="Views\Shipping\Methods.cshtml" />
+    <Content Include="Views\Shipping\Providers.cshtml" />
+    <Content Include="Views\Shipping\Restrictions.cshtml" />
+    <Content Include="Views\Shipping\Warehouses.cshtml" />
+    <Content Include="Views\Shipping\_CreateOrUpdateDeliveryDate.cshtml" />
+    <Content Include="Views\Shipping\_CreateOrUpdateMethod.cshtml" />
+    <Content Include="Views\Shipping\_CreateOrUpdateWarehouse.cshtml" />
+    <Content Include="Views\ShoppingCart\CurrentCarts.cshtml" />
+    <Content Include="Views\ShoppingCart\CurrentWishlists.cshtml" />
+    <Content Include="Views\SpecificationAttribute\Create.cshtml" />
+    <Content Include="Views\SpecificationAttribute\Edit.cshtml" />
+    <Content Include="Views\SpecificationAttribute\List.cshtml" />
+    <Content Include="Views\SpecificationAttribute\OptionCreatePopup.cshtml" />
+    <Content Include="Views\SpecificationAttribute\OptionEditPopup.cshtml" />
+    <Content Include="Views\SpecificationAttribute\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\SpecificationAttribute\_CreateOrUpdateOption.cshtml" />
+    <Content Include="Views\Store\Create.cshtml" />
+    <Content Include="Views\Store\Edit.cshtml" />
+    <Content Include="Views\Store\List.cshtml" />
+    <Content Include="Views\Store\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Tax\Categories.cshtml" />
+    <Content Include="Views\Tax\ConfigureProvider.cshtml" />
+    <Content Include="Views\Tax\Providers.cshtml" />
+    <Content Include="Views\Template\CategoryTemplates.cshtml" />
+    <Content Include="Views\Template\ManufacturerTemplates.cshtml" />
+    <Content Include="Views\Template\ProductTemplates.cshtml" />
+    <Content Include="Views\Template\TopicTemplates.cshtml" />
+    <Content Include="Views\Topic\Create.cshtml" />
+    <Content Include="Views\Topic\Edit.cshtml" />
+    <Content Include="Views\Topic\List.cshtml" />
+    <Content Include="Views\Topic\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Vendor\Create.cshtml" />
+    <Content Include="Views\Vendor\Edit.cshtml" />
+    <Content Include="Views\Vendor\List.cshtml" />
+    <Content Include="Views\Vendor\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Widget\ConfigureWidget.cshtml" />
+    <Content Include="Views\Widget\List.cshtml" />
+    <Content Include="Views\Widget\WidgetsByZone.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap\css\bootstrap-theme.css.map" />
@@ -1503,6 +1375,7 @@
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\Content.rar" />
     <Content Include="Content\fontAwesome\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\fontAwesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fontAwesome\fonts\fontawesome-webfont.ttf" />
@@ -1538,373 +1411,49 @@
     <Content Include="Content\tinymce\skins\lightgray\fonts\tinymce.svg" />
     <Content Include="Content\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Content\tinymce\skins\lightgray\fonts\tinymce.woff" />
-    <None Include="Views\Product\_ProductAttributes.cshtml" />
-    <Content Include="Views\Setting\_ReturnRequestReasons.cshtml" />
-    <Content Include="Views\Setting\ReturnRequestReasonEdit.cshtml" />
-    <Content Include="Views\Setting\ReturnRequestReasonCreate.cshtml" />
-    <Content Include="Views\Setting\_CreateOrUpdate.ReturnRequestReason.cshtml" />
-    <Content Include="Views\Setting\_CreateOrUpdate.ReturnRequestAction.cshtml" />
-    <Content Include="Views\Setting\_ReturnRequestActions.cshtml" />
-    <Content Include="Views\Setting\ReturnRequestActionCreate.cshtml" />
-    <Content Include="Views\Setting\ReturnRequestActionEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Product\AddAttributeCombinationPopup.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultiSelect.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Security\Permissions.cshtml" />
+    <Content Include="Views\FlightStatus\List.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Log\View.cshtml" />
+    <Content Include="Views\FlightStatus\Edit.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manufacturer\_CreateOrUpdate.cshtml" />
+    <Content Include="Views\FlightStatus\_CreateOrUpdate.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manufacturer\Create.cshtml" />
+    <Content Include="Views\FlightStatus\Create.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manufacturer\Edit.cshtml" />
+    <Content Include="Views\Meal\_CreateOrUpdate.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manufacturer\List.cshtml" />
+    <Content Include="Views\Meal\Create.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Manufacturer\ProductAddPopup.cshtml" />
+    <Content Include="Views\Meal\Edit.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ShoppingCart\CurrentCarts.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Poll\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Poll\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Poll\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Poll\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Plugin\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\OnlineCustomer\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ExternalAuthentication\ConfigureMethod.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ExternalAuthentication\Methods.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ShoppingCart\CurrentWishlists.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\BulkEdit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Country\StateEditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Country\StateCreatePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Country\_CreateOrUpdateState.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\EditMethod.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\CreateMethod.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\_CreateOrUpdateMethod.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\DecimalNullable.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Plugin\ConfigureMiscPlugin.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\AddProductToOrder.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\AddProductToOrderDetails.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_ProductAddAttributes.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_ProductAddGiftCardInfo.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\NeverSoldReport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\ShipmentDetails.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\AddShipment.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\ShipmentList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Plugin\EditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Plugin\_CreateOrUpdatePlugin.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\EditProductTag.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdateProductTag.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Widget\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Widget\ConfigureWidget.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Widget\WidgetsByZone.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ScheduleTask\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\SeNames.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Store\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Store\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Store\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Store\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\StoreScopeConfiguration.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Vendor\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Vendor\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Vendor\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Vendor\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_OrderDetails.Notes.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_OrderDetails.Info.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_OrderDetails.Billing.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_OrderDetails.Shipping.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_OrderDetails.Products.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.Info.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.Stores.cshtml" />
-    <Content Include="Views\Product\_CreateOrUpdate.SpecificationAttributes.cshtml" />
-    <Content Include="Views\Product\_CreateOrUpdate.Acl.cshtml" />
-    <Content Include="Views\Product\_CreateOrUpdate.ProductAttributes.cshtml" />
-    <Content Include="Views\Product\_CreateOrUpdate.Discounts.cshtml" />
-    <Content Include="Views\Product\_CreateOrUpdate.AssociatedProducts.cshtml" />
-    <Content Include="Views\Product\AssociatedProductAddPopup.cshtml" />
-    <Content Include="Views\Product\_CreateOrUpdate.SEO.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.Categories.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.Manufacturers.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.RelatedProducts.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.CrossSells.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.Pictures.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\AssociateProductToAttributeValuePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\_CreateOrUpdate.PurchasedWithOrders.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\CreateDeliveryDate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\EditDeliveryDate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\DeliveryDates.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\_CreateOrUpdateDeliveryDate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\_CreateOrUpdateWarehouse.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\EditWarehouse.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\Warehouses.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shipping\CreateWarehouse.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\PopularSearchTermsReport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Payment\MethodRestrictions.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Setting\Vendor.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Template\CategoryTemplates.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Template\ManufacturerTemplates.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Template\ProductTemplates.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Jbimages\Upload.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerRole\AssociateProductToCustomerRolePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\ProductAttributeValidationRulesPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\Int32Nullable.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerAttribute\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerAttribute\_CreateOrUpdateValue.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerAttribute\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerAttribute\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerAttribute\ListBlock.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerAttribute\ValueCreatePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CustomerAttribute\ValueEditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Customer\_CustomerAttributes.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\CountryReport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\RequiredProductAddPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AddressAttribute\_CreateOrUpdate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AddressAttribute\_CreateOrUpdateValue.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AddressAttribute\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AddressAttribute\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AddressAttribute\ListBlock.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AddressAttribute\ValueCreatePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AddressAttribute\ValueEditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\_AddressAttributes.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Order\_ProductAddRentalInfo.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Plugin\OfficialFeed.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Template\TopicTemplates.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\MessageTemplate\TestTemplate.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductAttribute\_CreateOrUpdatePredefinedProductAttributeValue.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductAttribute\PredefinedProductAttributeValueEditPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductAttribute\PredefinedProductAttributeValueCreatePopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Discount\ProductAddPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Discount\CategoryAddPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Discount\ManufacturerAddPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\MultistoreDisabledWarning.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Common\AclDisabledWarning.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Product\ProductAttributeConditionPopup.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Roxy_Fileman\tmp\" />
+    <Content Include="Views\Meal\List.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

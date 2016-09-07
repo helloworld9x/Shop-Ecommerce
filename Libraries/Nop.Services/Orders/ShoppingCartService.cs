@@ -712,8 +712,6 @@ namespace Nop.Services.Orders
             }
 
             //don't mix standard and recurring products
-            if (hasStandartProducts)
-                warnings.Add(_localizationService.GetResource("ShoppingCart.CannotMixStandardAndAutoshipProducts"));
 
             //validate checkout attributes
             if (validateCheckoutAttributes)

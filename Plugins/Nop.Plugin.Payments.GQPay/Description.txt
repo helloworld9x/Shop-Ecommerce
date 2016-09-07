@@ -1,0 +1,8 @@
+﻿Group: Payment methods
+FriendlyName: GoQuo Credit Card
+SystemName: Payments.GQPay
+Version: 1.0
+SupportedVersions: 3.70
+Author: GoQuo team
+DisplayOrder: 1
+FileName: Nop.Plugin.Payments.GQPay.dll

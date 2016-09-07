@@ -33,12 +33,7 @@ namespace Nop.Services.Orders
         /// <returns>Result</returns>
         public static int GetTotalProducts(this IList<ShoppingCartItem> shoppingCart)
         {
-            int result = 0;
-            foreach (ShoppingCartItem sci in shoppingCart)
-            {
-                result += sci.Quantity;
-            }
-            return result;
+            return shoppingCart.Sum(sci => sci.Quantity);
         }
 
         /// <summary>

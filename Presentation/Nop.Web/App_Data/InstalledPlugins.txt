@@ -6,9 +6,10 @@ CurrencyExchange.ECB
 ExternalAuth.Facebook
 Misc.FacebookShop
 Payments.CheckMoneyOrder
-Payments.Manual
 Payments.PayPalDirect
+Payments.Manual
 Payments.AuthorizeNet
+Payments.GQPay
 Payments.PayPalStandard
 Payments.PurchaseOrder
 PromotionFeed.Froogle

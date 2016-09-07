@@ -323,6 +323,7 @@
     <Compile Include="Models\Common\StoreThemeModel.cs" />
     <Compile Include="Models\Common\LanguageSelectorModel.cs" />
     <Compile Include="Models\Common\SitemapModel.cs" />
+    <Compile Include="Models\ShoppingCart\FlyoutShoppingCartModel.cs" />
     <Compile Include="Models\Vendors\ApplyVendorModel.cs" />
     <Compile Include="Models\Customer\CustomerAttributeModel.cs" />
     <Compile Include="Models\Catalog\CustomerBackInStockSubscriptionsModel.cs" />
@@ -2476,6 +2477,7 @@
     <Content Include="Themes\ShopLion\Views\Topic\TopicBlock.cshtml" />
     <Content Include="Themes\ShopLion\Views\Topic\TopicDetails.cshtml" />
     <Content Include="Themes\ShopLion\Views\Web.config" />
+    <Content Include="Themes\ShopLion\Views\ShoppingCart\PrepareFlyoutCartAndWishList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Roxy_Fileman\tmp\" />

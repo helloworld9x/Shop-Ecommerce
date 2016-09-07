@@ -5,6 +5,6 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Ship
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Shipping.Fedex\Nop.Plugin.Shipping.Fedex.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Shipping.Fedex\Nop.Plugin.Shipping.Fedex.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Shipping.Fedex\Nop.Plugin.Shipping.Fedex.pdb
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Shipping.Fedex\obj\Debug\Nop.Plugin.Shipping.Fedex.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Shipping.Fedex\obj\Debug\Nop.Plugin.Shipping.Fedex.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Shipping.Fedex\obj\Debug\Nop.Plugin.Shipping.Fedex.pdb
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Shipping.Fedex\obj\Debug\Nop.Plugin.Shipping.Fedex.csprojResolveAssemblyReference.cache

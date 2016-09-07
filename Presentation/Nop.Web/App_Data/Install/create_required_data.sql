@@ -46,26 +46,11 @@ INSERT [dbo].[MessageTemplate] ([Id], [Name], [BccEmailAddresses], [Subject], [B
 SET IDENTITY_INSERT [dbo].[MessageTemplate] OFF
 GO
 
-
-SET IDENTITY_INSERT [dbo].[ManufacturerTemplate] ON
-INSERT [dbo].[ManufacturerTemplate] ([Id], [Name], [ViewPath], [DisplayOrder]) VALUES (1, N'Products in Grid or Lines', N'ManufacturerTemplate.ProductsInGridOrLines', 1)
-SET IDENTITY_INSERT [dbo].[ManufacturerTemplate] OFF
-GO
-
-
 SET IDENTITY_INSERT [dbo].[ProductTemplate] ON
 INSERT [dbo].[ProductTemplate] ([Id], [Name], [ViewPath], [DisplayOrder]) VALUES (1, N'Simple product', N'ProductTemplate.Simple', 10)
 INSERT [dbo].[ProductTemplate] ([Id], [Name], [ViewPath], [DisplayOrder]) VALUES (2, N'Grouped product (with variants)', N'ProductTemplate.Grouped', 100)
 SET IDENTITY_INSERT [dbo].[ProductTemplate] OFF
 GO
-
-
-
-SET IDENTITY_INSERT [dbo].[CategoryTemplate] ON
-INSERT [dbo].[CategoryTemplate] ([Id], [Name], [ViewPath], [DisplayOrder]) VALUES (1, N'Products in Grid or Lines', N'CategoryTemplate.ProductsInGridOrLines', 1)
-SET IDENTITY_INSERT [dbo].[CategoryTemplate] OFF
-GO
-
 
 
 SET IDENTITY_INSERT [dbo].[TopicTemplate] ON

@@ -65,6 +65,8 @@
     <Compile Include="Mapping\Catalog\PredefinedProductAttributeValueMap.cs" />
     <Compile Include="Mapping\Common\AddressAttributeMap.cs" />
     <Compile Include="Mapping\Common\AddressAttributeValueMap.cs" />
+    <Compile Include="Mapping\Flights\FlightProductMap.cs" />
+    <Compile Include="Mapping\Flights\FlightStatusMap.cs" />
     <Compile Include="Mapping\Orders\ReturnRequestReason.cs" />
     <Compile Include="Mapping\Orders\ReturnRequestAction.cs" />
     <Compile Include="Mapping\Topics\TopicTemplateMap.cs" />
@@ -81,13 +83,10 @@
     <Compile Include="EfDataProviderManager.cs" />
     <Compile Include="Mapping\Catalog\ProductWarehouseInventoryMap.cs" />
     <Compile Include="Mapping\Catalog\BackInStockSubscriptionMap.cs" />
-    <Compile Include="Mapping\Catalog\ManufacturerTemplateMap.cs" />
     <Compile Include="Mapping\Catalog\CategoryTemplateMap.cs" />
     <Compile Include="Mapping\Catalog\ProductTemplateMap.cs" />
     <Compile Include="Mapping\Common\SearchTermMap.cs" />
     <Compile Include="Mapping\Common\GenericAttributeMap.cs" />
-    <Compile Include="Mapping\Customers\CustomerAttributeMap.cs" />
-    <Compile Include="Mapping\Customers\CustomerAttributeValueMap.cs" />
     <Compile Include="Mapping\Shipping\WarehouseMap.cs" />
     <Compile Include="Mapping\Shipping\DeliveryDateMap.cs" />
     <Compile Include="Mapping\GoqEntityTypeConfiguration.cs" />

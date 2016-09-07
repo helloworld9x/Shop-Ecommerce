@@ -1,0 +1,149 @@
+﻿@using Nop.Core.Infrastructure
+@model Nop.Plugin.Payments.GQPay.Models.ConfigurationModel
+@{
+    Layout = null;
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+}
+@using Nop.Web.Framework;
+@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "Payments-Process-form" }))
+{
+    @Html.AntiForgeryToken()
+    <table class="adminContent">
+        <tr>
+            <td>
+                <div id="Process-List-grid"></div>
+                <script>
+                    $(document).ready(function() {
+                        $("#Process-List-grid").kendoGrid({
+                            dataSource: {
+                                type: "json",
+                                transport: {
+                                    read: {
+                                        url: "@Html.Raw(Url.Action("GetAllProcess", "GoQuoPaymentGateWays", new RouteValueDictionary {{"Namespaces", "Nop.Plugin.Payments.GQPay.Controllers"}, {"area", ""}}))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                    update: {
+                                        url: "@Html.Raw(Url.Action("UpdateProcess", "GoQuoPaymentGateWays", new RouteValueDictionary {{"Namespaces", "Nop.Plugin.Payments.GQPay.Controllers"}, {"area", ""}}))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    },
+                                    destroy: {
+                                        url: "@Html.Raw(Url.Action("DeleteProcess", "GoQuoPaymentGateWays", new RouteValueDictionary {{"Namespaces", "Nop.Plugin.Payments.GQPay.Controllers"}, {"area", ""}}))",
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: addAntiForgeryToken
+                                    }
+                                },
+                                schema: {
+                                    data: "Data",
+                                    total: "Total",
+                                    errors: "Errors",
+                                    model: {
+                                        id: "Id",
+                                        fields: {
+                                            Name: { editable: true, type: "string" },
+                                            Active: { editable: true, type: "boolean" },
+                                            Currency: { editable: true, type: "string" },
+                                            Id: { editable: false, type: "number" }
+                                        }
+
+                                    }
+                                },
+                                requestEnd: function(e) {
+                                    if (e.type == "update") {
+                                        this.read();
+                                    }
+                                },
+                                error: function(e) {
+                                    display_kendoui_grid_error(e);
+                                    // Cancel the changes
+                                    this.cancelChanges();
+                                },
+                                pageSize: @(defaultGridPageSize),
+                                serverPaging: true,
+                                serverFiltering: true,
+                                serverSorting: true
+                            },
+                            pageable: {
+                                refresh: true,
+                                pageSizes: [@(gridPageSizes)]
+                            },
+                            editable: {
+                                confirmation: false,
+                                mode: "inline"
+                            },
+                            scrollable: false,
+                            columns: [
+                                {
+                                    field: "Name",
+                                    title: "@T(" Plugin.Payments.GQPay.Fields.Name")",
+                                    width: 300
+                                }, {
+                                    field: "Currency",
+                                    title: "@T(" Plugin.Payments.GQPay.Fields.Currency")",
+                                    width: 300
+                                },{
+                                    field: "Active",
+                                    title: "@T(" Plugin.Payments.GQPay.Fields.Active")",
+                                    width: 100,
+                                    headerAttributes: { style: "text-align:center" },
+                                    attributes: { style: "text-align:center" },
+                                    template: '<img src="@Url.Content("~/Administration/Content/images/")active-#=Active#.gif" />'
+                                },{
+                                    field: "Id",
+                                    title: "@T("Plugin.Payments.GQPay.Fields.KeyValue")",
+                                    template:'<a class="k-button" href="javascript:OpenWindow(\'@Url.Action("ProcessKeyValue", "GoQuoPaymentGateWays")?processId=#=Id#\', 900, 400, true);">@T("Plugin.Payments.GQPay.Fields.View")</a>',
+                                    width: 200
+                                }, {
+                                    command: [
+                                {
+                                    name: "edit",
+                                    text: {
+                                        edit: "@T("Admin.Common.Edit")",
+                                        update: "@T("Admin.Common.Update")",
+                                        cancel: "@T("Admin.Common.Cancel")"
+                                    }
+                                }, {
+                                    name: "destroy",
+                                    text: "@T("Admin.Common.Delete")"
+                                }
+                                    ],
+                                    width: 200
+                                }
+                            ]
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @{
+                    var addNewUrl = Url.RouteUrl("Plugin.Payments.GQPay.CreateProcess") + "?btnId=btnRefresh&formId=Payments-Process-form";
+                }
+                <br />
+                <input type="submit" id="btnAddNewOption" value="@T("Plugin.Payments.GQPay.CreateProcess")" onclick="javascript:OpenWindow('@(addNewUrl)', 800, 450, true); return false;" class="k-button" />
+                <input type="submit" id="btnRefresh" style="display: none" />
+            </td>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#btnRefresh').click(function () {
+                        //refresh grid
+                        var grid = $("#Process-List-grid").data('kendoGrid');
+                        //grid.dataSource.page(1); //new search. Set page size to 1
+                        grid.dataSource.read();
+
+                        //return false to don't reload a page
+                        return false;
+                    });
+                });
+            </script>
+        </tr>
+    </table>
+
+                    }

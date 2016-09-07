@@ -1,0 +1,23 @@
+﻿@model Nop.Admin.Models.Flights.FlightStatusModel
+@{
+    //page title
+    ViewBag.Title = "Edit a flight";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "flight-form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-catalog.png")" alt="" />
+            Edit - @Model.CommercialName @Html.ActionLink("(Back to List)", "List")
+        </div>
+        <div class="options">
+            @*<input type="submit" ="@T("Admin.Common.Preview")" onclick="javascript:OpenWindow('@Url.RouteUrl("Fl", new { SeName = Model.SeName })', 800, 600, true); return false;" class="k-button" />*@
+            <input type="submit" name="save" class="k-button" value="@T("Admin.Common.Save")" />
+            <input type="submit" name="save-continue" class="k-button" value="@T("Admin.Common.SaveContinue")" />
+            <span id="flight-delete" class="k-button">@T("Admin.Common.Delete")</span>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+@Html.DeleteConfirmation("flight-delete")

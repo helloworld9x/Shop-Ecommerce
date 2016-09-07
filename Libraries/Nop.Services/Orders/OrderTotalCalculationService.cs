@@ -250,7 +250,10 @@ namespace Nop.Services.Orders
 
             //We calculate discount amount on order subtotal excl tax (discount first)
             //calculate discount amount ('Applied to order subtotal' discount)
-            decimal discountAmountExclTax = subTotalExclTaxWithoutDiscount;
+
+            decimal discountAmountExclTax = GetOrderSubtotalDiscount(customer, subTotalExclTaxWithoutDiscount, out appliedDiscount);
+            if (subTotalExclTaxWithoutDiscount < discountAmountExclTax)
+                discountAmountExclTax = subTotalExclTaxWithoutDiscount;
             decimal discountAmountInclTax = discountAmountExclTax;
             //subtotal with discount (excl tax)
             decimal subTotalExclTaxWithDiscount = subTotalExclTaxWithoutDiscount - discountAmountExclTax;
@@ -307,6 +310,32 @@ namespace Nop.Services.Orders
 
 
 
+        /// <summary>
+        /// Gets an order discount (applied to order subtotal)
+        /// </summary>
+        /// <param name="customer">Customer</param>
+        /// <param name="orderSubTotal">Order subtotal</param>
+        /// <param name="appliedDiscount">Applied discount</param>
+        /// <returns>Order discount</returns>
+        protected virtual decimal GetOrderSubtotalDiscount(Customer customer,
+            decimal orderSubTotal, out Discount appliedDiscount)
+        {
+            appliedDiscount = null;
+            decimal discountAmount = decimal.Zero;
+            if (_catalogSettings.IgnoreDiscounts)
+                return discountAmount;
+
+            var allowedDiscounts = new List<Discount>();
+        
+            appliedDiscount = allowedDiscounts.GetPreferredDiscount(orderSubTotal);
+            if (appliedDiscount != null)
+                discountAmount = appliedDiscount.GetDiscountAmount(orderSubTotal);
+
+            if (discountAmount < decimal.Zero)
+                discountAmount = decimal.Zero;
+
+            return discountAmount;
+        }
 
 
         /// <summary>

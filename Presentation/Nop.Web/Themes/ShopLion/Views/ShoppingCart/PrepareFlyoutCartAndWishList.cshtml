@@ -1,0 +1,64 @@
+﻿@model Nop.Web.Models.ShoppingCart.FlyoutShoppingCartModel
+
+@if (Model != null)
+{
+    if (Model.ShoppingCartEnabled)
+    {
+        <div class="col-xxs-12 col-xs-7 col-sm-3 shopping-cart">
+            <a href="@Url.Action("Cart","ShoppingCart")" id="topcartlink">
+                <div class="top-cart-wrapper" >
+                    <div class="top-cart-contain">
+                        <div class="miniCartBlock">
+                            <div class="block-cart">
+                                <div class="top-cart-title">
+                                    <div class="my-cart">Shopping cart</div>
+
+                                    <span class="cart-qty">(@Model.ShoppingCartItems)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="shopping-cart-info">
+            @Html.Action("FlyoutShoppingCart", "ShoppingCart")
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.shopping-cart').on('mouseenter', '#topcartlink', function () {
+                    $('#flyout-cart').addClass('active');
+                });
+                $('.shopping-cart').on('mouseleave', '#topcartlink', function () {
+                    $('#flyout-cart').removeClass('active');
+                });
+                $('.shopping-cart').on('mouseenter', '#flyout-cart', function () {
+                    $('#flyout-cart').addClass('active');
+                });
+                $('.shopping-cart').on('mouseleave', '#flyout-cart', function () {
+                    $('#flyout-cart').removeClass('active');
+                });
+            });
+        </script>
+    }
+    if (Model.WishlistEnabled)
+    {
+        <div class="col-xxs-12 col-xs-7 col-sm-1">
+            <div class="nav-shopping">
+                <div class="wishlist-info">
+                    <div class="top-wl-wrapper">
+                        <div class="top-wl-contain">
+                            <div class="flyout-whishlist miniWhishlistBlock" id="miniWishList">
+                                <div class="block-wl">
+                                    <div class="wishlist-link mini-shopping-cart">
+                                        <a href="@Url.Action("Wishlist","ShoppingCart")" class="top-cart-title"> <i class="im im-heart"></i>View WishList </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

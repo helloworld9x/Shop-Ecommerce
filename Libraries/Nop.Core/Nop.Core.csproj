@@ -91,7 +91,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\RedisCacheManager.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="ComponentModel\WriteLockDisposable.cs" />
+    <Compile Include="Data\FindOptions.cs" />
+    <Compile Include="Data\SortDescriptor.cs" />
     <Compile Include="Domain\Catalog\Events.cs" />
     <Compile Include="Domain\Catalog\PredefinedProductAttributeValue.cs" />
     <Compile Include="Domain\Catalog\RentalPricePeriod.cs" />
@@ -103,10 +106,10 @@
     <Compile Include="Domain\Common\AddressAttributeValue.cs" />
     <Compile Include="Domain\Common\SearchTermReportLine.cs" />
     <Compile Include="Domain\Common\SearchTerm.cs" />
-    <Compile Include="Domain\Customers\CustomerAttribute.cs" />
-    <Compile Include="Domain\Customers\CustomerAttributeValue.cs" />
     <Compile Include="Domain\Customers\CustomerLoginResults.cs" />
     <Compile Include="Domain\Customers\Events.cs" />
+    <Compile Include="Domain\Flights\FlightProduct.cs" />
+    <Compile Include="Domain\Flights\FlightStatus.cs" />
     <Compile Include="Domain\Messages\QueuedEmailPriority.cs" />
     <Compile Include="Domain\Orders\OrderByCountryReportLine.cs" />
     <Compile Include="Domain\Orders\ReturnRequestReason.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="Domain\Vendors\VendorNote.cs" />
     <Compile Include="Domain\Vendors\VendorSettings.cs" />
     <Compile Include="Domain\Vendors\Vendor.cs" />
+    <Compile Include="Extension\Extensions.cs" />
     <Compile Include="IStoreContext.cs" />
     <Compile Include="Domain\Catalog\BackInStockSubscription.cs" />
     <Compile Include="Domain\Cms\WidgetSettings.cs" />
@@ -148,7 +152,6 @@
     <Compile Include="Data\DataSettingsHelper.cs" />
     <Compile Include="Data\DataSettingsManager.cs" />
     <Compile Include="Domain\Catalog\ProductExtensions.cs" />
-    <Compile Include="Domain\Catalog\ManufacturerTemplate.cs" />
     <Compile Include="Domain\Catalog\ProductTemplate.cs" />
     <Compile Include="Domain\Common\AdminAreaSettings.cs" />
     <Compile Include="Domain\Seo\SeoSettings.cs" />
@@ -238,7 +241,6 @@
     <Compile Include="Domain\Common\Address.cs" />
     <Compile Include="Domain\Customers\CustomerSettings.cs" />
     <Compile Include="Domain\Customers\CustomerRole.cs" />
-    <Compile Include="Domain\Customers\RewardPointsSettings.cs" />
     <Compile Include="Domain\Customers\SystemCustomerRoleNames.cs" />
     <Compile Include="Domain\Directory\MeasureSettings.cs" />
     <Compile Include="Domain\Directory\Country.cs" />
@@ -259,7 +261,6 @@
     <Compile Include="Domain\Orders\GiftCard.cs" />
     <Compile Include="Domain\Orders\GiftCardUsageHistory.cs" />
     <Compile Include="Domain\Orders\Order.cs" />
-    <Compile Include="Domain\Customers\RewardPointsHistory.cs" />
     <Compile Include="Domain\Orders\ShoppingCartSettings.cs" />
     <Compile Include="Domain\Orders\ShoppingCartItem.cs" />
     <Compile Include="Domain\Orders\ShoppingCartType.cs" />

@@ -62,9 +62,7 @@ namespace Nop.Core.Infrastructure
             //register dependencies provided by other assemblies
             builder = new ContainerBuilder();
             var drTypes = typeFinder.FindClassesOfType<IDependencyRegistrar>();
-            var drInstances = new List<IDependencyRegistrar>();
-            foreach (var drType in drTypes)
-                drInstances.Add((IDependencyRegistrar) Activator.CreateInstance(drType));
+            var drInstances = drTypes.Select(drType => (IDependencyRegistrar) Activator.CreateInstance(drType)).ToList();
             //sort
             drInstances = drInstances.AsQueryable().OrderBy(t => t.Order).ToList();
             foreach (var dependencyRegistrar in drInstances)

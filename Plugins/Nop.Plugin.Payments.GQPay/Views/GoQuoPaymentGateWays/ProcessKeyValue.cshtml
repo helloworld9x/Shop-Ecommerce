@@ -1,0 +1,157 @@
+﻿@using Nop.Core.Infrastructure
+@{
+    var defaultGridPageSize = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().DefaultGridPageSize;
+    var gridPageSizes = EngineContext.Current.Resolve<Nop.Core.Domain.Common.AdminAreaSettings>().GridPageSizes;
+    //page title
+    
+        Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
+    
+        ViewBag.Title = T("Nop.Plugin.Payments.GQPay.Configuration.Processor.KeyValue").Text;
+}
+@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
+@Html.AntiForgeryToken()
+<div class="section-header">
+    <div class="title">
+        <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+        @T("Admin.Configuration.Processor.KeyValue")
+    </div>
+</div>
+@if (ViewBag.AllProcess != null)
+{
+    <table class="adminContent" style="margin-bottom: 10px;">
+        <tr>
+            <td class="adminTitle">
+                @T("Nop.Plugin.Payments.GQPay.Configuration.Processor.Select")
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("KeyValue-Process", (IEnumerable<SelectListItem>)ViewBag.AllProcess, new { onchange = "onKeyValueProcessorSelected(this.value);" })
+                <script type="text/javascript">
+                    function onKeyValueProcessorSelected(processId) {
+                        window.location = '@(Url.Action("ProcessKeyValue") + "?processId=")' + processId;
+                    }
+                </script>
+            </td>
+        </tr>
+    </table>
+}
+<table class="adminContent">
+    <tr>
+        <td>
+            <div id="KeyValue-grid"></div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#KeyValue-grid").kendoGrid({
+                        dataSource: {
+                            type: "json",
+                            transport: {
+                                read: {
+                                    url: "@Html.Raw(Url.Action("ProcessKeyValue", "GoQuoPaymentGateWays", new { processId = ViewBag.ProcessId }))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    //any-forgery does not work with this contentType for some reasons
+                                    data: addAntiForgeryToken
+                                },
+                                create: {
+                                    url: "@Html.Raw(Url.Action("AddProcessKeyValue", "GoQuoPaymentGateWays", new { processId = ViewBag.ProcessId }))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: addAntiForgeryToken
+                                },
+                                update: {
+                                    url:"@Html.Raw(Url.Action("UpdateProcessKeyValue", "GoQuoPaymentGateWays"))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: addAntiForgeryToken
+                                },
+                                destroy: {
+                                    url: "@Html.Raw(Url.Action("DeleteProcessKeyValue", "GoQuoPaymentGateWays"))",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: addAntiForgeryToken
+                                }
+                            },
+                            schema: {
+                                data: "Data",
+                                total: "Total",
+                                errors: "Errors",
+                                model: {
+                                    id: "Id",
+                                    fields: {
+                                        ProcessKey: { editable: true, type: "string" },
+                                        ProcessValue: { editable: true, type: "string" },
+                                        Id: { editable: false, type: "number" }
+                                    }
+                                }
+                            },
+                            requestEnd: function (e) {
+                                if (e.type == "create" || e.type == "update") {
+                                    this.read();
+                                }
+                            },
+                            error: function (e) {
+                                display_kendoui_grid_error(e);
+                                // Cancel the changes
+                                this.cancelChanges();
+                            },
+                            pageSize: @(defaultGridPageSize),
+                            serverPaging: true,
+                            serverFiltering: true,
+                            serverSorting: true
+                        },
+                        pageable: {
+                            refresh: true,
+                            pageSizes: [@(gridPageSizes)]
+                        },
+                        sortable: true,
+                        toolbar: [{ name: "create", text: "@T("Admin.Common.AddNewRecord")" }],
+                        editable: {
+                            confirmation: false,
+                            mode: "inline"
+                        },
+                        filterable: {
+                            extra: false,
+                            operators: {
+                                string: {
+                                    contains: "Contains",
+                                    eq: "Is equal to",
+                                    startswith: "Starts with"
+                                }
+                            }
+                        },
+                        scrollable: false,
+                        columns: [{
+                            field: "ProcessKey",
+                            title: "@T("Nop.Plugin.Payments.GQPay.key")",
+                            width: 300,
+                            filterable: true,
+                            sortable: true
+                        }, {
+                            field: "ProcessValue",
+                            title: "@T("Nop.Plugin.Payments.GQPay.Value")",
+                            width: 300,
+                            filterable: true,
+                            sortable: true
+
+                        }, {
+                            command: [{
+                                name: "edit",
+                                text: {
+                                    edit: "@T("Admin.Common.Edit")",
+                                    update: "@T("Admin.Common.Update")",
+                                    cancel: "@T("Admin.Common.Cancel")"
+                                }
+                            }, {
+                                name: "destroy",
+                                text: "@T("Admin.Common.Delete")"
+                            }],
+                            width: 200,
+                            filterable: false
+                        }]
+                    });
+                });
+
+            </script>
+        </td>
+    </tr>
+</table>

@@ -70,13 +70,6 @@
                                                                      else
                                                                      {<text>inactive</text>}">@T("Account.Avatar")</a></li> 
             }
-            @if (!Model.HideForumSubscriptions)
-            { 
-                <li><a href="@Url.RouteUrl("CustomerForumSubscriptions")" class="@if (Model.SelectedTab == CustomerNavigationEnum.ForumSubscriptions)
-                                                                                 {<text>active</text>}
-                                                                                 else
-                                                                                 {<text>inactive</text>}">@T("Account.ForumSubscriptions")</a></li>
-            }
             @Html.Widget("account_navigation_after")
         </ul>
     </div>

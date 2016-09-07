@@ -7,6 +7,7 @@ using Nop.Admin.Models.Customers;
 using Nop.Admin.Models.Directory;
 using Nop.Admin.Models.Discounts;
 using Nop.Admin.Models.ExternalAuthentication;
+using Nop.Admin.Models.Flights;
 using Nop.Admin.Models.Localization;
 using Nop.Admin.Models.Logging;
 using Nop.Admin.Models.Messages;
@@ -27,6 +28,7 @@ using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Directory;
 using Nop.Core.Domain.Discounts;
+using Nop.Core.Domain.Flights;
 using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Logging;
 using Nop.Core.Domain.Media;
@@ -60,7 +62,7 @@ namespace Nop.Admin.Extensions
         {
             return Mapper.Map(source, destination);
         }
-        
+
         #region Category
 
         public static CategoryModel ToModel(this Category entity)
@@ -227,7 +229,7 @@ namespace Nop.Admin.Extensions
         {
             return model.MapTo(destination);
         }
-        
+
         #endregion
 
         #region Email account
@@ -353,7 +355,7 @@ namespace Nop.Admin.Extensions
         }
 
         #endregion
-        
+
         #region Currencies
 
         public static CurrencyModel ToModel(this Currency entity)
@@ -437,7 +439,7 @@ namespace Nop.Admin.Extensions
         }
 
         #endregion
-        
+
         #region Shipping rate computation method
 
         public static ShippingRateComputationMethodModel ToModel(this IShippingRateComputationMethod entity)
@@ -484,7 +486,7 @@ namespace Nop.Admin.Extensions
         }
 
         #endregion
-        
+
         #region Payment methods
 
         public static PaymentMethodModel ToModel(this IPaymentMethod entity)
@@ -502,7 +504,7 @@ namespace Nop.Admin.Extensions
         }
 
         #endregion
-        
+
         #region Widgets
 
         public static WidgetModel ToModel(this IWidgetPlugin entity)
@@ -661,6 +663,23 @@ namespace Nop.Admin.Extensions
             return model.MapTo(destination);
         }
 
+
+        #endregion
+
+        #region Flight Status
+        public static FlightStatusModel ToModel(this FlightStatus entity)
+        {
+            return entity.MapTo<FlightStatus, FlightStatusModel>();
+        }
+        public static FlightStatus ToEntity(this FlightStatusModel model, FlightStatus destination)
+        {
+            return model.MapTo(destination);
+        }
+
+        public static FlightStatus ToEntity(this FlightStatusModel model)
+        {
+            return model.MapTo<FlightStatusModel, FlightStatus>();
+        }
 
         #endregion
 

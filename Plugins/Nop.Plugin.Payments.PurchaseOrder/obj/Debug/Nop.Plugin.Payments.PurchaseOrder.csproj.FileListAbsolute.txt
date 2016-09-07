@@ -6,6 +6,6 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Paym
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Payments.PurchaseOrder\Nop.Plugin.Payments.PurchaseOrder.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Payments.PurchaseOrder\Nop.Plugin.Payments.PurchaseOrder.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Payments.PurchaseOrder\Nop.Plugin.Payments.PurchaseOrder.pdb
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.PurchaseOrder\obj\Debug\Nop.Plugin.Payments.PurchaseOrder.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.PurchaseOrder\obj\Debug\Nop.Plugin.Payments.PurchaseOrder.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.PurchaseOrder\obj\Debug\Nop.Plugin.Payments.PurchaseOrder.pdb
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.PurchaseOrder\obj\Debug\Nop.Plugin.Payments.PurchaseOrder.csprojResolveAssemblyReference.cache

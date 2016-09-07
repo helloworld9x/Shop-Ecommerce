@@ -35,32 +35,11 @@
                     <div class="row">
                         <div class="col-xxs-12 col-xs-7 col-sm-7">
                             <div class="nav-search">
-
                                 @Html.Action("SearchBox", "Catalog")
                             </div>
                         </div>
-                        <div class="col-xxs-12 col-xs-5 col-sm-5">
-                            <div class="nav-shopping">
-                                <div class="wishlist-info">
-                                    <div class="top-wl-wrapper">
-                                        <div class="top-wl-contain">
-                                            <div class="flyout-whishlist miniWhishlistBlock" id="miniWishList">
-                                                <div class="block-wl">
-                                                    <div class="wishlist-link mini-shopping-cart">
-                                                    
-                                                        <a href="/wishlist" class="top-cart-title"> <i class="im im-heart"></i>View WishList </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="shopping-cart-info">
-                                
-                                    @Html.Action("FlyoutShoppingCart", "ShoppingCart")
-                                </div>
-                            </div>
-                        </div>
+                        @Html.Action("PrepareFlyoutCartAndWishList", "ShoppingCart")
+                       
                     </div>
                 }
             </div>

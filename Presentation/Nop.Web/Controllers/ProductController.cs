@@ -361,6 +361,7 @@ namespace Nop.Web.Controllers
                     template = _productTemplateService.GetAllProductTemplates().FirstOrDefault();
                 if (template == null)
                     throw new Exception("No default template could be loaded");
+                //return "ProductTemplate.Simple";
                 return template.ViewPath;
             });
             

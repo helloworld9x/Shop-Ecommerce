@@ -6,6 +6,6 @@ D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Paym
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Payments.AuthorizeNet\Nop.Plugin.Payments.AuthorizeNet.dll.config
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Payments.AuthorizeNet\Nop.Plugin.Payments.AuthorizeNet.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Payments.AuthorizeNet\Nop.Plugin.Payments.AuthorizeNet.pdb
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.AuthorizeNet\obj\Debug\Nop.Plugin.Payments.AuthorizeNet.csprojResolveAssemblyReference.cache
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.AuthorizeNet\obj\Debug\Nop.Plugin.Payments.AuthorizeNet.dll
 D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.AuthorizeNet\obj\Debug\Nop.Plugin.Payments.AuthorizeNet.pdb
-D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Payments.AuthorizeNet\obj\Debug\Nop.Plugin.Payments.AuthorizeNet.csprojResolveAssemblyReference.cache

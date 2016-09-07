@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+
 
 namespace Nop.Core.Data
 {
@@ -50,6 +53,47 @@ namespace Nop.Core.Data
         /// </summary>
         /// <param name="entities">Entities</param>
         void Delete(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Count entities
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        int Count(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        /// Count entities
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        long LongCount(Expression<Func<T, bool>> predicate);
+
+        /// <summary>
+        /// Find Entites
+        /// </summary>
+        /// <typeparam name="TProjection"></typeparam>
+        /// <param name="filterExpression"></param>
+        /// <param name="projection"></param>
+        /// <param name="findOptions"></param>
+        /// <returns></returns>
+        IEnumerable<TProjection> Find<TProjection>(Expression<Func<T, bool>> filterExpression,Expression<Func<T, TProjection>> projection, FindOptions<T> findOptions);
+
+        /// <summary>
+        /// Find Entites
+        /// </summary>
+        /// <param name="filterExpression"></param>
+        /// <param name="findOptions"></param>
+        /// <param name="includes"></param>
+        /// <returns></returns>
+        IEnumerable<T> Find(Expression<Func<T, bool>> filterExpression, FindOptions<T> findOptions = null,params Expression<Func<T, dynamic>>[] includes);
+
+        /// <summary>
+        /// Find Entity
+        /// </summary>
+        /// <param name="filterExpression"></param>
+        /// <param name="findOptions"></param>
+        /// <returns></returns>
+        T FindOne(Expression<Func<T, bool>> filterExpression, FindOptions<T> findOptions = null);
 
         /// <summary>
         /// Gets a table

@@ -5,6 +5,7 @@ using Nop.Core.Caching;
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 using Nop.Core.Infrastructure.DependencyManagement;
+using Nop.Services.Flights;
 
 namespace Nop.Admin.Infrastructure
 {
@@ -26,6 +27,9 @@ namespace Nop.Admin.Infrastructure
                 .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"));
             builder.RegisterType<ProductController>()
                 .WithParameter(ResolvedParameter.ForNamed<ICacheManager>("nop_cache_static"));
+
+            builder.RegisterType<FlightStatusService>().As<IFlightStatusService>().InstancePerLifetimeScope();
+            builder.RegisterType<FlightProductService>().As<IFlightProductService>().InstancePerLifetimeScope();
         }
 
         /// <summary>

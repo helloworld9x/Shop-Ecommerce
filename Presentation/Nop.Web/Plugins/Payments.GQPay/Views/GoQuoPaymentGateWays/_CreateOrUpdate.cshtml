@@ -1,0 +1,34 @@
+﻿@using System.Web.Mvc.Html
+@using Nop.Web.Framework
+@model Nop.Plugin.Payments.GQPay.Models.ConfigurationModel
+@if (ViewBag.RefreshPage == true)
+{
+    <script type="text/javascript">
+        try {window.opener.document.forms['@(ViewBag.formId)'].@(ViewBag.btnId).click();}
+        catch (e){}
+        window.close();
+    </script>
+}
+<table class="adminContent">
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Name):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+     <tr>
+        <td class="adminTitle">
+            @Html.NopLabelFor(model => model.Currency):
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Currency)
+            @Html.ValidationMessageFor(model => model.Currency)
+        </td>
+    </tr>
+</table>
+    
+
+

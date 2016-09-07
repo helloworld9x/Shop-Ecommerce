@@ -21,6 +21,7 @@ using Nop.Admin.Models.Tax;
 using Nop.Admin.Models.Templates;
 using Nop.Admin.Models.Topics;
 using Nop.Admin.Models.Vendors;
+using Nop.Admin.Models.Flights;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Common;
 using Nop.Core.Domain.Customers;
@@ -38,6 +39,7 @@ using Nop.Core.Domain.Stores;
 using Nop.Core.Domain.Tax;
 using Nop.Core.Domain.Topics;
 using Nop.Core.Domain.Vendors;
+using Nop.Core.Domain.Flights;
 using Nop.Core.Infrastructure;
 using Nop.Core.Plugins;
 using Nop.Services.Authentication.External;
@@ -722,7 +724,9 @@ namespace Nop.Admin.Infrastructure
                 .ForMember(dest => dest.Locales, mo => mo.Ignore())
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());
             Mapper.CreateMap<ReturnRequestActionModel, ReturnRequestAction>();
-
+            //flight 
+            Mapper.CreateMap<FlightStatus, FlightStatusModel>();
+            Mapper.CreateMap<FlightStatusModel, FlightStatus>();
             //product template
             Mapper.CreateMap<ProductTemplate, ProductTemplateModel>()
                 .ForMember(dest => dest.CustomProperties, mo => mo.Ignore());

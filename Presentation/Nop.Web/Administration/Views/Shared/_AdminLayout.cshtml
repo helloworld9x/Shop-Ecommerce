@@ -16,15 +16,8 @@
     Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.rtl.min.css", kendoVersion));
     Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.default.min.css", kendoVersion));
     Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.common.min.css", kendoVersion));
-    Html.AppendCssFileParts("~/Content/adminLTE/AdminLTE-2.3.0.min.css");
-    if (supportRtl)
-    {
-        Html.AppendCssFileParts("~/Administration/Content/styles.rtl.css");
-    }
-    else
-    {
-        Html.AppendCssFileParts("~/Administration/Content/styles.css");
-    }
+    Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.3.custom.min.css");
+    Html.AppendCssFileParts(supportRtl ? "~/Administration/Content/styles.rtl.css" : "~/Administration/Content/styles.css");
 
     Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.web.min.js", kendoVersion));
     Html.AppendScriptParts("~/Scripts/admin.common.js");
