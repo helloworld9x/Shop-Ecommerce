@@ -67,9 +67,11 @@ namespace Nop.Plugin.Payments.GQPay
 
         public ProcessPaymentResult ProcessPayment(ProcessPaymentRequest processPaymentRequest)
         {
-            var result = new ProcessPaymentResult();
-            result.NewPaymentStatus = PaymentStatus.Pending;
-            result.AllowStoringCreditCardNumber = true;
+            var result = new ProcessPaymentResult
+            {
+                NewPaymentStatus = PaymentStatus.Pending,
+                AllowStoringCreditCardNumber = true
+            };
 
             return result;
         }

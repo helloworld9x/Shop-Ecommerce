@@ -16,11 +16,17 @@
     Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.rtl.min.css", kendoVersion));
     Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.default.min.css", kendoVersion));
     Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.common.min.css", kendoVersion));
+    Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.dataviz.min.css", kendoVersion));
+    Html.AppendCssFileParts(string.Format("~/Content/kendo/{0}/kendo.dataviz.silver.min.css", kendoVersion));
     Html.AppendCssFileParts("~/Content/jquery-ui-themes/smoothness/jquery-ui-1.10.3.custom.min.css");
     Html.AppendCssFileParts(supportRtl ? "~/Administration/Content/styles.rtl.css" : "~/Administration/Content/styles.css");
 
     Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.web.min.js", kendoVersion));
-    Html.AppendScriptParts("~/Scripts/admin.common.js");
+    Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.aspnetmvc.min.js", kendoVersion));
+    Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.dataviz.min.js", kendoVersion));
+    Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.dataviz.themes.min.js", kendoVersion));
+    Html.AppendScriptParts(string.Format("~/Scripts/kendo/{0}/kendo.dataviz.chart.min.js", kendoVersion));
+    Html.AppendScriptParts("~/Scripts/admin.common.js"); 
     Html.AppendScriptParts("~/Scripts/jquery-migrate-1.2.1.min.js");
     Html.AppendScriptParts("~/Scripts/jquery-ui-1.10.3.custom.min.js");
     Html.AppendScriptParts("~/Scripts/jquery.validate.unobtrusive.min.js");

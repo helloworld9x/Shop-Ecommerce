@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Nop.Admin.Extensions;
 using Nop.Admin.Models.Flights;
 using Nop.Admin.Models.Flights.Addon;
 using Nop.Core.Collections;
+using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
 using Nop.Core.Domain.Flights;
+using Nop.Core.Extension;
 using Nop.Services.Flights;
 using Nop.Services.Security;
 using Nop.Services.Stores;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Kendoui;
+using Nop.Web.Framework.Mvc;
 
 namespace Nop.Admin.Controllers
 {
@@ -24,13 +25,17 @@ namespace Nop.Admin.Controllers
         private readonly IStoreService _storeService;
         private readonly IStoreMappingService _storeMappingService;
         private readonly IPermissionService _permissionService;
+        private readonly IFlightStatusService _flightStatusService;
+        private readonly IRepository<FlightStatus> _flightFlightStatusRepository;
 
-        public MealController(IFlightProductService flightProductService, IStoreService storeService, IStoreMappingService storeMappingService, IPermissionService permissionService)
+        public MealController(IFlightProductService flightProductService, IStoreService storeService, IStoreMappingService storeMappingService, IPermissionService permissionService, IFlightStatusService flightStatusService, IRepository<FlightStatus> flightFlightStatusRepository)
         {
             _flightProductService = flightProductService;
             _storeService = storeService;
             _storeMappingService = storeMappingService;
             _permissionService = permissionService;
+            _flightStatusService = flightStatusService;
+            _flightFlightStatusRepository = flightFlightStatusRepository;
         }
 
         [NonAction]
@@ -231,6 +236,145 @@ namespace Nop.Admin.Controllers
             }
             return null;
         }
+        #endregion
+
+        #region Applied to products
+
+        [HttpPost]
+        public ActionResult ProductList(DataSourceRequest command, int fProductId)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageFlightStatus))
+                return AccessDeniedView();
+
+            var product = _flightProductService.GetProductById(fProductId);
+            if (product == null)
+                throw new Exception("No product found with the specified id");
+
+            var products = product
+                .FlightStatus
+                .Where(x => !x.Deleted)
+                .ToHashSet();
+
+            var gridModel = new DataSourceResult
+            {
+                Data = products.Select(x => new AppliedToProductModel
+                {
+                    ProductId = x.Id,
+                    ProductName = x.CommercialName
+                }),
+                Total = products.Count
+            };
+
+            return Json(gridModel);
+        }
+
+        public ActionResult ProductDelete(int fProductId, int flightId)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageFlightStatus))
+                return AccessDeniedView();
+
+            var product = _flightProductService.GetProductById(fProductId);
+            if (product == null)
+                throw new Exception("No product found with the specified id");
+
+            var flight = _flightStatusService.GetFlightById(flightId);
+            if (flight == null)
+                throw new Exception("No flight found with the specified id");
+
+            //remove discount
+            if (product.FlightStatus.Count(d => d.Id == flight.Id) > 0)
+                product.FlightStatus.Remove(flight);
+
+            _flightStatusService.UpdateFLightStatus(flight);
+
+            return new NullJsonResult();
+        }
+
+        public ActionResult ProductAddPopup(int fProductId)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageFlightStatus))
+                return AccessDeniedView();
+
+            var model = new AddProductToFlightModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ProductAddPopupList(DataSourceRequest command, AddProductToFlightModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageFlightStatus))
+                return AccessDeniedView();
+
+            var gridModel = new DataSourceResult();
+
+            var predicate = PredicateBuilder.True<FlightStatus>();
+
+            predicate = predicate.And(x => !x.Deleted);
+
+            if (!string.IsNullOrEmpty(model.SearchCommercialName))
+                predicate = predicate.And(x => x.CommercialName.ToLower().Contains(model.SearchCommercialName.ToLower()));
+
+            if (!string.IsNullOrEmpty(model.From))
+                predicate = predicate.And(x => x.From.Equals(model.From, StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrEmpty(model.To))
+                predicate = predicate.And(x => x.To.Equals(model.To, StringComparison.OrdinalIgnoreCase));
+
+            if (!string.IsNullOrEmpty(model.SearchFlightCode))
+                predicate = predicate.And(x => x.FlightNumber.ToLower().Contains(model.SearchFlightCode.ToLower()));
+
+            predicate = predicate.Expand();
+
+            var options = new FindOptions<FlightStatus>
+            {
+                Limit = command.PageSize,
+                Skip = command.PageSize * (command.Page - 1)
+            };
+
+            var flights = _flightFlightStatusRepository.Find(predicate, options).ToHashSet();
+
+            var count = _flightFlightStatusRepository.Count(predicate);
+
+            gridModel.Data = flights.Select(x => x.ToModel());
+
+            gridModel.Total = count;
+
+            return Json(gridModel);
+        }
+
+        [HttpPost]
+        [FormValueRequired("save")]
+        public ActionResult ProductAddPopup(string btnId, string formId, AddProductToFlightModel model)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageFlightStatus))
+                return AccessDeniedView();
+
+            var flight = _flightStatusService.GetFlightById(model.FlightStatusId);
+            if (flight == null)
+                throw new Exception("No flight found with the specified id");
+
+            if (model.SelectedProductIds != null)
+            {
+                foreach (int id in model.SelectedProductIds)
+                {
+                    var product = _flightProductService.GetProductById(id);
+                    if (product != null)
+                    {
+                        if (product.FlightStatus.Count(d => d.Id == flight.Id) == 0)
+                            product.FlightStatus.Add(flight);
+
+                        //_flightProductService.UpdateProduct(product);
+                    }
+                }
+            }
+
+            ViewBag.RefreshPage = true;
+            ViewBag.btnId = btnId;
+            ViewBag.formId = formId;
+            return View(model);
+        }
+
         #endregion
     }
 }

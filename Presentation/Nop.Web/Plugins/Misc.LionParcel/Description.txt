@@ -1,0 +1,8 @@
+﻿Group: Misc
+FriendlyName: Parcel
+SystemName: LionParcel
+Version: 1.0
+SupportedVersions: 3.70
+Author: GoQuo team
+DisplayOrder: 1
+FileName: Nop.Plugin.Misc.LionParcel.dll

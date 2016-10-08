@@ -1,0 +1,812 @@
+﻿@{
+    Layout = "~/Views/Shared/_ColumnsOneWithoutContainer";
+}
+<div class="page home-page">
+    <div class="page-body">
+        <!--===========================================
+        =            CONTENT NEW HOME PAGE            =
+        ============================================-->
+        <div class="home-banner">
+            <img src="http://gqcdn.s3.amazonaws.com/hello/design/samples/home-banner.png" alt="sample">
+        </div>
+        <section class="section-box sec-home-1 bg-gray clearfix">
+            <nav class="sub-main-menu-nav">
+                <div class="container lg">
+
+                    <ul class="sub-main-menu">
+                        <li><a href="/profile">@T("PROFILE")</a></li>
+                        <li><a href="/service">@T("SERVICES")</a></li>
+                        <li><a href="/news">@T("NEWS")</a></li>
+                        <li><a href="/network">@T("NETWORK")</a></li>
+                        <li><a href="/lionair-parcel-registration">@T("REGISTRATION")</a></li>
+                        <li><a href="/contactus">@T("CONTACT")</a></li>
+                        <li><a href="/information">@T("INFORMATION")</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-box-module">
+                            <h4 class="heading">@T("SHIPMENT TRACKING")</h4>
+                            <p class="desc">@T("Enter tracking number below. If more than one, click on the plus icon.")</p>
+                            <table id="trackingTable" class="ui-table">
+
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                    <tr class="hide">
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td class="divider">-</td>
+                                        <td><input type="text" name="track-col" class="form-control"></td>
+                                        <td><a class="button-add" href="javascript:void(0)"><i class="icon-cm icon-cm-plus"></i></a></td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="text-right">
+                                <a id="trackingSearch" href="javascript:void(0)" class="btn btn-danger btn-xlg">@T("TRACK") &raquo;</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-box-module">
+                            <h4 class="heading">@T("CHECK PRICES")</h4>
+                            <table class="ui-table">
+                                <tbody>
+                                    <tr>
+                                        <td class="col-label"><label>@T("FROM")</label></td>
+                                        <td>
+                                            <select id="origin" class="form-control valid" name="slc-origin">
+                                                <option value=""></option>
+                                                <option value="MDC - AERTEMBAGA, BITUNG TIMUR [FWD]">AERTEMBAGA, BITUNG TIMUR  (MDC) </option>
+                                                <option value="SOQ - AIMAS [FWD]">AIMAS  (SOQ) </option>
+                                                <option value="MDC - AIRMADIDI, MINAHASA UTARA [FWD]">AIRMADIDI, MINAHASA UTARA  (MDC) </option>
+                                                <option value="KOE - ALAK [FWD]">ALAK  (KOE) </option>
+                                                <option value="SRG - AMBARAWA [FWD]">AMBARAWA  (SRG) </option>
+                                                <option value="AMQ - AMBON">AMBON (AMQ) </option>
+                                                <option value="BPN - BALIK PAPAN">BALIK PAPAN (BPN) </option>
+                                                <option value="BPN - BALIKPAPAN MULAWARMAN/ LAMARU [FWD]">BALIKPAPAN MULAWARMAN/ LAMARU  (BPN) </option>
+                                                <option value="BPN - BALIKPAPAN.JL.KM 7 - KM 19 [FWD]">BALIKPAPAN.JL.KM 7 (BPN) </option>
+                                                <option value="BTJ - BANDA ACEH">BANDA ACEH (BTJ) </option>
+                                                <option value="TKG - BANDAR LAMPUNG (KOTA) [FWD]">BANDAR LAMPUNG (KOTA)  (TKG) </option>
+                                                <option value="BDO - BANDUNG KABUPATEN [FWD]">BANDUNG KABUPATEN  (BDO) </option>
+                                                <option value="BDO - BANDUNG">BANDUNG (BDO)  </option>
+                                                <option value="BDO - BANJAR KOTA [FWD]">BANJAR KOTA  (BDO) </option>
+                                                <option value="BDJ  - BANJARMASIN">BANJARMASIN (BDJ)   </option>
+                                                <option value="UPG - BANTAENG [FWD]">BANTAENG  (UPG) </option>
+                                                <option value="JOG - BANTUL [FWD]">BANTUL  (JOG) </option>
+                                                <option value="JOG - BANTUL ODA [FWD]">BANTUL ODA  (JOG) </option>
+                                                <option value="BTH - BARELANG (MAKS JEMBATAN 3) [FWD]">BARELANG (MAKS JEMBATAN 3)  (BTH) </option>
+                                                <option value="UPG - BARRU [FWD]">BARRU  (UPG) </option>
+                                                <option value="KOE - BATAKTE [FWD]">BATAKTE  (KOE) </option>
+                                                <option value="BTH   - BATAM">BATAM (BTH)    </option>
+                                                <option value="BTH - BATU BESAR & NONGSA [FWD]">BATU BESAR & NONGSA  (BTH) </option>
+                                                <option value="BPN - BATU KAJANG SIDE [FWD]">BATU KAJANG SIDE  (BPN) </option>
+                                                <option value="PLM - BATU RAJA [FWD]">BATU RAJA  (PLM) </option>
+                                                <option value="KOE - BATUPLAT [FWD]">BATUPLAT  (KOE) </option>
+                                                <option value="KOE  - BAU - BAU [FWD]">BAU (KOE)   </option>
+                                                <option value="BUW    - BAU BAU">BAU BAU (BUW)     </option>
+                                                <option value="KOE - BAUMATA [FWD]">BAUMATA  (KOE) </option>
+                                                <option value="KOE - BAUN [FWD]">BAUN  (KOE) </option>
+                                                <option value="SRG - BAWEN [FWD]">BAWEN  (SRG) </option>
+                                                <option value="KOE - BELO [FWD]">BELO  (KOE) </option>
+                                                <option value="UPG - BELOPA [FWD]">BELOPA  (UPG) </option>
+                                                <option value="BKS - BENGKULU">BENGKULU (BKS)  </option>
+                                                <option value="BEJ - BERAU">BERAU (BEJ) </option>
+                                                <option value="BEJ - BIDUK BIDUK [FWD]">BIDUK BIDUK  (BEJ) </option>
+                                                <option value="BMU - BIMA">BIMA (BMU) </option>
+                                                <option value="KOE - BISMARAK [FWD]">BISMARAK  (KOE) </option>
+                                                <option value="MDC - BITUNG KOTA [FWD]">BITUNG KOTA  (MDC) </option>
+                                                <option value="SRG - BOJA [FWD]">BOJA  (SRG) </option>
+                                                <option value="KOE - BOLOK [FWD]">BOLOK  (KOE) </option>
+                                                <option value="KDI - BOMBANA [FWD]">BOMBANA  (KDI) </option>
+                                                <option value="UPG - BONE [FWD]">BONE  (UPG) </option>
+                                                <option value="KOE - BONEANA [FWD]">BONEANA  (KOE) </option>
+                                                <option value="BPN - BPN.HANDIL [FWD]">BPN.HANDIL  (BPN) </option>
+                                                <option value="BPN - BPN.HANDIL II [FWD]">BPN.HANDIL II  (BPN) </option>
+                                                <option value="BPN - BPN.SENIPAH VICO [FWD]">BPN.SENIPAH VICO  (BPN) </option>
+                                                <option value="WUB - BULI">BULI (WUB) </option>
+                                                <option value="UPG - BULUKUMBA [FWD]">BULUKUMBA  (UPG) </option>
+                                                <option value="PKY - BUNTOK [FWD]">BUNTOK  (PKY) </option>
+                                                <option value="KDI - BUTON [FWD]">BUTON  (KDI) </option>
+                                                <option value="KDI - BUTON UTARA [FWD]">BUTON UTARA  (KDI) </option>
+                                                <option value="BDO - CIAMIS KOTA [FWD]">CIAMIS KOTA  (BDO) </option>
+                                                <option value="BDO - CIANJUR KOTA [FWD]">CIANJUR KOTA  (BDO) </option>
+                                                <option value="BDO - CIMAHI KOTA [FWD]">CIMAHI KOTA  (BDO) </option>
+                                                <option value="BDO - CIREBON KOTA [FWD]">CIREBON KOTA  (BDO) </option>
+                                                <option value="BDO - CISAGA BANJAR [FWD]">CISAGA BANJAR  (BDO) </option>
+                                                <option value="BTH - DAIK & DABO [FWD]">DAIK & DABO  (BTH) </option>
+                                                <option value="SRG - DEMAK [FWD]">DEMAK  (SRG) </option>
+                                                <option value="DPS - DENPASAR">DENPASAR (DPS) </option>
+                                                <option value="MDC - DIMEMBE, MINAHASA UTARA [FWD]">DIMEMBE, MINAHASA UTARA  (MDC) </option>
+                                                <option value="ENE - ENDE">ENDE (ENE) </option>
+                                                <option value="UPG - ENREKANG [FWD]">ENREKANG  (UPG) </option>
+                                                <option value="FKQ - FAKFAK">FAKFAK (FKQ) </option>
+                                                <option value="KOE - FATUKOA [FWD]">FATUKOA  (KOE) </option>
+                                                <option value="BDO - GARUT KOTA [FWD]">GARUT KOTA  (BDO) </option>
+                                                <option value="MDC - GIRIAN, BITUNG [FWD]">GIRIAN, BITUNG  (MDC) </option>
+                                                <option value="GTO - GORONTALO">GORONTALO (GTO) </option>
+                                                <option value="UPG - GOWA / SUNGGUMINASA [FWD]">GOWA / SUNGGUMINASA  (UPG) </option>
+                                                <option value="SRG - GROBOGAN [FWD]">GROBOGAN  (SRG) </option>
+                                                <option value="JOG - GUNUNG KIDUL [FWD]">GUNUNG KIDUL  (JOG) </option>
+                                                <option value="JOG - GUNUNG KIDUL ODA [FWD]">GUNUNG KIDUL ODA  (JOG) </option>
+                                                <option value="GNS - GUNUNG SITOLI">GUNUNG SITOLI (GNS) </option>
+                                                <option value="BEJ - GUNUNG TABUR [FWD]">GUNUNG TABUR  (BEJ) </option>
+                                                <option value="BDO - INDRAMAYU KOTA [FWD]">INDRAMAYU KOTA  (BDO) </option>
+                                                <option value="CGK - JAKARTA">JAKARTA (CGK) </option>
+                                                <option value="DJB - JAMBI">JAMBI (DJB)  </option>
+                                                <option value="BDO - JATINAGOR KOTA [FWD]">JATINAGOR KOTA  (BDO) </option>
+                                                <option value="DJJ - JAYAPURA">JAYAPURA (DJJ) </option>
+                                                <option value="UPG - JENEPONTO [FWD]">JENEPONTO  (UPG) </option>
+                                                <option value="SRG - JEPARA [FWD]">JEPARA  (SRG) </option>
+                                                <option value="JOG - JOGJAKARTA">JOGJAKARTA (JOG) </option>
+                                                <option value="KDI - KABANGKA [FWD]">KABANGKA  (KDI) </option>
+                                                <option value="KDI - KABAWO [FWD]">KABAWO  (KDI) </option>
+                                                <option value="KNG - KAIMANA">KAIMANA (KNG) </option>
+                                                <option value="MDC - KAKAS KOTA, MINAHASA [FWD]">KAKAS KOTA, MINAHASA  (MDC) </option>
+                                                <option value="MDC - KALASEY, MINAHASA [FWD]">KALASEY, MINAHASA  (MDC) </option>
+                                                <option value="MDC - KALAWAT, MINAHASA UTARA [FWD]">KALAWAT, MINAHASA UTARA  (MDC) </option>
+                                                <option value="SRG - KALIWUNGU [FWD]">KALIWUNGU  (SRG) </option>
+                                                <option value="BDO - KARAWANG KOTA [FWD]">KARAWANG KOTA  (BDO) </option>
+                                                <option value="BPN - KARIANGAU [FWD]">KARIANGAU  (BPN) </option>
+                                                <option value="PKY - KATINGAN [FWD]">KATINGAN  (PKY) </option>
+                                                <option value="KAZ - KAU">KAU (KAZ) </option>
+                                                <option value="MDC - KAUDITAN, MINAHASA UTARA [FWD]">KAUDITAN, MINAHASA UTARA  (MDC) </option>
+                                                <option value="TNJ - KAWAL [FWD]">KAWAL  (TNJ) </option>
+                                                <option value="MDC - KAWANGKOAN, MINAHASA [FWD]">KAWANGKOAN, MINAHASA  (MDC) </option>
+                                                <option value="LUW - KEC. KINTOM [FWD]">KEC. KINTOM  (LUW) </option>
+                                                <option value="WGP - KELURAHAN HAMBALA [FWD]">KELURAHAN HAMBALA  (WGP) </option>
+                                                <option value="WGP - KELURAHAN KAMBAJAWA [FWD]">KELURAHAN KAMBAJAWA  (WGP) </option>
+                                                <option value="WGP - KELURAHAN KAWANGU [FWD]">KELURAHAN KAWANGU  (WGP) </option>
+                                                <option value="WGP - KELURAHAN LAMBANAPU [FWD]">KELURAHAN LAMBANAPU  (WGP) </option>
+                                                <option value="MDC - KEMA, MINAHASA UTARA [FWD]">KEMA, MINAHASA UTARA  (MDC) </option>
+                                                <option value="SRG - KENDAL [FWD]">KENDAL  (SRG) </option>
+                                                <option value="KDI - KENDARI">KENDARI (KDI) </option>
+                                                <option value="TNJ - KIJANG [FWD]">KIJANG  (TNJ) </option>
+                                                <option value="JOG - KODYA YOGJAKARTA [FWD]">KODYA YOGJAKARTA  (JOG) </option>
+                                                <option value="KOE - KOTA ATAMBUA [FWD]">KOTA ATAMBUA  (KOE) </option>
+                                                <option value="KOE - KOTA KEFA [FWD]">KOTA KEFA  (KOE) </option>
+                                                <option value="KOE - KOTA SOE [FWD]">KOTA SOE  (KOE) </option>
+                                                <option value="MDC - KOTAMOBAGU KOTA [FWD]">KOTAMOBAGU KOTA  (MDC) </option>
+                                                <option value="SRG - KUDUS [FWD]">KUDUS  (SRG) </option>
+                                                <option value="JOG - KULON PROGO [FWD]">KULON PROGO  (JOG) </option>
+                                                <option value="JOG - KULON PROGO ODA [FWD]">KULON PROGO ODA  (JOG) </option>
+                                                <option value="BDO - KUNINGAN KOTA [FWD]">KUNINGAN KOTA  (BDO) </option>
+                                                <option value="KOE - KUPANG">KUPANG (KOE)  </option>
+                                                <option value="TKG - LAMPUNG BARAT [FWD]">LAMPUNG BARAT  (TKG) </option>
+                                                <option value="TKG - LAMPUNG SELATAN [FWD]">LAMPUNG SELATAN  (TKG) </option>
+                                                <option value="TKG - LAMPUNG TENGAH [FWD]">LAMPUNG TENGAH  (TKG) </option>
+                                                <option value="TKG - LAMPUNG TIMUR [FWD]">LAMPUNG TIMUR  (TKG) </option>
+                                                <option value="TKG - LAMPUNG UTARA [FWD]">LAMPUNG UTARA  (TKG) </option>
+                                                <option value="TKG - LAMPUNG">LAMPUNG (TKG)  </option>
+                                                <option value="TKG   - LHOKSEUMAWE">LHOKSEUMAWE (LSW)    </option>
+                                                <option value="LOP - LOMBOK BARAT [FWD]">LOMBOK BARAT  (LOP) </option>
+                                                <option value="LOP - LOMBOK TENGAH [FWD]">LOMBOK TENGAH  (LOP) </option>
+                                                <option value="LOP - LOMBOK TIMUR [FWD]">LOMBOK TIMUR  (LOP) </option>
+                                                <option value="LUW - LUWUK">LUWUK (LUW)  </option>
+                                                <option value="MDC - MADIDIR, BITUNG TENGAH [FWD]">MADIDIR, BITUNG TENGAH  (MDC) </option>
+                                                <option value="BDO - MAJALENGKA KOTA [FWD]">MAJALENGKA KOTA  (BDO) </option>
+                                                <option value="UPG - MAKALE [FWD]">MAKALE  (UPG) </option>
+                                                <option value="PG) - MAKASSAR">MAKASSAR (UPG)  </option>
+                                                <option value="UPG - MALILI [FWD]">MALILI  (UPG) </option>
+                                                <option value="MJU - MAMUJU">MAMUJU (MJU) </option>
+                                                <option value="MDC - MANADO">MANADO (MDC)  </option>
+                                                <option value="LBJ - MANGGARAI BARAT">MANGGARAI BARAT (LBJ)   </option>
+                                                <option value="MKW - MANOKWARI">MANOKWARI (MKW) </option>
+                                                <option value="KOE - MANULAI 2 [FWD]">MANULAI 2  (KOE) </option>
+                                                <option value="UPG - MAROS [FWD]">MAROS  (UPG) </option>
+                                                <option value="UPG - MASAMBA [FWD]">MASAMBA  (UPG) </option>
+                                                <option value="BTH - MATAK [FWD]">MATAK  (BTH) </option>
+                                                <option value="LOP - MATARAM">MATARAM (LOP)   </option>
+                                                <option value="MDC - MATUARI, BITUNG BARAT [FWD]">MATUARI, BITUNG BARAT  (MDC) </option>
+                                                <option value="MOF - MAUMERE">MAUMERE (MOF) </option>
+                                                <option value="KNO - MEDAN">MEDAN (KNO)  </option>
+                                                <option value="MES - MEDAN">MEDAN (MES)  </option>
+                                                <option value="MNA - MELANGUANE">MELANGUANE (MNA) </option>
+                                                <option value="MKQ - MERAUKE">MERAUKE (MKQ)  </option>
+                                                <option value="TKG - METRO (KOTA) [FWD]">METRO (KOTA)  (TKG) </option>
+                                                <option value="MEQ - MEULABOH">MEULABOH (MEQ) </option>
+                                                <option value="SRG - MRANGGEN [FWD]">MRANGGEN  (SRG) </option>
+                                                <option value="KDI - MUNA [FWD]">MUNA  (KDI) </option>
+                                                <option value="NAH - NAHA">NAHA (NAH) </option>
+                                                <option value="NBX - NABIRE">NABIRE (NBX) </option>
+                                                <option value="KOE - NAIBONAT [FWD]">NAIBONAT  (KOE) </option>
+                                                <option value="KOE - NAIONI [FWD]">NAIONI  (KOE) </option>
+                                                <option value="KOE - NEKAMESE [FWD]">NEKAMESE  (KOE) </option>
+                                                <option value="KOE - NOELBAKI [FWD]">NOELBAKI  (KOE) </option>
+                                                <option value="KOE - OEBELO [FWD]">OEBELO  (KOE) </option>
+                                                <option value="KOE - OELAMASI [FWD]">OELAMASI  (KOE) </option>
+                                                <option value="KOE - OENESU [FWD]">OENESU  (KOE) </option>
+                                                <option value="KOE - OESAO [FWD]">OESAO  (KOE) </option>
+                                                <option value="PDG - PADANG">PADANG (PDG) </option>
+                                                <option value="PKY - PALANGKARAYA">PALANGKARAYA (PKY) </option>
+                                                <option value="PLM - PALEMBANG">PALEMBANG (PLM) </option>
+                                                <option value="UPG - PALOPO [FWD]">PALOPO  (UPG) </option>
+                                                <option value="PLW - PALU">PALU (PLW) </option>
+                                                <option value="BDO - PANGANDARAN [FWD]">PANGANDARAN  (BDO) </option>
+                                                <option value="PGK - PANGKAL PINANG">PANGKAL PINANG (PGK) </option>
+                                                <option value="PKY - PANGKALANBUN [FWD]">PANGKALANBUN  (PKY) </option>
+                                                <option value="UPG - PANGKEP [FWD]">PANGKEP  (UPG) </option>
+                                                <option value="UPG - PARE-PARE [FWD]">PARE-PARE (UPG)</option>
+                                                <option value="SRG - PATI [FWD]">PATI  (SRG) </option>
+                                                <option value="PKU - PEKANBARU">PEKANBARU (PKU) </option>
+                                                <option value="BPN - PENAJAM LAWE - LAWE [FWD]">PENAJAM LAWE (BPN) </option>
+                                                <option value="BPN - PENAJAM PASIR UTARA [FWD]">PENAJAM PASIR UTARA  (BPN) </option>
+                                                <option value="TKG - PESAWARAN [FWD]">PESAWARAN  (TKG) </option>
+                                                <option value="MDC - PINELENG, MINAHASA [FWD]">PINELENG, MINAHASA  (MDC) </option>
+                                                <option value="UPG - PINRANG [FWD]">PINRANG  (UPG) </option>
+                                                <option value="PUM - POMALA">POMALA (PUM) </option>
+                                                <option value="PNK - PONTIANAK">PONTIANAK (PNK)  </option>
+                                                <option value="PSJ - POSO">POSO (PSJ)  </option>
+                                                <option value="LOP - PRINGGAYA [FWD]">PRINGGAYA  (LOP) </option>
+                                                <option value="BDO - PUNCAK [FWD]">PUNCAK  (BDO) </option>
+                                                <option value="BTH - PUNGGUR & KABIL [FWD]">PUNGGUR & KABIL  (BTH) </option>
+                                                <option value="BDO - PURWAKARTA KOTA [FWD]">PURWAKARTA KOTA  (BDO) </option>
+                                                <option value="SOQ - RAJA AMPAT [FWD]">RAJA AMPAT  (SOQ) </option>
+                                                <option value="BDO - RAJAPOLA TASIK [FWD]">RAJAPOLA TASIK  (BDO) </option>
+                                                <option value="BTH - RANAI [FWD]">RANAI  (BTH) </option>
+                                                <option value="MDC - RANOWUDU, BITUNG UTARA [FWD]">RANOWUDU, BITUNG UTARA  (MDC) </option>
+                                                <option value="UPG - RANTEPAO [FWD]">RANTEPAO  (UPG) </option>
+                                                <option value="MDC - REMBOKEN, MINAHASA [FWD]">REMBOKEN, MINAHASA  (MDC) </option>
+                                                <option value="LBJ - RUTENG [FWD]">RUTENG  (LBJ) </option>
+                                                <option value="SRG - SALATIGA [FWD]">SALATIGA  (SRG) </option>
+                                                <option value="SRI - SAMARINDA">SAMARINDA (SRI) </option>
+                                                <option value="BEJ - SAMBALIUNG [FWD]">SAMBALIUNG  (BEJ) </option>
+                                                <option value="BPN - SAMBOJA [FWD]">SAMBOJA  (BPN) </option>
+                                                <option value="PKY - SAMPIT [FWD]">SAMPIT  (PKY) </option>
+                                                <option value="SMQ - SAMPIT">SAMPIT (SMQ)  </option>
+                                                <option value="SXK - SAUMLAKI">SAUMLAKI (SXK)  </option>
+                                                <option value="BEJ - SEGAH [FWD]">SEGAH  (BEJ) </option>
+                                                <option value="UPG - SELAYAR [FWD]">SELAYAR  (UPG) </option>
+                                                <option value="SRG - SEMARANG">SEMARANG (SRG)   </option>
+                                                <option value="UPG - SENGKANG [FWD]">SENGKANG  (UPG) </option>
+                                                <option value="UPG - SIDRAP [FWD]">SIDRAP  (UPG) </option>
+                                                <option value="BDO - SINGAPARNA TASIK [FWD]">SINGAPARNA TASIK  (BDO) </option>
+                                                <option value="UPG - SINJAI [FWD]">SINJAI  (UPG) </option>
+                                                <option value="SQG - SINTANG">SINTANG (SQG)  </option>
+                                                <option value="FLZ - SIBOLGA">SIBOLGA (FLZ)   </option>
+                                                <option value="JOG - SLEMAN [FWD]">SLEMAN  (JOG) </option>
+                                                <option value="JOG - SLEMAN ODA [FWD]">SLEMAN ODA  (JOG) </option>
+                                                <option value="SOC - SOLO">SOLO (SOC)  </option>
+                                                <option value="MDC - SONDER, MINAHASA [FWD]">SONDER, MINAHASA  (MDC) </option>
+                                                <option value="UPG - SOPPENG [FWD]">SOPPENG  (UPG) </option>
+                                                <option value="UPG - SOROAKO [FWD]">SOROAKO  (UPG) </option>
+                                                <option value="SOQ - SORONG [FWD]">SORONG  (SOQ) </option>
+                                                <option value="SOQ - SORONG SELATAN/TEMINABUAN [FWD]">SORONG SELATAN/TEMINABUAN  (SOQ) </option>
+                                                <option value="SOQ - SORONG">SORONG (SOQ)   </option>
+                                                <option value="BDO - SUBANG KOTA [FWD]">SUBANG KOTA  (BDO) </option>
+                                                <option value="BDO - SUKABUMI KOTA [FWD]">SUKABUMI KOTA  (BDO) </option>
+                                                <option value="LOP - SUMBAWA BARAT (TALIWANG) [FWD]">SUMBAWA BARAT (TALIWANG)  (LOP) </option>
+                                                <option value="BDO - SUMEDANG KOTA [FWD]">SUMEDANG KOTA  (BDO) </option>
+                                                <option value="KOE - SUMLILI [FWD]">SUMLILI  (KOE) </option>
+                                                <option value="SUB - SURABAYA">SURABAYA (SUB)  </option>
+                                                <option value="KOE - TABLOLONG [FWD]">TABLOLONG  (KOE) </option>
+                                                <option value="UPG - TAKALAR [FWD]">TAKALAR  (UPG) </option>
+                                                <option value="KOE - TAKLALE [FWD]">TAKLALE  (KOE) </option>
+                                                <option value="MDC - TALAWAAN, MINAHASA UTARA [FWD]">TALAWAAN, MINAHASA UTARA  (MDC) </option>
+                                                <option value="BEJ - TALISAYAN [FWD]">TALISAYAN  (BEJ) </option>
+                                                <option value="BPN - TANAH GROGOT [FWD]">TANAH GROGOT  (BPN) </option>
+                                                <option value="KOE - TANAH MERAH [FWD]">TANAH MERAH  (KOE) </option>
+                                                <option value="TKG - TANGGAMUS [FWD]">TANGGAMUS  (TKG) </option>
+                                                <option value="BEJ - TANJUNG BATU [FWD]">TANJUNG BATU  (BEJ) </option>
+                                                <option value="TJQ - TANJUNG PANDAN">TANJUNG PANDAN (TJQ) </option>
+                                                <option value="TNJ - TANJUNG PINANG">TANJUNG PINANG (TNJ) </option>
+                                                <option value="BEJ - TANJUNG REDEB [FWD]">TANJUNG REDEB  (BEJ) </option>
+                                                <option value="BEJ - TANJUNG REDEP">TANJUNG REDEP (BEJ) </option>
+                                                <option value="BDO - TANJUNG SARI [FWD]">TANJUNG SARI  (BDO) </option>
+                                                <option value="TNJ - TANJUNG UBAN [FWD]">TANJUNG UBAN  (TNJ) </option>
+                                                <option value="BTH - TANJUNG UNCANG [FWD]">TANJUNG UNCANG  (BTH) </option>
+                                                <option value="TRK - TARAKAN BARAT [FWD]">TARAKAN BARAT  (TRK) </option>
+                                                <option value="TRK - TARAKAN TIMUR [FWD]">TARAKAN TIMUR  (TRK) </option>
+                                                <option value="TRK - TARAKAN UTARA [FWD]">TARAKAN UTARA  (TRK) </option>
+                                                <option value="TRK - TARAKAN">TARAKAN (TRK) </option>
+                                                <option value="KOE - TARUS [FWD]">TARUS  (KOE) </option>
+                                                <option value="BDO - TASIKMALAYA KOTA [FWD]">TASIKMALAYA KOTA  (BDO) </option>
+                                                <option value="MDC - TATELI, MINAHASA [FWD]">TATELI, MINAHASA  (MDC) </option>
+                                                <option value="BEJ - TELUK BAYUR [FWD]">TELUK BAYUR  (BEJ) </option>
+                                                <option value="SOQ - TELUK BINTUNI [FWD]">TELUK BINTUNI  (SOQ) </option>
+                                                <option value="SOQ - TELUK WONDAMA/WASIOR [FWD]">TELUK WONDAMA/WASIOR  (SOQ) </option>
+                                                <option value="KOE - TENAU [FWD]">TENAU  (KOE) </option>
+                                                <option value="TTE - TERNATE">TERNATE (TTE) </option>
+                                                <option value="BTH - TG BALAI KARIMUN [FWD]">TG BALAI KARIMUN  (BTH) </option>
+                                                <option value="BTH - TG BATU - KARIMUN [FWD]">TG BATU (BTH) </option>
+                                                <option value="TLI - TOLI-TOLI">TOLI-TOLI (TLI) </option>
+                                                <option value="MDC - TOMBARIRI, MINAHASA [FWD]">TOMBARIRI, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TOMBULU, MINAHASA [FWD]">TOMBULU, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TOMOHON BARAT, TOMOHON [FWD]">TOMOHON BARAT, TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMOHON KOTA [FWD]">TOMOHON KOTA  (MDC) </option>
+                                                <option value="MDC - TOMOHON SELATAN, TOMOHON [FWD]">TOMOHON SELATAN, TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMOHON TIMUR. TOMOHON [FWD]">TOMOHON TIMUR. TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMOHON UTARA, TOMOHON [FWD]">TOMOHON UTARA, TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMPASO, MINAHASA [FWD]">TOMPASO, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA BARAT, MINAHASA [FWD]">TONDANO KOTA BARAT, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA SELATAN, MINAHASA [FWD]">TONDANO KOTA SELATAN, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA TIMUR, MINAHASA [FWD]">TONDANO KOTA TIMUR, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA UTARA, MINAHASA [FWD]">TONDANO KOTA UTARA, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA, MINAHASA [FWD]">TONDANO KOTA, MINAHASA  (MDC) </option>
+                                                <option value="LUV - TUAL">TUAL (LUV)  </option>
+                                                <option value="KOE - TUAPUKAN [FWD]">TUAPUKAN  (KOE) </option>
+                                                <option value="TKG - TULANG BAWANG [FWD]">TULANG BAWANG  (TKG) </option>
+                                                <option value="SRG - UNGARAN [FWD]">UNGARAN  (SRG) </option>
+                                                <option value="TMC - WAIKABUBAK">WAIKABUBAK (TMC)   </option>
+                                                <option value="WGP - WAINGAPU">WAINGAPU (WGP) </option>
+                                                <option value="WNI - WAKATOBI">WAKATOBI (WNI)    </option>
+                                                <option value="TKG - WAY KANAN [FWD]">WAY KANAN  (TKG) </option>
+                                                <option value="MDC - WORI, MINAHASA UTARA [FWD]">WORI, MINAHASA UTARA  (MDC) </option>
+                                                <option value="AEG - PADANG SIDEMPUAN">PADANG SIDEMPUAN (AEG)  </option>
+                                            </select>
+                                        </td>
+                                        <td class="col-label pdL-20"><label>@T("TO")</label></td>
+                                        <td class="pdR-20">
+                                            <select id="destination" class="form-control" name="slc-destination">
+                                                <option value=""></option>
+                                                <option value="MDC - AERTEMBAGA, BITUNG TIMUR [FWD]">AERTEMBAGA, BITUNG TIMUR  (MDC) </option>
+                                                <option value="SOQ - AIMAS [FWD]">AIMAS  (SOQ) </option>
+                                                <option value="MDC - AIRMADIDI, MINAHASA UTARA [FWD]">AIRMADIDI, MINAHASA UTARA  (MDC) </option>
+                                                <option value="KOE - ALAK [FWD]">ALAK  (KOE) </option>
+                                                <option value="SRG - AMBARAWA [FWD]">AMBARAWA  (SRG) </option>
+                                                <option value="AMQ - AMBON">AMBON (AMQ) </option>
+                                                <option value="BPN - BALIK PAPAN">BALIK PAPAN (BPN) </option>
+                                                <option value="BPN - BALIKPAPAN MULAWARMAN/ LAMARU [FWD]">BALIKPAPAN MULAWARMAN/ LAMARU  (BPN) </option>
+                                                <option value="BPN - BALIKPAPAN.JL.KM 7 - KM 19 [FWD]">BALIKPAPAN.JL.KM 7 (BPN) </option>
+                                                <option value="BTJ - BANDA ACEH">BANDA ACEH (BTJ) </option>
+                                                <option value="TKG - BANDAR LAMPUNG (KOTA) [FWD]">BANDAR LAMPUNG (KOTA)  (TKG) </option>
+                                                <option value="BDO - BANDUNG KABUPATEN [FWD]">BANDUNG KABUPATEN  (BDO) </option>
+                                                <option value="BDO - BANDUNG">BANDUNG (BDO)  </option>
+                                                <option value="BDO - BANJAR KOTA [FWD]">BANJAR KOTA  (BDO) </option>
+                                                <option value="BDJ  - BANJARMASIN">BANJARMASIN (BDJ)   </option>
+                                                <option value="UPG - BANTAENG [FWD]">BANTAENG  (UPG) </option>
+                                                <option value="JOG - BANTUL [FWD]">BANTUL  (JOG) </option>
+                                                <option value="JOG - BANTUL ODA [FWD]">BANTUL ODA  (JOG) </option>
+                                                <option value="BTH - BARELANG (MAKS JEMBATAN 3) [FWD]">BARELANG (MAKS JEMBATAN 3)  (BTH) </option>
+                                                <option value="UPG - BARRU [FWD]">BARRU  (UPG) </option>
+                                                <option value="KOE - BATAKTE [FWD]">BATAKTE  (KOE) </option>
+                                                <option value="BTH   - BATAM">BATAM (BTH)    </option>
+                                                <option value="BTH - BATU BESAR & NONGSA [FWD]">BATU BESAR & NONGSA  (BTH) </option>
+                                                <option value="BPN - BATU KAJANG SIDE [FWD]">BATU KAJANG SIDE  (BPN) </option>
+                                                <option value="PLM - BATU RAJA [FWD]">BATU RAJA  (PLM) </option>
+                                                <option value="KOE - BATUPLAT [FWD]">BATUPLAT  (KOE) </option>
+                                                <option value="KOE  - BAU - BAU [FWD]">BAU (KOE)   </option>
+                                                <option value="BUW    - BAU BAU">BAU BAU (BUW)     </option>
+                                                <option value="KOE - BAUMATA [FWD]">BAUMATA  (KOE) </option>
+                                                <option value="KOE - BAUN [FWD]">BAUN  (KOE) </option>
+                                                <option value="SRG - BAWEN [FWD]">BAWEN  (SRG) </option>
+                                                <option value="KOE - BELO [FWD]">BELO  (KOE) </option>
+                                                <option value="UPG - BELOPA [FWD]">BELOPA  (UPG) </option>
+                                                <option value="BKS - BENGKULU">BENGKULU (BKS)  </option>
+                                                <option value="BEJ - BERAU">BERAU (BEJ) </option>
+                                                <option value="BEJ - BIDUK BIDUK [FWD]">BIDUK BIDUK  (BEJ) </option>
+                                                <option value="BMU - BIMA">BIMA (BMU) </option>
+                                                <option value="KOE - BISMARAK [FWD]">BISMARAK  (KOE) </option>
+                                                <option value="MDC - BITUNG KOTA [FWD]">BITUNG KOTA  (MDC) </option>
+                                                <option value="SRG - BOJA [FWD]">BOJA  (SRG) </option>
+                                                <option value="KOE - BOLOK [FWD]">BOLOK  (KOE) </option>
+                                                <option value="KDI - BOMBANA [FWD]">BOMBANA  (KDI) </option>
+                                                <option value="UPG - BONE [FWD]">BONE  (UPG) </option>
+                                                <option value="KOE - BONEANA [FWD]">BONEANA  (KOE) </option>
+                                                <option value="BPN - BPN.HANDIL [FWD]">BPN.HANDIL  (BPN) </option>
+                                                <option value="BPN - BPN.HANDIL II [FWD]">BPN.HANDIL II  (BPN) </option>
+                                                <option value="BPN - BPN.SENIPAH VICO [FWD]">BPN.SENIPAH VICO  (BPN) </option>
+                                                <option value="WUB - BULI">BULI (WUB) </option>
+                                                <option value="UPG - BULUKUMBA [FWD]">BULUKUMBA  (UPG) </option>
+                                                <option value="PKY - BUNTOK [FWD]">BUNTOK  (PKY) </option>
+                                                <option value="KDI - BUTON [FWD]">BUTON  (KDI) </option>
+                                                <option value="KDI - BUTON UTARA [FWD]">BUTON UTARA  (KDI) </option>
+                                                <option value="BDO - CIAMIS KOTA [FWD]">CIAMIS KOTA  (BDO) </option>
+                                                <option value="BDO - CIANJUR KOTA [FWD]">CIANJUR KOTA  (BDO) </option>
+                                                <option value="BDO - CIMAHI KOTA [FWD]">CIMAHI KOTA  (BDO) </option>
+                                                <option value="BDO - CIREBON KOTA [FWD]">CIREBON KOTA  (BDO) </option>
+                                                <option value="BDO - CISAGA BANJAR [FWD]">CISAGA BANJAR  (BDO) </option>
+                                                <option value="BTH - DAIK & DABO [FWD]">DAIK & DABO  (BTH) </option>
+                                                <option value="SRG - DEMAK [FWD]">DEMAK  (SRG) </option>
+                                                <option value="DPS - DENPASAR">DENPASAR (DPS) </option>
+                                                <option value="MDC - DIMEMBE, MINAHASA UTARA [FWD]">DIMEMBE, MINAHASA UTARA  (MDC) </option>
+                                                <option value="ENE - ENDE">ENDE (ENE) </option>
+                                                <option value="UPG - ENREKANG [FWD]">ENREKANG  (UPG) </option>
+                                                <option value="FKQ - FAKFAK">FAKFAK (FKQ) </option>
+                                                <option value="KOE - FATUKOA [FWD]">FATUKOA  (KOE) </option>
+                                                <option value="BDO - GARUT KOTA [FWD]">GARUT KOTA  (BDO) </option>
+                                                <option value="MDC - GIRIAN, BITUNG [FWD]">GIRIAN, BITUNG  (MDC) </option>
+                                                <option value="GTO - GORONTALO">GORONTALO (GTO) </option>
+                                                <option value="UPG - GOWA / SUNGGUMINASA [FWD]">GOWA / SUNGGUMINASA  (UPG) </option>
+                                                <option value="SRG - GROBOGAN [FWD]">GROBOGAN  (SRG) </option>
+                                                <option value="JOG - GUNUNG KIDUL [FWD]">GUNUNG KIDUL  (JOG) </option>
+                                                <option value="JOG - GUNUNG KIDUL ODA [FWD]">GUNUNG KIDUL ODA  (JOG) </option>
+                                                <option value="GNS - GUNUNG SITOLI">GUNUNG SITOLI (GNS) </option>
+                                                <option value="BEJ - GUNUNG TABUR [FWD]">GUNUNG TABUR  (BEJ) </option>
+                                                <option value="BDO - INDRAMAYU KOTA [FWD]">INDRAMAYU KOTA  (BDO) </option>
+                                                <option value="CGK - JAKARTA">JAKARTA (CGK) </option>
+                                                <option value="DJB - JAMBI">JAMBI (DJB)  </option>
+                                                <option value="BDO - JATINAGOR KOTA [FWD]">JATINAGOR KOTA  (BDO) </option>
+                                                <option value="DJJ - JAYAPURA">JAYAPURA (DJJ) </option>
+                                                <option value="UPG - JENEPONTO [FWD]">JENEPONTO  (UPG) </option>
+                                                <option value="SRG - JEPARA [FWD]">JEPARA  (SRG) </option>
+                                                <option value="JOG - JOGJAKARTA">JOGJAKARTA (JOG) </option>
+                                                <option value="KDI - KABANGKA [FWD]">KABANGKA  (KDI) </option>
+                                                <option value="KDI - KABAWO [FWD]">KABAWO  (KDI) </option>
+                                                <option value="KNG - KAIMANA">KAIMANA (KNG) </option>
+                                                <option value="MDC - KAKAS KOTA, MINAHASA [FWD]">KAKAS KOTA, MINAHASA  (MDC) </option>
+                                                <option value="MDC - KALASEY, MINAHASA [FWD]">KALASEY, MINAHASA  (MDC) </option>
+                                                <option value="MDC - KALAWAT, MINAHASA UTARA [FWD]">KALAWAT, MINAHASA UTARA  (MDC) </option>
+                                                <option value="SRG - KALIWUNGU [FWD]">KALIWUNGU  (SRG) </option>
+                                                <option value="BDO - KARAWANG KOTA [FWD]">KARAWANG KOTA  (BDO) </option>
+                                                <option value="BPN - KARIANGAU [FWD]">KARIANGAU  (BPN) </option>
+                                                <option value="PKY - KATINGAN [FWD]">KATINGAN  (PKY) </option>
+                                                <option value="KAZ - KAU">KAU (KAZ) </option>
+                                                <option value="MDC - KAUDITAN, MINAHASA UTARA [FWD]">KAUDITAN, MINAHASA UTARA  (MDC) </option>
+                                                <option value="TNJ - KAWAL [FWD]">KAWAL  (TNJ) </option>
+                                                <option value="MDC - KAWANGKOAN, MINAHASA [FWD]">KAWANGKOAN, MINAHASA  (MDC) </option>
+                                                <option value="LUW - KEC. KINTOM [FWD]">KEC. KINTOM  (LUW) </option>
+                                                <option value="WGP - KELURAHAN HAMBALA [FWD]">KELURAHAN HAMBALA  (WGP) </option>
+                                                <option value="WGP - KELURAHAN KAMBAJAWA [FWD]">KELURAHAN KAMBAJAWA  (WGP) </option>
+                                                <option value="WGP - KELURAHAN KAWANGU [FWD]">KELURAHAN KAWANGU  (WGP) </option>
+                                                <option value="WGP - KELURAHAN LAMBANAPU [FWD]">KELURAHAN LAMBANAPU  (WGP) </option>
+                                                <option value="MDC - KEMA, MINAHASA UTARA [FWD]">KEMA, MINAHASA UTARA  (MDC) </option>
+                                                <option value="SRG - KENDAL [FWD]">KENDAL  (SRG) </option>
+                                                <option value="KDI - KENDARI">KENDARI (KDI) </option>
+                                                <option value="TNJ - KIJANG [FWD]">KIJANG  (TNJ) </option>
+                                                <option value="JOG - KODYA YOGJAKARTA [FWD]">KODYA YOGJAKARTA  (JOG) </option>
+                                                <option value="KOE - KOTA ATAMBUA [FWD]">KOTA ATAMBUA  (KOE) </option>
+                                                <option value="KOE - KOTA KEFA [FWD]">KOTA KEFA  (KOE) </option>
+                                                <option value="KOE - KOTA SOE [FWD]">KOTA SOE  (KOE) </option>
+                                                <option value="MDC - KOTAMOBAGU KOTA [FWD]">KOTAMOBAGU KOTA  (MDC) </option>
+                                                <option value="SRG - KUDUS [FWD]">KUDUS  (SRG) </option>
+                                                <option value="JOG - KULON PROGO [FWD]">KULON PROGO  (JOG) </option>
+                                                <option value="JOG - KULON PROGO ODA [FWD]">KULON PROGO ODA  (JOG) </option>
+                                                <option value="BDO - KUNINGAN KOTA [FWD]">KUNINGAN KOTA  (BDO) </option>
+                                                <option value="KOE - KUPANG">KUPANG (KOE)  </option>
+                                                <option value="TKG - LAMPUNG BARAT [FWD]">LAMPUNG BARAT  (TKG) </option>
+                                                <option value="TKG - LAMPUNG SELATAN [FWD]">LAMPUNG SELATAN  (TKG) </option>
+                                                <option value="TKG - LAMPUNG TENGAH [FWD]">LAMPUNG TENGAH  (TKG) </option>
+                                                <option value="TKG - LAMPUNG TIMUR [FWD]">LAMPUNG TIMUR  (TKG) </option>
+                                                <option value="TKG - LAMPUNG UTARA [FWD]">LAMPUNG UTARA  (TKG) </option>
+                                                <option value="TKG - LAMPUNG">LAMPUNG (TKG)  </option>
+                                                <option value="TKG   - LHOKSEUMAWE">LHOKSEUMAWE (LSW)    </option>
+                                                <option value="LOP - LOMBOK BARAT [FWD]">LOMBOK BARAT  (LOP) </option>
+                                                <option value="LOP - LOMBOK TENGAH [FWD]">LOMBOK TENGAH  (LOP) </option>
+                                                <option value="LOP - LOMBOK TIMUR [FWD]">LOMBOK TIMUR  (LOP) </option>
+                                                <option value="LUW - LUWUK">LUWUK (LUW)  </option>
+                                                <option value="MDC - MADIDIR, BITUNG TENGAH [FWD]">MADIDIR, BITUNG TENGAH  (MDC) </option>
+                                                <option value="BDO - MAJALENGKA KOTA [FWD]">MAJALENGKA KOTA  (BDO) </option>
+                                                <option value="UPG - MAKALE [FWD]">MAKALE  (UPG) </option>
+                                                <option value="PG) - MAKASSAR">MAKASSAR (UPG)  </option>
+                                                <option value="UPG - MALILI [FWD]">MALILI  (UPG) </option>
+                                                <option value="MJU - MAMUJU">MAMUJU (MJU) </option>
+                                                <option value="MDC - MANADO">MANADO (MDC)  </option>
+                                                <option value="LBJ - MANGGARAI BARAT">MANGGARAI BARAT (LBJ)   </option>
+                                                <option value="MKW - MANOKWARI">MANOKWARI (MKW) </option>
+                                                <option value="KOE - MANULAI 2 [FWD]">MANULAI 2  (KOE) </option>
+                                                <option value="UPG - MAROS [FWD]">MAROS  (UPG) </option>
+                                                <option value="UPG - MASAMBA [FWD]">MASAMBA  (UPG) </option>
+                                                <option value="BTH - MATAK [FWD]">MATAK  (BTH) </option>
+                                                <option value="LOP - MATARAM">MATARAM (LOP)   </option>
+                                                <option value="MDC - MATUARI, BITUNG BARAT [FWD]">MATUARI, BITUNG BARAT  (MDC) </option>
+                                                <option value="MOF - MAUMERE">MAUMERE (MOF) </option>
+                                                <option value="KNO - MEDAN">MEDAN (KNO)  </option>
+                                                <option value="MES - MEDAN">MEDAN (MES)  </option>
+                                                <option value="MNA - MELANGUANE">MELANGUANE (MNA) </option>
+                                                <option value="MKQ - MERAUKE">MERAUKE (MKQ)  </option>
+                                                <option value="TKG - METRO (KOTA) [FWD]">METRO (KOTA)  (TKG) </option>
+                                                <option value="MEQ - MEULABOH">MEULABOH (MEQ) </option>
+                                                <option value="SRG - MRANGGEN [FWD]">MRANGGEN  (SRG) </option>
+                                                <option value="KDI - MUNA [FWD]">MUNA  (KDI) </option>
+                                                <option value="NAH - NAHA">NAHA (NAH) </option>
+                                                <option value="NBX - NABIRE">NABIRE (NBX) </option>
+                                                <option value="KOE - NAIBONAT [FWD]">NAIBONAT  (KOE) </option>
+                                                <option value="KOE - NAIONI [FWD]">NAIONI  (KOE) </option>
+                                                <option value="KOE - NEKAMESE [FWD]">NEKAMESE  (KOE) </option>
+                                                <option value="KOE - NOELBAKI [FWD]">NOELBAKI  (KOE) </option>
+                                                <option value="KOE - OEBELO [FWD]">OEBELO  (KOE) </option>
+                                                <option value="KOE - OELAMASI [FWD]">OELAMASI  (KOE) </option>
+                                                <option value="KOE - OENESU [FWD]">OENESU  (KOE) </option>
+                                                <option value="KOE - OESAO [FWD]">OESAO  (KOE) </option>
+                                                <option value="PDG - PADANG">PADANG (PDG) </option>
+                                                <option value="PKY - PALANGKARAYA">PALANGKARAYA (PKY) </option>
+                                                <option value="PLM - PALEMBANG">PALEMBANG (PLM) </option>
+                                                <option value="UPG - PALOPO [FWD]">PALOPO  (UPG) </option>
+                                                <option value="PLW - PALU">PALU (PLW) </option>
+                                                <option value="BDO - PANGANDARAN [FWD]">PANGANDARAN  (BDO) </option>
+                                                <option value="PGK - PANGKAL PINANG">PANGKAL PINANG (PGK) </option>
+                                                <option value="PKY - PANGKALANBUN [FWD]">PANGKALANBUN  (PKY) </option>
+                                                <option value="UPG - PANGKEP [FWD]">PANGKEP  (UPG) </option>
+                                                <option value="UPG - PARE-PARE [FWD]">PARE-PARE (UPG)</option>
+                                                <option value="SRG - PATI [FWD]">PATI  (SRG) </option>
+                                                <option value="PKU - PEKANBARU">PEKANBARU (PKU) </option>
+                                                <option value="BPN - PENAJAM LAWE - LAWE [FWD]">PENAJAM LAWE (BPN) </option>
+                                                <option value="BPN - PENAJAM PASIR UTARA [FWD]">PENAJAM PASIR UTARA  (BPN) </option>
+                                                <option value="TKG - PESAWARAN [FWD]">PESAWARAN  (TKG) </option>
+                                                <option value="MDC - PINELENG, MINAHASA [FWD]">PINELENG, MINAHASA  (MDC) </option>
+                                                <option value="UPG - PINRANG [FWD]">PINRANG  (UPG) </option>
+                                                <option value="PUM - POMALA">POMALA (PUM) </option>
+                                                <option value="PNK - PONTIANAK">PONTIANAK (PNK)  </option>
+                                                <option value="PSJ - POSO">POSO (PSJ)  </option>
+                                                <option value="LOP - PRINGGAYA [FWD]">PRINGGAYA  (LOP) </option>
+                                                <option value="BDO - PUNCAK [FWD]">PUNCAK  (BDO) </option>
+                                                <option value="BTH - PUNGGUR & KABIL [FWD]">PUNGGUR & KABIL  (BTH) </option>
+                                                <option value="BDO - PURWAKARTA KOTA [FWD]">PURWAKARTA KOTA  (BDO) </option>
+                                                <option value="SOQ - RAJA AMPAT [FWD]">RAJA AMPAT  (SOQ) </option>
+                                                <option value="BDO - RAJAPOLA TASIK [FWD]">RAJAPOLA TASIK  (BDO) </option>
+                                                <option value="BTH - RANAI [FWD]">RANAI  (BTH) </option>
+                                                <option value="MDC - RANOWUDU, BITUNG UTARA [FWD]">RANOWUDU, BITUNG UTARA  (MDC) </option>
+                                                <option value="UPG - RANTEPAO [FWD]">RANTEPAO  (UPG) </option>
+                                                <option value="MDC - REMBOKEN, MINAHASA [FWD]">REMBOKEN, MINAHASA  (MDC) </option>
+                                                <option value="LBJ - RUTENG [FWD]">RUTENG  (LBJ) </option>
+                                                <option value="SRG - SALATIGA [FWD]">SALATIGA  (SRG) </option>
+                                                <option value="SRI - SAMARINDA">SAMARINDA (SRI) </option>
+                                                <option value="BEJ - SAMBALIUNG [FWD]">SAMBALIUNG  (BEJ) </option>
+                                                <option value="BPN - SAMBOJA [FWD]">SAMBOJA  (BPN) </option>
+                                                <option value="PKY - SAMPIT [FWD]">SAMPIT  (PKY) </option>
+                                                <option value="SMQ - SAMPIT">SAMPIT (SMQ)  </option>
+                                                <option value="SXK - SAUMLAKI">SAUMLAKI (SXK)  </option>
+                                                <option value="BEJ - SEGAH [FWD]">SEGAH  (BEJ) </option>
+                                                <option value="UPG - SELAYAR [FWD]">SELAYAR  (UPG) </option>
+                                                <option value="SRG - SEMARANG">SEMARANG (SRG)   </option>
+                                                <option value="UPG - SENGKANG [FWD]">SENGKANG  (UPG) </option>
+                                                <option value="UPG - SIDRAP [FWD]">SIDRAP  (UPG) </option>
+                                                <option value="BDO - SINGAPARNA TASIK [FWD]">SINGAPARNA TASIK  (BDO) </option>
+                                                <option value="UPG - SINJAI [FWD]">SINJAI  (UPG) </option>
+                                                <option value="SQG - SINTANG">SINTANG (SQG)  </option>
+                                                <option value="FLZ - SIBOLGA">SIBOLGA (FLZ)   </option>
+                                                <option value="JOG - SLEMAN [FWD]">SLEMAN  (JOG) </option>
+                                                <option value="JOG - SLEMAN ODA [FWD]">SLEMAN ODA  (JOG) </option>
+                                                <option value="SOC - SOLO">SOLO (SOC)  </option>
+                                                <option value="MDC - SONDER, MINAHASA [FWD]">SONDER, MINAHASA  (MDC) </option>
+                                                <option value="UPG - SOPPENG [FWD]">SOPPENG  (UPG) </option>
+                                                <option value="UPG - SOROAKO [FWD]">SOROAKO  (UPG) </option>
+                                                <option value="SOQ - SORONG [FWD]">SORONG  (SOQ) </option>
+                                                <option value="SOQ - SORONG SELATAN/TEMINABUAN [FWD]">SORONG SELATAN/TEMINABUAN  (SOQ) </option>
+                                                <option value="SOQ - SORONG">SORONG (SOQ)   </option>
+                                                <option value="BDO - SUBANG KOTA [FWD]">SUBANG KOTA  (BDO) </option>
+                                                <option value="BDO - SUKABUMI KOTA [FWD]">SUKABUMI KOTA  (BDO) </option>
+                                                <option value="LOP - SUMBAWA BARAT (TALIWANG) [FWD]">SUMBAWA BARAT (TALIWANG)  (LOP) </option>
+                                                <option value="BDO - SUMEDANG KOTA [FWD]">SUMEDANG KOTA  (BDO) </option>
+                                                <option value="KOE - SUMLILI [FWD]">SUMLILI  (KOE) </option>
+                                                <option value="SUB - SURABAYA">SURABAYA (SUB)  </option>
+                                                <option value="KOE - TABLOLONG [FWD]">TABLOLONG  (KOE) </option>
+                                                <option value="UPG - TAKALAR [FWD]">TAKALAR  (UPG) </option>
+                                                <option value="KOE - TAKLALE [FWD]">TAKLALE  (KOE) </option>
+                                                <option value="MDC - TALAWAAN, MINAHASA UTARA [FWD]">TALAWAAN, MINAHASA UTARA  (MDC) </option>
+                                                <option value="BEJ - TALISAYAN [FWD]">TALISAYAN  (BEJ) </option>
+                                                <option value="BPN - TANAH GROGOT [FWD]">TANAH GROGOT  (BPN) </option>
+                                                <option value="KOE - TANAH MERAH [FWD]">TANAH MERAH  (KOE) </option>
+                                                <option value="TKG - TANGGAMUS [FWD]">TANGGAMUS  (TKG) </option>
+                                                <option value="BEJ - TANJUNG BATU [FWD]">TANJUNG BATU  (BEJ) </option>
+                                                <option value="TJQ - TANJUNG PANDAN">TANJUNG PANDAN (TJQ) </option>
+                                                <option value="TNJ - TANJUNG PINANG">TANJUNG PINANG (TNJ) </option>
+                                                <option value="BEJ - TANJUNG REDEB [FWD]">TANJUNG REDEB  (BEJ) </option>
+                                                <option value="BEJ - TANJUNG REDEP">TANJUNG REDEP (BEJ) </option>
+                                                <option value="BDO - TANJUNG SARI [FWD]">TANJUNG SARI  (BDO) </option>
+                                                <option value="TNJ - TANJUNG UBAN [FWD]">TANJUNG UBAN  (TNJ) </option>
+                                                <option value="BTH - TANJUNG UNCANG [FWD]">TANJUNG UNCANG  (BTH) </option>
+                                                <option value="TRK - TARAKAN BARAT [FWD]">TARAKAN BARAT  (TRK) </option>
+                                                <option value="TRK - TARAKAN TIMUR [FWD]">TARAKAN TIMUR  (TRK) </option>
+                                                <option value="TRK - TARAKAN UTARA [FWD]">TARAKAN UTARA  (TRK) </option>
+                                                <option value="TRK - TARAKAN">TARAKAN (TRK) </option>
+                                                <option value="KOE - TARUS [FWD]">TARUS  (KOE) </option>
+                                                <option value="BDO - TASIKMALAYA KOTA [FWD]">TASIKMALAYA KOTA  (BDO) </option>
+                                                <option value="MDC - TATELI, MINAHASA [FWD]">TATELI, MINAHASA  (MDC) </option>
+                                                <option value="BEJ - TELUK BAYUR [FWD]">TELUK BAYUR  (BEJ) </option>
+                                                <option value="SOQ - TELUK BINTUNI [FWD]">TELUK BINTUNI  (SOQ) </option>
+                                                <option value="SOQ - TELUK WONDAMA/WASIOR [FWD]">TELUK WONDAMA/WASIOR  (SOQ) </option>
+                                                <option value="KOE - TENAU [FWD]">TENAU  (KOE) </option>
+                                                <option value="TTE - TERNATE">TERNATE (TTE) </option>
+                                                <option value="BTH - TG BALAI KARIMUN [FWD]">TG BALAI KARIMUN  (BTH) </option>
+                                                <option value="BTH - TG BATU - KARIMUN [FWD]">TG BATU (BTH) </option>
+                                                <option value="TLI - TOLI-TOLI">TOLI-TOLI (TLI) </option>
+                                                <option value="MDC - TOMBARIRI, MINAHASA [FWD]">TOMBARIRI, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TOMBULU, MINAHASA [FWD]">TOMBULU, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TOMOHON BARAT, TOMOHON [FWD]">TOMOHON BARAT, TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMOHON KOTA [FWD]">TOMOHON KOTA  (MDC) </option>
+                                                <option value="MDC - TOMOHON SELATAN, TOMOHON [FWD]">TOMOHON SELATAN, TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMOHON TIMUR. TOMOHON [FWD]">TOMOHON TIMUR. TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMOHON UTARA, TOMOHON [FWD]">TOMOHON UTARA, TOMOHON  (MDC) </option>
+                                                <option value="MDC - TOMPASO, MINAHASA [FWD]">TOMPASO, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA BARAT, MINAHASA [FWD]">TONDANO KOTA BARAT, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA SELATAN, MINAHASA [FWD]">TONDANO KOTA SELATAN, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA TIMUR, MINAHASA [FWD]">TONDANO KOTA TIMUR, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA UTARA, MINAHASA [FWD]">TONDANO KOTA UTARA, MINAHASA  (MDC) </option>
+                                                <option value="MDC - TONDANO KOTA, MINAHASA [FWD]">TONDANO KOTA, MINAHASA  (MDC) </option>
+                                                <option value="LUV - TUAL">TUAL (LUV)  </option>
+                                                <option value="KOE - TUAPUKAN [FWD]">TUAPUKAN  (KOE) </option>
+                                                <option value="TKG - TULANG BAWANG [FWD]">TULANG BAWANG  (TKG) </option>
+                                                <option value="SRG - UNGARAN [FWD]">UNGARAN  (SRG) </option>
+                                                <option value="TMC - WAIKABUBAK">WAIKABUBAK (TMC)   </option>
+                                                <option value="WGP - WAINGAPU">WAINGAPU (WGP) </option>
+                                                <option value="WNI - WAKATOBI">WAKATOBI (WNI)    </option>
+                                                <option value="TKG - WAY KANAN [FWD]">WAY KANAN  (TKG) </option>
+                                                <option value="MDC - WORI, MINAHASA UTARA [FWD]">WORI, MINAHASA UTARA  (MDC) </option>
+                                                <option value="AEG - PADANG SIDEMPUAN">PADANG SIDEMPUAN (AEG)  </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="media media-form">
+                                <div class="pull-left"><label>@T("WEIGHT") ( KG/S)</label></div>
+                                <div class="media-body col-xs-5"><input class="form-control" name="inp-weight" type="text" value="" placeholder="@T("Enter Weight")" /></div>
+                            </div>
+                            <div class="text-right">
+                                <button id="tariffSearch" class="btn btn-danger btn-xlg">@T("SUBMIT") &raquo;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-box sec-home-2">
+            <div class="container lg">
+                <p class="section-desc"><i>@T("Vision paraphrase line")</i></p>
+                <h3 class="section-heading">@T("Vision paraphrase line 1")</h3>
+                <ul class="list-circle-features clearfix">
+                    <li><a class="circle-gray"><i class="icon-ft icon-ft-car"></i><span class="text">@T("PENGIRIMANPANTAS")</span></a></li>
+                    <li><a class="circle-gray"><i class="icon-ft icon-ft-hand"></i><span class="text">@T("HARGABERPATUTAN")</span></a></li>
+                    <li><a class="circle-gray"><i class="icon-ft icon-ft-map"></i><span class="text">@T("TERLACAKDANTERENCANA")</span></a></li>
+                    <li><a class="circle-gray"><i class="icon-ft icon-ft-tag"></i><span class="text">@T("AMANDANTERJAMIN")</span></a></li>
+                    <li><a class="circle-gray"><i class="icon-ft icon-ft-heart"></i><span class="text">@T("LAPORANPENGIRIMAN")</span></a></li>
+                </ul>
+            </div>
+        </section>
+        <section class="section-box sec-home-3">
+            <div class="container">
+                <div class="fig">
+                    <img class="img-responsive" src="http://lionparcel.com/themes/shoplion/content/images/girl-reciept-product.png" alt="samples">
+                </div>
+                <div class="content">
+                    <h4 class="heading">@T("home.index.heading")</h4>
+                    <p>@T("home.index.heading.line1")</p>
+                </div>
+            </div>
+        </section>
+        @Html.Widget("home_page_before_news")
+        @Html.Action("HomePageNews", "News")
+        @Html.Widget("home_page_after_news")
+        <!--====  End of CONTENT NEW HOME PAGE  ====-->
+    </div>
+</div>
+<!--<div id="boxes-popoup">
+    <div id="popupthesoon" class="window-popoup img-responsive" style="top: 160px; left: 540px; display: block;">
+        <a href="#" class="close-popup">X</a>
+        <img src="~/Themes/ShopLion/Content/images/PopUpMain.jpg" class="img-responsive">
+    </div>-->
+<!-- Mask to cover the whole screen -->
+<!--<div id="mask-popup" style="width: 1680px; height: 2292px; display: block; opacity: 0.8;"></div>
+</div> -->
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#origin").select2({
+            placeholder: '@T("Origin")'
+        });;
+        $("#destination").select2({
+            placeholder: '@T("Destination")'
+        });;
+
+
+        $(".button-add").on("click", function () {
+            var tRow = $(this).closest("tr");
+            var nRow = tRow.next("tr");
+            var cols = $(this).closest("tr").find('input[name="track-col"]');
+            var arrs = [];
+            $.each(cols, function (i, v) {
+                var val = $(v).val();
+                if (val && !isNaN(val)) {
+                    arrs.push(val);
+                }
+            });
+            if (nRow.hasClass("hide")) {
+                nRow.removeClass("hide");
+            }
+        });
+
+        $("#trackingSearch").on("click", function () {
+            var rows = $('#trackingTable').find('tr:not([class="hide"])');
+            var rArrs = [];
+            $.each(rows, function (i, v) {
+                var cols = $(v).find('input[name="track-col"]');
+                var arrs = [];
+                $.each(cols, function (i, v) {
+                    var val = $(v).val();
+                    if (val && !isNaN(val)) {
+                        arrs.push(val);
+                    }
+                });
+                if (arrs.length === 3) {
+                    var str = arrs.join("-");
+                    rArrs.push(str);
+                }
+            });
+            if (rArrs.length > 0) {
+                var sttbnumber = rArrs.join(",");
+                ShipmentTracking.init(sttbnumber);
+                window.location.href = "/shipment-tracking";
+            }
+        });
+
+        $("#tariffSearch").on("click", function () {
+            var origin = $("select[name='slc-origin']").val();
+            var destination = $("select[name='slc-destination']").val();
+            var weight = $("input[name='inp-weight']").val();
+            if (origin && destination && origin !== destination && weight) {
+                TariffSearch.init(origin, destination, weight);
+                window.location.href = "/check-tariff";
+            }
+        });
+    });
+</script>
+

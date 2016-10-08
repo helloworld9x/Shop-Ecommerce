@@ -364,27 +364,27 @@ namespace Nop.Data
         /// <returns></returns>
         public T FindOne(Expression<Func<T, bool>> filterExpression, FindOptions<T> findOptions = null)
         {
-                IQueryable<T> queryable = Entities;
+            IQueryable<T> queryable = Entities;
 
-                if (findOptions != null)
+            if (findOptions != null)
+            {
+                if (!findOptions.Sorts.IsNullOrEmpty())
                 {
-                    if (!findOptions.Sorts.IsNullOrEmpty())
+                    bool isFirst = true;
+                    foreach (var sortDirection in findOptions.Sorts)
                     {
-                        bool isFirst = true;
-                        foreach (var sortDirection in findOptions.Sorts)
-                        {
-                            queryable = SetOrderBy((IOrderedQueryable<T>)queryable, sortDirection, isFirst);
-                            isFirst = false;
-                        }
+                        queryable = SetOrderBy((IOrderedQueryable<T>)queryable, sortDirection, isFirst);
+                        isFirst = false;
                     }
                 }
+            }
 
-                if (filterExpression != null)
-                {
-                    queryable = queryable.Where(filterExpression);
-                }
+            if (filterExpression != null)
+            {
+                return queryable.FirstOrDefault(filterExpression);
+            }
 
-                return queryable.FirstOrDefault();
+            return queryable.FirstOrDefault();
         }
 
         #endregion

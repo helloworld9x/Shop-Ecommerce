@@ -1,0 +1,158 @@
+﻿<form id="personal-reg" method="post" action="/pos-registration">
+    @Html.AntiForgeryToken()
+    <input name="id_pos" id="id_pos_pers" type="hidden">
+    <input name="step" value="2" type="hidden">
+    <input name="title" value="Registration Bios" type="hidden">
+    <div class="step-2 container" data-ref="personal" style="display: none;">
+        <div class="col-sm-12">
+            <div class="col-sm-12">
+                <h3 class="hfoot">REGISTRANT<span> BIODATA</span></h3>
+            </div>
+
+            <div class="col-sm-4">
+
+                Full Name* :<br>
+                <input name="rb_fullname" required="" id="rb_fullname" class="form-control input-sm input_sm_custom" type="text"><br>
+
+                Home Town* :<br>
+                <input name="rb_hometown" required="" id="rb_hometown" class="form-control input-sm input_sm_custom" type="text"><br>
+
+                Date of Birth* : <br>
+                <input name="rb_birthday" required="" id="rb_birthday" class="datepickers form-control input-sm input_sm_custom" type="text"> <br>
+
+                Gender* : <br>
+
+                <div class="dropdown">
+                    <select name="rb_gender" required="" id="rb_gender" class="form-control input-sm input_sm_custom">
+
+
+                        <option value="Pria">Male</option>
+                        <option value="Wanita">Female</option>
+
+                    </select>
+                </div>
+
+                Marital Status* : <br>
+                <div class="dropdown">
+                    <select name="rb_marriage" id="rb_marriage" required="" class="form-control input-sm input_sm_custom">
+                        <option value="Menikah">Married</option>
+                        <option value="Single">Single</option>
+                    </select>
+                </div>
+
+                Religion* : <br>
+                <div class="dropdown">
+                    <select name="rb_religion" class="form-control" id="rb_religion" required="">
+                        <option value="">Select Religion</option>
+                        <option value="Islam">Moslem</option>
+                        <option value="Katholik">Catholic</option>
+                        <option value="Protestan">Protestant</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Budha">Budha</option>
+                        <option value="Konghucu">Konghucu</option>
+                    </select>
+                </div>
+                <br>
+
+                Nationality* :<br>
+                <div class="dropdown">
+                    <select name="rb_nationality" onchange="showwarga()" id="rb_nationality" class="show-field input-sm" data-selector="rb_nationality_other" required="">
+                        <option value="">- Select Nationality -</option>
+                        <option value="WNI">Indonesia</option>
+                        <option value="other">Others</option>
+                    </select>
+                </div>
+
+                <input type="text" class="form-control input-sm input_sm_custom" id="warga" name="warga" style="display: none;"><br>
+
+            </div>
+            <div class="col-sm-4">
+                Complete Address* : <br>
+                <textarea name="rb_address" required="" id="rb_address" class="form-control input-sm input_sm_custom"></textarea><br>
+
+                <!-- RT : <br/>
+                <input name="rb_rt" class="form-control input-sm input_sm_custom" type="text"/><br/>
+
+                RW : <br/>
+                <input name="rb_rw" class="form-control input-sm input_sm_custom" type="text"/><br/> -->
+                Province* :<br>
+                <div class="dropdown">
+                    <select required="" id="rb_province" data-selector="rb_city" class="province_change form-control input-sm input_sm_custom" name="rb_province">
+                        <option value="">-- Select Province --</option>
+                        <option value="aceh">Aceh</option>
+                        <option value="sumatera_utara">Sumatera Utara</option>
+                        <option value="sumatera_barat">Sumatera Barat</option>
+                        <option value="sumatera_selatan">Sumatera Selatan</option>
+                        <option value="riau">Riau</option>
+                        <option value="kep_riau">Kep Riau</option>
+                        <option value="jambi">Jambi</option>
+                        <option value="bengkulu">Bengkulu</option>
+                        <option value="kep_bangka_belitung">Kep Bangka Belitung</option>
+                        <option value="lampung">Lampung</option>
+                        <option value="banten">Banten</option>
+                        <option value="jawa_barat">Jawa Barat</option>
+                        <option value="jakarta">DKI Jakarta</option>
+                        <option value="jawa_tengah">Jawa Tengah</option>
+                        <option value="jawa_timur">Jawa Timur</option>
+                        <option value="di_yogyakarta">DI Yogyakarta</option>
+                        <option value="bali">Bali</option>
+                        <option value="nusa_tenggara_barat">Nusa Tenggara Barat</option>
+                        <option value="nusa_tenggara_timur">Nusa Tenggara Timur</option>
+                        <option value="kalimantan_barat">Kalimantan Barat</option>
+                        <option value="kalimantan_selatan">Kalimantan Selatan</option>
+                        <option value="kalimantan_tengah">Kalimantan Tengah</option>
+                        <option value="kalimantan_timur">Kalimantan Timur</option>
+                        <option value="kalimantan_utara">Kalimantan Utara</option>
+                        <option value="gorontalo">Gorontalo</option>
+                        <option value="sulawesi_selatan">Sulawesi Selatan</option>
+                        <option value="sulawesi_tenggara">Sulawesi Tenggara</option>
+                        <option value="sulawesi_tengah">Sulawesi Tengah</option>
+                        <option value="sulawesi_utara">Sulawesi Utara</option>
+                        <option value="sulawesi_barat">Sulawesi Barat</option>
+                        <option value="maluku">Maluku</option>
+                        <option value="maluku_utara">Maluku Utara</option>
+                        <option value="papua">Papua</option>
+                        <option value="papua_barat">Papua Barat</option>
+                    </select>
+
+                </div>
+                City* :<br>
+                <div class="dropdown">
+                    <select required="" id="rb_city" class="form-control input-sm input_sm_custom" name="rb_city">
+                        <option value="">-- Select City --</option>
+                    </select>
+                </div>
+                <br>
+
+                ZIP Code* : <br>
+                <input name="rb_zipcode" required="" id="rb_zipcode" class="form-control full-width input-sm onlyNumbersInput" type="number"><br>
+
+            </div>
+
+            <div class="col-sm-4">
+                E-mail* :<br>
+                <input name="rb_email" required="" id="rb_email" class="full-width form-control input-sm input_sm_custom" type="email"><br>
+
+                Phone : <br>
+                <input name="rb_phone" id="rb_phone" class="form-control input-sm onlyNumbersInput" maxlength="14" type="number"><br>
+
+                Handphone* : <br>
+                <input name="rb_handphone" required="" id="rb_handphone" class="form-control full-width input-sm onlyNumbersInput" maxlength="14" type="number"><br>
+
+                Fax : <br>
+                <input name="rb_fax" id="rb_fax" class="form-control input-sm onlyNumbersInput" maxlength="14" type="number" placeholder="Jika ada"><br>
+
+                ID Card Number* :<br>
+                <input name="rb_ktp" required="" id="rb_ktp" class="full-width  form-control input-sm input_sm_custom" type="text"><br>
+
+            </div>
+        </div>
+    </div>
+    <div class="step-2 container" data-ref="personal" style="display: none;">
+        <div class="col-sm-12">
+            <div class="panel-footer">
+                <button class="b_to_step3 button-1 btn btn-danger" ref="personal_2" type="submit">Next</button>
+            </div>
+        </div>
+    </div>
+</form>

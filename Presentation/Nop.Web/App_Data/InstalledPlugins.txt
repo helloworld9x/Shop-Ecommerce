@@ -5,9 +5,11 @@ DiscountRequirement.MustBeAssignedToCustomerRole
 CurrencyExchange.ECB
 ExternalAuth.Facebook
 Misc.FacebookShop
+Misc.Region
+Misc.LionParcel
 Payments.CheckMoneyOrder
-Payments.PayPalDirect
 Payments.Manual
+Payments.PayPalDirect
 Payments.AuthorizeNet
 Payments.GQPay
 Payments.PayPalStandard
@@ -25,3 +27,4 @@ Tax.FixedRate
 Tax.CountryStateZip
 Widgets.GoogleAnalytics
 Widgets.NivoSlider
+LionParcel

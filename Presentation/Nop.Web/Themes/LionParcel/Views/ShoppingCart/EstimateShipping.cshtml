@@ -1,0 +1,92 @@
+﻿@model EstimateShippingModel
+@using Nop.Web.Models.ShoppingCart;
+@if (Model.Enabled)
+{
+    <div class="shipping">
+        <script type="text/javascript">
+            $(function () {
+                $("#@Html.FieldIdFor(model => model.CountryId)").change(function () {
+                    var selectedItem = $(this).val();
+                    var ddlStates = $("#@Html.FieldIdFor(model => model.StateProvinceId)");
+                    var estimateProgress = $("#estimate-shipping-loading-progress");
+                    estimateProgress.show();
+                    $.ajax({
+                        cache: false,
+                        type: "GET",
+                        url: "@(Url.RouteUrl("GetStatesByCountryId"))",
+                        data: { "countryId": selectedItem, "addSelectStateItem": "false" },
+                        success: function (data) {
+                            ddlStates.html('');
+                            $.each(data, function (id, option) {
+                                ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                            });
+                            estimateProgress.hide();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve states.');
+                            estimateProgress.hide();
+                        }
+                    });
+                });
+            });
+        </script>
+
+        <div class="border-square">
+            <label>@T("Estimate shipping")</label>
+            <p>@T("ShoppingCart.EstimateShipping.Tooltip")</p>
+            <div class="shipping-options">
+                <div class="clearfix">
+                    <span class="label-title">
+                        @Html.LabelFor(model => model.CountryId, new { }, ":")
+                    </span>
+                    <span class="pull-right spanWidthRight">
+                        @Html.DropDownListFor(model => model.CountryId, Model.AvailableCountries, new { @class = "country-input spanSelect form-control input-sm" })
+                    </span>
+
+                    <span class="required">*</span>
+                </div>
+                <div class="clearfix">
+                    <span class="label-title">@Html.LabelFor(model => model.StateProvinceId, new { }, ":")</span>
+                    <span class="pull-right spanWidthRight">@Html.DropDownListFor(model => model.StateProvinceId, Model.AvailableStates, new { @class = "state-input spanSelect form-control input-sm" })</span>
+                    <span id="estimate-shipping-loading-progress" style="display: none;" class="please-wait">@T("Common.Wait...")</span>
+                </div>
+                <div class="clearfix">
+                    <span class="label-title">@Html.LabelFor(model => model.ZipPostalCode, new { }, ":")</span>
+                    <span class="pull-right spanWidthRight">
+                        @Html.TextBoxFor(model => model.ZipPostalCode, new { @class = "zip-input spanSelect form-control input-sm" })
+                        <input type="submit" name="estimateshipping" value="@T("ShoppingCart.EstimateShipping.Button")" class="btn btn-primary pull-right mt10" style="margin-top: 2px;" />
+
+                    </span>
+                </div>
+                
+            </div>
+            @if (Model.ShippingOptions.Count > 0)
+            {
+                <ul class="shipping-results" style="margin-top: 50px;">
+                    @foreach (var shippingOption in Model.ShippingOptions)
+                    {
+                        <li class="shipping-option-item">
+                            <strong class="option-name">
+                                @T("ShoppingCart.EstimateShipping.ShippingOptionWithRate", shippingOption.Name, shippingOption.Price)
+                            </strong>
+                            <span class="option-description">
+                                @Html.Raw(shippingOption.Description)
+                            </span>
+                        </li>
+                    }
+                </ul>
+            }
+            else if (Model.Warnings.Count > 0)
+            {
+                <div class="message-error">
+                    <ul>
+                        @foreach (var error in Model.Warnings)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+}

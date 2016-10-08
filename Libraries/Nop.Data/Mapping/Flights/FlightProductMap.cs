@@ -13,6 +13,10 @@ namespace Nop.Data.Mapping.Flights
             Property(d => d.Attributes).IsMaxLength();
             Property(d => d.Name).IsRequired().HasMaxLength(100);
             Property(d => d.Price).IsRequired().HasPrecision(18, 6);
+
+            HasMany(p => p.FlightStatus)
+               .WithMany(pt => pt.FlightProducts)
+               .Map(m => m.ToTable("FlightProducts_FlightStatus_Mapping"));
         }
     }
 }

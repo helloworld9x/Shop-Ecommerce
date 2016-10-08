@@ -1,0 +1,37 @@
+﻿<form id="personal-attachment" method="post" action="/pos-registration" style="display: none;" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input name="step" value="3" type="hidden">
+    <input name="title" value="Personal Attachment" type="hidden">
+    <div class="container animated fadeIn">
+        <div class="row">
+            <div class="col-sm-12"></div>
+            <div class="col-sm-12">
+                <div class="panel-heading">
+                    <h3 class="hfoot">SUPPORTING<span>DOCUMENTS</span></h3>
+                </div>
+                <div class="panel-body">
+                    <input name="id_pos" id="id_pos_pers_att" type="hidden">
+                    <input name="family_card" type="hidden" value="">
+                    <input name="tax_number" type="hidden" value="">
+                    <input name="id_card" type="hidden" value="">
+                    <div id="scs2">
+
+                    </div>
+                    <label for="id_card">ID Card Number*</label>
+                    <input type="file" required="required" name="files" id="id_card">
+                    <label for="family_card">Family Card (KK)</label>
+                    <input type="file" name="files" id="family_card">
+                    <label for="tax">Tax License (NPWP)</label>
+                    <input type="file" name="files" id="tax">
+                  
+
+                    <br><br>
+                    Note : Max upload for each attachment is 5 MB.
+                </div>
+                <div class="panel-footer">
+                    <button type="submit" onclick="return validateFiles('personal_3');" ref="personal_3" class="button-1 btn btn-danger">SUPPORTING<span>DOCUMENTS</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

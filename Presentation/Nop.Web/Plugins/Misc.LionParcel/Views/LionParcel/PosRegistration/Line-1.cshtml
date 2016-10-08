@@ -1,0 +1,200 @@
+﻿<form method="post" action="/pos-registration" id="propose-location-form">
+    @Html.AntiForgeryToken()
+    <!-- <input name="type_submit" type="hidden" value=""> -->
+    <input name="step" type="hidden" value="1">
+    <input name="title" value="Proposed Location" type="hidden">
+    <div class="step-1 container">
+
+        <div class="col-sm-12">
+            <h3 class="hfoot">
+                PROPOSED <span>LOCATION</span>
+            </h3>
+        </div>
+        <div class="col-sm-12">
+            <div class="col-sm-4">
+                <input type="hidden" value="Point of Sales" name="as_status">
+                Location Type *:<br>
+                <div class="dropdown">
+                    <select required="" id="pl_location_type" class="form-control input-sm input_sm_custom" name="pl_location_type">
+                        <option value="">-- Select Type --</option>
+                        <option value="Ruko">Home Store</option>
+                        <option value="Mall">Mall</option>
+                        <option value="Perkantoran">Office</option>
+                        <option value="Perumahan">Housing</option>
+                        <option value="Travel Point">Travel Point</option>
+                        <option value="Hotel">Hotel</option>
+                        <option value="Pom Bensin">Gas Station</option>
+                        <option value="">Others</option>
+                    </select>
+                </div>
+                <input type="text" id="lokasi" class="form-control input-sm input_sm_custom" name="pl_location_other" style="display: none;"><br>
+                Complete Address *:
+                <br>
+                <textarea required="required" class="form-control input-sm input_sm_custom" id="pl_address_location" name="pl_address_location"></textarea><br>
+                Coverage Area *:<br>
+                <div class="dropdown">
+                    <select required="" id="pl_province" data-selector="pl_city" class="province_change form-control input-sm input_sm_custom" name="pl_province">
+                        <option value="">-- Select Province --</option>
+                        <option value="aceh">Aceh</option>
+                        <option value="sumatera_utara">Sumatera Utara</option>
+                        <option value="sumatera_barat">Sumatera Barat</option>
+                        <option value="sumatera_selatan">Sumatera Selatan</option>
+                        <option value="riau">Riau</option>
+                        <option value="kep_riau">Kep Riau</option>
+                        <option value="jambi">Jambi</option>
+                        <option value="bengkulu">Bengkulu</option>
+                        <option value="kep_bangka_belitung">Kep Bangka Belitung</option>
+                        <option value="lampung">Lampung</option>
+                        <option value="banten">Banten</option>
+                        <option value="jawa_barat">Jawa Barat</option>
+                        <option value="jakarta">DKI Jakarta</option>
+                        <option value="jawa_tengah">Jawa Tengah</option>
+                        <option value="jawa_timur">Jawa Timur</option>
+                        <option value="di_yogyakarta">DI Yogyakarta</option>
+                        <option value="bali">Bali</option>
+                        <option value="nusa_tenggara_barat">Nusa Tenggara Barat</option>
+                        <option value="nusa_tenggara_timur">Nusa Tenggara Timur</option>
+                        <option value="kalimantan_barat">Kalimantan Barat</option>
+                        <option value="kalimantan_selatan">Kalimantan Selatan</option>
+                        <option value="kalimantan_tengah">Kalimantan Tengah</option>
+                        <option value="kalimantan_timur">Kalimantan Timur</option>
+                        <option value="kalimantan_utara">Kalimantan Utara</option>
+                        <option value="gorontalo">Gorontalo</option>
+                        <option value="sulawesi_selatan">Sulawesi Selatan</option>
+                        <option value="sulawesi_tenggara">Sulawesi Tenggara</option>
+                        <option value="sulawesi_tengah">Sulawesi Tengah</option>
+                        <option value="sulawesi_utara">Sulawesi Utara</option>
+                        <option value="sulawesi_barat">Sulawesi Barat</option>
+                        <option value="maluku">Maluku</option>
+                        <option value="maluku_utara">Maluku Utara</option>
+                        <option value="papua">Papua</option>
+                        <option value="papua_barat">Papua Barat</option>
+                    </select>
+                </div>
+                City* :<br>
+                <div class="dropdown">
+                    <select required="" id="pl_city" class="form-control input-sm input_sm_custom" name="pl_city">
+                        <option value="">-- Select City --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                ZIP Code *:
+                <br>
+                <input type="number" required="" id="pl_zipcode" maxlength="14" class="form-control full-width input-sm onlyNumbersInput" name="pl_zipcode"><br>
+                Phone * :
+                <br>
+                <input type="number" maxlength="14" required="" id="pl_phone" class="full-width form-control input-sm input_sm_custom onlyNumbersInput" name="pl_phone"><br>
+                Handphone :
+                <br>
+                <input type="number" maxlength="14" id="pl_handphone" class="full-width form-control input-sm input_sm_custom onlyNumbersInput" name="pl_handphone"><br>
+                Fax :
+                <br>
+                <input type="number" placeholder="Optional" id="pl_fax" class="form-control input-sm onlyNumbersInput" maxlength="14" name="pl_fax"><br>
+                <!-- Do you have space/warehouse that used for receiving and temporary storage cargo ?
+                ?
+                <br>
+                <input type="radio" onclick="showluas()" name="pl_temporary" value="ya">Yes<br>
+                <input type="radio" onclick="hideluas()" name="pl_temporary" value="tidak">No<br>-->
+                <input type="hidden" id="pl_large" class="form-control input-sm input_sm_custom" name="pl_large">
+                <!--<div id="luas" style="display: none;">
+                    How wide is the space?
+                    <br>
+
+                    m²
+                </div>-->
+            </div>
+            <div class="col-sm-4">
+                <h3 class="hfoot">
+                    REFERENCE <span>DATA</span>
+                </h3>
+                Full Name :
+                <br>
+                <input type="text" class="form-control input-sm input_sm_custom" id="rd_fullname" name="rd_fullname"><br>
+                Phone/Handphone :
+                <br>
+                <input type="number" class="form-control input-sm onlyNumbersInput" maxlength="14" ="rd_phone" ="" name="rd_phone"><br>
+                E-mail :
+                <br>
+                <input type="email" class="form-control input-sm input_sm_custom" id="rd_email" name="rd_email"><br>
+                Reference Giver Status :
+                <br>
+                <div class="dropdown">
+                    <select required="" class="form-control input-sm input_sm_custom" id="rd_reference" name="rd_reference">
+                        <option value="Karyawan">Employee</option>
+                        <option value="Perwakilan">Agency</option>
+                        <option value="Agen Travel">Travel Agent</option>
+                    </select>
+                </div>
+                <input placeholder="Latitude/Longitude" class="form-control" id="latlng" name="latlang"><br>
+                <button type="button" class="button-1 btn btn-danger" onclick="show_map()">
+                    Where is your proposed location?
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--End Baris 1-->
+    <div style="display: none; margin-top: 15px; margin-bottom: 10px;" id="map-show" class="step-1 container">
+        <style type="text/css">
+            div#map {
+                position: relative;
+            }
+
+            div#crosshair {
+                position: absolute;
+                top: 165px;
+                height: 47px;
+                width: 29px;
+                left: 50%;
+                margin-left: -8px;
+                display: block;
+                background: url('/Themes/LionParcel/Content/Images/point_grabber.png');
+                background-position: center center;
+                background-repeat: no-repeat;
+            }
+        </style>
+        <div id="map">
+            <div style="width: 100%; height: 400px" id="map_canvas">
+            </div>
+            <div id="crosshair">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <p style="margin-left: -15px; margin-top: 15px;" id="formatedAddress">
+                </p>
+                <div style="display: none;" id="zoom_level">
+                    2
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="address" class="form-control" placeholder="Find Address">
+            </div>
+            <div class="col-sm-1">
+                <button style="padding: 7px 19px; border: none; margin-top: 5px;" onclick="geocode()" class="button-3" type="button">
+                    Search
+                </button>
+            </div>
+        </div>
+       
+    </div>
+    <div class="step-1 container">
+        <div class="col-sm-12">
+            <h4>
+                Which Point of Sales type you want to register?
+            </h4>
+            <div class="panel-footer">
+                <button ref="personal" type="submit" class="b_to_step2 button-1 btn btn-danger">
+                    Personal
+                </button>
+                <button ref="company" type="submit" class="b_to_step2 button-1 btn btn-danger">
+                    Company
+                </button>
+                <p style="font-size: 0.9em;" class="help-block">
+                    Note:<br> Please prepare your document attachments to complete your registration.<br>
+                    - Register as Personal : you need attach scanned ID Card (e-KTP - Mandatory), Family Card (KK) and Tax Number (NPWP)<br> - Register as Company : Company Certificate, Tax Number (NPWP), Business License (SIUP), Director Identity Card Number (e-KTP)
+                </p>
+            </div>
+        </div>
+    </div>
+</form>

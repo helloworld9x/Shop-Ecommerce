@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Nop.Core.Domain.Catalog;
-using Nop.Core.Domain.Localization;
 using Nop.Core.Domain.Security;
 using Nop.Core.Domain.Seo;
 using Nop.Core.Domain.Stores;
@@ -10,6 +10,9 @@ namespace Nop.Core.Domain.Flights
     public class FlightProduct : BaseEntity, ISlugSupported, IAclSupported, IStoreMappingSupported
     {
         private ICollection<FlightStatus> _flightstatus;
+
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
 
         public string Name { get; set; }
 
@@ -36,6 +39,7 @@ namespace Nop.Core.Domain.Flights
         public bool SubjectToAcl { get; set; }
 
         public bool LimitedToStores { get; set; }
+
 
         /// <summary>
         /// Gets or sets the Flight Products

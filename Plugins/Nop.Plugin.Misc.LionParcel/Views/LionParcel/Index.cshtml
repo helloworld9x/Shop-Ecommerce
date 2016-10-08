@@ -1,0 +1,60 @@
+﻿@using Nop.Web.Framework
+@using Nop.Web.Framework.Mvc
+
+@{
+    Layout = "~/Views/Shared/_ColumnsOne.cshtml";
+}
+<div class="page home-page">
+    <div class="page-body">
+        @{
+            int currentCategoryId = 0;
+            int currentProductId = 0;
+        }
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 affix-sidebar">
+                @Html.Action("CategoryNavigation", "Catalog", new { currentCategoryId = currentCategoryId, currentProductId = currentProductId })
+            </div>
+            <div class="col-xs-12 col-sm-9">
+                @Html.Widget("home_page_top")
+            </div>
+        </div>
+
+
+
+        <div class="main-title mg-t-40">
+            <h2>WELCOME TO OUR STORE</h2>
+        </div>
+        @Html.Widget("home_page_before_products")
+        @Html.Action("HomepageProducts", "Product")
+        @Html.Widget("home_page_before_categories")
+        @Html.Action("HomepageCategories", "Catalog")
+
+
+        <div class="row mg-5">
+            <div class="col-xs-12 col-sm-8">
+                <a href="/flight-travel" class="travel-form image-hover-effect"><img src="~/Themes/ShopLion/Content/images/holiday-grid.jpg" alt="holiday" class="img-responsive"></a>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <a href="/shopping-home" class="image-hover-effect"><img src="https://gqcdn.s3.amazonaws.com/PlaneCRM/Images/In-Flight.jpg" alt="meals-grid" class="img-responsive"></a>
+            </div>
+        </div>
+        <div class="row mg-5">
+            <div class="col-xs-12 col-sm-8">
+                <a href="/shopping-home" class="image-hover-effect"><img src="~/Themes/ShopLion/Content/images/insurance-grid.jpg" alt="insurance" class="img-responsive"></a>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <a href="/flight-travel" class="travel-form image-hover-effect"><img src="~/Themes/ShopLion/Content/images/hotel-grid.jpg" alt="hotel-grid" class="img-responsive"></a>
+            </div>
+        </div>
+
+        @Html.Widget("home_page_bottom")
+        <div id="boxes-popoup">
+            <div id="popupthesoon" class="window-popoup img-responsive" style="top: 160px; left: 540px; display: block;">
+                <a href="#" class="close-popup">X</a>
+                <img src="~/Themes/ShopLion/Content/images/PopUpMain.jpg" class="img-responsive">
+            </div>
+            <!-- Mask to cover the whole screen -->
+            <div id="mask-popup" style="width: 1680px; height: 2292px; display: block; opacity: 0.8;"></div>
+        </div>
+    </div>
+</div>

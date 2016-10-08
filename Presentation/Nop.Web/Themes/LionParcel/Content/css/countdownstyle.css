@@ -1,0 +1,86 @@
+#ucimage {
+	position:absolute;
+	left:0px;
+	top:40px;
+	width:100%;
+	height:87px;
+}
+
+#uctext {
+	position:absolute;
+	left:0px; 
+	width:100%;
+	height:43px;
+}
+
+#uccounter {
+	position:absolute;
+	width: 100%;
+    height: 149px;
+	z-index: 1;
+	top: 68%;
+	overflow: hidden;
+}
+.countdown_section {
+	display: block;
+	float:left;
+	font-size:14px;
+	text-align:center;
+	font-weight:bold;
+	color: #ffffff;
+	width: 100px;
+	background-image: url('../images/clock-bg.png');
+	line-height:inherit;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+}
+.countdown_amount {
+	font-size:50px; 
+	line-height: 78px;
+}
+
+#defaultCountdown {
+  left: 32%;
+  position: absolute;
+  top: 15%;
+  width: 100%;
+}
+@media screen and (max-width: 990px)
+{
+	#defaultCountdown {
+	  left: 10%; 
+	  top: 5%; 
+	}
+}
+
+@media screen and (max-width: 768px)
+{
+	#uccounter {
+		top: 60%;
+	}
+}
+
+@media screen and (max-width: 480px)
+{
+	#uccounter {
+		top: 63%;
+		left: 0;
+		background:rgba(0, 0, 0, 0.6);
+		height: 80px;
+	}
+	#defaultCountdown {
+	  right: 8%; 
+	  width: auto;
+	  left: auto;
+	}
+	.countdown_amount {
+		font-size:20px; 
+		line-height:45px;
+	}
+	.countdown_section { 
+		width: 60px;
+		font-size: 10px;
+		font-weight: normal;
+		margin: 0;
+	}
+}

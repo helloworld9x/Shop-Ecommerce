@@ -1,0 +1,98 @@
+﻿@model CatalogPagingFilteringModel.SpecificationFilterModel
+@using Nop.Web.Models.Catalog;
+@{
+    var notFilteredItemsGroups = Model.NotFilteredItems.GroupBy(x => x.SpecificationAttributeName);
+}
+@if (Model.Enabled)
+{
+    <div class="product-filter product-spec-filter">
+        <div class="filter-title">
+            <i class="im-filter"></i> <strong>@T("Filtering.SpecificationFilter")</strong>
+        </div>
+        <div class="filter-content">
+            @if (Model.NotFilteredItems.Count > 0)
+            {
+                <div class="available-items">
+                    @foreach (var group in notFilteredItemsGroups)
+                    {
+                        var groupList = group.ToList();
+                        
+                        <ul class="group product-spec-group">
+                            <li class="label-filter">
+                                <strong>@groupList[0].SpecificationAttributeName :</strong>
+                            </li>
+
+                            @foreach (var spec in groupList)
+                            {
+                                if (spec.SpecificationAttributeName == "color" || spec.SpecificationAttributeName == "Color")
+                                {
+                                    <li class="item">
+                                        <a href="@spec.FilterUrl"><i rel="tooltip" title="@spec.SpecificationAttributeOptionName" class="color-square" style="background-color: @spec.SpecificationAttributeOptionName"></i> <span class="color-name">@spec.SpecificationAttributeOptionName</span></a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="item">
+                                        <a href="@spec.FilterUrl">@spec.SpecificationAttributeOptionName</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+            @if (Model.AlreadyFilteredItems.Count > 0)
+            {
+                <div class="filtered-items">
+                    <ul>
+                        <li class="label-filter">
+                            @T("Filtering.SpecificationFilter.CurrentlyFilteredBy")
+                        </li>
+                       
+                        @foreach (var item in Model.AlreadyFilteredItems)
+                        {
+                            if (item.SpecificationAttributeName == "Color" || item.SpecificationAttributeName == "color")
+                            {
+                                <li class="item">
+                                    <strong>@(item.SpecificationAttributeName)</strong>
+                                    <span class="@item.SpecificationAttributeName-@item.SpecificationAttributeOptionName"><i rel="tooltip" title="@item.SpecificationAttributeOptionName" class="color-square" style="background-color: @item.SpecificationAttributeOptionName"></i></span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="item">
+                                    <strong>@(item.SpecificationAttributeName)</strong> <span>@item.SpecificationAttributeOptionName</span>
+                                </li>
+                            }
+                        }
+                                
+
+                    </ul>
+                </div>
+                <div class="remove-filter">
+                    <a class="btn btn-link btn-sm" href="@Model.RemoveFilterUrl"><i class="im-cancel-circle left-caret"></i>@T("Filtering.SpecificationFilter.Remove")</a>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        $('[rel="tooltip"]').tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                  $( this ).css( position );
+                  $( "<div>" )
+                  .addClass( "arrow" )
+                  .addClass( feedback.vertical )
+                  .addClass( feedback.horizontal )
+                  .appendTo( this );
+              }
+          }
+        });
+    });
+</script>

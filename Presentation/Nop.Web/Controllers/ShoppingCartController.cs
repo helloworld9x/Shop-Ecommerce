@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -931,7 +930,6 @@ namespace Nop.Web.Controllers
                 //total
                 decimal orderTotalDiscountAmountBase;
                 Discount orderTotalAppliedDiscount;
-                int redeemedRewardPoints;
                 decimal? shoppingCartTotalBase = _orderTotalCalculationService.GetShoppingCartTotal(cart,
                     out orderTotalDiscountAmountBase, out orderTotalAppliedDiscount
                  );
@@ -1478,10 +1476,6 @@ namespace Nop.Web.Controllers
 
             //product and gift card attributes
             string attributes = ParseProductAttributes(product, form);
-
-            //rental attributes
-            DateTime? rentalStartDate = null;
-            DateTime? rentalEndDate = null;
 
 
             //save item

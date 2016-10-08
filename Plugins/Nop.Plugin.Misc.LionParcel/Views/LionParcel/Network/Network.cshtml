@@ -1,0 +1,55 @@
+﻿@using Nop.Web.Framework.UI
+@{
+    Layout = "~/Themes/LionParcel/Views/Shared/_LayoutHomePage.cshtml";
+
+    Html.AddCssFileParts("~/Plugins/Misc.LionParcel/Content/Styles/network.css");
+    Html.AppendScriptParts("~/Plugins/Misc.LionParcel/Content/Scripts/global.script.js");
+    Html.AppendScriptParts("~/Plugins/Misc.LionParcel/Content/Scripts/custom_network-en.js");
+    Html.AppendScriptParts("~/Plugins/Misc.LionParcel/Content/Scripts/custom_map.js");
+    Html.AppendScriptParts("http://www.lionexpress.co.id/Scripts/jquery.flexslider.js");
+    //Html.AppendScriptParts("http://maps.google.com/maps/api/js?sensor=false");
+}
+<script>
+    var addressLink = '@Url.Action("GetAddressLocation","LionParcel")';
+   
+</script>
+
+<section id="Content" class="new-collapse tandc">
+    <div id="resultTrPr" style="position: absolute; z-index: 2; width: 100%; height: 100%; background: white; display: none;">&nbsp;</div>
+    <h3 class="hfoot">OUR NETWORK</h3>
+    @*<div class="container" style="position: relative" id="regionMap">
+        <input id="map_search_text" type="text" class="form-control" style="position: absolute; top: 10px; left: 135px; z-index: 99; width: 75%;"/>
+        <div id="map_canvas" style="width: 100%; height: 500px"></div>
+    </div>
+    <hr style="margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #eeeeee;"/>
+    <div class="row">
+        <div class="col-sm-2"><img class="aktif" style="background: #FB1600;" src="http://www.lionexpress.co.id/Images/pin.png" alt=""/>
+        </div>
+        <div class="col-sm-10">
+            <div class="slideDown2" style="background-image: url('http://www.lionexpress.co.id/Images/arrow_down2.png'); background-repeat: no-repeat; background-position: right; color: #333333; padding: 0px 0 9px 0px; margin-bottom: 10px; text-align: left; text-decoration: none; display: block; font-size: 12px; cursor: pointer;">
+                <dt id="slide-province">
+                    <h4 class="hfoot">
+                        Choose Province
+                    </h4>
+                </dt>
+            </div>
+        </div>
+    </div>*@
+    <div class="row">
+        <div class="area-result col-sm-12">
+            <div id="province-drop" style="text-align: left; min-height: 19px;">
+                <span data-id="aceh">Aceh</span> | <span data-id="sumatera_utara">Sumatera Utara</span> | <span data-id="sumatera_barat">Sumatera Barat</span> | <span data-id="sumatera_selatan">Sumatera Selatan</span> | <span data-id="riau">Riau</span> | <span data-id="kep_riau">Kep Riau</span> | <span data-id="jambi">Jambi</span> | <span data-id="bengkulu">Bengkulu</span> | <span data-id="kep_bangka_belitung">Kep Bangka Belitung</span> | <span data-id="lampung">Lampung</span> | <span data-id="banten">Banten</span> | <span data-id="jawa_barat">Jawa Barat</span> | <span data-id="jakarta">DKI Jakarta</span> | <span data-id="jawa_tengah">Jawa Tengah</span> | <span data-id="jawa_timur">Jawa Timur</span> | <span data-id="di_yogyakarta">DI Yogyakarta</span> | <span data-id="bali">Bali</span> | <span data-id="nusa_tenggara_barat">Nusa Tenggara Barat</span> | <span data-id="nusa_tenggara_timur">Nusa Tenggara Timur</span> | <span data-id="kalimantan_barat">Kalimantan Barat</span> | <span data-id="kalimantan_selatan">Kalimantan Selatan</span> | <span data-id="kalimantan_tengah">Kalimantan Tengah</span> | <span data-id="kalimantan_timur">Kalimantan Timur</span> | <span data-id="kalimantan_utara">Kalimantan Utara</span> | <span data-id="gorontalo">Gorontalo</span> | <span data-id="sulawesi_selatan">Sulawesi Selatan</span> | <span data-id="sulawesi_tenggara">Sulawesi Tenggara</span> | <span data-id="sulawesi_tengah">Sulawesi Tengah</span> | <span data-id="sulawesi_utara">Sulawesi Utara</span> | <span data-id="sulawesi_barat">Sulawesi Barat</span> | <span data-id="maluku">Maluku</span> | <span data-id="maluku_utara">Maluku Utara</span> | <span data-id="papua">Papua</span> | <span data-id="papua_barat">Papua Barat</span> |
+            </div>
+            <div id="city-drop" style="text-align: left; min-height: 20px; display: none;">
+            </div>
+        </div>
+        <!--KOnten-->
+        <div class="result-block" style="margin-left: 15px;">
+            <h4 id="key-display" class="hfoot">PROVINCE &gt; CITY</h4>
+            <hr style="margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #eeeeee;"/>
+            <div id="result-network">&nbsp;</div>
+        </div>
+    </div>
+</section>
+
+

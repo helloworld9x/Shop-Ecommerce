@@ -1,0 +1,21 @@
+C:\Projects\GoQuoVN\goquo-ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\web.config
+C:\Projects\GoQuoVN\goquo-ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Description.txt
+C:\Projects\GoQuoVN\goquo-ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Views\MiscRegion\Configure.cshtml
+C:\Projects\GoQuoVN\goquo-ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Views\MiscRegion\ProductRestriction.cshtml
+C:\Projects\GoQuoVN\goquo-ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Nop.Plugin.Misc.Region.dll.config
+C:\Projects\GoQuoVN\goquo-ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Nop.Plugin.Misc.Region.dll
+C:\Projects\GoQuoVN\goquo-ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Nop.Plugin.Misc.Region.pdb
+C:\Projects\GoQuoVN\goquo-ecommerce\Plugins\Nop.Plugin.Misc.Region\obj\Debug\Nop.Plugin.Misc.Region.csprojResolveAssemblyReference.cache
+C:\Projects\GoQuoVN\goquo-ecommerce\Plugins\Nop.Plugin.Misc.Region\obj\Debug\Nop.Plugin.Misc.Region.dll
+C:\Projects\GoQuoVN\goquo-ecommerce\Plugins\Nop.Plugin.Misc.Region\obj\Debug\Nop.Plugin.Misc.Region.pdb
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\logo.jpg
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\web.config
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Views\MiscRegion\Configure.cshtml
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Views\MiscRegion\ProductRestriction.cshtml
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Description.txt
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Nop.Plugin.Misc.Region.dll.config
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Nop.Plugin.Misc.Region.dll
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Presentation\Nop.Web\Plugins\Misc.Region\Nop.Plugin.Misc.Region.pdb
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Misc.Region\obj\Debug\Nop.Plugin.Misc.Region.csprojResolveAssemblyReference.cache
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Misc.Region\obj\Debug\Nop.Plugin.Misc.Region.dll
+D:\Researching\Do An Tot Nghiep\Shop-Ecommerce\Plugins\Nop.Plugin.Misc.Region\obj\Debug\Nop.Plugin.Misc.Region.pdb

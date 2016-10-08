@@ -15,6 +15,8 @@ namespace Nop.Services.Flights
 
         void InsertMeal(FlightProduct flight, Product product);
 
+        void UpdateFlightProduct(FlightProduct flightProduct);
+
         #endregion
     }
 
@@ -48,6 +50,11 @@ namespace Nop.Services.Flights
                 flight.Product = product;
                 _repository.Insert(flight);
             }
+        }
+
+        public void UpdateFlightProduct(FlightProduct flightProduct)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

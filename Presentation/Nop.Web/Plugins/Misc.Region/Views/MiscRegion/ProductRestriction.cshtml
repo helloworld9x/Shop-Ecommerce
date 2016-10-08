@@ -1,0 +1,95 @@
+﻿@using System.Web.UI.WebControls
+@using Nop.Core.Domain.Catalog
+@model Nop.Plugin.Misc.Region.Models.ConfigurationModel
+
+@{
+    Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
+}
+@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="section-header">
+        <div class="title">
+            <img src="@Url.Content("~/Administration/Content/images/ico-content.png")" alt="" />
+            @T("Restrictions")
+        </div>
+    </div>
+    <div>
+        <div class="section-header">
+            <div class="title">
+                <img src="@Url.Content("~/Administration/Content/images/ico-configuration.png")" alt="" />
+                @T("Restrictions")
+            </div>
+            <div class="options">
+                <input type="submit" name="save" class="k-button" value="@T("Admin.Common.Save")" />
+            </div>
+        </div>
+
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @T("Description")
+                    <br />
+                    <br />
+                    @if (Model.AvailableCountries.Count == 0)
+                    {
+                        <text>No countries defined</text>
+                    }
+                    else if (Model.Product.Id == 0)
+                    {
+                        <text>No Product available</text>
+                    }
+                    else
+                    {
+
+
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('#selectall-@(Model.Product.Id)').click(function () {
+                                    $('.restrict_@(Model.Product.Id)').attr('checked', $(this).is(':checked')).change();
+                                });
+                            });
+                        </script>
+
+                        <table class="tablestyle" cellspacing="0" rules="all" border="1" style="width: 100%;
+                                      border-collapse: collapse;">
+                            <tbody>
+                                <tr class="headerstyle">
+                                    <th scope="col">
+                                        <strong>@T("Country")</strong>
+                                    </th>
+                                    <th scope="col">
+                                        <strong>@Model.Product.Name</strong>
+                                        <input type="checkbox" id="selectall-@(Model.Product.Id)" />
+                                        <input type="hidden" name="ProductId" Value="@Model.Product.Id" />
+                                    </th>
+                                </tr>
+                                @{
+                                    bool altRow = true;
+                                }
+                                @foreach (var c in Model.AvailableCountries)
+                                {
+                                    altRow = !altRow;
+                                    <tr class="@(altRow ? "altrowstyle" : "rowstyle")">
+                                        <td>
+                                            <span>@c.Name</span>
+                                        </td>
+
+                                        @{ var restricted = Model.Restricted.ContainsKey(c.Id) && Model.Restricted[c.Id][Model.Product.Id]; }
+                                        <td>
+                                            <input id="restrict_@(Model.Product.Id)" class="restrict_@(Model.Product.Id)" type="checkbox" value="@(c.Id)" name="restrict_@(Model.Product.Id)" @(restricted ? " checked=checked" : null) />
+                                        </td>
+                                    </tr>
+                                            }
+                            </tbody>
+                        </table>
+                                            }
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+                                            }

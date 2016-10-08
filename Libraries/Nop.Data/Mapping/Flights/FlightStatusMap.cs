@@ -21,9 +21,7 @@ namespace Nop.Data.Mapping.Flights
             Property(d => d.From).HasMaxLength(10);
             Property(d => d.To).HasMaxLength(10);
 
-            HasMany(dr => dr.FlightProducts)
-                .WithMany(c => c.FlightStatus)
-                .Map(m => m.ToTable("FlightProductsStatus"));
+           
           
         }
     }

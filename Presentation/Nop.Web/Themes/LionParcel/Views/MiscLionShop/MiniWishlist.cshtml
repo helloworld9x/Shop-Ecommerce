@@ -1,0 +1,35 @@
+﻿@model WishlistModel
+@using Nop.Web.Models.ShoppingCart;
+@if (Model.Items.Count > 0)
+{
+    
+        for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+            <div class="item @(i == 0 ? "first" : null)">
+                @if (Model.ShowProductImages)
+                {
+                    <div class="picture">
+                        <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })" title="@item.Picture.Title">
+                            <img alt="@item.Picture.AlternateText" src="@item.Picture.ImageUrl" title="@item.Picture.Title" />
+                        </a>
+                    </div>
+                }
+                <div class="product">
+                    <div class="name">
+                        <a href="@Url.RouteUrl("Product", new { SeName = item.ProductSeName })">@item.ProductName</a>
+                    </div>
+                    @if (!String.IsNullOrEmpty(item.AttributeInfo))
+                    {
+                        <div class="attributes">
+                            @Html.Raw(item.AttributeInfo)
+                        </div>
+                    }
+                    <div class="price">@T("ShoppingCart.Mini.UnitPrice"): <span>@item.UnitPrice</span></div>
+                    <div class="quantity">@T("ShoppingCart.Mini.Quantity"): <span>@item.Quantity</span></div>
+                </div>
+            </div>
+        }
+    
+}
+

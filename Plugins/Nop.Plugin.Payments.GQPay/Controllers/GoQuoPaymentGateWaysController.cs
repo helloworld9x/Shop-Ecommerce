@@ -12,6 +12,7 @@ using Nop.Services.Catalog;
 using Nop.Services.Localization;
 using Nop.Services.Orders;
 using Nop.Services.Payments;
+using Nop.Services.Security;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Kendoui;
 using Nop.Web.Framework.Mvc;
@@ -30,7 +31,7 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
         private readonly IProductService _productService;
 
 
-        public GoQuoPaymentGateWaysController(IGoQuoPaymentProcessorService processorService, IProcessorKeyValueService processorKeyValueService, ILocalizationService localizationService, OrderSettings orderSettings, IWorkContext workContext, IOrderService orderService, IStoreContext storeContext, IOrderProcessingService orderProcessingService, IProductService productService, IShoppingCartService shoppingCartService)
+        public GoQuoPaymentGateWaysController(IGoQuoPaymentProcessorService processorService, IProcessorKeyValueService processorKeyValueService, ILocalizationService localizationService, OrderSettings orderSettings, IOrderService orderService, IStoreContext storeContext, IOrderProcessingService orderProcessingService, IProductService productService, IShoppingCartService shoppingCartService, IPermissionService permissionService)
         {
 
             _processorService = processorService;
@@ -48,7 +49,6 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
             var model = new ConfigurationModel();
             return View("~/Plugins/Payments.GQPay/Views/GoQuoPaymentGateWays/Configure.cshtml", model);
         }
-
 
         [HttpPost]
         [AdminAntiForgery]
@@ -246,6 +246,7 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
             return new NullJsonResult();
         }
 
+        #region Payment 
         [ChildActionOnly]
         public ActionResult PaymentInfo()
         {
@@ -303,7 +304,9 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
 
             return View("~/Plugins/Payments.GQPay/Views/GoQuoPaymentGateWays/PaymentInfo.cshtml", model);
         }
+        #endregion 
 
+        [NonAction]
         public override IList<string> ValidatePaymentForm(FormCollection form)
         {
             var warnings = new List<string>();
@@ -324,6 +327,7 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
             return warnings;
         }
 
+        [NonAction]
         public override ProcessPaymentRequest GetPaymentInfo(FormCollection form)
         {
             //validation
@@ -339,17 +343,18 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
             return paymentInfo;
         }
 
+        #region Payment Response
         public ActionResult ResponsesResult(FormCollection form)
         {
             var goquoResponse = form["GoquoResponse"];
 
             decimal amount;
-            decimal.TryParse(form["PurAmount"],out amount);
+            decimal.TryParse(form["PurAmount"], out amount);
             var currency = form["Currency"];
 
             if (string.IsNullOrEmpty(currency))
             {
-                return RedirectToAction("PaymentFailuResult", new {error = "Error"});
+                return RedirectToAction("PaymentFailuResult", new { error = "Error" });
             }
 
             var processor = _processorService.GetByCurrency(currency);
@@ -413,7 +418,9 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
 
             return RedirectToAction("PaymentFailuResult", new { error = form["ReasonCode"], orderId = orderGuiId });
         }
+        #endregion
 
+        #region Payment Fail
         public ActionResult PaymentFailuResult(string error, Guid? orderId = null)
         {
             if (orderId != null && orderId != Guid.Empty)
@@ -433,5 +440,6 @@ namespace Nop.Plugin.Payments.GQPay.Controllers
             ViewBag.Error = error;
             return View("~/Plugins/Payments.GQPay/Views/GoQuoPaymentGateWays/FalsePayments.cshtml");
         }
+        #endregion
     }
 }

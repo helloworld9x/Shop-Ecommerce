@@ -334,6 +334,34 @@ namespace Nop.Web.Controllers
                     IncludeInTopMenu = category.IncludeInTopMenu
                 };
 
+                //prepare picture model
+                int pictureSize = _mediaSettings.CategoryThumbPictureSize;
+                var categoryPictureCacheKey = string.Format(ModelCacheEventConsumer.CATEGORY_PICTURE_MODEL_KEY, category.Id, pictureSize, true, _workContext.WorkingLanguage.Id, _webHelper.IsCurrentConnectionSecured(), _storeContext.CurrentStore.Id);
+                categoryModel.PictureModel = _cacheManager.Get(categoryPictureCacheKey, () =>
+                {
+                    var pictureModel = new PictureModel()
+                    {
+                        Title = string.Format(_localizationService.GetResource("Media.Category.ImageLinkTitleFormat"), categoryModel.Name),
+                        AlternateText = string.Format(_localizationService.GetResource("Media.Category.ImageAlternateTextFormat"), categoryModel.Name)
+                    };
+
+                    var picture = _pictureService.GetPictureById(category.PictureId);
+
+                    //get picture default if category dont have a image.
+                    if (picture == null)
+                    {
+                        pictureModel.FullSizeImageUrl = _pictureService.GetDefaultPictureUrl();
+                        pictureModel.ImageUrl = _pictureService.GetDefaultPictureUrl(pictureSize);
+                    }
+                    else
+                    {
+                        pictureModel.FullSizeImageUrl = _pictureService.GetPictureUrl(picture);
+                        pictureModel.ImageUrl = _pictureService.GetPictureUrl(picture, pictureSize);
+                    }
+
+                    return pictureModel;
+                });
+
                 //product number for each category
                 if (_catalogSettings.ShowCategoryProductNumber)
                 {

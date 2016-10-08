@@ -1,0 +1,55 @@
+﻿@model NewsItemListModel
+@using Nop.Web.Models.News;
+@{
+    Layout = "~/Views/Shared/_LayoutHomePage.cshtml";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.NewsArchive").Text);
+}
+<div id="Content" class="lion-parcel-content-render">
+    <div class="page news-list-page">
+        <div class="page-title">
+            <h1>@T("News")</h1>
+        </div>
+        <div class="page-body">
+            @Html.Widget("newslist_page_before_items")
+            <div class="news-items">
+                <ul class="lp-list-news">
+                    @foreach (var item in Model.NewsItems)
+            {
+                        <li>
+                            <div class="row">
+                                <div class="col-md-3"><a class="news-img" href="#"> <img class="img-responsive" src="https://s32.postimg.org/5ba7qe6bp/^EB24C8CE94A8FE82E5A1DEE1F8B8EA7FD8C388C52EC926C.jpg" alt="" /> </a></div>
+                                <div class="col-md-9">
+                                    <h4 class="news-title"><a class="news-title link" href="@Url.RouteUrl("NewsItem", new {SeName = item.SeName})">@item.Title</a></h4>
+                                    <p class="date">@item.CreatedOn.ToString("D") | Extraordinary Admin</p>
+                                    <p class="MsoNormal" style="text-align: justify;">@Html.Raw(item.Short)</p>
+                                    <p class="news-desc"><a href="@Url.RouteUrl("NewsItem", new {SeName = item.SeName})" class="read-more"><em class="glyphicon glyphicon-chevron-right">&nbsp;</em>@T("Read more")</a></p>
+                                </div>
+                                @Html.Widget("newslist_page_inside_item", item.Id)
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            @{
+                var pager = Html.Pager(Model.PagingFilteringContext).QueryParam("pagenumber");
+            }
+            @if (!pager.IsEmpty())
+            {
+                <div class="pager">
+                    @pager
+                </div>
+            }
+            @Html.Widget("newslist_page_after_items")
+        </div>
+    </div>
+</div>
+<script>
+// <![CDATA[
+$(document).ready(
+        function() {
+            location.href = "#Content";
+        }
+        );
+// ]]></script>

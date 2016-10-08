@@ -1,0 +1,5 @@
+﻿<form action="@Url.Action("Address", "LionParcel")" method="POST">
+    @Html.AntiForgeryToken()
+    <textarea name="str"></textarea>
+    <button type="submit">Submit</button>
+</form>

@@ -1,0 +1,246 @@
+﻿@model CategoryNavigationModel
+@using Nop.Web.Models.Catalog;
+
+@functions{
+    public bool BreadCrumbContainsCurrentCategoryId(CategorySimpleModel category)
+    {
+        if (Model.CurrentCategoryId == 0)
+            return false;
+
+        if (category.Id == Model.CurrentCategoryId)
+            return true;
+
+        foreach (var subCategory in category.SubCategories)
+        {
+            if (BreadCrumbContainsCurrentCategoryId(subCategory))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+@helper RenderCategoryLine(CategorySimpleModel category)
+{
+    <li class="@((category.Id == Model.CurrentCategoryId || (category.SubCategories.Count > 0  && category.SubCategories.Select(x => x.Id).Contains(Model.CurrentCategoryId))) ? "active" : "category")">
+        @{
+            if (category.SubCategories.Count > 0)
+            {
+
+                <a href="@Url.RouteUrl("Category", new {SeName = category.SeName})">
+                    @*<i class="@(string.IsNullOrEmpty(category.IconCssClass) ? "" : category.IconCssClass)"></i>*@
+                    @category.Name
+                </a>
+                if (category.Id == Model.CurrentCategoryId || category.SubCategories.Count > 0)
+                {
+                    <ul class="sub-menu collapse panel-collapse @(category.Id == Model.CurrentCategoryId || (category.SubCategories.Count > 0 && category.SubCategories.Select(x => x.Id).Contains(Model.CurrentCategoryId)) ? "in" : "")" id="@category.SeName">
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            @RenderCategoryLine(subCategory)
+                        }
+                    </ul>
+                }
+                if (category.SubCategories != null)
+                {
+                    if (category.Id == Model.CurrentCategoryId || category.SubCategories.Count > 0)
+                    {
+                        <ul class="category-left-sub">
+                            <div class="category-left">
+                                <div class="category-left-title">@category.Name</div>
+                                @foreach (var subCategory in category.SubCategories)
+                                {
+                                    @RenderCategoryLine(subCategory)
+                                }
+
+                            </div>
+                            @if (category.PictureModel != null)
+                            {
+                                <div class="category-banner" style="display: block;width: 50%;">
+                                    <img src="@category.PictureModel.ImageUrl" title="@category.PictureModel.Title" alt="@category.PictureModel.AlternateText" class="img-responsive" />
+                                </div>
+                            }
+                        </ul>
+                    }
+                }
+            }
+            else
+            {
+                <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })">
+                    @*<i class="@(string.IsNullOrEmpty(category.IconCssClass) ? "" : category.IconCssClass)"></i>*@
+                    @category.Name
+                </a>
+
+            }
+        }
+    </li>
+}
+@helper RenderCategoryLine1(CategorySimpleModel category)
+{
+
+    <div class="category-sub-list">
+        @if (category.SubCategories.Count > 0)
+        {
+            <a href="@Url.RouteUrl("Category", new {SeName = category.SeName})">
+                @category.Name
+            </a>
+
+            if (category.Id == Model.CurrentCategoryId || category.SubCategories.Count > 0)
+            {
+                <ul class="category-sub-opent">
+                    @foreach (var subCategory in category.SubCategories)
+                    {
+                        @RenderCategoryLine2(subCategory)
+                    }
+                </ul>
+            }
+
+
+        }
+        else
+        {
+            <a href="@Url.RouteUrl("Category", new {SeName = category.SeName})">
+                @category.Name
+            </a>
+
+        }
+
+    </div>
+
+}
+@helper RenderCategoryLine2(CategorySimpleModel category)
+{
+
+    <div class="category-sub-list-opent">
+        @{
+            if (category.SubCategories.Count > 0)
+            {
+                <a href="@Url.RouteUrl("Category", new {SeName = category.SeName})">
+                    @category.Name
+                </a>
+                //if (category.ParentCategoryId == null)
+                //{
+                if (category.Id == Model.CurrentCategoryId || category.SubCategories.Count > 0)
+                {
+                    <ul class="category-sub-opent">
+                        @foreach (var subCategory in category.SubCategories)
+                        {
+                            @RenderCategoryLine2(subCategory)
+                        }
+                    </ul>
+                }
+                //}
+            }
+            else
+            {
+                <a href="@Url.RouteUrl("Category", new {SeName = category.SeName})">
+                    @category.Name
+                </a>
+
+            }
+        }
+    </div>
+
+}
+
+
+
+
+@if (Model.Categories.Count > 0)
+{
+    <div class="sidebar-nav">
+        <div class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+                    <i class="arrow"></i>
+                </button>
+                <span class="visible-xs navbar-brand">Sidebar menu</span>
+            </div>
+            <div class="navbar-collapse collapse sidebar-navbar-collapse" id="sidebar-nav">
+                <ul class="nav" id="sidenav01">
+                    @*<li class="sidebar-nav-head">@T("Categories")</li>*@
+                    <div>
+                        <div class="sidebar-nav-head">
+                            <button type="button" class="btn_category btn-sildebar-category" onclick="myFunction()">
+                                Categories
+                            </button>
+                        </div>
+                    </div>
+                    <div class="category-sub" id="idcategory" style="display: none;">
+                        <div class="category-sub-bottom">
+                            <button type="button" class="btn_category" onclick="myFunctionClose()">
+                                Categories
+                            </button>
+                            <button type="button" class="btn_category-close" onclick=" myFunctionClose() ">Close</button>
+                        </div>
+
+                        @if (Model.Categories.Count > 0)
+                        {
+                            var countpage = (int)Math.Ceiling((double)Model.Categories.Count / 4);
+                            if (countpage > 0)
+                            {
+
+                                for (int i = 0; i < countpage; i++)
+                                {
+                        <div class="group-category">
+                            @foreach (var category in Model.Categories.Skip(i * 4).Take(4).ToList())
+                                        {
+                                        @RenderCategoryLine1(category)
+                                        }
+
+                        </div>
+
+                                }
+
+                            }
+                        }
+                    </div>
+                    @if (Model.Categories.Count > 0)
+                    {
+                        var CateTake = Model.Categories.Take(10);
+                        foreach (var category in CateTake)
+                        {
+
+                            @RenderCategoryLine(category)
+
+                        }
+                    }
+                    <li class="category" onclick="myFunction()">
+                        <a class="category-more"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i>More Categories</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    function myFunction() {
+        document.getElementById('idcategory').style.cssText =
+            'display: block;';
+    }
+
+    function myFunctionClose() {
+        document.getElementById('idcategory').style.cssText =
+            'display: none;';
+    }
+
+
+    $(document).ready(function () {
+
+        /*$('.category').hover(
+           function () {
+               $(this).find(".category-left-sub").css({ "display": "block" });
+               $(this).find(".icon-cate-left").css({ "display": "block" });
+           },
+           function () {
+               $(this).find(".category-left-sub").css({ "display": "none" });
+               $(this).find(".icon-cate-left").css({ "display": "none" });
+           }
+        );*/
+
+    });
+</script>
+

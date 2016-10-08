@@ -1,0 +1,15 @@
+﻿.aktif {
+    background: #FB1600;
+}
+
+.area-result span {
+    cursor: pointer;
+}
+
+.area-result {
+    /* display: none; */
+    padding: 10px;
+    background: #FB1600;
+    color: white;
+    margin-left: 15px;
+}

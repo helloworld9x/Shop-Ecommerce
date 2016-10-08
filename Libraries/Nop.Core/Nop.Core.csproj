@@ -55,6 +55,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
@@ -94,6 +95,7 @@
     <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="ComponentModel\WriteLockDisposable.cs" />
     <Compile Include="Data\FindOptions.cs" />
+    <Compile Include="Data\PredicateBuilder.cs" />
     <Compile Include="Data\SortDescriptor.cs" />
     <Compile Include="Domain\Catalog\Events.cs" />
     <Compile Include="Domain\Catalog\PredefinedProductAttributeValue.cs" />
@@ -122,6 +124,9 @@
     <Compile Include="Domain\Vendors\VendorNote.cs" />
     <Compile Include="Domain\Vendors\VendorSettings.cs" />
     <Compile Include="Domain\Vendors\Vendor.cs" />
+    <Compile Include="Extension\ExpandableQuery.cs" />
+    <Compile Include="Extension\ExpressionExpander.cs" />
+    <Compile Include="Extension\ExpressionVisitor.cs" />
     <Compile Include="Extension\Extensions.cs" />
     <Compile Include="IStoreContext.cs" />
     <Compile Include="Domain\Catalog\BackInStockSubscription.cs" />

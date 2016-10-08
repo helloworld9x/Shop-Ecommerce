@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Shared/_Root.cshtml";
+}
+@{
+    //current category ID
+    int currentCategoryId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("category", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentCategoryId = Convert.ToInt32(Url.RequestContext.RouteData.Values["categoryId"].ToString());
+    }
+
+
+    //current manufacturer ID
+    int currentManufacturerId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("catalog", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("manufacturer", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentManufacturerId = Convert.ToInt32(Url.RequestContext.RouteData.Values["manufacturerId"].ToString());
+    }
+
+
+    //current product ID
+    int currentProductId = 0;
+    if (Url.RequestContext.RouteData.Values["controller"].ToString().Equals("product", StringComparison.InvariantCultureIgnoreCase) &&
+        Url.RequestContext.RouteData.Values["action"].ToString().Equals("productdetails", StringComparison.InvariantCultureIgnoreCase))
+    {
+        currentProductId = Convert.ToInt32(Url.RequestContext.RouteData.Values["productId"].ToString());
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 affix-sidebar">
+
+            @Html.Widget("left_side_column_before")
+            @Html.Action("CategoryNavigation", "Catalog", new {currentCategoryId = currentCategoryId, currentProductId = currentProductId})
+            @Html.Widget("left_side_column_after_category_navigation")
+            @Html.Action("ManufacturerNavigation", "Catalog", new {currentManufacturerId = currentManufacturerId})
+            @Html.Action("VendorNavigation", "Catalog")
+            @Html.Action("RecentlyViewedProductsBlock", "Product", new {productThumbPictureSize = 64})
+            @Html.Action("PopularProductTags", "Catalog")
+            @Html.Action("PollBlock", "Poll", new {systemKeyword = "LeftColumnPoll"})
+            @Html.Widget("left_side_column_after")
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            @Html.Widget("main_column_before")
+            @*<div class="container">*@
+            @Html.Widget("home_page_top")
+
+            @Html.Action("HomepageBestSellers", "Product")
+
+            @Html.Action("NewProducts", "Product")
+
+
+            @Html.Widget("main_column_after")
+        </div>
+    </div>
+</div>
+<div id="boxes-popoup">
+    <div id="popupthesoon" class="window-popoup img-responsive" style="top: 160px; left: 540px; display: block;">
+        <a href="#" class="close-popup">X</a>
+        <img src="~/Themes/ShopLion/Content/images/PopUpMain.jpg" class="img-responsive">
+    </div>
+    <!-- Mask to cover the whole screen -->
+    <div id="mask-popup" style="width: 1680px; height: 2292px; display: block; opacity: 0.8;"></div>
+</div>
